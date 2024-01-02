@@ -29,7 +29,7 @@ extend type Bacenta {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
   aggregateBussingRecords(limit: Int! = 4): [AggregateBussingRecord!]!
@@ -37,7 +37,7 @@ extend type Bacenta {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
 }
@@ -48,7 +48,7 @@ extend type Constituency {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
   aggregateBussingRecords(limit: Int! = 4): [AggregateBussingRecord!]!
@@ -56,7 +56,7 @@ extend type Constituency {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
 }
@@ -67,7 +67,7 @@ extend type Council {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
   aggregateBussingRecords(limit: Int! = 4): [AggregateBussingRecord!]!
@@ -75,7 +75,7 @@ extend type Council {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
 }
@@ -86,7 +86,7 @@ extend type Stream {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
   aggregateBussingRecords(limit: Int! = 4): [AggregateBussingRecord!]!
@@ -94,7 +94,7 @@ extend type Stream {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
 }
@@ -105,7 +105,7 @@ extend type Campus {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
   aggregateBussingRecords(limit: Int! = 4): [AggregateBussingRecord!]!
@@ -113,7 +113,7 @@ extend type Campus {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
 }
@@ -124,7 +124,7 @@ extend type Oversight {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
   aggregateBussingRecords(limit: Int! = 4): [AggregateBussingRecord!]!
@@ -132,7 +132,7 @@ extend type Oversight {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
 }
@@ -143,7 +143,7 @@ extend type Denomination {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
   aggregateBussingRecords(limit: Int! = 4): [AggregateBussingRecord!]!
@@ -151,7 +151,7 @@ extend type Denomination {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
 }
@@ -181,7 +181,7 @@ extend type Hub {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
 }
@@ -192,7 +192,7 @@ extend type HubCouncil {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
   aggregateRehearsalRecords(limit: Int! = 4): [AggregateRehearsalRecord!]!
@@ -200,7 +200,7 @@ extend type HubCouncil {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateRehearsalRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
 }
@@ -211,7 +211,7 @@ extend type Ministry {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
   aggregateRehearsalRecords(limit: Int! = 4): [AggregateRehearsalRecord!]!
@@ -219,7 +219,7 @@ extend type Ministry {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateRehearsalRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
 }
@@ -230,7 +230,7 @@ extend type CreativeArts {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateServiceRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
   aggregateRehearsalRecords(limit: Int! = 4): [AggregateRehearsalRecord!]!
@@ -238,7 +238,7 @@ extend type CreativeArts {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateRehearsalRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
   aggregateStageAttendanceRecords(
@@ -248,7 +248,7 @@ extend type CreativeArts {
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(aggregate:AggregateStageAttendanceRecord)
       WHERE aggregate.year = date().year OR aggregate.year = date().year -1
-      RETURN aggregate ORDER BY aggregate.year, aggregate.week DESC LIMIT $limit
+      RETURN aggregate ORDER BY aggregate.year DESC, aggregate.week DESC LIMIT $limit
       """
     )
 }
