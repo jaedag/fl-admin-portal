@@ -517,6 +517,26 @@ const bankingMutation = {
       context.auth.roles
     )
     const session = context.executionContext.session()
+    const churchRes = await session.executeRead((tx) =>
+      tx.run(
+        `MATCH (record:ServiceRecord {id: $serviceRecordId})
+        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
+        RETURN labels(church) AS churchLabels`,
+        args
+      )
+    )
+    const churchLabels: string[] = churchRes.records[0].get('churchLabels')
+
+    if (
+      context.auth.roles.includes('tellerStream') &&
+      !['Stream', 'Campus', 'Oversight', 'Denomination'].some((churchLevel) =>
+        churchLabels.includes(churchLevel)
+      )
+    ) {
+      throw new Error(
+        'You are not allowed to manually confirm offering payment for this church'
+      )
+    }
 
     await checkIfLastServiceBanked(args.serviceRecordId, context).catch(
       (error: any) => {
@@ -533,10 +553,6 @@ const bankingMutation = {
         .catch((error: any) =>
           throwToSentry('There was an error confirming offering payment', error)
         )
-    )
-    console.log(
-      '🚀 ~ file: banking-resolver.ts:537 ~ submissionResponse:',
-      submissionResponse
     )
 
     return submissionResponse.service.properties

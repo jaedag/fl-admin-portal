@@ -74,15 +74,7 @@ export const MANUALLY_CONFIRM_OFFERING_PAYMENT = gql`
     ManuallyConfirmOfferingPayment(serviceRecordId: $serviceRecordId) {
       id
       createdAt
-      created_by {
-        id
-        firstName
-        lastName
-        fullName
-      }
-      serviceDate {
-        date
-      }
+
       noServiceReason
       attendance
       income
@@ -92,18 +84,7 @@ export const MANUALLY_CONFIRM_OFFERING_PAYMENT = gql`
       familyPicture
       bankingProof
       bankingSlip
-      bankingSlipUploader {
-        id
-        firstName
-        lastName
-        fullName
-      }
-      offeringBankedBy {
-        id
-        firstName
-        lastName
-        fullName
-      }
+
       transactionId
 
       bankingConfirmer {
