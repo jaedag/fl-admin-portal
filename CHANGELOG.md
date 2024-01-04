@@ -1,3 +1,70 @@
+#### 7.15.6 (2024-01-02)
+
+##### Bug Fixes
+
+*  update year filter in GraphQL queries ([e7e7c9f5](https://github.com/firstlovecenter/fl-admin-portal/commit/e7e7c9f56c25eadb7bfc0937c3d2e271c5e84fcf))
+*  add debugging scripts and update service resolvers ([a93f3b74](https://github.com/firstlovecenter/fl-admin-portal/commit/a93f3b747f69001a834b9d3910ebcf16deb4d2ff))
+*  update service-resolvers.ts to include 'Council' label in the condition ([e46e5ea9](https://github.com/firstlovecenter/fl-admin-portal/commit/e46e5ea91126fc2b4f9def1623b2cd95ddcda469))
+*  attendance recording for Sunday bussing ([d50cf9ba](https://github.com/firstlovecenter/fl-admin-portal/commit/d50cf9baedf6e631897f3610f36d0d3a95d5b142))
+
+##### Refactors
+
+*  refactor service label check in serviceMutation ([79834ce9](https://github.com/firstlovecenter/fl-admin-portal/commit/79834ce98f7017a8c309fbb84b6913570fbdfce4))
+
+#### 7.15.5 (2023-12-17)
+
+#### 7.15.4 (2023-12-17)
+
+#### 7.15.3 (2023-12-17)
+
+##### New Features
+
+*  arrivalDate is used to retrieve payment data and not today's date ([94e8932f](https://github.com/firstlovecenter/fl-admin-portal/commit/94e8932f598d2abe5d418c03d4719e6676b68529))
+*  update bussing data aggregation to add numberOfCars ([f5341962](https://github.com/firstlovecenter/fl-admin-portal/commit/f53419621edb352640d3ff970fbc177e3115a422))
+
+##### Bug Fixes
+
+*  service record and bussing issues ([4991bc33](https://github.com/firstlovecenter/fl-admin-portal/commit/4991bc33a067c686fb856ea416d7c6d5190bb8fe))
+*  update role check in MemberForm component ([0b1a90f3](https://github.com/firstlovecenter/fl-admin-portal/commit/0b1a90f3a0ffab340bad89c2a989add76930e63e))
+*  update transaction balance formatting ([094f5237](https://github.com/firstlovecenter/fl-admin-portal/commit/094f523710c70438aac8ddfeaafdc596b30ff74a))
+*  update balance display format in TransactionCard ([7f5403a4](https://github.com/firstlovecenter/fl-admin-portal/commit/7f5403a4b24e13e84c6304ca63aff7266ff06341))
+*  issues with service records and add debugging scripts ([78fc2e30](https://github.com/firstlovecenter/fl-admin-portal/commit/78fc2e30dd508032fad69e4618732ab7ea4e149a))
+
+#### 7.15.2 (2023-12-07)
+
+##### Documentation Changes
+
+*  add completed year to README ([8164f464](https://github.com/firstlovecenter/fl-admin-portal/commit/8164f4640525752ab379c5d28e0966d7a643a453))
+
+##### New Features
+
+*  add IMCL checking and attendance recording logic ([6aab6585](https://github.com/firstlovecenter/fl-admin-portal/commit/6aab65853815774154d54c3a23929d4d38489ee7))
+*  implement number of vehicles in bussing aggregate graphs ([0a7cef5d](https://github.com/firstlovecenter/fl-admin-portal/commit/0a7cef5de8b1e05a425af9c5299ee76d8ddc428e))
+
+##### Bug Fixes
+
+*  stream admins should delete members ([0389ac7d](https://github.com/firstlovecenter/fl-admin-portal/commit/0389ac7d5134704816d0c4ec1da57c2d6b2237f5))
+*  exclude stream services when absorbing transaction ([763b71ff](https://github.com/firstlovecenter/fl-admin-portal/commit/763b71ff245f6423c0e9ad4304e7362c4d2c85cf))
+*  fix clickCard function calls in ServiceForm ([19fee919](https://github.com/firstlovecenter/fl-admin-portal/commit/19fee9193a67dbb42b735c93021b5a9bfc03be93))
+*  fix IMCL check condition in directory mutation ([8da2def0](https://github.com/firstlovecenter/fl-admin-portal/commit/8da2def05d084b54fa75f36e0416959b25ff38d4))
+
+##### Refactors
+
+*  service-cypher.ts to absorb all transactions and update aggregate records ([df6fe3c8](https://github.com/firstlovecenter/fl-admin-portal/commit/df6fe3c897ad6dd92a49fb07c5fd6b272b600d63))
+
+#### 7.15.1 (2023-12-04)
+
+##### New Features
+
+*  fishers admins can now fill forms up to 7 days in the past ([f21b0579](https://github.com/firstlovecenter/fl-admin-portal/commit/f21b0579c96bc25aa633c96d7f536263ed8e6919))
+
+### 7.15.0 (2023-12-04)
+
+##### New Features
+
+*  correct transaction history when transferring from weekday to bussing ([95e3da23](https://github.com/firstlovecenter/fl-admin-portal/commit/95e3da23a294811a8c37b4a6da9f964f0c942bf8))
+*  implement account balances on each transaction ([d532262c](https://github.com/firstlovecenter/fl-admin-portal/commit/d532262c3ac3e77349549a6461fddea720b329b6))
+
 #### 7.14.12 (2023-12-03)
 
 ##### Chores

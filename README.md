@@ -27,6 +27,8 @@ All Contributors welcome. Go ahead and fork the project and submit a PR. Read th
 - [PHASE 5: Bussing Registration and Monitoring (Bacenta Proliferation) ✅](#phase-5-bussing-registration-and-monitoring-bacenta-proliferation-)
 - [PHASE 6: Future Ideas](#phase-6-future-ideas)
 
+### Completed in 2023
+
 ## PHASE 1: Directory (State of the Flock Part 1) ✅
 
 1.  Be able to hold all membership and leadership records (Bacenta and Basonta).

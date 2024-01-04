@@ -517,6 +517,7 @@ const bankingMutation = {
       context.auth.roles
     )
     const session = context.executionContext.session()
+
     const churchRes = await session.executeRead((tx) =>
       tx.run(
         `MATCH (record:ServiceRecord {id: $serviceRecordId})
@@ -537,6 +538,7 @@ const bankingMutation = {
         'You are not allowed to manually confirm offering payment for this church'
       )
     }
+
 
     await checkIfLastServiceBanked(args.serviceRecordId, context).catch(
       (error: any) => {

@@ -13,4 +13,7 @@ export interface AccountTransaction {
   status: 'success' | 'pending approval' | 'declined'
   category: 'Deposit'
   loggedBy: Member
+
+  weekdayBalance: number
+  bussingSocietyBalance: number
 }

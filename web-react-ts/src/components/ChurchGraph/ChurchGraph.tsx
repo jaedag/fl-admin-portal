@@ -101,13 +101,23 @@ const ChurchGraph = (props: ChurchGraphProps) => {
         <div className="custom-tooltip p-2">
           <p className="label">{`Week ${label}`}</p>
           <p className="intro">{`${payload[0].name}: ${payload[0].value}`}</p>
-          {payload[1] && (
+          {!!payload[1] && (
             <p className="intro">{`${payload[1].name}: ${payload[1].value}`}</p>
           )}
-          {payload[0] && payload[0].payload.numberOfServices && (
+
+          {!!payload[0] && !!payload[0].payload.numberOfServices && (
             <p className="intro">{`Number of Services: ${payload[0].payload.numberOfServices}`}</p>
           )}
-          {/* <p className="desc">Anything you want can be displayed here.</p> */}
+
+          {!!payload[0] && !!payload[0].payload.numberOfUrvans && (
+            <p className="intro">{`Number of Urvans: ${payload[0].payload.numberOfUrvans}`}</p>
+          )}
+          {!!payload[0] && !!payload[0].payload.numberOfSprinters && (
+            <p className="intro">{`Number of Sprinters: ${payload[0].payload.numberOfSprinters}`}</p>
+          )}
+          {!!payload[0] && !!payload[0].payload.numberOfCars && (
+            <p className="intro">{`Number of Cars: ${payload[0].payload.numberOfCars}`}</p>
+          )}
         </div>
       )
     }
