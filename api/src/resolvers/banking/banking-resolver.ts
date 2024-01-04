@@ -539,7 +539,6 @@ const bankingMutation = {
       )
     }
 
-
     await checkIfLastServiceBanked(args.serviceRecordId, context).catch(
       (error: any) => {
         throwToSentry(

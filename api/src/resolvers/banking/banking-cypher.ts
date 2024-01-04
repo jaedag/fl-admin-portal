@@ -122,7 +122,7 @@ export const checkIfIMCLNotFilled = `
 export const submitBankingSlip = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
 WHERE record.transactionStatus IS NULL
-OR record.transactionStatus = 'failed'
+OR NOT record.transactionStatus IN ['pending', 'success']
 SET record.bankingSlip = $bankingSlip
 WITH record
 MATCH (banker:Member {auth_id: $auth.jwt.sub})
