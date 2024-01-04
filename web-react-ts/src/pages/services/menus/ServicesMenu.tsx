@@ -125,7 +125,7 @@ const Services = () => {
                 <RoleView roles={permitAdmin('Stream')}>
                   <MenuButton
                     iconComponent={<PersonPlus />}
-                    title="Add Treasurers"
+                    title="Add Stream Tellers"
                     color="banking"
                     onClick={() => navigate(`/anagkazo/treasurer-select`)}
                     noCaption
