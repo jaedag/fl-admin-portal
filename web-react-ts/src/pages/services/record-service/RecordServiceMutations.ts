@@ -105,12 +105,7 @@ export const MANUALLY_CONFIRM_OFFERING_PAYMENT = gql`
         fullName
       }
       transactionId
-      treasurers {
-        id
-        firstName
-        lastName
-        fullName
-      }
+
       bankingConfirmer {
         id
         firstName

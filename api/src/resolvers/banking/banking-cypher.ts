@@ -137,8 +137,8 @@ RETURN record
 `
 
 export const manuallyConfirmOfferingPayment = `
-MATCH (record:ServiceRecord {id: $serviceRecordId})
-SET service.tellerConfirmationTime = datetime()
+MATCH (service:ServiceRecord {id: $serviceRecordId})
+    SET service.tellerConfirmationTime = datetime()
 
 WITH service
 MATCH (author:Member {auth_id: $auth.jwt.sub})

@@ -9,9 +9,9 @@ import TableFromArrays, {
 } from 'components/TableFromArrays/TableFromArrays'
 import { MemberContext } from 'contexts/MemberContext'
 import { Church, ServiceRecord } from 'global-types'
-import { alertMsg } from 'global-utils'
+import { alertMsg, throwToSentry } from 'global-utils'
 import { parseNeoTime } from 'jd-date-utils'
-import { permitAdmin } from 'permission-utils'
+import { permitAdmin, permitTellerStream } from 'permission-utils'
 import { useContext, useEffect, useState } from 'react'
 import { Col, Container, Row, Button, Card } from 'react-bootstrap'
 import { CheckCircleFill, FileEarmarkArrowUpFill } from 'react-bootstrap-icons'
@@ -106,11 +106,11 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
         )}
         {!currentUser.noIncomeTracking &&
           service?.transactionStatus === 'success' && (
-            <p className="fw-bold">{`Offering Banked by ${service?.offeringBankedBy.fullName}`}</p>
+            <p className="fw-bold ">{`Offering Banked by ${service?.offeringBankedBy.fullName}`}</p>
           )}
-        <RoleView roles={permitAdmin('Council')}>
+        <RoleView roles={[...permitAdmin('Council'), ...permitTellerStream()]}>
           {!currentUser.noIncomeTracking && service?.bankingConfirmer && (
-            <p className="fw-bold">{`Offering Confirmed by ${service?.bankingConfirmer.fullName}`}</p>
+            <p className="green">{`Offering Confirmed by ${service?.bankingConfirmer.fullName}`}</p>
           )}
         </RoleView>
       </PlaceholderCustom>
@@ -193,26 +193,40 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                 )}
                 {noBankingProof && church.__typename !== 'Hub' && (
                   <div className="d-grid gap-2">
-                    <RoleView roles={permitAdmin('Oversight')}>
+                    <RoleView
+                      roles={[
+                        ...permitAdmin('Oversight'),
+                        ...permitTellerStream(),
+                      ]}
+                    >
                       <Button
-                        className="mt-3"
+                        className="mt-3 mb-3"
                         variant="warning"
                         disabled={submitting}
-                        onClick={() => {
+                        onClick={async () => {
                           setSubmitting(true)
                           const confirmBox = window.confirm(
                             'Do you want to confirm banking for this service?'
                           )
 
                           if (confirmBox === true) {
-                            ManuallyConfirmOfferingPayment({
-                              variables: { serviceRecordId: service?.id },
-                            }).then(() => {
-                              setSubmitting(false)
+                            try {
+                              const res = await ManuallyConfirmOfferingPayment({
+                                variables: { serviceRecordId: service?.id },
+                              })
+
+                              if (res.errors) {
+                                throw new Error(res.errors[0].message)
+                              }
+
                               alertMsg(
                                 'Offering Payment has been confirmed. Thank you!'
                               )
-                            })
+                            } catch (error) {
+                              throwToSentry('', error)
+                            } finally {
+                              setSubmitting(false)
+                            }
                           }
                         }}
                       >

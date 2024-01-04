@@ -339,7 +339,8 @@ export const graphs: LazyRouteTypes[] = [
     path: '/fellowship/graphs',
     element: FellowshipReport,
     roles: [
-      ...permitLeaderAdminArrivals('Fellowship'),
+      ...permitLeaderAdminArrivals('Constituency'),
+      ...permitTellerStream(),
       ...permitLeaderAdmin('Hub'),
     ],
     placeholder: true,
@@ -347,21 +348,27 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/bacenta/graphs',
     element: BacentaReport,
-    roles: permitLeaderAdminArrivals('Bacenta'),
+    roles: [
+      ...permitLeaderAdminArrivals('Constituency'),
+      ...permitTellerStream(),
+    ],
     placeholder: true,
   },
 
   {
     path: '/constituency/graphs',
     element: ConstituencyReport,
-    roles: permitLeaderAdminArrivals('Constituency'),
+    roles: [
+      ...permitLeaderAdminArrivals('Constituency'),
+      ...permitTellerStream(),
+    ],
     placeholder: true,
   },
 
   {
     path: '/council/graphs',
     element: CouncilReport,
-    roles: permitLeaderAdminArrivals('Council'),
+    roles: [...permitLeaderAdminArrivals('Council'), ...permitTellerStream()],
     placeholder: true,
   },
   {
@@ -413,7 +420,7 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/fellowship/service-details',
     element: FellowshipServiceDetails,
-    roles: permitLeaderAdmin('Fellowship'),
+    roles: [...permitLeaderAdmin('Fellowship'), ...permitTellerStream()],
     placeholder: true,
   },
   {
@@ -451,7 +458,7 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/hub/service-details',
     element: HubRehearsalServiceDetails,
-    roles: permitLeaderAdmin('Hub'),
+    roles: [...permitLeaderAdmin('Hub'), ...permitTellerStream()],
     placeholder: false,
   },
   {
@@ -471,7 +478,7 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/bacenta/service-details',
     element: BacentaServiceDetails,
-    roles: permitLeaderAdmin('Bacenta'),
+    roles: [...permitLeaderAdmin('Bacenta'), ...permitTellerStream()],
     placeholder: false,
   },
 
@@ -485,7 +492,7 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/constituency/service-details',
     element: ConstituencyServiceDetails,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: [...permitLeaderAdmin('Constituency'), ...permitTellerStream()],
     placeholder: false,
   },
 
@@ -499,7 +506,7 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/council/service-details',
     element: CouncilServiceDetails,
-    roles: permitLeaderAdmin('Council'),
+    roles: [...permitLeaderAdmin('Council'), ...permitTellerStream()],
     placeholder: false,
   },
 
