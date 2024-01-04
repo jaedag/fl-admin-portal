@@ -6,6 +6,7 @@ import {
   permitLeader,
   permitLeaderAdmin,
   permitMe,
+  permitTellerStream,
 } from '../permissions'
 import {
   getMobileCode,
@@ -511,7 +512,10 @@ const bankingMutation = {
     args: { serviceRecordId: string; bankingSlip: string },
     context: Context
   ) => {
-    isAuth(permitAdmin('Campus'), context.auth.roles)
+    isAuth(
+      [...permitAdmin('Campus'), ...permitTellerStream()],
+      context.auth.roles
+    )
     const session = context.executionContext.session()
 
     await checkIfLastServiceBanked(args.serviceRecordId, context).catch(
@@ -530,8 +534,12 @@ const bankingMutation = {
           throwToSentry('There was an error confirming offering payment', error)
         )
     )
+    console.log(
+      '🚀 ~ file: banking-resolver.ts:537 ~ submissionResponse:',
+      submissionResponse
+    )
 
-    return submissionResponse.record.properties
+    return submissionResponse.service.properties
   },
 }
 
