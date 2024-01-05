@@ -125,3 +125,7 @@ RETURN members.firstName, members.lastName
 OPTIONAL MATCH (constituency)-[:HAS]->(bacentas:Bacenta)<-[:LEADS]-(member:Active:Member)
 OPTIONAL MATCH (constituency)-[:HAS_MINISTRY]->(hub:Active:Hub)
 RETURN constituency.name AS name, COUNT(member) AS memberCount, COUNT(bacentas) AS bacentaCount,  COUNT(hub) AS hubCount 
+
+
+MATCH (record:RehearsalRecord)
+RETURN record.noServiceReason

@@ -294,6 +294,27 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
                 </Button>
               </PlaceholderCustom>
             )}
+          {['HubCouncil', 'Ministry'].includes(props.churchType) && (
+            <PlaceholderCustom
+              loading={props.loading}
+              className={`btn-sonta w-100`}
+              button="button"
+            >
+              <Button
+                onClick={() => {
+                  setUserChurch({
+                    id: props.churchId,
+                    name: props.name,
+                    __typename: props.churchType,
+                  })
+
+                  navigate(`/services/${props.churchType.toLowerCase()}`)
+                }}
+              >
+                <CgFileDocument /> Meeting Forms
+              </Button>
+            </PlaceholderCustom>
+          )}
         </div>
         {/* End two buttons */}
         <hr className="hr-line" />

@@ -1,6 +1,6 @@
 export const checkRehearsalFormFilledThisWeek = `
 MATCH (church {id: $churchId})
-WHERE church:Hub OR church:Ministry
+WHERE church:Hub OR church:HubCouncil OR church:Ministry
 MATCH (church)<-[:HAS]-(higherChurch)
 
 OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record)-[:SERVICE_HELD_ON]->(date)
@@ -324,14 +324,14 @@ export const aggregateHubRehearsalDataForMinistry = `
     
     WITH ministry as lowerChurch
 
-    MATCH (lowerChurch)<-[:HAS]-(creativeArt:CreativeArts)
-    MATCH (creativeArt)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..6]->(record:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+    MATCH (lowerChurch)<-[:HAS]-(creativearts:CreativeArts)
+    MATCH (creativearts)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..6]->(record:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
     WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
-    WITH DISTINCT creativeArt, record
-    MATCH (creativeArt)-[:CURRENT_HISTORY]->(log:ServiceLog)
+    WITH DISTINCT creativearts, record
+    MATCH (creativearts)-[:CURRENT_HISTORY]->(log:ServiceLog)
     MERGE (aggregate:AggregateRehearsalRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
     MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
-    WITH  creativeArt, aggregate, collect(record.id) AS componentServiceIds,COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
+    WITH  creativearts, aggregate, collect(record.id) AS componentServiceIds,COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
         SET aggregate.attendance = totalAttendance,
         aggregate.income = totalIncome,
         aggregate.dollarIncome = totalDollarIncome,
@@ -360,7 +360,7 @@ export const aggregateHubRehearsalDataForCreativeArts = `
         aggregate.componentServiceIds = componentServiceIds,
         aggregate.numberOfServices = numberOfServices 
 
-    RETURN creativearts, aggregate
+    RETURN creativeArt, aggregate
 `
 
 export const cancelLowerChurchRehearsals = `
@@ -370,9 +370,9 @@ SET serviceRecord.id = apoc.create.uuid(),
 serviceRecord.noServiceReason = 'Joint Rehearsal'
 
 WITH serviceRecord
-MATCH (church)-[:HAS*2]->(lowerChurch) WHERE lowerChurch:Hub OR lowerChurch:HubCouncil
+MATCH (church)-[:HAS*1..2]->(lowerChurch) WHERE lowerChurch:Hub
 MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
-MATCH (leader:Active:Member {auth_id: $auth.jwt.sub})
+MATCH (leader:Member {auth_id: $auth.jwt.sub})
 
 MERGE (serviceDate:TimeGraph {date: date($serviceDate)})
 MERGE (serviceRecord)-[:LOGGED_BY]->(leader)

@@ -2,13 +2,13 @@ import MenuButton from 'components/buttons/MenuButton'
 import HeadingSecondary from 'components/HeadingSecondary'
 import PlaceholderCustom from 'components/Placeholder'
 import { MemberContext } from 'contexts/MemberContext'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import { PencilSquare, X } from 'react-bootstrap-icons'
+import { PencilSquare } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 
-const HubFormMenu = () => {
-  const { currentUser, theme } = useContext(MemberContext)
+const HubCouncilFormMenu = () => {
+  const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
 
   return (
@@ -17,7 +17,7 @@ const HubFormMenu = () => {
         <PlaceholderCustom xs={12} as="h1">
           <div className="text-center">
             <h1 className="mb-0  page-header">{`${currentUser.currentChurch?.name} ${currentUser.currentChurch?.__typename}`}</h1>
-            <p className={`${theme} menu-subheading`}>Meetings</p>
+            <p className={`menu-subheading`}>Meetings</p>
           </div>
         </PlaceholderCustom>
 
@@ -25,17 +25,10 @@ const HubFormMenu = () => {
           <HeadingSecondary>Rehearsals</HeadingSecondary>
           <MenuButton
             iconComponent={<PencilSquare />}
-            title="Fill Rehearsals Form"
+            title="Fill Joint Rehearsals Form"
             color="members"
-            onClick={() => navigate(`/hub/record-rehearsal`)}
-            noCaption
-          />
-          <MenuButton
-            iconComponent={<X />}
-            title="Cancel Rehearsal"
-            color="red"
-            onClick={() => navigate(`/hub/cancel-rehearsal`)}
-            noCaption
+            onClick={() => navigate(`/hubCouncil/record-rehearsal`)}
+            caption="Council Joint"
           />
 
           <hr />
@@ -43,9 +36,9 @@ const HubFormMenu = () => {
           <MenuButton
             iconComponent={<PencilSquare />}
             title="Fill Sunday Meeting Form"
+            caption="Council Joint"
             color="green"
-            onClick={() => navigate(`/hub/record-sundayservice`)}
-            noCaption
+            onClick={() => navigate(`/hubCouncil/record-sundayservice`)}
           />
         </div>
       </Container>
@@ -53,4 +46,4 @@ const HubFormMenu = () => {
   )
 }
 
-export default HubFormMenu
+export default HubCouncilFormMenu

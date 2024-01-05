@@ -141,7 +141,7 @@ const HubFellowshipServiceMutation = {
 
     return serviceDetails.ministryAttendanceRecord.properties
   },
-  RecordHubRehearsalService: async (
+  RecordRehearsalMeeting: async (
     object: any,
     args: RecordServiceArgs,
     context: Context
@@ -178,9 +178,7 @@ const HubFellowshipServiceMutation = {
 
       if (
         serviceCheck.alreadyFilled &&
-        !['Ministry', 'CreativeArts'].some((label) =>
-          serviceCheck.labels?.includes(label)
-        )
+        ![''].some((label) => serviceCheck.labels?.includes(label))
       ) {
         throw new Error(errorMessage.no_double_form_filling)
       }
@@ -205,9 +203,7 @@ const HubFellowshipServiceMutation = {
           conversionRateToDollar: currencyCheck.conversionRateToDollar,
           auth: context.auth,
         })
-        .catch((error: any) =>
-          throwToSentry('Error Recording hub rehearsal Service', error)
-        )
+        .catch((error: any) => throwToSentry('', error))
 
       const aggregatePromises = [
         sessionTwo.executeWrite((tx) =>

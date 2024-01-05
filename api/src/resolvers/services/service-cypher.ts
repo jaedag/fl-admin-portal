@@ -23,7 +23,7 @@ RETURN DISTINCT higherChurch
 export const getCurrency = `
 MATCH (church {id: $churchId})<-[:HAS|HAS_MINISTRY*0..5]-(campus:Campus)
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
-OR church:Hub OR church:Ministry OR church:CreativeArts
+OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 
 RETURN DISTINCT campus.name, campus.currency AS currency, campus.conversionRateToDollar AS conversionRateToDollar
 `
