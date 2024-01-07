@@ -1,3 +1,21 @@
+### 7.16.0 (2024-01-07)
+
+##### New Features
+
+*  implement stream special service form ([3870f9be](https://github.com/firstlovecenter/fl-admin-portal/commit/3870f9befb9c06aab01d533043f6cc34b8a90c94))
+*  resolver for manually confirming offering payment ([f822dcf0](https://github.com/firstlovecenter/fl-admin-portal/commit/f822dcf065c0bb176dd4878d0354488075c4b795))
+
+##### Bug Fixes
+
+*  allow confirming of banking status when status is not just failed, but abandon ([e43fd23f](https://github.com/firstlovecenter/fl-admin-portal/commit/e43fd23f9f7ea7dd73319e1d084522696a2588c3))
+*  implement frontend feature to manually confirm offering ([c109bf1b](https://github.com/firstlovecenter/fl-admin-portal/commit/c109bf1b8f1dbe35ceeafdaa10b4cd1b9909d060))
+*  return year of aggregate record in descending order ([f64ca6ab](https://github.com/firstlovecenter/fl-admin-portal/commit/f64ca6ab3fc41fb477717bd83d92f808ae334eaf))
+
+##### Refactors
+
+*  refactor sorting logic and update card border color ([fe29b37a](https://github.com/firstlovecenter/fl-admin-portal/commit/fe29b37aa361a39d7bfbe2d66b8668cd15e47acb))
+*  update title for Add Treasurers button ([425deb90](https://github.com/firstlovecenter/fl-admin-portal/commit/425deb9056762b45280625559182f6c3c07afcc3))
+
 #### 7.15.6 (2024-01-02)
 
 ##### Bug Fixes
