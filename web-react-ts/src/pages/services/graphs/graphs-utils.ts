@@ -159,8 +159,6 @@ export const getServiceGraphData = (
     pushIntoData(church.aggregateMultiplicationRecords)
   }
 
-  // data = data.sort(sortingFunction('week'))
-
   if (!data.length) {
     return [
       {
@@ -176,5 +174,6 @@ export const getServiceGraphData = (
   if (data.length <= 3) {
     return data
   }
+
   return data.slice(data.length - numberOfWeeks, data.length)
 }

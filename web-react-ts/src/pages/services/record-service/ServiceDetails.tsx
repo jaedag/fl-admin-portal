@@ -115,7 +115,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
       </PlaceholderCustom>
 
       {service?.name && service?.description && (
-        <Card className="mb-3">
+        <Card border="info" className="mb-3">
           <Card.Header>
             <div className="fw-bold">{service.name}</div>
           </Card.Header>

@@ -50,20 +50,8 @@ const ChurchGraph = (props: ChurchGraphProps) => {
     target: number
   }>({ attendance: 0, income: 0, target: 0 })
 
-  type WeekSortObject = {
-    week: number
-  }
-
   useEffect(() => {
-    setSortedData(
-      churchData?.sort((a: WeekSortObject, b: WeekSortObject) => {
-        if (a.week - b.week < -4 || a.week - b.week > 4) {
-          return -1 * a.week - b.week
-        }
-
-        return a.week - b.week
-      })
-    )
+    setSortedData(churchData.reverse())
 
     setDataMax({
       attendance:
