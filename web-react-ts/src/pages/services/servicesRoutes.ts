@@ -166,6 +166,9 @@ const CampusJoint = lazy(() => import('pages/services/CampusJoint'))
 const StreamService = lazy(
   () => import('pages/services/record-service/StreamService')
 )
+const StreamRecordSpecialService = lazy(
+  () => import('pages/services/special-service/StreamRecordSpecialService')
+)
 const StreamServiceDetails = lazy(
   () => import('pages/services/record-service/StreamServiceDetails')
 )
@@ -514,6 +517,12 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/stream/record-service',
     element: StreamService,
+    roles: permitLeaderAdmin('Stream'),
+    placeholder: false,
+  },
+  {
+    path: '/stream/record-special-service',
+    element: StreamRecordSpecialService,
     roles: permitLeaderAdmin('Stream'),
     placeholder: false,
   },

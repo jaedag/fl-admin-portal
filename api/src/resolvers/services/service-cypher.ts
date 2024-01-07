@@ -25,7 +25,7 @@ MATCH (church {id: $churchId})<-[:HAS|HAS_MINISTRY*0..5]-(campus:Campus)
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
 OR church:Hub OR church:Ministry OR church:CreativeArts
 
-RETURN DISTINCT campus.name, campus.currency AS currency, campus.conversionRateToDollar AS conversionRateToDollar
+RETURN DISTINCT labels(church) AS labels, campus.name, campus.currency AS currency, campus.conversionRateToDollar AS conversionRateToDollar
 `
 
 export const absorbAllTransactions = `
@@ -65,6 +65,49 @@ export const recordService = `
         serviceRecord.numberOfTithers = $numberOfTithers,
         serviceRecord.treasurerSelfie = $treasurerSelfie,
         serviceRecord.familyPicture = $familyPicture
+      WITH serviceRecord
+
+      MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
+      MATCH (church)-[current:CURRENT_HISTORY]->(log:ServiceLog)
+      MATCH (leader:Member {auth_id: $auth.jwt.sub})
+      
+      MERGE (serviceDate:TimeGraph {date:date($serviceDate)})
+
+      WITH DISTINCT serviceRecord, leader, serviceDate, log
+      MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
+      MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
+      MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
+
+      WITH log, serviceRecord
+      MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+      MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+
+      WITH serviceRecord, aggregate, SUM(serviceRecord.attendance) AS attendance, SUM(serviceRecord.income) AS income, SUM(serviceRecord.dollarIncome) AS dollarIncome, SUM(aggregate.attendance) AS aggregateAttendance, SUM(aggregate.income) AS aggregateIncome, SUM(aggregate.dollarIncome) AS aggregateDollarIncome
+      MATCH (aggregate)
+      SET aggregate.attendance = aggregateAttendance + attendance,
+      aggregate.income = aggregateIncome + income,
+      aggregate.dollarIncome = aggregateDollarIncome + dollarIncome 
+
+      WITH serviceRecord
+      UNWIND $treasurers AS treasurerId WITH treasurerId, serviceRecord
+      MATCH (treasurer:Active:Member {id: treasurerId})
+      MERGE (treasurer)-[:WAS_TREASURER_FOR]->(serviceRecord)
+
+      RETURN serviceRecord
+`
+export const recordSpecialService = `
+      CREATE (serviceRecord:ServiceRecord {id: apoc.create.uuid()})
+        SET serviceRecord.createdAt = datetime(),
+        serviceRecord.attendance = $attendance,
+        serviceRecord.income = $income,
+        serviceRecord.cash = $income,
+        serviceRecord.dollarIncome = round(toFloat($income / $conversionRateToDollar), 2),
+        serviceRecord.foreignCurrency = $foreignCurrency,
+        serviceRecord.numberOfTithers = $numberOfTithers,
+        serviceRecord.treasurerSelfie = $treasurerSelfie,
+        serviceRecord.familyPicture = $familyPicture,
+        serviceRecord.name = $serviceName,
+        serviceRecord.description = $serviceDescription
       WITH serviceRecord
 
       MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream

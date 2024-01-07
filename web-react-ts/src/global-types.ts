@@ -384,6 +384,8 @@ export type ServiceRecord = {
   treasurers: Member[]
   stream_name: StreamOptions
   noServiceReason: string
+  name?: string
+  description?: string
   serviceDate: {
     date: string
   }

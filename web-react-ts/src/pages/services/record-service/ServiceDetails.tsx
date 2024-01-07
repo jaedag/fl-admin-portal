@@ -56,7 +56,6 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   if (!service?.noServiceReason) {
     // Service Wasn't Cancelled
     table.push(['Attendance', service?.attendance.toString()])
-
     table.push(['Income', <CurrencySpan number={service?.income} />])
     if (service?.onlineGiving) {
       table.push([
@@ -114,6 +113,18 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
           )}
         </RoleView>
       </PlaceholderCustom>
+
+      {service?.name && service?.description && (
+        <Card className="mb-3">
+          <Card.Header>
+            <div className="fw-bold">{service.name}</div>
+          </Card.Header>
+          <Card.Body>
+            <div>{service.description}</div>
+          </Card.Body>
+        </Card>
+      )}
+
       <Row>
         <Col>
           {service?.attendance && (

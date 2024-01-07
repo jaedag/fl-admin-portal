@@ -18,6 +18,7 @@ import {
   recordService,
   getHigherChurches,
   aggregateServiceDataForHub,
+  recordSpecialService,
 } from './service-cypher'
 import { recordCancelledService as cancelRehearsal } from './rehearsal-cypher'
 import { getServiceHigherChurches } from './service-utils'
@@ -199,6 +200,105 @@ const serviceMutation = {
           )
         )
       }
+
+      await Promise.all(aggregatePromises).catch((error: any) =>
+        throwToSentry('Error Aggregating Service', error)
+      )
+
+      const serviceDetails = rearrangeCypherObject(cypherResponse)
+
+      return serviceDetails.serviceRecord.properties
+    } catch (error) {
+      throwToSentry('Error Recording Service', error)
+    } finally {
+      await session.close()
+      await sessionTwo.close()
+      await sessionThree.close()
+    }
+
+    return null
+  },
+  RecordSpecialService: async (
+    object: any,
+    args: RecordServiceArgs,
+    context: Context
+  ) => {
+    isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
+    const session = context.executionContext.session()
+    const sessionTwo = context.executionContext.session()
+    const sessionThree = context.executionContext.session()
+
+    try {
+      if (checkIfArrayHasRepeatingValues(args.treasurers)) {
+        throw new Error(errorMessage.repeatingTreasurers)
+      }
+
+      await checkServantHasCurrentHistory(session, context, {
+        churchId: args.churchId,
+      })
+
+      const promises = [
+        sessionTwo.executeRead((tx) => tx.run(getCurrency, args)),
+        sessionThree.executeRead((tx) => tx.run(getHigherChurches, args)),
+      ]
+
+      const serviceCheckRes = await Promise.all(promises)
+
+      const currencyCheck = rearrangeCypherObject(serviceCheckRes[0])
+      const higherChurches = getServiceHigherChurches(
+        serviceCheckRes[1]?.records
+      ) as HigherChurches
+
+      if (currencyCheck.labels?.includes('Vacation')) {
+        throw new Error(errorMessage.vacation_cannot_fill_service)
+      }
+
+      let aggregateCypher = ''
+
+      if (higherChurches?.bacenta) {
+        aggregateCypher = higherChurches.bacenta?.cypher
+      } else if (higherChurches?.constituency) {
+        aggregateCypher = higherChurches.constituency.cypher
+      } else if (higherChurches?.council) {
+        aggregateCypher = higherChurches.council.cypher
+      } else if (higherChurches?.stream) {
+        aggregateCypher = higherChurches.stream.cypher
+      } else if (higherChurches?.campus) {
+        aggregateCypher = higherChurches.campus.cypher
+      } else if (higherChurches?.oversight) {
+        aggregateCypher = higherChurches.oversight.cypher
+      } else if (higherChurches?.denomination) {
+        aggregateCypher = higherChurches.denomination.cypher
+      }
+
+      const cypherResponse = await session
+        .executeWrite((tx) =>
+          tx.run(recordSpecialService, {
+            ...args,
+            conversionRateToDollar: currencyCheck.conversionRateToDollar,
+            auth: context.auth,
+          })
+        )
+        .catch((error: any) => throwToSentry('Error Recording Service', error))
+
+      const serviceRecordId =
+        cypherResponse.records[0].get('serviceRecord').properties.id
+
+      await session.executeWrite((tx) =>
+        tx.run(absorbAllTransactions, {
+          ...args,
+          conversionRateToDollar: currencyCheck.conversionRateToDollar,
+          serviceRecordId,
+        })
+      )
+
+      const aggregatePromises = [
+        sessionTwo.executeWrite((tx) =>
+          tx.run(aggregateCypher, {
+            churchId: args.churchId,
+          })
+        ),
+      ]
 
       await Promise.all(aggregatePromises).catch((error: any) =>
         throwToSentry('Error Aggregating Service', error)

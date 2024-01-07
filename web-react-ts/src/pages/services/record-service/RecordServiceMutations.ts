@@ -31,6 +31,41 @@ export const RECORD_SERVICE = gql`
   }
 `
 
+export const RECORD_SPECIAL_SERVICE = gql`
+  mutation RecordSpecialService(
+    $serviceName: String!
+    $serviceDescription: String!
+    $churchId: ID!
+    $serviceDate: String!
+    $attendance: Int!
+    $income: Float!
+    $foreignCurrency: String
+    $numberOfTithers: Int!
+    $treasurers: [ID]!
+    $treasurerSelfie: String!
+    $familyPicture: String!
+  ) {
+    RecordSpecialService(
+      serviceName: $serviceName
+      serviceDescription: $serviceDescription
+      churchId: $churchId
+      serviceDate: $serviceDate
+      attendance: $attendance
+      income: $income
+      foreignCurrency: $foreignCurrency
+      numberOfTithers: $numberOfTithers
+      treasurers: $treasurers
+      treasurerSelfie: $treasurerSelfie
+      familyPicture: $familyPicture
+    ) {
+      id
+      attendance
+      income
+      onlineGiving
+    }
+  }
+`
+
 export const RECORD_CANCELLED_SERVICE = gql`
   mutation RecordCancelledService(
     $churchId: ID!
@@ -516,6 +551,10 @@ export const DISPLAY_STREAM_SERVICE = gql`
         date
       }
       noServiceReason
+      # For Special Services
+      name
+      description
+
       attendance
       income
       cash

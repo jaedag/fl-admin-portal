@@ -11,6 +11,7 @@ import {
   PersonPlus,
   Coin,
   FileEarmarkArrowUpFill,
+  SpeakerFill,
 } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { ChurchLevel } from 'global-types'
@@ -69,7 +70,7 @@ const Services = () => {
           {['Stream', 'Constituency', 'Council'].includes(churchType) && (
             <MenuButton
               iconComponent={<Book />}
-              title={`${churchType} Joint Service`}
+              title={`${churchType === 'Stream' ? 'Weekend' : 'Joint'} Service`}
               color="members"
               noCaption
               onClick={() =>
@@ -86,6 +87,13 @@ const Services = () => {
               clickCard(church)
               navigate(`/trends`)
             }}
+          />
+          <MenuButton
+            iconComponent={<SpeakerFill />}
+            title="Special Service Form"
+            color="red"
+            caption="ONLY to be used in the event of a special service"
+            onClick={() => navigate(`/stream/record-special-service`)}
           />
           {['Stream', 'Council', 'Constituency', 'Fellowship'].includes(
             churchType
