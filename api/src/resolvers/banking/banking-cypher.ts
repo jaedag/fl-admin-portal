@@ -106,7 +106,8 @@ WITH collect(otherRecords.id) AS recordIds, record.id AS currentServiceId
 WITH apoc.coll.indexOf(recordIds,currentServiceId) + 1 AS lastServiceIndex, recordIds WHERE lastServiceIndex >= 0
 MATCH (lastService:ServiceRecord {id: recordIds[lastServiceIndex]})-[:SERVICE_HELD_ON]->(lastDate:TimeGraph)
 MATCH (record:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
-WHERE church:Fellowship OR church:Constituency OR church:Council
+WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:Campus OR church:Oversight OR church:Denomination
+OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 
 RETURN lastService, lastDate, record, church
 `
