@@ -1,3 +1,28 @@
+#### 7.17.1 (2024-01-08)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([153d0a3a](https://github.com/firstlovecenter/fl-admin-portal/commit/153d0a3aadd15816ca375df6fbb8dbf7d2f680a2))
+*  update CHANGELOG.md ([ead97690](https://github.com/firstlovecenter/fl-admin-portal/commit/ead9769088b231c4d498c03f781b62ba9df639c2))
+
+##### New Features
+
+*  implement stream special service form ([3870f9be](https://github.com/firstlovecenter/fl-admin-portal/commit/3870f9befb9c06aab01d533043f6cc34b8a90c94))
+*  resolver for manually confirming offering payment ([f822dcf0](https://github.com/firstlovecenter/fl-admin-portal/commit/f822dcf065c0bb176dd4878d0354488075c4b795))
+
+##### Bug Fixes
+
+*  update labels for foreign currency and cheques in ServiceDetails and ServiceForm ([ce34785b](https://github.com/firstlovecenter/fl-admin-portal/commit/ce34785b35e71ae40ead485bf0e77ddaf4c2e536))
+*  properly format data in the foreign currency and cheques column ([25fe63ff](https://github.com/firstlovecenter/fl-admin-portal/commit/25fe63ffd5f719fd2d0e18b2abfa2f9934c9d5c6))
+*  allow confirming of banking status when status is not just failed, but abandon ([e43fd23f](https://github.com/firstlovecenter/fl-admin-portal/commit/e43fd23f9f7ea7dd73319e1d084522696a2588c3))
+*  implement frontend feature to manually confirm offering ([c109bf1b](https://github.com/firstlovecenter/fl-admin-portal/commit/c109bf1b8f1dbe35ceeafdaa10b4cd1b9909d060))
+*  return year of aggregate record in descending order ([f64ca6ab](https://github.com/firstlovecenter/fl-admin-portal/commit/f64ca6ab3fc41fb477717bd83d92f808ae334eaf))
+
+##### Refactors
+
+*  refactor sorting logic and update card border color ([fe29b37a](https://github.com/firstlovecenter/fl-admin-portal/commit/fe29b37aa361a39d7bfbe2d66b8668cd15e47acb))
+*  update title for Add Treasurers button ([425deb90](https://github.com/firstlovecenter/fl-admin-portal/commit/425deb9056762b45280625559182f6c3c07afcc3))
+
 ### 7.17.0 (2024-01-07)
 
 ### 7.16.0 (2024-01-07)
