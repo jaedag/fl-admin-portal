@@ -12,7 +12,7 @@ import { Church, ServiceRecord } from 'global-types'
 import { alertMsg, throwToSentry } from 'global-utils'
 import { parseNeoTime } from 'jd-date-utils'
 import { permitAdmin, permitTellerStream } from 'permission-utils'
-import { useContext, useEffect, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { Col, Container, Row, Button, Card } from 'react-bootstrap'
 import { CheckCircleFill, FileEarmarkArrowUpFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
@@ -70,7 +70,16 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
       if (service?.foreignCurrency) {
         table.push([
           'Foreign Currency',
-          service?.foreignCurrency?.toString() ?? '',
+          (
+            <div>
+              {service?.foreignCurrency.split('\n').map((line, index) => (
+                <Fragment key={index}>
+                  {line}
+                  <br />
+                </Fragment>
+              ))}
+            </div>
+          ) ?? '',
         ])
       }
 

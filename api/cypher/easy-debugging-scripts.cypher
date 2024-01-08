@@ -21,3 +21,6 @@ RETURN record.income, record.cash;
 MATCH (record:ServiceRecord {id: "3441dee2-9e46-4bf3-bbf1-bb0a41687fc9"})
 REMOVE record.bankingSlip
 RETURN record;
+
+MATCH (record:RehearsalRecord)
+RETURN record LIMIT 1;

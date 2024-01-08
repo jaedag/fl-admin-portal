@@ -194,6 +194,9 @@ const ServiceForm = ({
                     />
                     <Input name="numberOfTithers" label="Number of Tithers*" />
                     <small className="label">Treasurers (minimum of 2)</small>
+                    <small className="yellow">
+                      Please fill the names in the order in which they appear
+                    </small>
                     <FieldArray name="treasurers">
                       {(fieldArrayProps: FieldArrayRenderProps) => {
                         const { push, remove, form } = fieldArrayProps
