@@ -69,7 +69,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
       table.push(['Number of Tithers', service?.numberOfTithers?.toString()])
       if (service?.foreignCurrency) {
         table.push([
-          'Foreign Currency',
+          'Foreign Currency and Cheques',
           (
             <div>
               {service?.foreignCurrency.split('\n').map((line, index) => (

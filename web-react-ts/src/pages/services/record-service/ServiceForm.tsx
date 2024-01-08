@@ -189,7 +189,7 @@ const ServiceForm = ({
                     />
                     <Textarea
                       name="foreignCurrency"
-                      label="Foreign Currency (if any) (Optional)"
+                      label="Foreign Currency and Cheques (if any) (Optional)"
                       rows={2}
                     />
                     <Input name="numberOfTithers" label="Number of Tithers*" />
