@@ -18,6 +18,12 @@ const HubCouncilRehearsalService = lazy(
       'pages/services/record-service/creative-arts//HubCouncilRehearsalService'
     )
 )
+const MinistryRehearsalService = lazy(
+  () =>
+    import(
+      'pages/services/record-service/creative-arts/MinistryRehearsalService'
+    )
+)
 const HubSundayMeeting = lazy(
   () => import('pages/services/record-service/HubSundayMeeting')
 )
@@ -33,7 +39,12 @@ const HubCouncilRehearsalServiceDetails = lazy(
       'pages/services/record-service/creative-arts/HubCouncilRehearsalServiceDetails'
     )
 )
-
+const MinistryRehearsalServiceDetails = lazy(
+  () =>
+    import(
+      'pages/services/record-service/creative-arts/MinistryRehearsalServiceDetails'
+    )
+)
 const HubSundayMeetingDetails = lazy(
   () => import('pages/services/record-service/HubSundayMeetingDetails')
 )
@@ -69,6 +80,11 @@ export const rehearsalRoutes: LazyRouteTypes[] = [
     roles: permitLeaderAdmin('HubCouncil'),
   },
   {
+    path: '/ministry/record-rehearsal',
+    element: MinistryRehearsalService,
+    roles: permitLeaderAdmin('Ministry'),
+  },
+  {
     path: '/hub/cancel-rehearsal',
     element: HubRehearsalCancelled,
     roles: permitLeaderAdmin('Hub'),
@@ -90,6 +106,12 @@ export const rehearsalRoutes: LazyRouteTypes[] = [
     path: '/hubcouncil/service-details',
     element: HubCouncilRehearsalServiceDetails,
     roles: permitLeaderAdmin('HubCouncil'),
+    placeholder: false,
+  },
+  {
+    path: '/ministry/service-details',
+    element: MinistryRehearsalServiceDetails,
+    roles: permitLeaderAdmin('Ministry'),
     placeholder: false,
   },
   {

@@ -204,6 +204,38 @@ export const RECORD_HUBCOUNCIL_REHEARSAL_MEETING = gql`
   }
 `
 
+export const RECORD_MINISTRY_REHEARSAL_MEETING = gql`
+  mutation RecordMinistryRehearsalMeeting(
+    $churchId: ID!
+    $serviceDate: String!
+    $attendance: Int!
+    $income: Float!
+    $foreignCurrency: String
+    $numberOfTithers: Int!
+    $treasurers: [ID]!
+    $treasurerSelfie: String!
+    $familyPicture: String!
+  ) {
+    RecordRehearsalMeeting(
+      churchId: $churchId
+      serviceDate: $serviceDate
+      attendance: $attendance
+      income: $income
+      foreignCurrency: $foreignCurrency
+      numberOfTithers: $numberOfTithers
+      treasurers: $treasurers
+      treasurerSelfie: $treasurerSelfie
+      familyPicture: $familyPicture
+    ) {
+      id
+      week
+      attendance
+      income
+      onlineGiving
+    }
+  }
+`
+
 export const RECORD_HUB_SUNDAY_MEETING = gql`
   mutation RecordHubSundayMeeting(
     $churchId: ID!
@@ -483,6 +515,59 @@ export const DISPLAY_HUBCOUNCIL_REHEARSAL = gql`
       }
     }
     hubCouncils(where: { id: $hubCouncilId }) {
+      id
+      name
+    }
+  }
+`
+
+export const DISPLAY_MINISTRY_REHEARSAL = gql`
+  query MinistryDisplayRehearsalRecords($serviceId: ID!, $ministryId: ID!) {
+    rehearsalRecords(where: { id: $serviceId }) {
+      id
+      createdAt
+      created_by {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      serviceDate {
+        date
+      }
+      noServiceReason
+      attendance
+      income
+      cash
+      onlineGiving
+      numberOfTithers
+      foreignCurrency
+      transactionId
+      treasurerSelfie
+      familyPicture
+      bankingProof
+      bankingSlip
+      bankingSlipUploader {
+        id
+        firstName
+        lastName
+        fullName
+      }
+      offeringBankedBy {
+        id
+        firstName
+        lastName
+        fullName
+      }
+
+      treasurers {
+        id
+        firstName
+        lastName
+        fullName
+      }
+    }
+    ministries(where: { id: $ministryId }) {
       id
       name
     }
