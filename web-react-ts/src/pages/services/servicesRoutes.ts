@@ -11,6 +11,7 @@ import { lazy } from 'react'
 import { downloadReports } from './download-reports/downloadReportsRoutes'
 import { streamServicesRoutes } from './defaulters/stream-services/streamDefaultersRoutes'
 import { onStageRoutes } from './onstage-attendance/onStageRoutes'
+import { rehearsalRoutes } from './rehearsalRoutes'
 
 const BacentaService = lazy(
   () => import('pages/services/record-service/BacentaService')
@@ -37,16 +38,21 @@ const FellowshipServiceDetails = lazy(
   () => import('pages/services/record-service/FellowshipServiceDetails')
 )
 const HubRehearsalCancelled = lazy(
-  () => import('pages/services/rehearsals/HubRehearsalCancelled')
+  () =>
+    import('pages/services/record-service/creative-arts/HubRehearsalCancelled')
 )
 const HubRehearsalService = lazy(
-  () => import('pages/services/rehearsals/HubRehearsalService')
+  () =>
+    import('pages/services/record-service/creative-arts/HubRehearsalService')
 )
 const HubSundayMeeting = lazy(
   () => import('pages/services/ministry-meeting/HubSundayMeeting')
 )
 const HubRehearsalServiceDetails = lazy(
-  () => import('pages/services/rehearsals/HubRehearsalServiceDetails')
+  () =>
+    import(
+      'pages/services/record-service/creative-arts/HubRehearsalServiceDetails'
+    )
 )
 
 const HubSundayMeetingDetails = lazy(
@@ -185,7 +191,7 @@ const DefaultersDashboard = lazy(
 const TrendsMenu = lazy(() => import('./graphs/TrendsMenu'))
 
 const HubFormMenu = lazy(() => import('./menus/HubFormMenu'))
-const MinistryMenu = lazy(() => import('./menus/MinistryMenu'))
+const MinistryFormMenu = lazy(() => import('./menus/MinistryFormMenu'))
 const FellowshipBankingSlipSubmission = lazy(
   () => import('pages/services/banking/banking-slip/FellowshipSubmission')
 )
@@ -206,6 +212,7 @@ export const services: LazyRouteTypes[] = [
   ...anagkazoRoutes,
   ...banking,
   ...onStageRoutes,
+  ...rehearsalRoutes,
   {
     path: '/services',
     element: ServicesMenu,
@@ -325,7 +332,7 @@ export const services: LazyRouteTypes[] = [
   },
   {
     path: '/services/ministry',
-    element: MinistryMenu,
+    element: MinistryFormMenu,
     roles: permitLeaderAdmin('Ministry'),
     placeholder: true,
   },

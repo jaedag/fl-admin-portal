@@ -1,9 +1,9 @@
 import { useContext } from 'react'
-import { ChurchContext } from '../../../contexts/ChurchContext'
+import { ChurchContext } from '../../../../contexts/ChurchContext'
 
 import { useQuery } from '@apollo/client'
-import { DISPLAY_HUB } from '../../directory/display/ReadQueries'
-import CancelledServiceForm from '../record-service/CancelledServiceForm'
+import { DISPLAY_HUB } from '../../../directory/display/ReadQueries'
+import CancelledServiceForm from '../CancelledServiceForm'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 const HubServiceCancelled = () => {
