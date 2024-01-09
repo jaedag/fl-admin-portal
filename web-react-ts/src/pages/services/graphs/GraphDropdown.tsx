@@ -99,7 +99,7 @@ const GraphDropdown = ({
           </Dropdown.Item>
         )}
 
-        {['Hub'].includes(churchLevel) && (
+        {['Hub', 'HubCouncil'].includes(churchLevel) && (
           <Dropdown.Item
             className="py-3"
             onClick={() => {

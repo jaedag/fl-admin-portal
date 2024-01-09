@@ -10,7 +10,7 @@ RETURN church.id AS id, church.name AS name, labels(church) AS labels, labels(hi
 
 export const checkMinistryAttendanceFormFilledThisWeek = `
     MATCH (church {id: $churchId})
-    WHERE church:HubFellowship OR church:Hub OR church:Ministry 
+    WHERE church:Hub OR church:HubCouncil OR church:Ministry 
     MATCH (church)<-[:HAS]-(higherChurch) WHERE higherChurch:Hub OR higherChurch:HubCouncil OR higherChurch:Ministry OR higherChurch:CreativeArts
     
     OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record)-[:SERVICE_HELD_ON]->(date)    

@@ -4,6 +4,7 @@ import { LazyRouteTypes } from 'global-types'
 
 const HubFormMenu = lazy(() => import('./HubFormMenu'))
 const HubCouncilFormMenu = lazy(() => import('./HubCouncilFormMenu'))
+const MinistryFormMenu = lazy(() => import('./MinistryFormMenu'))
 const HubRehearsalCancelled = lazy(
   () => import('pages/services/record-service/HubRehearsalCancelled')
 )
@@ -49,6 +50,11 @@ export const rehearsalRoutes: LazyRouteTypes[] = [
     element: HubCouncilFormMenu,
     roles: permitMe('HubCouncil'),
     placeholder: true,
+  },
+  {
+    path: '/services/ministry',
+    element: MinistryFormMenu,
+    roles: permitMe('Ministry'),
   },
   //Hub Service Details
   {

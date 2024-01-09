@@ -78,7 +78,7 @@ export const HubCouncilGraphs = () => {
             stat2={ministryMeeting ? null : 'income'}
             churchData={churchData || []}
             graphType={rehearsal ? 'rehearsal' : 'service'}
-            church="hub"
+            church="hubcouncil"
             income={true}
           />
         ) : (
@@ -86,7 +86,7 @@ export const HubCouncilGraphs = () => {
             stat1="attendance"
             stat2={null}
             churchData={churchData || []}
-            church="hub"
+            church="hubcouncil"
             graphType={rehearsal ? 'rehearsal' : 'service'}
             income={false}
           />
