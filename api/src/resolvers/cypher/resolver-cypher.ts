@@ -4,7 +4,7 @@ export const matchMemberFromAuthId = `
 `
 
 export const matchMemberAndIMCLStatus = `
-MATCH (member:Member {id: $id})
+MATCH (member:Member {id: $id}) WHERE NOT member:Lost 
 RETURN member
 `
 export const updateMemberFellowship = `
