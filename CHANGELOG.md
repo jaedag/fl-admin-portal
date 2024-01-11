@@ -1,3 +1,9 @@
+#### 7.17.3 (2024-01-11)
+
+##### Bug Fixes
+
+*  update import statement for ChurchLevel in AllCampusConstituencies.tsx ([430f5618](https://github.com/firstlovecenter/fl-admin-portal/commit/430f5618d0991e67e5b54e9a92ceaab4ffcd3905))
+
 #### 7.17.2 (2024-01-11)
 
 ##### Chores
