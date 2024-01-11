@@ -1,3 +1,23 @@
+#### 7.17.2 (2024-01-11)
+
+##### Chores
+
+*  update Apollo Client and Server versions in package.json Update dependencies in web-react-ts/package.json ([7c076897](https://github.com/firstlovecenter/fl-admin-portal/commit/7c076897ecdab301187285249a914c121080904a))
+
+##### New Features
+
+*  implement joint rehearsal feature for hub council and ministry levels ([6eb0bd59](https://github.com/firstlovecenter/fl-admin-portal/commit/6eb0bd591e0792e1c4574a1843d737a380845b44))
+*  add Ministry Rehearsal Service and Details pages ([c3e7d64f](https://github.com/firstlovecenter/fl-admin-portal/commit/c3e7d64fcf9697b6bd49974f17cf3559b1d4c06a))
+*  update church filters and add MinistryFormMenu component ([fbae475e](https://github.com/firstlovecenter/fl-admin-portal/commit/fbae475e6480e50bfa46019c0a3cbe4a18cdd335))
+*  implement hub council joint rehearsal filling ([060877fb](https://github.com/firstlovecenter/fl-admin-portal/commit/060877fbbf4652a0559c1aade72df722b91603dc))
+
+##### Bug Fixes
+
+*  fix issue with matching member and IMCL status ([99cd69a4](https://github.com/firstlovecenter/fl-admin-portal/commit/99cd69a415de6bf63af66e0f5e2ce15fd8905f52))
+*  remove unused code for displaying meeting forms ([40689171](https://github.com/firstlovecenter/fl-admin-portal/commit/406891717c37d03765c89429d5bc4df30a9123b3))
+*  add additional church types to banking checker query ([37c16ccc](https://github.com/firstlovecenter/fl-admin-portal/commit/37c16ccc19acf5cb8d8acfe44420cb852bc25143))
+*  changes for joint rehearsal ([82dacedf](https://github.com/firstlovecenter/fl-admin-portal/commit/82dacedfa6405a4bb83f1c1dd5fa72b429352c0d))
+
 #### 7.17.1 (2024-01-08)
 
 ##### Documentation Changes
