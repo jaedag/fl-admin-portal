@@ -16,56 +16,32 @@ const executeQuery = async (neoDriver) => {
 
   const codeOfTheDay = [
     {
-      date: '2023-10-01',
-      code: 'TRANSFORM',
+      date: '2024-01-13',
+      code: 'WORK',
     },
     {
-      date: '2023-10-08',
-      code: 'PRAYER',
+      date: '2024-01-14',
+      code: 'Work',
     },
     {
-      date: '2023-10-15',
-      code: 'VISITATION',
+      date: '2024-01-19',
+      code: 'Holy Spirit',
     },
     {
-      date: '2023-10-22',
-      code: 'TEACHING',
+      date: '2024-01-20',
+      code: 'Gospel',
     },
     {
-      date: '2023-10-29',
-      code: 'INTERACTION',
+      date: '2024-01-21',
+      code: 'Experience',
     },
     {
-      date: '2023-11-05',
-      code: 'CELEBRATE',
+      date: '2024-01-27',
+      code: 'Fresh',
     },
     {
-      date: '2023-11-12',
-      code: 'INCREASE',
-    },
-    {
-      date: '2023-11-19',
-      code: 'GLORY',
-    },
-    {
-      date: '2023-11-26',
-      code: 'VICTORY',
-    },
-    {
-      date: '2023-12-03',
-      code: 'DOUBLE MEGA',
-    },
-    {
-      date: '2023-12-10',
-      code: 'COME HOME',
-    },
-    {
-      date: '2023-12-17',
-      code: 'CHRISTMAS',
-    },
-    {
-      date: '2023-12-24',
-      code: 'CELEBRATE',
+      date: '2024-01-28',
+      code: 'Fresh',
     },
   ]
 
