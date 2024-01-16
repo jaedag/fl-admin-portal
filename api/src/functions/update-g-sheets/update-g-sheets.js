@@ -2,52 +2,82 @@ const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
 const { default: axios } = require('axios')
 const { loadSecrets } = require('./secrets.js')
+const {google} = require('googleapis');
+
 
 const SECRETS = loadSecrets()
 
-const setCodeOfTheDay = `
- MATCH (arr:ArrivalsCodeOfTheDay)
-  SET arr.code = $code
- RETURN arr.code
+
+const fetchData = `
+MATCH (gs:Campus {name: $campusName})-[:HAS*2]->(council:Council)<-[:LEADS]-(pastor:Member)
+MATCH (council)-[:HAS_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+WHERE record.noServiceReason IS NULL
+          AND record.bankingSlip IS NULL
+          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
+          AND record.tellerConfirmationTime IS NULL
+      MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)-[:HAS_HISTORY]-(church) WHERE church:Fellowship OR church:Constituency OR church:Council
+      MATCH (church)<-[:LEADS]-(leader:Member)
+RETURN DISTINCT date.date.week AS week,date.date AS date, pastor.firstName, pastor.lastName,church.name AS churchName, leader.firstName, 
+leader.lastName, labels(church), record.attendance AS attendance, record.income AS 'Income Not Banked' ORDER BY pastor.firstName,
+pastor.lastName, date.date.week
 `
 
 const executeQuery = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
-    await session.executeWrite(async (tx) => {
-      console.log('Setting code of the day')
-
-      const pad = (n) => (n < 10 ? `0${n}` : n)
-
-      const today = new Date()
-      const day = today.getDate()
-      const month = today.getMonth() + 1
-      const year = today.getFullYear()
-      const date = `${year}-${pad(month)}-${pad(day)}`
-
-      const code = codeOfTheDay.filter((item) => item.date === date).pop()
-
-      const res = await axios({
-        method: 'get',
-        url: 'https://random-word-api.herokuapp.com/word',
+    await session.executeRead(async (tx) => {
+      console.log('copying data from neo4j')
+      const result =  tx.run(fetchData, {
+        campusName: 'Accra',
       })
 
-      const dictionaryCode = res.data[0].toUpperCase()
-
-      console.log('code', code?.code ?? dictionaryCode)
-
-      return tx.run(setCodeOfTheDay, {
-        code: code?.code ?? dictionaryCode,
+      return result.records.map(record => {
+        return [
+          record.get('week'),
+          record.get('date'),
+          record.get('pastor.firstName'),
+          record.get('pastor.lastName'),
+          record.get('churchName'),
+          record.get('leader.firstName'),
+          record.get('leader.lastName'),
+          record.get('labels(church)').join(', '),
+          record.get('attendance'),
+          record.get('Income Not Banked')
+        ];
       })
     })
   } catch (error) {
-    console.error('Error setting code of the day', error)
+    console.error('Error copying data from the DB', error)
   } finally {
     await session.close()
   }
 }
 
+const spreadsheetId = 'YOUR_SPREADSHEET_ID'; // Replace with your Spreadsheet ID
+const google_auth = new google.auth.GoogleAuth({
+  keyFile: 'credentials.json', // Path to your Google service account key
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+
+
+const writeToGsheet = async(data, sheetName) => {
+  const auth = await google_auth.getClient();
+  const sheets = google.sheets({ version: 'v4', auth: client });
+
+  try {
+   const response = await sheets.spreadsheets.values.append({
+     spreadsheetId,
+     range: `${sheetName}!A1`,
+     requestBody: {values: data}
+   });
+
+ } catch (error) {
+   console.error('Error creating new spreadsheet:', error);
+   throw error;
+ }
+
+}
 const initializeDatabase = (driver) => {
   return executeQuery(driver).catch((error) => {
     console.error('Database query failed to complete\n', error.message)
