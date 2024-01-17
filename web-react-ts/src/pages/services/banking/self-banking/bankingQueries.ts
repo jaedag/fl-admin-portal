@@ -9,6 +9,16 @@ export const FELLOWSHIP_SERVICE_PAYMENT = gql`
     }
   }
 `
+
+export const HUB_REHEARSALS_PAYMENT = gql`
+  query hubRehearsalsPayment($id: ID!) {
+    hubs(where: { id: $id }) {
+      id
+      name
+    }
+  }
+`
+
 export const CONSTITUENCY_SERVICE_PAYMENT = gql`
   query constituencyServicePayment($id: ID!) {
     constituencies(where: { id: $id }) {
@@ -39,6 +49,20 @@ export const STREAM_SERVICE_PAYMENT = gql`
 export const DISPLAY_OFFERING_DETAILS = gql`
   query displayOfferingDetails($serviceRecordId: ID!) {
     serviceRecords(where: { id: $serviceRecordId }) {
+      id
+      serviceDate {
+        date
+      }
+      cash
+      transactionTime
+      transactionReference
+      transactionStatus
+    }
+  }
+`
+export const DISPLAY_REHEARSAL_OFFERING_DETAILS = gql`
+  query displayRehearsalOfferingDetails($serviceRecordId: ID!) {
+    rehearsalRecords(where: { id: $serviceRecordId }) {
       id
       serviceDate {
         date
