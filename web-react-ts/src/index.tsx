@@ -125,27 +125,27 @@ const AppWithApollo = () => {
       )
     }
 
-    if (networkError)
-      enqueueSnackbar(
-        <Card>
-          <Card.Header className="fw-bold">Network Error</Card.Header>
-          <Card.Body>
-            <div>{`Message: ${networkError?.message}`}</div>
-            {/* <div>{`Stack: ${JSON.stringify(networkError?.stack)}`}</div> */}
-          </Card.Body>
-        </Card>,
-        {
-          action,
-          preventDuplicate: true,
-          variant: 'error',
-          autoHideDuration: 20000,
-          hideIconVariant: true,
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'right',
-          },
-        }
-      )
+    // if (networkError)
+    //   enqueueSnackbar(
+    //     <Card>
+    //       <Card.Header className="fw-bold">Network Error</Card.Header>
+    //       <Card.Body>
+    //         <div>{`Message: ${networkError?.message}`}</div>
+    //         {/* <div>{`Stack: ${JSON.stringify(networkError?.stack)}`}</div> */}
+    //       </Card.Body>
+    //     </Card>,
+    //     {
+    //       action,
+    //       preventDuplicate: true,
+    //       variant: 'error',
+    //       autoHideDuration: 20000,
+    //       hideIconVariant: true,
+    //       anchorOrigin: {
+    //         vertical: 'bottom',
+    //         horizontal: 'right',
+    //       },
+    //     }
+    //   )
   })
 
   const errorPolicy = 'all'
