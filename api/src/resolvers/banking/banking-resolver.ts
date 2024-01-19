@@ -275,7 +275,6 @@ const bankingMutation = {
     const bankAccountChurch = transactionResponse?.ministry?.bankAccount
       ? transactionResponse?.ministry
       : transactionResponse?.stream
-    console.log('🚀 ~ bankAccountChurch:', bankAccountChurch)
 
     try {
       const { auth, subaccount } = getStreamFinancials(bankAccountChurch)
