@@ -77,6 +77,33 @@ RETURN record {
 } 
 `
 
+export const checkRehearsalTransactionReference = `
+MATCH (record:RehearsalRecord {id: $rehearsalRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)<-[:HAS*0..3]-(ministry:Ministry)
+WHERE church:Hub OR church:HubCouncil OR church:Ministry
+MATCH (ministry)<-[:HAS_MINISTRY]-(stream:Stream)
+OPTIONAL MATCH (record)-[:OFFERING_BANKED_BY]->(banker)
+
+RETURN record {
+    .id,
+    .transactionReference,
+    .transactionStatus,
+    .transactionTime,
+    .income
+}, banker {
+    .id,
+    .firstName, 
+    .lastName
+}, ministry {
+    .id,
+    .bankAccount,
+    .name
+}, stream {
+    .id,
+    .bankAccount,
+    .name
+}
+`
+
 export const setTransactionStatusFailed = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
 SET record.transactionStatus = $status,

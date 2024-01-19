@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router'
 import {
   CONFIRM_OFFERING_PAYMENT,
   DISPLAY_REHEARSAL_OFFERING_DETAILS,
-  PAY_OFFERING_MUTATION,
+  PAY_REHEARSAL_OFFERING_MUTATION,
   SEND_PAYMENT_OTP,
 } from './bankingQueries'
 import * as Yup from 'yup'
@@ -51,7 +51,7 @@ const PayRehearsalOffering = (props: PayOfferingProps) => {
       variables: { serviceRecordId: serviceRecordId },
     }
   )
-  const [BankServiceOffering] = useMutation(PAY_OFFERING_MUTATION)
+  const [BankServiceOffering] = useMutation(PAY_REHEARSAL_OFFERING_MUTATION)
   const [SendPaymentOTP] = useMutation(SEND_PAYMENT_OTP)
   const [ConfirmOfferingPayment] = useMutation(CONFIRM_OFFERING_PAYMENT)
   const navigate = useNavigate()
@@ -107,8 +107,7 @@ const PayRehearsalOffering = (props: PayOfferingProps) => {
     try {
       const paymentRes = await BankServiceOffering({
         variables: {
-          serviceRecordId: serviceRecordId,
-          stream_name: service.stream_name,
+          rehearsalRecordId: serviceRecordId,
           mobileNetwork: values.mobileNetwork,
           mobileNumber: values.mobileNumber,
           momoName: values.momoName,

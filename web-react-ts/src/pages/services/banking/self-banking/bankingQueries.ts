@@ -100,6 +100,31 @@ export const PAY_OFFERING_MUTATION = gql`
   }
 `
 
+export const PAY_REHEARSAL_OFFERING_MUTATION = gql`
+  mutation PayRehearsalOfferingMutation(
+    $rehearsalRecordId: ID!
+    $mobileNetwork: String!
+    $momoName: String!
+    $mobileNumber: String!
+  ) {
+    BankRehearsalOffering(
+      rehearsalRecordId: $rehearsalRecordId
+      mobileNetwork: $mobileNetwork
+      mobileNumber: $mobileNumber
+      momoName: $momoName
+    ) {
+      id
+      cash
+      sourceNetwork
+      sourceNumber
+      desc
+      transactionReference
+      transactionTime
+      transactionStatus
+    }
+  }
+`
+
 export const SEND_PAYMENT_OTP = gql`
   mutation SendPaymentOTP(
     $serviceRecordId: String!

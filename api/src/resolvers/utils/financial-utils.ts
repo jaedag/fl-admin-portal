@@ -46,6 +46,9 @@ type Stream = {
     | 'oa_gheast'
     | 'oa_ghwest'
     | 'oa_tarkwa'
+    | 'accra_greater_love_choir'
+    | 'accra_dancing_stars'
+    | 'accra_film_stars'
 }
 
 export const getStreamFinancials = (stream: Stream) => {
@@ -87,6 +90,17 @@ export const getStreamFinancials = (stream: Stream) => {
       break
     case 'oa_tarkwa':
       subaccount = SECRETS.PS_SUBACCOUNT_OA_TARKWA
+      break
+
+    // Creative Arts Accounts
+    case 'accra_greater_love_choir':
+      subaccount = SECRETS.PS_SUBACCOUNT_FLE
+      break
+    case 'accra_dancing_stars':
+      subaccount = SECRETS.PS_SUBACCOUNT_FLE
+      break
+    case 'accra_film_stars':
+      subaccount = SECRETS.PS_SUBACCOUNT_FLE
       break
 
     default:
