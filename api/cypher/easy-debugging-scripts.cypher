@@ -134,4 +134,13 @@ RETURN constituency.name AS name, COUNT(member) AS memberCount, COUNT(bacentas) 
 
 
 MATCH (record:RehearsalRecord)
-RETURN record.noServiceReason
+RETURN record.noServiceReason;
+
+MATCH (this:Ministry)
+MATCH (this)<-[:HAS_MINISTRY]-(stream:Stream)
+
+      RETURN 
+        CASE this.bankAccount
+          WHEN NULL THEN stream.bankAccount
+        ELSE this.bankAccount
+        END

@@ -1,12 +1,14 @@
 export const initiateServiceRecordTransaction = `
-MATCH (record:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
+MATCH (record {id: $serviceRecordId}) WHERE record:ServiceRecord OR record:RehearsalRecord
+
+MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
 WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:Campus
+OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 
 
 UNWIND labels(church) AS churchLevel 
 WITH record, church, churchLevel
-WHERE churchLevel = 'Fellowship' OR churchLevel = 'Bacenta' OR churchLevel = 'Constituency' 
-OR churchLevel = 'Council' OR churchLevel = 'Stream' OR churchLevel = 'Campus'
+WHERE churchLevel IN ['Fellowship','Bacenta','Constituency','Council', 'Stream', 'Campus', 'Hub', 'HubCouncil', 'Ministry', 'CreativeArts'] 
 
 MATCH (author:Member {auth_id: $auth.jwt.sub})
 MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
@@ -75,6 +77,33 @@ RETURN record {
     .bankAccount,
     .name
 } 
+`
+
+export const checkRehearsalTransactionReference = `
+MATCH (record:RehearsalRecord {id: $rehearsalRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)<-[:HAS*0..3]-(ministry:Ministry)
+WHERE church:Hub OR church:HubCouncil OR church:Ministry
+MATCH (ministry)<-[:HAS_MINISTRY]-(stream:Stream)
+OPTIONAL MATCH (record)-[:OFFERING_BANKED_BY]->(banker)
+
+RETURN record {
+    .id,
+    .transactionReference,
+    .transactionStatus,
+    .transactionTime,
+    .income
+}, banker {
+    .id,
+    .firstName, 
+    .lastName
+}, ministry {
+    .id,
+    .bankAccount,
+    .name
+}, stream {
+    .id,
+    .bankAccount,
+    .name
+}
 `
 
 export const setTransactionStatusFailed = `
