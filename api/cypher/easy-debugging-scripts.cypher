@@ -144,3 +144,12 @@ MATCH (this)<-[:HAS_MINISTRY]-(stream:Stream)
           WHEN NULL THEN stream.bankAccount
         ELSE this.bankAccount
         END
+
+
+MATCH (stream:Stream {id:"1e183fdf-2793-47db-b5cf-4c26cc82b614"})-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+WHERE date.date.year = 2024
+RETURN record.id, date.date, record.attendance, record.income, record.bankingSlip ORDER BY date.date DESC;
+
+MATCH (record:ServiceRecord {id: "9ca2f85e-3bc7-4785-98f1-0f9b09572901"})
+SET record.bankingSlip = "https://res.cloudinary.com/firstlovecenter/image/upload/v1706071020/member-pictures/john-dag-addy-6089feb8e1e3e700697f7eff2024-01-24_20240115_103724jpg.jpg"
+RETURN record.id, record.bankingSlip;
