@@ -2,7 +2,7 @@ const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
 const { default: axios } = require('axios')
 const { loadSecrets } = require('./secrets.js')
-const {google} = require('googleapis');
+const { google } = require('googleapis')
 
 const SECRETS = loadSecrets()
 
@@ -25,11 +25,11 @@ const executeQuery = async (neoDriver) => {
   try {
     await session.executeRead(async (tx) => {
       console.log('copying data from neo4j')
-      const result =  tx.run(fetchData, {
+      const result = tx.run(fetchData, {
         campusName: 'Accra',
       })
 
-      return result.records.map(record => {
+      return result.records.map((record) => {
         return [
           record.get('week'),
           record.get('date'),
@@ -40,8 +40,8 @@ const executeQuery = async (neoDriver) => {
           record.get('leader.lastName'),
           record.get('labels(church)').join(', '),
           record.get('attendance'),
-          record.get('Income Not Banked')
-        ];
+          record.get('Income Not Banked'),
+        ]
       })
     })
   } catch (error) {
@@ -51,28 +51,26 @@ const executeQuery = async (neoDriver) => {
   }
 }
 
-const spreadsheetId = '1TOlv3QYqLD3SFgYBBuu1r6cCiw-P6m2luxm7Z5ughF0'; // Replace with your Spreadsheet ID
-const google_auth = new google.auth.GoogleAuth({
+const spreadsheetId = '1TOlv3QYqLD3SFgYBBuu1r6cCiw-P6m2luxm7Z5ughF0' // Replace with your Spreadsheet ID
+const googleAuth = new google.auth.GoogleAuth({
   keyFile: 'credentials.json', // Path to your Google service account key
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
+})
 
-
-const writeToGsheet = async(data, sheetName) => {
-  const auth = await google_auth.getClient();
-  const sheets = google.sheets({ version: 'v4', auth: auth });
+const writeToGsheet = async (data, sheetName) => {
+  const auth = await googleAuth.getClient()
+  const sheets = google.sheets({ version: 'v4', auth })
 
   try {
     await sheets.spreadsheets.values.append({
       spreadsheetId,
       range: `${sheetName}!A1`,
-      requestBody: {values: data}
-   });
+      requestBody: { values: data },
+    })
   } catch (error) {
-    console.error('Error adding data to google sheet:', error);
-    throw error;
+    console.error('Error adding data to google sheet:', error)
+    throw error
   }
-
 }
 
 const initializeDatabase = (driver) => {
@@ -114,7 +112,7 @@ const handler = async () => {
   /*
    * We catch any errors that occur during initialization of the google client
    * In this case, ensure that the google client is authentication occurs
-  */
+   */
   const sheetName = 'Accra Services'
   await writeToGsheet(data, sheetName).catch((error) => {
     throw new Error(
@@ -127,4 +125,4 @@ const handler = async () => {
   }
 }
 
-module.exports.handler = schedule('30 00 * * *', handler)
+module.exports.handler = schedule('30 23 * * *', handler)
