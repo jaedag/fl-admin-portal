@@ -1,4 +1,4 @@
-import { FormikSelectOptions } from 'global-utils'
+import { FormikSelectOptions, convertNeoWeekdayToJSWeekday } from 'global-utils'
 import { addMinutes } from 'jd-date-utils'
 import { getTodayTime } from 'jd-date-utils'
 import { isToday } from 'jd-date-utils'
@@ -32,20 +32,17 @@ export const OUTBOUND_OPTIONS: FormikSelectOptions = [
 ]
 
 const isArrivalsToday = (bacenta: { stream: StreamWithArrivals }) => {
-  return true
-  // if (!bacenta) return false
-  // if (import.meta.env.DEV) return true
+  if (!bacenta) return false
+  if (import.meta.env.DEV) return true
 
-  // const today = new Date().getDay()
+  const today = new Date().getDay()
 
-  // if (
-  //   convertNeoWeekdayToJSWeekday(bacenta.stream.meetingDay.dayNumber) === today
-  // )
-  //   return true
+  if (
+    convertNeoWeekdayToJSWeekday(bacenta.stream.meetingDay.dayNumber) === today
+  )
+    return true
 
-  // if (bacenta.stream.name === 'Anagkazo Encounter') return true
-
-  // return false
+  return false
 }
 
 export const beforeStreamArrivalsDeadline = (stream: StreamWithArrivals) => {
