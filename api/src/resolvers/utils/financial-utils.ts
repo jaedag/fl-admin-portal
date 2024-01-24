@@ -94,13 +94,13 @@ export const getStreamFinancials = (stream: Stream) => {
 
     // Creative Arts Accounts
     case 'accra_greater_love_choir':
-      subaccount = SECRETS.PS_SB_CA_GREATER_LOVE_CHOIR
+      subaccount = SECRETS.PS_SB_FLE // SECRETS.PS_SB_CA_GREATER_LOVE_CHOIR
       break
     case 'accra_dancing_stars':
       subaccount = SECRETS.PS_SB_CA_DANCING_STARS
       break
     case 'accra_film_stars':
-      subaccount = SECRETS.PS_SB_CA_FILM_STARS
+      subaccount = SECRETS.PS_SB_FLE // SECRETS.PS_SB_CA_FILM_STARS
       break
 
     default:
