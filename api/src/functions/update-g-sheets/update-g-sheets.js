@@ -73,11 +73,10 @@ const writeToGsheet = async (data, sheetName) => {
   }
 }
 
-const initializeDatabase = (driver) => {
-  return executeQuery(driver).catch((error) => {
+const initializeDatabase = (driver) =>
+  executeQuery(driver).catch((error) => {
     console.error('Database query failed to complete\n', error.message)
   })
-}
 
 const handler = async () => {
   const driver = neo4j.driver(
