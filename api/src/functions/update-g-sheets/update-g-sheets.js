@@ -1,8 +1,7 @@
 const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
-const { default: axios } = require('axios')
-const { loadSecrets } = require('./secrets.js')
 const { google } = require('googleapis')
+const { loadSecrets } = require('./secrets.js')
 
 const SECRETS = loadSecrets()
 
@@ -19,6 +18,7 @@ RETURN DISTINCT date.date.week AS week,date.date AS date, pastor.firstName, past
 leader.lastName, labels(church), record.attendance AS attendance, record.income AS \`Income Not Banked\` ORDER BY pastor.firstName,
 pastor.lastName, date.date.week
 `
+
 const executeQuery = async (neoDriver) => {
   const session = neoDriver.session()
 
@@ -51,9 +51,9 @@ const executeQuery = async (neoDriver) => {
   }
 }
 
-const spreadsheetId = '1TOlv3QYqLD3SFgYBBuu1r6cCiw-P6m2luxm7Z5ughF0' // Replace with your Spreadsheet ID
+const SPREADSHEET_ID = '1s7jxlEIuerZ8hNPmzVAAhggQAD6LToqSLj0Sd9oU1qY'
 const googleAuth = new google.auth.GoogleAuth({
-  keyFile: 'credentials.json', // Path to your Google service account key
+  keyFile: 'secrets.js', // Path to your Google service account key
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 })
 
@@ -63,7 +63,7 @@ const writeToGsheet = async (data, sheetName) => {
 
   try {
     await sheets.spreadsheets.values.append({
-      spreadsheetId,
+      spreadsheetId: SPREADSHEET_ID,
       range: `${sheetName}!A1`,
       requestBody: { values: data },
     })
@@ -78,11 +78,6 @@ const initializeDatabase = (driver) => {
     console.error('Database query failed to complete\n', error.message)
   })
 }
-// This module can be used to serve the GraphQL endpoint
-// as a lambda function
-
-// This module is copied during the build step
-// Be sure to run `npm run build`
 
 const handler = async () => {
   const driver = neo4j.driver(
