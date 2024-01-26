@@ -2,7 +2,7 @@
   "name": "payment-webhook",
   "version": "0.0.1",
   "description": "When paystack payments are made, this function is called to update the database",
-  "main": "scheduled-data-aggregation.js",
+  "main": "payment.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -53,7 +53,7 @@ const executeQuery = async (neoDriver) => {
 
 const SPREADSHEET_ID = '1s7jxlEIuerZ8hNPmzVAAhggQAD6LToqSLj0Sd9oU1qY'
 const googleAuth = new google.auth.GoogleAuth({
-  keyFile: 'secrets.js', // Path to your Google service account key
+  keyFile: './gsecrets.js', // Path to your Google service account key
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 })
 
@@ -90,14 +90,6 @@ const handler = async () => {
 
   const init = async (neoDriver) => initializeDatabase(neoDriver)
 
-  /*
-   * We catch any errors that occur during initialization
-   * to handle cases where we still want the API to start
-   * regardless, such as running with a read only user.
-   * In this case, ensure that any desired initialization steps
-   * have occurred
-   */
-
   const data = await init(driver).catch((error) => {
     throw new Error(
       `Database initialization failed\n${error.message}\n${error.stack}`
@@ -109,6 +101,7 @@ const handler = async () => {
    * In this case, ensure that the google client is authentication occurs
    */
   const sheetName = 'Accra Services'
+
   await writeToGsheet(data, sheetName).catch((error) => {
     throw new Error(
       `Error writing to google sheet\n${error.message}\n${error.stack}`
@@ -120,4 +113,4 @@ const handler = async () => {
   }
 }
 
-module.exports.handler = schedule('30 23 * * *', handler)
+module.exports.handler = schedule('0 * * * *', handler)
