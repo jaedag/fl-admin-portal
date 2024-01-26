@@ -2,7 +2,7 @@ const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
 const { google } = require('googleapis')
 const { loadSecrets } = require('./secrets.js')
-
+const { credentials } = require('./gsecrets.js')
 const SECRETS = loadSecrets()
 
 const fetchData = `
@@ -28,21 +28,26 @@ const executeQuery = async (neoDriver) => {
       const result = tx.run(fetchData, {
         campusName: 'Accra',
       })
-
-      return result.records.map((record) => {
-        return [
-          record.get('week'),
-          record.get('date'),
-          record.get('pastor.firstName'),
-          record.get('pastor.lastName'),
-          record.get('churchName'),
-          record.get('leader.firstName'),
-          record.get('leader.lastName'),
-          record.get('labels(church)').join(', '),
-          record.get('attendance'),
-          record.get('Income Not Banked'),
-        ]
-      })
+      
+      console.log(result);
+      if (result && result.records){
+        return result.records.map((record) => {
+          return [
+            record.get('week'),
+            record.get('date'),
+            record.get('pastor.firstName'),
+            record.get('pastor.lastName'),
+            record.get('churchName'),
+            record.get('leader.firstName'),
+            record.get('leader.lastName'),
+            record.get('labels(church)').join(', '),
+            record.get('attendance'),
+            record.get('Income Not Banked'),
+          ]
+        })
+      }else {
+        throw new Error("Result or records are undefined");
+      }
     })
   } catch (error) {
     console.error('Error reading data from the DB', error)
@@ -53,7 +58,7 @@ const executeQuery = async (neoDriver) => {
 
 const SPREADSHEET_ID = '1s7jxlEIuerZ8hNPmzVAAhggQAD6LToqSLj0Sd9oU1qY'
 const googleAuth = new google.auth.GoogleAuth({
-  keyFile: './gsecrets.js', // Path to your Google service account key
+  keyFile: credentials, // Path to your Google service account key
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 })
 
