@@ -9,6 +9,16 @@ export const FELLOWSHIP_SERVICE_PAYMENT = gql`
     }
   }
 `
+
+export const HUB_REHEARSALS_PAYMENT = gql`
+  query hubRehearsalsPayment($id: ID!) {
+    hubs(where: { id: $id }) {
+      id
+      name
+    }
+  }
+`
+
 export const CONSTITUENCY_SERVICE_PAYMENT = gql`
   query constituencyServicePayment($id: ID!) {
     constituencies(where: { id: $id }) {
@@ -50,6 +60,20 @@ export const DISPLAY_OFFERING_DETAILS = gql`
     }
   }
 `
+export const DISPLAY_REHEARSAL_OFFERING_DETAILS = gql`
+  query displayRehearsalOfferingDetails($serviceRecordId: ID!) {
+    rehearsalRecords(where: { id: $serviceRecordId }) {
+      id
+      serviceDate {
+        date
+      }
+      cash
+      transactionTime
+      transactionReference
+      transactionStatus
+    }
+  }
+`
 
 export const PAY_OFFERING_MUTATION = gql`
   mutation PayOfferingMutation(
@@ -60,6 +84,31 @@ export const PAY_OFFERING_MUTATION = gql`
   ) {
     BankServiceOffering(
       serviceRecordId: $serviceRecordId
+      mobileNetwork: $mobileNetwork
+      mobileNumber: $mobileNumber
+      momoName: $momoName
+    ) {
+      id
+      cash
+      sourceNetwork
+      sourceNumber
+      desc
+      transactionReference
+      transactionTime
+      transactionStatus
+    }
+  }
+`
+
+export const PAY_REHEARSAL_OFFERING_MUTATION = gql`
+  mutation PayRehearsalOfferingMutation(
+    $rehearsalRecordId: ID!
+    $mobileNetwork: String!
+    $momoName: String!
+    $mobileNumber: String!
+  ) {
+    BankRehearsalOffering(
+      rehearsalRecordId: $rehearsalRecordId
       mobileNetwork: $mobileNetwork
       mobileNumber: $mobileNumber
       momoName: $momoName

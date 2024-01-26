@@ -155,6 +155,7 @@ export interface CreativeArts extends Church {
 export interface Ministry extends HigherChurch {
   id: string
   __typename: 'Ministry'
+  bankAccount: string
   name: string
   creativeArts: CreativeArts
   stream: Stream

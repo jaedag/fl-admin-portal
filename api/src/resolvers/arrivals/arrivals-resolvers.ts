@@ -577,6 +577,7 @@ export const arrivalsMutation = {
         sendBulkSMS(
           [response.leaderPhoneNumber],
           joinMessageStrings([
+            `Hi ${response.leaderFirstName}\n\n`,
             texts.arrivalsSMS.no_busses_to_pay_for,
             response.attendance.toString(),
           ])
@@ -609,6 +610,7 @@ export const arrivalsMutation = {
         sendBulkSMS(
           [response.leaderPhoneNumber],
           joinMessageStrings([
+            `Hi ${response.leaderFirstName}\n\n`,
             texts.arrivalsSMS.no_bussing_cost,
             response.attendance.toString(),
           ])

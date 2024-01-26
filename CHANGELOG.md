@@ -1,3 +1,20 @@
+#### 7.17.5 (2024-01-19)
+
+##### Bug Fixes
+
+*  remove unnecessary code and simplify isArrivalsToday function ([905e13fc](https://github.com/firstlovecenter/fl-admin-portal/commit/905e13fc60508ea4997164eae037a7b979dddb71))
+
+#### 7.17.4 (2024-01-17)
+
+##### New Features
+
+*  update code of the day function till jann 2024 ([fa50dbc2](https://github.com/firstlovecenter/fl-admin-portal/commit/fa50dbc240ed3e8d92e685e11e82d0f7e55c06d5))
+
+##### Bug Fixes
+
+*  remove network errors from snack  bar ([1f90eb9c](https://github.com/firstlovecenter/fl-admin-portal/commit/1f90eb9c51da012ef6c947c3f27ea65edce87a4a))
+*  null description check in service-cypher.ts ([abc34199](https://github.com/firstlovecenter/fl-admin-portal/commit/abc34199693cc336efa7b31c6f9c5a94fe337c9a))
+
 #### 7.17.3 (2024-01-11)
 
 ##### Bug Fixes
