@@ -128,10 +128,10 @@ const treasuryMutations = {
         banked: true,
       }
     } catch (error: any) {
-      throwToSentry('There was a problem confirming the banking', error || '')
+      throw new Error(`There was a problem confirming the banking ${error}`)
+    } finally {
+      await Promise.all([session.close(), sessionTwo.close()])
     }
-    await Promise.all([session.close(), sessionTwo.close()])
-    return 'Confirmation Successful'
   },
 }
 

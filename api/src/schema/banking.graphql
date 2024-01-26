@@ -5,6 +5,12 @@ extend type Mutation {
     mobileNumber: String!
     momoName: String!
   ): ServiceRecord!
+  BankRehearsalOffering(
+    rehearsalRecordId: ID!
+    mobileNetwork: String!
+    mobileNumber: String!
+    momoName: String!
+  ): RehearsalRecord!
   SendPaymentOTP(
     serviceRecordId: String!
     reference: String

@@ -2,14 +2,13 @@
   "name": "update-gsheet",
   "version": "0.0.1",
   "description": "copy data from the neo4j db into a google sheet",
-  "main": "scheduled-data-aggregation.js",
+  "main": "update-g-sheets.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@netlify/functions": "^1.2.0",
-    "axios": "^0.27.2",
-    "googleapis": "^130.0.0",
-    "neo4j-driver": "^5.0.1"
+    "@netlify/functions": "^2.5.1",
+    "googleapis": "^131.0.0",
+    "neo4j-driver": "^5.16.0"
   }
 }

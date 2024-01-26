@@ -42,8 +42,6 @@ const isArrivalsToday = (bacenta: { stream: StreamWithArrivals }) => {
   )
     return true
 
-  if (bacenta.stream.name === 'Anagkazo Encounter') return true
-
   return false
 }
 
