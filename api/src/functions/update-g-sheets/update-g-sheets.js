@@ -21,7 +21,7 @@ const executeQuery = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
-    console.log('reading data from neo4j')
+    console.log('Running function on date', new Date().toISOString())
 
     const result = await session.executeRead(async (tx) =>
       tx.run(fetchData, {
@@ -88,7 +88,7 @@ const writeToGsheet = async (data, sheetName) => {
       spreadsheetId: SPREADSHEET_ID,
       range: `${sheetName}!A1`,
       valueInputOption: 'USER_ENTERED',
-      requestBody: { values: data.values },
+      requestBody: { values: data },
     })
 
     console.log('Response from google sheets:', response.data)
