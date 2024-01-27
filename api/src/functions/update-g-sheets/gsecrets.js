@@ -2,7 +2,7 @@ const { loadSecrets } = require('./secrets')
 
 const SECRETS = loadSecrets()
 
-const GOOGLE_APPLICATION_CREDENTIALS = {
+export const GOOGLE_APPLICATION_CREDENTIALS = {
   type: SECRETS.GS_TYPE,
   project_id: SECRETS.GS_PROJECT_ID,
   private_key_id: SECRETS.GS_PRIVATE_KEY_ID,

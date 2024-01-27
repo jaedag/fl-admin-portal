@@ -2,7 +2,8 @@ const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
 const { google } = require('googleapis')
 const { loadSecrets } = require('./secrets.js')
-const { credentials } = require('./gsecrets.js')
+const { GOOGLE_APPLICATION_CREDENTIALS } = require('./gsecrets.js')
+
 const SECRETS = loadSecrets()
 
 const fetchData = `
@@ -53,7 +54,7 @@ const executeQuery = async (neoDriver) => {
 
 const SPREADSHEET_ID = '1s7jxlEIuerZ8hNPmzVAAhggQAD6LToqSLj0Sd9oU1qY'
 const googleAuth = new google.auth.GoogleAuth({
-  keyFile: credentials, // Path to your Google service account key
+  credentials: GOOGLE_APPLICATION_CREDENTIALS,
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 })
 
