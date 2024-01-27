@@ -1,6 +1,6 @@
 const { loadSecrets } = require('./secrets')
 
-const SECRETS = loadSecrets()
+export const SECRETS = loadSecrets()?.JWT_SECRET ? loadSecrets() : process.env
 
 export const GOOGLE_APPLICATION_CREDENTIALS = {
   type: SECRETS.GS_TYPE,
@@ -15,5 +15,3 @@ export const GOOGLE_APPLICATION_CREDENTIALS = {
   client_x509_cert_url: SECRETS.GS_CLIENT_X509_CERT_URL,
   universe_domain: SECRETS.GS_UNIVERSE_DOMAIN,
 }
-
-export default GOOGLE_APPLICATION_CREDENTIALS

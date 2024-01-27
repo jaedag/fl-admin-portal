@@ -1,10 +1,7 @@
 const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
 const { google } = require('googleapis')
-const { loadSecrets } = require('./secrets.js')
-const { GOOGLE_APPLICATION_CREDENTIALS } = require('./gsecrets.js')
-
-const SECRETS = loadSecrets()
+const { GOOGLE_APPLICATION_CREDENTIALS, SECRETS } = require('./gsecrets.js')
 
 const fetchData = `
 MATCH (gs:Campus {name: $campusName})-[:HAS*2]->(council:Council)<-[:LEADS]-(pastor:Member)
@@ -50,6 +47,8 @@ const executeQuery = async (neoDriver) => {
   } finally {
     await session.close()
   }
+
+  return []
 }
 
 const SPREADSHEET_ID = '1s7jxlEIuerZ8hNPmzVAAhggQAD6LToqSLj0Sd9oU1qY'
