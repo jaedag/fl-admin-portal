@@ -94,6 +94,7 @@ const handler = async () => {
       `Database initialization failed\n${error.message}\n${error.stack}`
     )
   })
+  console.log('🚀 ~ data:', data)
 
   /*
    * We catch any errors that occur during initialization of the google client
