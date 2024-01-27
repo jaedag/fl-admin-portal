@@ -6,16 +6,15 @@ const { GOOGLE_APPLICATION_CREDENTIALS, SECRETS } = require('./gsecrets.js')
 const fetchData = `
 MATCH (gs:Campus {name: $campusName})-[:HAS*2]->(council:Council)<-[:LEADS]-(pastor:Member)
 MATCH (council)-[:HAS_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-WHERE date.date.week = date().week 
-          AND record.noServiceReason IS NULL
+WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)-[:HAS_HISTORY]-(church) WHERE church:Fellowship OR church:Constituency OR church:Council
       MATCH (church)<-[:LEADS]-(leader:Member)
-RETURN DISTINCT date.date.week AS week,date.date AS date, pastor.firstName, pastor.lastName,church.name AS churchName, leader.firstName, 
+RETURN DISTINCT toString(date.date.week) AS week, toString(date.date) AS date, pastor.firstName, pastor.lastName,church.name AS churchName, leader.firstName, 
 leader.lastName, labels(church), record.attendance AS attendance, record.income AS NotBanked ORDER BY pastor.firstName,
-pastor.lastName, date.date.week
+pastor.lastName, date, week
 `
 
 const executeQuery = async (neoDriver) => {
@@ -30,18 +29,36 @@ const executeQuery = async (neoDriver) => {
       })
     )
 
-    return result.records.map((record) => [
-      record.get('week'),
-      record.get('date'),
-      record.get('pastor.firstName'),
-      record.get('pastor.lastName'),
-      record.get('churchName'),
-      record.get('leader.firstName'),
-      record.get('leader.lastName'),
-      record.get('labels(church)'),
-      record.get('attendance'),
-      record.get('NotBanked'),
-    ])
+    const headerRow = [
+      'Week',
+      'Date',
+      'Pastor First Name',
+      'Pastor Last Name',
+      'Church Name',
+      'Leader First Name',
+      'Leader Last Name',
+      'Labels',
+      'Attendance',
+      'NotBanked',
+    ]
+
+    const returnValues = [
+      headerRow,
+      ...result.records.map((record) => [
+        record.get('week'),
+        record.get('date'),
+        record.get('pastor.firstName'),
+        record.get('pastor.lastName'),
+        record.get('churchName'),
+        record.get('leader.firstName'),
+        record.get('leader.lastName'),
+        record.get('labels(church)').toString(),
+        record.get('attendance'),
+        record.get('NotBanked'),
+      ]),
+    ]
+
+    return returnValues
   } catch (error) {
     console.error('Error reading data from the DB', error)
   } finally {
@@ -62,11 +79,19 @@ const writeToGsheet = async (data, sheetName) => {
   const sheets = google.sheets({ version: 'v4', auth })
 
   try {
-    await sheets.spreadsheets.values.append({
+    await sheets.spreadsheets.values.clear({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${sheetName}!A:Z`,
+    })
+
+    const response = await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
       range: `${sheetName}!A1`,
-      requestBody: { values: data },
+      valueInputOption: 'USER_ENTERED',
+      requestBody: { values: data.values },
     })
+
+    console.log('Response from google sheets:', response.data)
   } catch (error) {
     console.error('Error adding data to google sheet:', error)
     throw error
@@ -94,7 +119,6 @@ const handler = async () => {
       `Database initialization failed\n${error.message}\n${error.stack}`
     )
   })
-  console.log('🚀 ~ data:', data)
 
   /*
    * We catch any errors that occur during initialization of the google client
