@@ -8,14 +8,15 @@ const SECRETS = loadSecrets()
 const fetchData = `
 MATCH (gs:Campus {name: $campusName})-[:HAS*2]->(council:Council)<-[:LEADS]-(pastor:Member)
 MATCH (council)-[:HAS_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-WHERE record.noServiceReason IS NULL
+WHERE date.date.week = date().week 
+          AND record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)-[:HAS_HISTORY]-(church) WHERE church:Fellowship OR church:Constituency OR church:Council
       MATCH (church)<-[:LEADS]-(leader:Member)
 RETURN DISTINCT date.date.week AS week,date.date AS date, pastor.firstName, pastor.lastName,church.name AS churchName, leader.firstName, 
-leader.lastName, labels(church), record.attendance AS attendance, record.income AS \`Income Not Banked\` ORDER BY pastor.firstName,
+leader.lastName, labels(church), record.attendance AS attendance, record.income AS NotBanked ORDER BY pastor.firstName,
 pastor.lastName, date.date.week
 `
 
@@ -23,32 +24,26 @@ const executeQuery = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
-    await session.executeRead(async (tx) => {
-      console.log('copying data from neo4j')
-      const result = tx.run(fetchData, {
+    console.log('reading data from neo4j')
+
+    const result = await session.executeRead(async (tx) =>
+      tx.run(fetchData, {
         campusName: 'Accra',
       })
-      
-      console.log(result);
-      if (result && result.records){
-        return result.records.map((record) => {
-          return [
-            record.get('week'),
-            record.get('date'),
-            record.get('pastor.firstName'),
-            record.get('pastor.lastName'),
-            record.get('churchName'),
-            record.get('leader.firstName'),
-            record.get('leader.lastName'),
-            record.get('labels(church)').join(', '),
-            record.get('attendance'),
-            record.get('Income Not Banked'),
-          ]
-        })
-      }else {
-        throw new Error("Result or records are undefined");
-      }
-    })
+    )
+
+    return result.records.map((record) => [
+      record.get('week'),
+      record.get('date'),
+      record.get('pastor.firstName'),
+      record.get('pastor.lastName'),
+      record.get('churchName'),
+      record.get('leader.firstName'),
+      record.get('leader.lastName'),
+      record.get('labels(church)'),
+      record.get('attendance'),
+      record.get('NotBanked'),
+    ])
   } catch (error) {
     console.error('Error reading data from the DB', error)
   } finally {
