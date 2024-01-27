@@ -2,20 +2,7 @@ const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
 const { google } = require('googleapis')
 const { GOOGLE_APPLICATION_CREDENTIALS, SECRETS } = require('./gsecrets.js')
-
-const fetchData = `
-MATCH (gs:Campus {name: $campusName})-[:HAS*2]->(council:Council)<-[:LEADS]-(pastor:Member)
-MATCH (council)-[:HAS_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-WHERE record.noServiceReason IS NULL
-          AND record.bankingSlip IS NULL
-          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
-          AND record.tellerConfirmationTime IS NULL
-      MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)-[:HAS_HISTORY]-(church) WHERE church:Fellowship OR church:Constituency OR church:Council
-      MATCH (church)<-[:LEADS]-(leader:Member)
-RETURN DISTINCT toString(date.date.week) AS week, toString(date.date) AS date, pastor.firstName, pastor.lastName,church.name AS churchName, leader.firstName, 
-leader.lastName, labels(church), record.attendance AS attendance, record.income AS NotBanked ORDER BY pastor.firstName,
-pastor.lastName, date, week
-`
+const { servicesNotBankedThisWeek } = require('./cypher.js')
 
 const executeQuery = async (neoDriver) => {
   const session = neoDriver.session()
@@ -24,7 +11,7 @@ const executeQuery = async (neoDriver) => {
     console.log('Running function on date', new Date().toISOString())
 
     const result = await session.executeRead(async (tx) =>
-      tx.run(fetchData, {
+      tx.run(servicesNotBankedThisWeek, {
         campusName: 'Accra',
       })
     )
