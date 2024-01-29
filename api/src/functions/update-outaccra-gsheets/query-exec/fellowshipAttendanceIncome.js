@@ -14,7 +14,7 @@ export const fellowshipAttendanceIncome = async (neoDriver) => {
       })
     )
 
-    const headerRow = ['Campus Attendance', 'Campus Income']
+    const headerRow = ['Weekday Attendance', 'Weekday Income']
 
     const returnValues = [
       headerRow,

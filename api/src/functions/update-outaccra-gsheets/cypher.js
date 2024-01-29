@@ -49,11 +49,11 @@ RETURN campus.name,  pastor.firstName + " " +pastor.lastName,stream.name, SUM(re
 `
 
 export const fellowshipAttendanceIncomeQuery = `
-    MATCH (gs:Oversight {name: $oversightName})-[:HAS]->(campus:Campus)-[:HAS]->(stream:Stream)<-[:LEADS]-(pastor:Member)
+MATCH (gs:Oversight {name: $oversightName})-[:HAS]->(campus:Campus)-[:HAS]->(stream:Stream)-[:HAS]->(council:Council)
 MATCH (campus)<-[:LEADS]-(oversightLeader:Member)
 OPTIONAL MATCH (council)-[:HAS_HISTORY|HAS_SERVICE|HAS*2..6]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
 WHERE date.date.year = date($bussingDate).year AND date.date.week = date($bussingDate).week
 
-WITH DISTINCT campus, stream, record, pastor
-RETURN campus.name,  pastor.firstName + " " +pastor.lastName,stream.name, SUM(record.attendance) AS Attendance, SUM(round(record.income)) AS Income ORDER BY  campus.name,stream.name
+ WITH DISTINCT campus, stream, record
+RETURN campus.name,stream.name, SUM(record.attendance) AS Attendance, SUM(round(record.income)) AS Income ORDER BY  campus.name,stream.name
 `
