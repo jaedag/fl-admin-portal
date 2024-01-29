@@ -159,6 +159,7 @@ export const STREAM_ACCOUNT_OPTIONS: FormikSelectOptions = [
   { key: 'OA GH East', value: 'oa_gheast' },
   { key: 'OA GH West', value: 'oa_ghwest' },
   { key: 'OA Tarkwa', value: 'oa_tarkwa' },
+  { key: 'OA Sunyani', value: 'oa_sunyani' },
 ]
 
 export const throwToSentry = (
