@@ -30,8 +30,6 @@ const handler = async () => {
     }
   )
 
-  //! Outside Accra Weekly Data Update
-
   return {
     statusCode: 200,
   }
