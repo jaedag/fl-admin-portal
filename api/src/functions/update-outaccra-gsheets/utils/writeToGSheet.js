@@ -7,7 +7,7 @@ const googleAuth = new google.auth.GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 })
 
-export const writeToGsheet = async (data, sheetName) => {
+export const writeToGsheet = async (data, sheetName, writeRange) => {
   const auth = await googleAuth.getClient()
   const sheets = google.sheets({ version: 'v4', auth })
 
@@ -19,7 +19,7 @@ export const writeToGsheet = async (data, sheetName) => {
 
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: `${sheetName}!A1`,
+      range: `${sheetName}!${writeRange}`,
       valueInputOption: 'USER_ENTERED',
       requestBody: { values: data },
     })

@@ -22,7 +22,7 @@ const handler = async () => {
 
   const servicesNotBanked = 'OA Campus'
 
-  await writeToGsheet(servicesNotBankedData, servicesNotBanked).catch(
+  await writeToGsheet(servicesNotBankedData, servicesNotBanked, 'A:D').catch(
     (error) => {
       throw new Error(
         `Error writing to google sheet\n${error.message}\n${error.stack}`

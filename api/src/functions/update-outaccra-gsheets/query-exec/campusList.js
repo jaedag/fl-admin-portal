@@ -1,4 +1,4 @@
-import { servicesNotBankedThisWeek } from '../cypher'
+import { campusListQuery } from '../cypher'
 
 export const campusList = async (neoDriver) => {
   const session = neoDriver.session()
@@ -7,23 +7,12 @@ export const campusList = async (neoDriver) => {
     console.log('Running function on date', new Date().toISOString())
 
     const result = await session.executeRead(async (tx) =>
-      tx.run(servicesNotBankedThisWeek, {
+      tx.run(campusListQuery, {
         oversightName: 'Outside Accra',
       })
     )
 
-    const headerRow = [
-      'Week',
-      'Date',
-      'Pastor First Name',
-      'Pastor Last Name',
-      'Church Name',
-      'Leader First Name',
-      'Leader Last Name',
-      'Labels',
-      'Attendance',
-      'NotBanked',
-    ]
+    const headerRow = ['Oversight', 'Oversight Bishop', 'Campus Head', 'Campus']
 
     const returnValues = [
       headerRow,

@@ -1,4 +1,4 @@
-export const campusList = `
+export const campusListQuery = `
 MATCH (gs:Oversight {name: $oversightName})-[:HAS]->(campus:Campus)-[:HAS]->(stream:Stream)<-[:LEADS]-(pastor:Member)
 MATCH (campus)<-[:LEADS]-(oversightLeader:Member)
 OPTIONAL MATCH (stream)-[:HAS_HISTORY|HAS_SERVICE|HAS*2..7]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
