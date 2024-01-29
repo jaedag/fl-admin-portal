@@ -1,27 +1,26 @@
-import { campusListQuery } from '../cypher'
-import { OVERSIGHT_NAME } from '../utils/constants'
+import { totalAttendanceIncomeQuery } from '../cypher'
+import { OVERSIGHT_NAME, lastSunday } from '../utils/constants'
 
-export const campusList = async (neoDriver) => {
+export const totalAttendanceIncome = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
     console.log('Running function on date', new Date().toISOString())
 
     const result = await session.executeRead(async (tx) =>
-      tx.run(campusListQuery, {
+      tx.run(totalAttendanceIncomeQuery, {
         oversightName: OVERSIGHT_NAME,
+        bussingDate: lastSunday,
       })
     )
 
-    const headerRow = ['Oversight', 'Oversight Bishop', 'Campus Head', 'Campus']
+    const headerRow = ['Total Weekly Attendance', 'Total Weekly Income']
 
     const returnValues = [
       headerRow,
       ...result.records.map((record) => [
-        record.get('CampusName'),
-        record.get('OversightBishop'),
-        record.get('CampusHead'),
-        record.get('StreamName'),
+        record.get('TotalAttendance').toString(),
+        record.get('TotalIncome').toString(),
       ]),
     ]
 
@@ -35,4 +34,4 @@ export const campusList = async (neoDriver) => {
   return []
 }
 
-export default campusList
+export default totalAttendanceIncome
