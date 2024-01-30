@@ -46,6 +46,7 @@ export const GENDER_OPTIONS: FormikSelectOptions = [
 export const MARITAL_STATUS_OPTIONS: FormikSelectOptions = [
   { key: 'Single', value: 'Single' },
   { key: 'Married', value: 'Married' },
+  { key: 'Widowed', value: 'Widowed' },
 ]
 export const VACATION_OPTIONS: FormikSelectOptions = [
   { key: 'Active', value: 'Active' },
