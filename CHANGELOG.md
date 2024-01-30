@@ -1,3 +1,13 @@
+#### 7.17.7 (2024-01-30)
+
+##### Bug Fixes
+
+*  update Cypher queries and add new marital status option ([daafb339](https://github.com/firstlovecenter/fl-admin-portal/commit/daafb339d922f78c765c68e73aa631b7046b64bc))
+
+##### Refactors
+
+*  service-cypher.ts to include serviceDate in aggregate record ([2e4dfc6e](https://github.com/firstlovecenter/fl-admin-portal/commit/2e4dfc6e4476b5bde2b623ce237a008b6d6314a6))
+
 #### 7.17.6 (2024-01-29)
 
 ##### New Features
