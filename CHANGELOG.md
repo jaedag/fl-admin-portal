@@ -1,3 +1,49 @@
+#### 7.17.7 (2024-01-30)
+
+##### Bug Fixes
+
+*  update Cypher queries and add new marital status option ([daafb339](https://github.com/firstlovecenter/fl-admin-portal/commit/daafb339d922f78c765c68e73aa631b7046b64bc))
+
+##### Refactors
+
+*  service-cypher.ts to include serviceDate in aggregate record ([2e4dfc6e](https://github.com/firstlovecenter/fl-admin-portal/commit/2e4dfc6e4476b5bde2b623ce237a008b6d6314a6))
+
+#### 7.17.6 (2024-01-29)
+
+##### New Features
+
+*  add 'oa_sunyani' stream option ([188dd4dd](https://github.com/firstlovecenter/fl-admin-portal/commit/188dd4dd49f433ce9c2ea1346cf0cbdedee8e0f5))
+*  update handler function ([a7864d72](https://github.com/firstlovecenter/fl-admin-portal/commit/a7864d72e0c4bbc6a435c1a5ca54ba6cc86a0fbb))
+*  update gsheet with neo4j data ([ada7522a](https://github.com/firstlovecenter/fl-admin-portal/commit/ada7522a61961b09a51147b2dfd694724ffc748c))
+*  add update-g-sheets function and package.json ([9fdf14db](https://github.com/firstlovecenter/fl-admin-portal/commit/9fdf14dbcbf08e35fa7c2b01ce1260d5321c5614))
+*  add personalized greeting in SMS messages ([6dc79dc0](https://github.com/firstlovecenter/fl-admin-portal/commit/6dc79dc041158131cb0fe25f6abc688f3f7d6abf))
+
+##### Bug Fixes
+
+*  update schedule for update-g-sheets.js ([aefff4b5](https://github.com/firstlovecenter/fl-admin-portal/commit/aefff4b528bf55748ff60a96803f4448accd5c6d))
+*  update console log messages and requestBody in update-g-sheets.js ([1e0d0a4a](https://github.com/firstlovecenter/fl-admin-portal/commit/1e0d0a4aeedf4e3bdfb0725f384ffab7dd6d9a0c))
+*  update gsecrets.js and update-g-sheets.js files ([cd1ad556](https://github.com/firstlovecenter/fl-admin-portal/commit/cd1ad556e968d91ec30ae832b38ba9013a6e6736))
+*  ipdate Google Sheets credentials ([9c3bc4ba](https://github.com/firstlovecenter/fl-admin-portal/commit/9c3bc4ba60fa8d3ccc7406f2a71f88991dd632b9))
+*  add console log statement to print data ([bba1b242](https://github.com/firstlovecenter/fl-admin-portal/commit/bba1b2427420e4b9117bc3a7a5b253e28c8791e2))
+*  update package.json and file paths ([4b1198e8](https://github.com/firstlovecenter/fl-admin-portal/commit/4b1198e8ec22482085ff351755d1be5f8cbae3e9))
+*  add googleapis dependency ([9753a637](https://github.com/firstlovecenter/fl-admin-portal/commit/9753a637561d746d6db4ef27f6648aa7c4dadbe0))
+*  update react-bootstrap version to 2.10.0 ([9452002c](https://github.com/firstlovecenter/fl-admin-portal/commit/9452002c2fe57ec1af6001c72bed0f16a7fea6f7))
+*  update dependencies and secrets.js path ([64360881](https://github.com/firstlovecenter/fl-admin-portal/commit/6436088143e4633f1f6f7ca3c3fd90a46eba9a8a))
+*  fix Google API import and update schedule time ([3f196856](https://github.com/firstlovecenter/fl-admin-portal/commit/3f1968562bfa568342c712bc24994e7d39710093))
+*  add debugging scripts and update banking slip URL ([4fa7c5db](https://github.com/firstlovecenter/fl-admin-portal/commit/4fa7c5db10507127f735826c6820aba31a13b6ef))
+*  update subaccount in financial-utils.ts ([24b65013](https://github.com/firstlovecenter/fl-admin-portal/commit/24b65013ca44f6ee0b43cdaeaf2330ba85a6a283))
+*  add convertNeoWeekdayToJSWeekday function to arrivals-utils.ts ([8c4c338e](https://github.com/firstlovecenter/fl-admin-portal/commit/8c4c338e00e86e7f8a44d8285db3708800467041))
+*  update subaccount names in financial-utils.ts ([0185f9bb](https://github.com/firstlovecenter/fl-admin-portal/commit/0185f9bbf92a9839610a58ea76eca76c1badc104))
+*  error handling in banking resolver ([a5dd19fa](https://github.com/firstlovecenter/fl-admin-portal/commit/a5dd19fa63432737622edfca67f26d3a91e6df54))
+*  error handling and close sessions in treasury resolvers ([9a7736fb](https://github.com/firstlovecenter/fl-admin-portal/commit/9a7736fb0b19b8717c5302ecff73b8af3ca81cf4))
+*  update sorting order for bussing records ([6397c9d8](https://github.com/firstlovecenter/fl-admin-portal/commit/6397c9d8bd9ff7c8b7f2b74214371dd334418782))
+
+##### Refactors
+
+*  data retrieval and update process ([b7781179](https://github.com/firstlovecenter/fl-admin-portal/commit/b7781179e3f29077e713e548d07ef75604c37278))
+*  fetchData function to include date filtering ([d7d16559](https://github.com/firstlovecenter/fl-admin-portal/commit/d7d165595783960e0b1a5dc946da3a2eba9de803))
+*  initializeDatabase function in update-g-sheets.js ([b5d1ae9f](https://github.com/firstlovecenter/fl-admin-portal/commit/b5d1ae9fce8df2c2f00e04902052baa58ab634da))
+
 #### 7.17.5 (2024-01-19)
 
 ##### Bug Fixes

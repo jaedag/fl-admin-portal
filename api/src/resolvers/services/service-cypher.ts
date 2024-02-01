@@ -121,8 +121,8 @@ export const recordSpecialService = `
       MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
       MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
 
-      WITH log, serviceRecord
-      MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+      WITH log, serviceRecord, serviceDate
+      MERGE (aggregate:AggregateServiceRecord {id: serviceDate.date.week + '-' + serviceDate.date..year + '-' + log.id, week: serviceDate.date.week, year: serviceDate.date.year})
       MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
 
       WITH serviceRecord, aggregate, SUM(serviceRecord.attendance) AS attendance, SUM(serviceRecord.income) AS income, SUM(serviceRecord.dollarIncome) AS dollarIncome, SUM(aggregate.attendance) AS aggregateAttendance, SUM(aggregate.income) AS aggregateIncome, SUM(aggregate.dollarIncome) AS aggregateDollarIncome

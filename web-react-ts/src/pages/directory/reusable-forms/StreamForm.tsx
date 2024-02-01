@@ -54,6 +54,7 @@ export interface StreamFormValues extends FormikInitialValues {
     | 'oa_gheast'
     | 'oa_ghwest'
     | 'oa_tarkwa'
+    | 'oa_sunyani'
   meetingDay: 'Friday' | 'Saturday' | 'Sunday'
   vacationStatus: VacationStatusOptions
   councils?: Council[]

@@ -46,6 +46,7 @@ export const GENDER_OPTIONS: FormikSelectOptions = [
 export const MARITAL_STATUS_OPTIONS: FormikSelectOptions = [
   { key: 'Single', value: 'Single' },
   { key: 'Married', value: 'Married' },
+  { key: 'Widowed', value: 'Widowed' },
 ]
 export const VACATION_OPTIONS: FormikSelectOptions = [
   { key: 'Active', value: 'Active' },
@@ -159,6 +160,7 @@ export const STREAM_ACCOUNT_OPTIONS: FormikSelectOptions = [
   { key: 'OA GH East', value: 'oa_gheast' },
   { key: 'OA GH West', value: 'oa_ghwest' },
   { key: 'OA Tarkwa', value: 'oa_tarkwa' },
+  { key: 'OA Sunyani', value: 'oa_sunyani' },
 ]
 
 export const throwToSentry = (
