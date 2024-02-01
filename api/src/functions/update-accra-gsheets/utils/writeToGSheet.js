@@ -1,13 +1,12 @@
 const { google } = require('googleapis')
 const { GOOGLE_APPLICATION_CREDENTIALS } = require('./gsecrets.js')
 
-const SPREADSHEET_ID = '1s7jxlEIuerZ8hNPmzVAAhggQAD6LToqSLj0Sd9oU1qY'
 const googleAuth = new google.auth.GoogleAuth({
   credentials: GOOGLE_APPLICATION_CREDENTIALS,
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 })
 
-export const writeToGsheet = async (data, sheetName) => {
+export const writeToGsheet = async (data, sheetName, SPREADSHEET_ID) => {
   const auth = await googleAuth.getClient()
   const sheets = google.sheets({ version: 'v4', auth })
 

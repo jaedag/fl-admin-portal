@@ -21,8 +21,9 @@ const handler = async () => {
   )
 
   const servicesNotBanked = 'Accra Services'
+  const SPREADSHEET_ID = '1s7jxlEIuerZ8hNPmzVAAhggQAD6LToqSLj0Sd9oU1qY'
 
-  await writeToGsheet(servicesNotBankedData, servicesNotBanked).catch(
+  await writeToGsheet(servicesNotBankedData, servicesNotBanked, SPREADSHEET_ID).catch(
     (error) => {
       throw new Error(
         `Error writing to google sheet\n${error.message}\n${error.stack}`
