@@ -5,7 +5,7 @@ export const isAccountOpen = () => {
   const validDays = [0, 1, 2]
   const currentHour = new Date().getHours()
 
-  if (isThursday && currentHour >= 6 && currentHour < 22) {
+  if (isThursday && currentHour >= 6 && currentHour < 18) {
     return true
   }
 
