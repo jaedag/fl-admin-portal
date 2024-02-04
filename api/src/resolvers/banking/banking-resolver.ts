@@ -406,7 +406,7 @@ const bankingMutation = {
     },
     context: Context
   ) => {
-    isAuth(permitLeader('Fellowship'), context.auth.roles)
+    isAuth(permitMe('Fellowship'), context.auth.roles)
 
     const session = context.executionContext.session()
 
