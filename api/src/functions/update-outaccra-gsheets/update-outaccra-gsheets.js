@@ -60,9 +60,9 @@ const handler = async () => {
       'x-secret-key': process.env.FLC_NOTIFY_KEY,
     },
     data: {
-      recipient: ['233594760323'], //, '233592219407'],
+      recipient: ['233594760323', '233592219407', '233555542340'],
       sender: 'FLC Admin',
-      message: `Outside Accra Google Sheets updated successfully for week ${getWeekNumber()} date ${
+      message: `WEEK ${getWeekNumber()}\n\nOutside Accra Google Sheets updated successfully for date ${
         new Date()
           .toLocaleString('en-GB', {
             year: 'numeric',
