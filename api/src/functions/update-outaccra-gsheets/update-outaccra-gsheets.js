@@ -2,7 +2,7 @@ const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
 const { SECRETS } = require('./gsecrets.js')
 const { writeToGsheet, clearGSheet } = require('./utils/writeToGSheet.js')
-const { campusList } = require('./query-exec/campusList.js')
+const { campusList } = require('./query-exec/councilList.js')
 const {
   default: totalAttendanceIncome,
 } = require('./query-exec/totalAttendanceIncome.js')
