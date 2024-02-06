@@ -18,6 +18,9 @@ const {
 const {
   default: fellowshipAttendanceIncome,
 } = require('./query-exec/fellowshipAttendanceIncome.js')
+const { notifyBaseURL } = require('./utils/constants.js')
+const { default: axios } = require('axios')
+const { getWeekNumber } = require('@jaedag/admin-portal-types')
 
 const handler = async () => {
   const driver = neo4j.driver(
@@ -48,6 +51,28 @@ const handler = async () => {
   const outsideAccraSheet = 'OA Campus'
 
   await clearGSheet(outsideAccraSheet)
+  await axios({
+    method: 'post',
+    baseURL: notifyBaseURL,
+    url: '/send-sms',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-secret-key': process.env.FLC_NOTIFY_KEY,
+    },
+    data: {
+      recipient: ['233594760323'], //, '233592219407'],
+      sender: 'FLC Admin',
+      message: `Outside Accra Google Sheets updated successfully for week ${getWeekNumber()} date ${
+        new Date()
+          .toLocaleString('en-GB', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })
+          .split('T')[0]
+      }`,
+    },
+  })
 
   await Promise.all([
     writeToGsheet(campusListData, outsideAccraSheet, 'A:D'),
