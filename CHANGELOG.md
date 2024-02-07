@@ -1,3 +1,21 @@
+#### 7.18.1 (2024-02-07)
+
+##### Bug Fixes
+
+*  implement undo transaction button ([f0c123b9](https://github.com/firstlovecenter/fl-admin-portal/commit/f0c123b99db860e96c3829b9e7e6020b57294603))
+*  remove non-required exclamation marks in Council schema ([7f1d43b2](https://github.com/firstlovecenter/fl-admin-portal/commit/7f1d43b2c0c57d8fc5a92eeb2247ef71e4c2db31))
+*  add gsheets-services-not-banked function and dependencies ([19ce419a](https://github.com/firstlovecenter/fl-admin-portal/commit/19ce419ae98230a5d909a74c966bfb06879f1fe7))
+*  add gsheets-not-banked function and dependencies ([0e4aa84f](https://github.com/firstlovecenter/fl-admin-portal/commit/0e4aa84f4ba516ef5885dd6a755f7b3c1b9f18f9))
+*  update 'Council' field to display as a comma-separated string ([3721c9b6](https://github.com/firstlovecenter/fl-admin-portal/commit/3721c9b63bfb67b07426e16df3529fe0cf7c6656))
+*  recipient typo and add additional recipient numbers ([1704fa82](https://github.com/firstlovecenter/fl-admin-portal/commit/1704fa82522eb1f73935a0ff61913892ae0116fb))
+*  update councilListQuery and writeToGsheet functions ([182dbddb](https://github.com/firstlovecenter/fl-admin-portal/commit/182dbddbfa9af65410408ece5c39606140292879))
+*  update schedule for gsheets functions ([0bfd79a6](https://github.com/firstlovecenter/fl-admin-portal/commit/0bfd79a614a43a07363b019778747b0001583134))
+
+##### Refactors
+
+*  cypher.js to collect distinct council names ([b4db1413](https://github.com/firstlovecenter/fl-admin-portal/commit/b4db1413b929bc97fe4f9c737fee30371d3130b9))
+*  add npmrc and package.json files for gsheets-accra and gsheets-update-outaccra functions ([afced8e7](https://github.com/firstlovecenter/fl-admin-portal/commit/afced8e7b76f7c3e54fd1ed17263221cd33cad2e))
+
 ### 7.18.0 (2024-02-07)
 
 ##### Bug Fixes
