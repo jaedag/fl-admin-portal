@@ -61,5 +61,8 @@
     "type": "git",
     "url": "git://github.com/firstlovecenter/fl-admin-portal.git"
   },
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@jaedag/admin-portal-types": "^1.5.13"
+  }
 }
