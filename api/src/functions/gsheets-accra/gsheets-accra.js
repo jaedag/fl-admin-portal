@@ -106,7 +106,7 @@ const handler = async () => {
         'x-secret-key': process.env.FLC_NOTIFY_KEY,
       },
       data: {
-        recipient: ['233594760323'],
+        recipient: ['233594760323', '233592219407'],
         sender: 'FLC Admin',
         message: `WEEK ${
           getWeekNumber() - 1
