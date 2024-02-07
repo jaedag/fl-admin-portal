@@ -1,5 +1,5 @@
 {
-  "version": "7.17.8",
+  "version": "7.18.0",
   "devDependencies": {
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
