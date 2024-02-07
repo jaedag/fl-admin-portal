@@ -93,3 +93,12 @@ export const GET_TRANSACTION_DETAILS = gql`
     }
   }
 `
+
+export const UNDO_TRANSACTION = gql`
+  mutation undoTransaction($transactionId: ID!) {
+    UndoTransaction(transactionId: $transactionId) {
+      id
+      name
+    }
+  }
+`

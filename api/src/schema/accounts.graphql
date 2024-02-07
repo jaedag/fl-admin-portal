@@ -136,6 +136,16 @@ extend type Mutation {
       RETURN transaction
       """
     )
+  UndoTransaction(transactionId: ID!): Council!
+    @cypher(
+      statement: """
+      MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
+        SET council.balance = council.balance - transaction.amount
+      DETACH DELETE transaction
+
+      RETURN council
+      """
+    )
 
   DebitBussingSociety(
     councilId: ID!
