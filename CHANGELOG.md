@@ -1,3 +1,19 @@
+### 7.18.0 (2024-02-07)
+
+##### Bug Fixes
+
+*  update package name to accra-gsheets ([9703482d](https://github.com/firstlovecenter/fl-admin-portal/commit/9703482d05c2f4480ca7ac544232e4d6fcbe8b9f))
+*  remove admin-portal-types from root ([3c788425](https://github.com/firstlovecenter/fl-admin-portal/commit/3c788425215f93010d6bc6a857694f91b0c21897))
+*  add secrets build for services-not-banked function ([21b7fba3](https://github.com/firstlovecenter/fl-admin-portal/commit/21b7fba3ddce0b76a4411f3fadb59f9935fd6c90))
+*  add new functions for updating Google Sheets with data from Neo4j ([5a899c95](https://github.com/firstlovecenter/fl-admin-portal/commit/5a899c955b6f9e91ca0d206023b80c13dfa9bbbe))
+*  add .npmrc files for accra-gsheets and update-outaccra-gsheets functions ([1a7a1bf8](https://github.com/firstlovecenter/fl-admin-portal/commit/1a7a1bf80a40d15ce4ad49850bfd771d858486d4))
+*  add npmrc file ([88988b15](https://github.com/firstlovecenter/fl-admin-portal/commit/88988b15cd327fa967f17214b3439fdea1d566af))
+*  update debugging scripts and payment functions ([c254a5d5](https://github.com/firstlovecenter/fl-admin-portal/commit/c254a5d5612ccdda8db6b7df796c4481ba7254d7))
+*  typo in service-cypher.ts ([84adb01c](https://github.com/firstlovecenter/fl-admin-portal/commit/84adb01cdfc5bc46009598fb2d8d5e4afacec497))
+*  update code of the day ([de6bef97](https://github.com/firstlovecenter/fl-admin-portal/commit/de6bef97f24503a31b77fd80e849ff7452d2d75c))
+*  update banking slip URL and add new admin permissions ([128ba88c](https://github.com/firstlovecenter/fl-admin-portal/commit/128ba88c5ca179f99c68d093afee318d7ebf1824))
+*  update account opening hours ([784a671c](https://github.com/firstlovecenter/fl-admin-portal/commit/784a671c3629f685b4c70f6f8d80c279bcb4ba40))
+
 #### 7.17.8 (2024-02-01)
 
 ##### Bug Fixes
