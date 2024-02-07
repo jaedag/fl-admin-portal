@@ -3,24 +3,12 @@ const { schedule } = require('@netlify/functions')
 const { SECRETS } = require('./gsecrets.js')
 const { writeToGsheet, clearGSheet } = require('./utils/writeToGSheet.js')
 const { councilList } = require('./query-exec/councilList.js')
-const {
-  default: totalAttendanceIncome,
-} = require('./query-exec/totalAttendanceIncome.js')
-const {
-  default: totalNotBankedIncome,
-} = require('./query-exec/totalNotBankedIncome.js')
-const {
-  default: totalBankedIncome,
-} = require('./query-exec/totalBankedIncome.js')
-const {
-  default: campusAttendanceIncome,
-} = require('./query-exec/campusAttendanceIncome.js')
-const {
-  default: fellowshipAttendanceIncome,
-} = require('./query-exec/fellowshipAttendanceIncome.js')
 const { notifyBaseURL } = require('./utils/constants.js')
 const { default: axios } = require('axios')
 const { getWeekNumber } = require('@jaedag/admin-portal-types')
+const {
+  default: bacentasThatBussed,
+} = require('./query-exec/bacentasThatBussed.js')
 
 const handler = async () => {
   const driver = neo4j.driver(
@@ -33,6 +21,7 @@ const handler = async () => {
 
   const response = await Promise.all([
     councilList(driver),
+    bacentasThatBussed(driver),
     // totalAttendanceIncome(driver),
     // totalNotBankedIncome(driver),
     // totalBankedIncome(driver),
@@ -42,13 +31,15 @@ const handler = async () => {
     console.error('Database query failed to complete\n', error.message)
   })
   const councilListData = response[0]
+  const bacentasThatBussedData = response[1]
 
   const accraSheet = 'Accra Graph Data'
 
   await clearGSheet(accraSheet)
 
   await Promise.all([
-    writeToGsheet(councilListData, accraSheet, 'A:D'),
+    writeToGsheet(councilListData, accraSheet, 'A2:C'),
+    writeToGsheet(bacentasThatBussedData, accraSheet, 'E2:E'),
     axios({
       method: 'post',
       baseURL: notifyBaseURL,

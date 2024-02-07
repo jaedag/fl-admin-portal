@@ -1,4 +1,4 @@
-import { councilListQuery } from '../../update-outaccra-gsheets/cypher'
+import { councilListQuery } from '../cypher'
 import { CAMPUS_NAME } from '../utils/constants'
 
 export const councilList = async (neoDriver) => {
@@ -19,8 +19,8 @@ export const councilList = async (neoDriver) => {
       headerRow,
       ...result.records.map((record) => [
         record.get('Pastor'),
-        record.get('ActiveBacentas'),
-        record.get('VacationBacentas'),
+        record.get('ActiveBacentas').toString(),
+        record.get('VacationBacentas').toString(),
       ]),
     ]
 
