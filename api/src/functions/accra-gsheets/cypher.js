@@ -89,7 +89,7 @@ WHERE date.date.year = date($bussingDate).year AND date.date.week = date($bussin
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
-RETURN  pastor.firstName, pastor.lastName, SUM(record.income) AS notBanked ORDER BY pastor.firstName, pastor.lastName
+RETURN  pastor.firstName, pastor.lastName,SUM(round(record.income,2)) AS notBanked ORDER BY pastor.firstName, pastor.lastName
 `
 
 export const amountBankedQuery = `
@@ -100,20 +100,20 @@ WHERE date.date.year = date($bussingDate).year AND date.date.week = date($bussin
           AND (record.bankingSlip IS NOT NULL
           OR record.transactionStatus = 'success'
           OR record.tellerConfirmationTime IS  NOT NULL)
-RETURN  pastor.firstName, pastor.lastName, SUM(record.income) AS Banked ORDER BY pastor.firstName, pastor.lastName`
+RETURN  pastor.firstName, pastor.lastName,SUM(round(record.income,2)) AS Banked ORDER BY pastor.firstName, pastor.lastName`
 
 export const anagkazoAttendanceIncomeQuery = `
 MATCH (gs:Campus {name: $campusName})-[:HAS]->(stream:Stream)-[:HAS]->(council:Council)<-[:LEADS]-(pastor:Member {lastName: "Amartey"}) 
 MATCH (stream)-[:HAS_HISTORY|HAS_SERVICE|HAS*2..6]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
 WHERE date.date.year = date($bussingDate).year AND date.date.week = date($bussingDate).week
 WITH DISTINCT record, pastor
-WITH  pastor AS amartey,SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome
+WITH  pastor AS amartey,SUM(record.attendance) AS totalAttendance,SUM(round(record.income,2)) AS totalIncome
 
 MATCH (council:Council)<-[:LEADS]-(donald:Member {lastName: "Penney"})
 MATCH (council)-[:HAS_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
 WHERE date.date.year = date($bussingDate).year AND date.date.week = date($bussingDate).week
 
-WITH amartey, totalAttendance, SUM(record.attendance) AS donaldAttendance, totalIncome, SUM(record.income) AS donaldIncome
+WITH amartey, totalAttendance, SUM(record.attendance) AS donaldAttendance, totalIncome,SUM(round(record.income,2)) AS donaldIncome
 
 RETURN amartey.firstName, amartey.lastName, totalAttendance - donaldAttendance as anagkazoAttendance, totalIncome - donaldIncome AS anagkazoIncome
 `
@@ -126,5 +126,5 @@ WHERE date.date.year = date($bussingDate).year AND date.date.week = date($bussin
           AND record.bankingSlip IS NULL
           AND record.tellerConfirmationTime IS NULL
           WITH DISTINCT record, pastor
-RETURN pastor.firstName, pastor.lastName, SUM(record.income) AS notBanked ORDER BY pastor.firstName, pastor.lastName
+RETURN pastor.firstName, pastor.lastName,SUM(round(record.income,2)) AS notBanked ORDER BY pastor.firstName, pastor.lastName
 `

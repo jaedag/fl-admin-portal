@@ -5,7 +5,6 @@ export const bacentasThatBussed = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
-
     const result = await session.executeRead(async (tx) =>
       tx.run(bacentasThatDidntBusQuery, {
         campusName: CAMPUS_NAME,
