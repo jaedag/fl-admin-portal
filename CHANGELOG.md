@@ -1,3 +1,9 @@
+#### 7.17.8 (2024-02-01)
+
+##### Bug Fixes
+
+*  update account opening hours ([c69a13f1](https://github.com/firstlovecenter/fl-admin-portal/commit/c69a13f14173f5ac4dd66d9b8d8e13c804b48624))
+
 #### 7.17.7 (2024-01-30)
 
 ##### Bug Fixes
