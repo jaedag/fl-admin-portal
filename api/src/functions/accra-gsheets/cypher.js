@@ -1,7 +1,8 @@
-export const campusListQuery = `
-MATCH (gs:Oversight {name: $oversightName})-[:HAS]->(campus:Campus)-[:HAS]->(stream:Stream)<-[:LEADS]-(pastor:Member)
-MATCH (campus)<-[:LEADS]-(oversightLeader:Member)
-RETURN campus.name AS CampusName, oversightLeader.firstName + ' ' +oversightLeader.lastName AS OversightBishop,  pastor.firstName + " " +pastor.lastName AS CampusHead, stream.name AS StreamName ORDER BY CampusName, StreamName
+export const councilListQuery = `
+MATCH (:Campus {name: $campusName})-[:HAS*2]->(council:Council)<-[:LEADS]-(pastor:Member) WHERE council.name <> 'John'
+OPTIONAL MATCH (council)-[:HAS*2]->(active:Active:Graduated:Bacenta)
+OPTIONAL MATCH (council)-[:HAS*2]->(vacation:Vacation:Graduated:Bacenta)
+RETURN  DISTINCT  pastor.firstName, pastor.lastName, pastor.firstName + ' '+ pastor.lastName AS Pastor, COUNT(DISTINCT active) as ActiveBacentas, COUNT(DISTINCT vacation) as VacationBacentas ORDER BY pastor.firstName, pastor.lastName
 `
 
 export const totalAttendanceIncomeQuery = `

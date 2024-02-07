@@ -2,7 +2,7 @@ const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
 const { SECRETS } = require('./gsecrets.js')
 const { writeToGsheet, clearGSheet } = require('./utils/writeToGSheet.js')
-const { campusList } = require('./query-exec/councilList.js')
+const { campusList } = require('./query-exec/campusList.js')
 const {
   default: totalAttendanceIncome,
 } = require('./query-exec/totalAttendanceIncome.js')
@@ -51,28 +51,6 @@ const handler = async () => {
   const outsideAccraSheet = 'OA Campus'
 
   await clearGSheet(outsideAccraSheet)
-  await axios({
-    method: 'post',
-    baseURL: notifyBaseURL,
-    url: '/send-sms',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-secret-key': process.env.FLC_NOTIFY_KEY,
-    },
-    data: {
-      recipient: ['233594760323', '233592219407', '233555542340'],
-      sender: 'FLC Admin',
-      message: `WEEK ${getWeekNumber()}\n\nOutside Accra Google Sheets updated successfully for date ${
-        new Date()
-          .toLocaleString('en-GB', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          })
-          .split('T')[0]
-      }`,
-    },
-  })
 
   await Promise.all([
     writeToGsheet(campusListData, outsideAccraSheet, 'A:D'),
@@ -81,6 +59,30 @@ const handler = async () => {
     writeToGsheet(totalBankedIncomeData, outsideAccraSheet, 'H:H'),
     writeToGsheet(campusAttendanceIncomeData, outsideAccraSheet, 'J:K'),
     writeToGsheet(fellowshipAttendanceIncomeData, outsideAccraSheet, 'M:N'),
+    axios({
+      method: 'post',
+      baseURL: notifyBaseURL,
+      url: '/send-sms',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-secret-key': process.env.FLC_NOTIFY_KEY,
+      },
+      data: {
+        recipient: ['233594760323', '233592219407', '233555542340'],
+        sender: 'FLC Admin',
+        message: `WEEK ${
+          getWeekNumber() - 1
+        } UPDATE\n\nOutside Accra Google Sheets updated successfully on date ${
+          new Date()
+            .toLocaleString('en-GB', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            })
+            .split('T')[0]
+        }`,
+      },
+    }),
   ]).catch((error) => {
     throw new Error(
       `Error writing to google sheet\n${error.message}\n${error.stack}`
