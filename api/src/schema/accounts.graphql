@@ -60,8 +60,8 @@ extend type Campus {
 }
 
 extend type Council {
-  hrAmount: Float!
-  bussingAmount: Float!
+  hrAmount: Float
+  bussingAmount: Float
   weekdayBalance: Float!
   bussingSocietyBalance: Float
   transactions: [AccountTransaction!]!
