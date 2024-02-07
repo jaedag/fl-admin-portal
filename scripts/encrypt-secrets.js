@@ -12,7 +12,9 @@ async function main() {
   secrets.build(payload, {
     path: 'api/src/functions/accra-gsheets/secrets.js',
   })
-
+  secrets.build(payload, {
+    path: 'api/src/functions/services-not-banked/secrets.js',
+  })
   secrets.build(payload, {
     path: 'api/src/functions/update-outaccra-gsheets/secrets.js',
   })
