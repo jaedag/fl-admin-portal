@@ -1,23 +1,24 @@
-import { bacentasThatBussedQuery } from '../cypher'
+import { weekdayIncomeAttendanceQuery } from '../cypher'
 import { CAMPUS_NAME, lastSunday } from '../utils/constants'
 
-export const bacentasThatBussed = async (neoDriver) => {
+export const weekdayIncomeAttendance = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
     const result = await session.executeRead(async (tx) =>
-      tx.run(bacentasThatBussedQuery, {
+      tx.run(weekdayIncomeAttendanceQuery, {
         campusName: CAMPUS_NAME,
         bussingDate: lastSunday,
       })
     )
 
-    const headerRow = ['Bacentas That Bussed']
+    const headerRow = ['Weekday Attendance', 'Weekday Income']
 
     const returnValues = [
       headerRow,
       ...result.records.map((record) => [
-        record.get('bacentasThatBussed').toString(),
+        record.get('attendance').toString(),
+        record.get('income').toString(),
       ]),
     ]
 
@@ -31,4 +32,4 @@ export const bacentasThatBussed = async (neoDriver) => {
   return []
 }
 
-export default bacentasThatBussed
+export default weekdayIncomeAttendance

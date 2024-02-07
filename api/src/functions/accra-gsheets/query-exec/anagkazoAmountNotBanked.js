@@ -1,24 +1,19 @@
-import { bacentasThatBussedQuery } from '../cypher'
+import { anagkazoAmountNotBankedQuery } from '../cypher'
 import { CAMPUS_NAME, lastSunday } from '../utils/constants'
 
-export const bacentasThatBussed = async (neoDriver) => {
+export const anagkazoAmountNotBanked = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
     const result = await session.executeRead(async (tx) =>
-      tx.run(bacentasThatBussedQuery, {
+      tx.run(anagkazoAmountNotBankedQuery, {
         campusName: CAMPUS_NAME,
         bussingDate: lastSunday,
       })
     )
 
-    const headerRow = ['Bacentas That Bussed']
-
     const returnValues = [
-      headerRow,
-      ...result.records.map((record) => [
-        record.get('bacentasThatBussed').toString(),
-      ]),
+      ...result.records.map((record) => [record.get('notBanked').toString()]),
     ]
 
     return returnValues
@@ -31,4 +26,4 @@ export const bacentasThatBussed = async (neoDriver) => {
   return []
 }
 
-export default bacentasThatBussed
+export default anagkazoAmountNotBanked
