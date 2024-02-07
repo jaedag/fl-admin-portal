@@ -1,5 +1,5 @@
-import { campusListQuery } from '../../accra-gsheets/cypher'
-import { OVERSIGHT_NAME } from '../../accra-gsheets/utils/constants'
+import { campusListQuery } from '../../gsheets-accra/cypher'
+import { OVERSIGHT_NAME } from '../../gsheets-accra/utils/constants'
 
 export const campusList = async (neoDriver) => {
   const session = neoDriver.session()
