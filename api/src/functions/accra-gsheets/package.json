@@ -1,5 +1,5 @@
 {
-  "name": "update-gsheet",
+  "name": "accra-gsheets",
   "version": "0.0.1",
   "description": "copy data from the neo4j db into a google sheet",
   "main": "update-g-sheets.js",
