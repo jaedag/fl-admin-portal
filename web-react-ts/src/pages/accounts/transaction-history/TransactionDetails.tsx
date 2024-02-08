@@ -49,7 +49,7 @@ const TransactionDetails = () => {
             Undo Transaction
           </Button>
         </div>
-        <div>
+        <div className="text-center mt-2">
           <Button
             variant="success"
             onClick={() => navigate('/accounts/council/transaction-history')}
