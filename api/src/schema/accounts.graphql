@@ -54,6 +54,7 @@ extend type Campus {
       statement: """
       MATCH (this)-[:HAS*2]->(council:Council)
       MATCH (council)-[:HAS_TRANSACTION]->(transaction:AccountTransaction)
+
       RETURN transaction ORDER BY transaction.lastModified DESC
       """
     )
@@ -136,11 +137,23 @@ extend type Mutation {
       RETURN transaction
       """
     )
-  UndoTransaction(transactionId: ID!): Council!
+  UndoBussingTransaction(transactionId: ID!): Council!
     @cypher(
       statement: """
       MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
-        SET council.balance = council.balance - transaction.amount
+
+        SET council.bussingSocietyBalance = council.bussingSocietyBalance - transaction.amount
+      DETACH DELETE transaction
+
+      RETURN council
+      """
+    )
+  UndoWeekdayTransaction(transactionId: ID!): Council!
+    @cypher(
+      statement: """
+      MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
+
+        SET council.weekdayBalance = council.weekdayBalance - transaction.amount
       DETACH DELETE transaction
 
       RETURN council

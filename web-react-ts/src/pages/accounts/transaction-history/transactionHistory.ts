@@ -94,9 +94,18 @@ export const GET_TRANSACTION_DETAILS = gql`
   }
 `
 
-export const UNDO_TRANSACTION = gql`
-  mutation undoTransaction($transactionId: ID!) {
-    UndoTransaction(transactionId: $transactionId) {
+export const UNDO_BUSSING_TRANSACTION = gql`
+  mutation undoBussingTransaction($transactionId: ID!) {
+    UndoBussingTransaction(transactionId: $transactionId) {
+      id
+      name
+    }
+  }
+`
+
+export const UNDO_WEEKDAY_TRANSACTION = gql`
+  mutation undoWeekdayTransaction($transactionId: ID!) {
+    UndoWeekdayTransaction(transactionId: $transactionId) {
       id
       name
     }
