@@ -39,3 +39,32 @@ RETURN transaction, council.name
     //    RETURN record.id, record.attendance, record.noServiceReason
 
       RETURN DISTINCT hubs.name
+
+
+       MATCH (this:Constituency {id: "dd4b3467-52cf-471d-ae64-5bd43cd4d6db"})-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
+      MATCH (agg) WHERE agg.week = $week AND agg.year = date().year
+
+      WITH agg, this
+      WITH date() as today, this, agg
+      WITH  today.weekDay as theDay, today, this, agg
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this, agg
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this, agg
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+      WITH collect(record.foreignCurrency) as list, agg
+
+      RETURN {
+        id: agg.id,
+        attendance: agg.attendance,
+        income: agg.income,
+        week: agg.week,
+        year: agg.year,
+        foreignCurrency: list
+      }
+
+
+      RETURN date().week

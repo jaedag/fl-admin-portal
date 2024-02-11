@@ -1,3 +1,15 @@
+#### 7.18.2 (2024-02-11)
+
+##### New Features
+
+*  add undo transaction functionality ([eff79641](https://github.com/firstlovecenter/fl-admin-portal/commit/eff7964124f39bbc7c8119cbbdc0cfd61b9f91d5))
+
+##### Bug Fixes
+
+*  remove unused import and update import path ([723cdf1b](https://github.com/firstlovecenter/fl-admin-portal/commit/723cdf1baacd46c067b8437a0cbe1633ab5596b8))
+*  fixing bugs and adding new features ([f8a76d4e](https://github.com/firstlovecenter/fl-admin-portal/commit/f8a76d4e58b3640cff47ad7b0b4fd8ad7e8f08ef))
+*  add text-center class to transaction details div ([13b1a11a](https://github.com/firstlovecenter/fl-admin-portal/commit/13b1a11a58c96429009a949c2d39b58b0f931373))
+
 #### 7.18.1 (2024-02-07)
 
 ##### Bug Fixes
