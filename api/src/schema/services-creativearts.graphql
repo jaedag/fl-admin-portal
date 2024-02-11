@@ -601,7 +601,7 @@ extend type HubCouncil {
   hubCancelledRehearsalsThisWeekCount: Int!
     @cypher(
       statement: """
-       MATCH (this)
+      MATCH (this)
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this

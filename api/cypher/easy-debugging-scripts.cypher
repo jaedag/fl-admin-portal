@@ -14,3 +14,28 @@ WITH transaction, council WHERE transaction.account = "Weekday Balance"
 RETURN transaction, council.name
 // SET council.balance = council.balance - transaction.amount
 // DETACH DELETE transaction;
+
+
+      MATCH (this:HubCouncil  {id: "430aafb9-bbcb-464f-8266-a22b49b24f09"})
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
+
+       WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs) WHERE hubs:Hub OR hubs:ClosedHub
+
+       WITH DISTINCT hubs, this, record
+       MATCH (hubs)<-[:HAS]-(this)
+        MATCH (hubs)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      MATCH (records)-[:LOGGED_BY]->(author:Member)
+      WITH DISTINCT records,date, hubs, author
+      RETURN DISTINCT hubs.name, author.firstName, author.lastName, records.attendance, records.noServiceReason, date.date ORDER BY date.date DESC SKIP 0 
+    //    RETURN record.id, record.attendance, record.noServiceReason
+
+      RETURN DISTINCT hubs.name
