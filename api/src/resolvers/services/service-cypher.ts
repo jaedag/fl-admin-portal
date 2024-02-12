@@ -3,8 +3,8 @@ MATCH (church {id: $churchId})
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
 OR church:Hub
 
-OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-WHERE date(date.date).week = date().week AND date(date.date).year = date().year AND (record:ServiceRecord) AND record.description IS NULL
+OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+WHERE date(date.date).week = date().week AND date(date.date).year = date().year // AND record.description IS NULL
 
 RETURN church.id AS id, church.name AS name, labels(church) AS labels, record IS NOT NULL AS alreadyFilled
 `
