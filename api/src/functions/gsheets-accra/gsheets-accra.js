@@ -94,9 +94,16 @@ const handler = async () => {
     writeToGsheet(servicesNotBankedData, accraSheet, 'O2:O'),
     writeToGsheet(weekdayIncomeAttendanceData, accraSheet, 'R2:S'),
     writeToGsheet(amountNotBankedData, accraSheet, 'T2:T'),
+    writeToGsheet(amountBankedData, accraSheet, 'U2:U'),
+  ]).catch((error) => {
+    throw new Error(
+      `Error writing to google sheet\n${error.message}\n${error.stack}`
+    )
+  })
+
+  await Promise.all([
     writeToGsheet(anagkazoIncomeAttendanceData, accraSheet, 'R8:S8'),
     writeToGsheet(anagkazoAmountNotBankedData, accraSheet, 'T8'),
-    writeToGsheet(amountBankedData, accraSheet, 'U2:U'),
     axios({
       method: 'post',
       baseURL: notifyBaseURL,
