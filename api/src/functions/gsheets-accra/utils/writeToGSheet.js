@@ -27,7 +27,7 @@ export const writeToGsheet = async (data, sheetName, writeRange) => {
   const sheets = google.sheets({ version: 'v4', auth })
 
   try {
-    const response = await sheets.spreadsheets.values.append({
+    const response = await sheets.spreadsheets.values.update({
       spreadsheetId: SPREADSHEET_ID,
       range: `${sheetName}!${writeRange}`,
       valueInputOption: 'USER_ENTERED',
