@@ -1,3 +1,21 @@
+#### 7.18.3 (2024-02-13)
+
+##### New Features
+
+*   add basontaMemberSearch query to SearchMember component ([3488f40a](https://github.com/firstlovecenter/fl-admin-portal/commit/3488f40aa845de392fd8ab5079bcc6c3057821f2))
+*  add anagkazoAmountBankedData to writeToGsheet function ([c572f0a9](https://github.com/firstlovecenter/fl-admin-portal/commit/c572f0a9332bc2241b934addbb52d7b9197689a6))
+
+##### Bug Fixes
+
+*  update schedule for gsheets-accra and gsheets-update-outaccra functions ([785885a2](https://github.com/firstlovecenter/fl-admin-portal/commit/785885a2272fa6c6fa11331e585f2a3a90325e57))
+*  update schedule for gsheets-accra and gsheets-update-outaccra ([68d7789a](https://github.com/firstlovecenter/fl-admin-portal/commit/68d7789a0262878f533e3ca42f2421b55f27b22d))
+*   update writeToGSheet function to use update instead of append ([6cbf0c59](https://github.com/firstlovecenter/fl-admin-portal/commit/6cbf0c593b6c53af65821a95d574257913efe1b5))
+*  add writeToGsheet for amountBankedData ([a8756bcb](https://github.com/firstlovecenter/fl-admin-portal/commit/a8756bcb5683151d51523f8ff5012b53e2a4f279))
+
+##### Refactors
+
+*  service-cypher.ts to include record description in the query ([d60a59d0](https://github.com/firstlovecenter/fl-admin-portal/commit/d60a59d0f4caf06cbeb7b602ae92e0707b7a966a))
+
 #### 7.18.2 (2024-02-11)
 
 ##### New Features
