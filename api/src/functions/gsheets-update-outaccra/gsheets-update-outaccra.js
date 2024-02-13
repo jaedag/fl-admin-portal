@@ -31,6 +31,7 @@ const handler = async () => {
     )
   )
 
+  console.log('Running function on date', new Date().toISOString())
   const response = await Promise.all([
     campusList(driver),
     totalAttendanceIncome(driver),
@@ -94,4 +95,6 @@ const handler = async () => {
   }
 }
 
-module.exports.handler = schedule('0 23 * * 1', handler)
+// module.exports.handler = schedule('0 23 * * 1', handler)
+
+module.exports.handler = schedule('* * * * *', handler)

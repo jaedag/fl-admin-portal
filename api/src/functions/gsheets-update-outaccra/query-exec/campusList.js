@@ -1,12 +1,10 @@
-import { campusListQuery } from '../../gsheets-accra/cypher'
-import { OVERSIGHT_NAME } from '../../gsheets-accra/utils/constants'
+import { campusListQuery } from '../cypher'
+import { OVERSIGHT_NAME } from '../utils/constants'
 
 export const campusList = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
-    console.log('Running function on date', new Date().toISOString())
-
     const result = await session.executeRead(async (tx) =>
       tx.run(campusListQuery, {
         oversightName: OVERSIGHT_NAME,

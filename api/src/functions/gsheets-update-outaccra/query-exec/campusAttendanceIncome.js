@@ -5,8 +5,6 @@ export const campusAttendanceIncome = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
-    console.log('Running function on date', new Date().toISOString())
-
     const result = await session.executeRead(async (tx) =>
       tx.run(campusAttendanceIncomeQuery, {
         oversightName: OVERSIGHT_NAME,

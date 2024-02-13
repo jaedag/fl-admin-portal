@@ -84,7 +84,7 @@ const writeToGsheet = async (data, sheetName) => {
       range: `${sheetName}!A:Z`,
     })
 
-    const response = await sheets.spreadsheets.values.append({
+    const response = await sheets.spreadsheets.values.update({
       spreadsheetId: SPREADSHEET_ID,
       range: `${sheetName}!A1`,
       valueInputOption: 'USER_ENTERED',
