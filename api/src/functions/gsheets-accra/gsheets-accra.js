@@ -78,6 +78,7 @@ const handler = async () => {
   const anagkazoIncomeAttendanceData = response[10]
   const anagkazoAmountNotBankedData = response[11]
   const amountBankedData = response[12]
+  const anagkazoAmountBankedData = response[13]
 
   const accraSheet = 'Accra Graph Data'
 
@@ -104,6 +105,7 @@ const handler = async () => {
   await Promise.all([
     writeToGsheet(anagkazoIncomeAttendanceData, accraSheet, 'R8:S8'),
     writeToGsheet(anagkazoAmountNotBankedData, accraSheet, 'T8'),
+    writeToGsheet(anagkazoAmountBankedData, accraSheet, 'U8'),
     axios({
       method: 'post',
       baseURL: notifyBaseURL,

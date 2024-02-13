@@ -128,3 +128,15 @@ WHERE date.date.year = date($bussingDate).year AND date.date.week = date($bussin
           WITH DISTINCT record, pastor
 RETURN pastor.firstName, pastor.lastName,SUM(round(record.income,2)) AS notBanked ORDER BY pastor.firstName, pastor.lastName
 `
+
+export const anagkazoAmountBankedQuery = `
+MATCH (gs:Campus {name: $campusName})-[:HAS]->(stream:Stream)-[:HAS]->(council:Council)<-[:LEADS]-(pastor:Member {lastName: "Amartey"})
+MATCH (stream)-[:HAS_HISTORY|HAS_SERVICE|HAS*2..6]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+WHERE date.date.year = date($bussingDate).year AND date.date.week = date($bussingDate).week
+        AND record.noServiceReason IS NULL
+        AND (record.bankingSlip IS NOT NULL
+        OR record.transactionStatus = 'success'
+        OR record.tellerConfirmationTime IS  NOT NULL)
+     WITH DISTINCT record, pastor
+RETURN pastor.firstName, pastor.lastName,SUM(round(record.income,2)) AS notBanked ORDER BY pastor.firstName, pastor.lastName
+`
