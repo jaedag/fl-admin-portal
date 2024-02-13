@@ -95,6 +95,4 @@ const handler = async () => {
   }
 }
 
-// module.exports.handler = schedule('0 23 * * 1', handler)
-
-module.exports.handler = schedule('* * * * *', handler)
+module.exports.handler = schedule('0 23 * * 1', handler)
