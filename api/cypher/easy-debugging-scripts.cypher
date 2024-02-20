@@ -68,3 +68,16 @@ RETURN transaction, council.name
 
 
       RETURN date().week
+
+
+      MATCH (council:Council) WHERe council.name IN ["Galatians"]
+MATCH (council)-[:HAS*3]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+MATCH (fellowship)<-[:LEADS]-(leader:Member)
+MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week - 1 AND date.date.year = 2023
+RETURN  council.name, fellowship.name, leader.firstName, leader.lastName,  record.attendance, record.income;
+
+MATCH (council:Council {name:  "Galatians"})-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+WHERE date.date.week = 6 AND date.date.year = date().year AND NOT record:NoService
+
+MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church) WHERE NOT church:Member
+RETURN church.name, labels(church), record.attendance, record.income, record.bankingSlip, date.date ORDER BY date.date DESC;
