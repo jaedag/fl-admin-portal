@@ -1,5 +1,7 @@
 const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
+const { default: axios } = require('axios')
+const { getWeekNumber } = require('@jaedag/admin-portal-types')
 const { SECRETS } = require('./gsecrets.js')
 const { writeToGsheet, clearGSheet } = require('./utils/writeToGSheet.js')
 const { campusList } = require('./query-exec/campusList.js')
@@ -19,8 +21,6 @@ const {
   default: fellowshipAttendanceIncome,
 } = require('./query-exec/fellowshipAttendanceIncome.js')
 const { notifyBaseURL } = require('./utils/constants.js')
-const { default: axios } = require('axios')
-const { getWeekNumber } = require('@jaedag/admin-portal-types')
 
 const handler = async () => {
   const driver = neo4j.driver(
@@ -66,7 +66,7 @@ const handler = async () => {
       url: '/send-sms',
       headers: {
         'Content-Type': 'application/json',
-        'x-secret-key': process.env.FLC_NOTIFY_KEY,
+        'x-secret-key': SECRETS.FLC_NOTIFY_KEY,
       },
       data: {
         recipient: ['233594760323', '233592219407', '233555542340'],
