@@ -36,6 +36,9 @@ const {
   default: anagkazoAmountNotBanked,
 } = require('./query-exec/anagkazoAmountNotBanked.js')
 const { default: amountBanked } = require('./query-exec/amountBanked.js')
+const {
+  default: anagkazoAmountBanked,
+} = require('./query-exec/anagkazoAmountBanked.js')
 
 const handler = async () => {
   const driver = neo4j.driver(
@@ -62,6 +65,7 @@ const handler = async () => {
     anagkazoIncomeAttendance(driver),
     anagkazoAmountNotBanked(driver),
     amountBanked(driver),
+    anagkazoAmountBanked(driver),
   ]).catch((error) => {
     console.error('Database query failed to complete\n', error.message)
   })
