@@ -579,8 +579,8 @@ const bankingMutation = {
             await session.executeWrite((tx) =>
               tx.run(setTransactionStatusFailed, {
                 ...args,
-                status: confirmationResponse?.data.data.status,
-                error: confirmationResponse?.data.data.gateway_response,
+                status: error.response.data.status,
+                error: error.response.data.message,
               })
             )
           )
