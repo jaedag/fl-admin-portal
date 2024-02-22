@@ -3,7 +3,6 @@ import { getHumanReadableDate } from 'jd-date-utils'
 import { Context } from '../utils/neo4j-types'
 import {
   permitAdmin,
-  permitLeader,
   permitLeaderAdmin,
   permitMe,
   permitTellerStream,
@@ -244,7 +243,6 @@ const bankingMutation = {
     } finally {
       await session.close()
     }
-    return transactionResponse.record
   },
 
   BankRehearsalOffering: async (
@@ -575,13 +573,18 @@ const bankingMutation = {
           'There was an error confirming transaction - ',
           JSON.stringify(error.response.data)
         )
-        // if (error.response.data.status === false) {
-        //   record = rearrangeCypherObject(
-        //     await session.executeWrite((tx) =>
-        //       tx.run(setTransactionStatusFailed, args)
-        //     )
-        //   )
-        // }
+
+        if (error.response.data.code === 'transaction_not_found') {
+          record = rearrangeCypherObject(
+            await session.executeWrite((tx) =>
+              tx.run(setTransactionStatusFailed, {
+                ...args,
+                status: confirmationResponse?.data.data.status,
+                error: confirmationResponse?.data.data.gateway_response,
+              })
+            )
+          )
+        }
       }
     )
 
