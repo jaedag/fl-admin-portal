@@ -11,6 +11,9 @@ export interface AccountTransaction {
   charge?: number
   account: 'Bussing Society' | 'Current Account'
   status: 'success' | 'pending approval' | 'declined'
-  category: 'Deposit'
+  category: 'Deposit' | 'Bussing'
   loggedBy: Member
+
+  weekdayBalance: number
+  bussingSocietyBalance: number
 }

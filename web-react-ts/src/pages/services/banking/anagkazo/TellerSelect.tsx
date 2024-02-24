@@ -86,7 +86,7 @@ const TellerSelect = () => {
 
       handleClose()
       onSubmitProps.setSubmitting(false)
-      alert('Anagkazo Teller has been added successfully')
+      alert('Stream Teller has been added successfully')
     } catch (e: any) {
       onSubmitProps.setSubmitting(false)
       throwToSentry(e)

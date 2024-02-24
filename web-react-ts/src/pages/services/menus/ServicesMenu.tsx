@@ -69,7 +69,7 @@ const Services = () => {
           {['Stream', 'Constituency', 'Council'].includes(churchType) && (
             <MenuButton
               iconComponent={<Book />}
-              title={`${churchType} Joint Service`}
+              title={`${churchType === 'Stream' ? 'Weekend' : 'Joint'} Service`}
               color="members"
               noCaption
               onClick={() =>
@@ -87,36 +87,46 @@ const Services = () => {
               navigate(`/trends`)
             }}
           />
+          {/* {['Stream'].includes(churchType) && (
+            <MenuButton
+              iconComponent={<SpeakerFill />}
+              title="Special Service Form"
+              color="red"
+              caption="ONLY to be used in the event of a special service"
+              onClick={() => navigate(`/stream/record-special-service`)}
+            />
+          )} */}
           {['Stream', 'Council', 'Constituency', 'Fellowship'].includes(
             churchType
           ) &&
             church?.bankAccount !== 'manual' && (
-              <>
-                <MenuButton
-                  iconComponent={<FileEarmarkArrowUpFill />}
-                  title="Banking Slips"
-                  color="banking"
-                  noCaption
-                  onClick={() => {
-                    clickCard(church)
-                    navigate(
-                      `/services/${churchType.toLowerCase()}/banking-slips`
-                    )
-                  }}
-                />
+              <MenuButton
+                iconComponent={<FileEarmarkArrowUpFill />}
+                title="Banking Slips"
+                color="banking"
+                noCaption
+                onClick={() => {
+                  clickCard(church)
+                  navigate(
+                    `/services/${churchType.toLowerCase()}/banking-slips`
+                  )
+                }}
+              />
+            )}
 
-                <MenuButton
-                  iconComponent={<Coin />}
-                  title="Self Banking Option"
-                  color="banking"
-                  noCaption
-                  onClick={() =>
-                    navigate(
-                      `/services/${churchType.toLowerCase()}/self-banking`
-                    )
-                  }
-                />
-              </>
+          {['Stream', 'Council', 'Constituency', 'Fellowship', 'Hub'].includes(
+            churchType
+          ) &&
+            church?.bankAccount !== 'manual' && (
+              <MenuButton
+                iconComponent={<Coin />}
+                title="Self Banking Option"
+                color="banking"
+                noCaption
+                onClick={() =>
+                  navigate(`/services/${churchType.toLowerCase()}/self-banking`)
+                }
+              />
             )}
 
           {church?.bankAccount === 'manual' &&
@@ -125,7 +135,7 @@ const Services = () => {
                 <RoleView roles={permitAdmin('Stream')}>
                   <MenuButton
                     iconComponent={<PersonPlus />}
-                    title="Add Treasurers"
+                    title="Add Stream Tellers"
                     color="banking"
                     onClick={() => navigate(`/anagkazo/treasurer-select`)}
                     noCaption

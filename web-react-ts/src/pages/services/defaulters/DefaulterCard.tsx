@@ -4,7 +4,7 @@ import PlaceholderCustom from 'components/Placeholder'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { alertMsg } from 'global-utils'
 import { permitLeaderAdmin } from 'permission-utils'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import {
   ArrowCounterclockwise,
@@ -15,13 +15,14 @@ import { useNavigate } from 'react-router'
 import { UNDO_CANCELLED_SERVICE } from '../record-service/RecordServiceMutations'
 import {
   FellowshipWithDefaulters,
+  HubWithDefaulters,
   StreamWithDefaulters,
 } from './defaulters-types'
 import './Defaulters.css'
 import { MemberContext } from 'contexts/MemberContext'
 
 type DefaulterCardProps = {
-  defaulter: FellowshipWithDefaulters | StreamWithDefaulters
+  defaulter: FellowshipWithDefaulters | StreamWithDefaulters | HubWithDefaulters
   link?: string
 }
 
@@ -31,9 +32,13 @@ const DefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
   const { currentUser } = useContext(MemberContext)
   const [UndoCancelledService] = useMutation(UNDO_CANCELLED_SERVICE)
 
-  const serviceDetails = defaulter?.services?.length
-    ? defaulter?.services[0]
-    : null
+  let serviceDetails: any
+
+  if ('services' in defaulter && defaulter.services?.length) {
+    serviceDetails = defaulter.services[0]
+  } else if ('rehearsals' in defaulter && defaulter.rehearsals?.length) {
+    serviceDetails = defaulter.rehearsals[0]
+  }
 
   return (
     <Card>

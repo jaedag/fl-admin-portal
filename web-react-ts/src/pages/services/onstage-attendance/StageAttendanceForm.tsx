@@ -130,6 +130,7 @@ const StageAttendanceForm = ({
                           You can upload multiple pictures (as many as needed)
                         </small>
                       </div>
+
                       <MultiImageUpload
                         name="onStagePictures"
                         uploadPreset={import.meta.env.VITE_CLOUDINARY_SERVICES}

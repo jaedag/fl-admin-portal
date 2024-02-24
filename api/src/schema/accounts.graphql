@@ -15,6 +15,9 @@ type AccountTransaction {
 
   council: Council! @relationship(type: "HAS_TRANSACTION", direction: IN)
   loggedBy: Member! @relationship(type: "LOGGED_BY", direction: OUT)
+
+  bussingSocietyBalance: Float!
+  weekdayBalance: Float!
 }
 
 extend type Campus {
@@ -51,14 +54,15 @@ extend type Campus {
       statement: """
       MATCH (this)-[:HAS*2]->(council:Council)
       MATCH (council)-[:HAS_TRANSACTION]->(transaction:AccountTransaction)
+
       RETURN transaction ORDER BY transaction.lastModified DESC
       """
     )
 }
 
 extend type Council {
-  hrAmount: Float!
-  bussingAmount: Float!
+  hrAmount: Float
+  bussingAmount: Float
   weekdayBalance: Float!
   bussingSocietyBalance: Float
   transactions: [AccountTransaction!]!
@@ -107,7 +111,9 @@ extend type Mutation {
         transaction.category = $expenseCategory,
         transaction.status = 'pending approval',
         transaction.createdAt = datetime(),
-        transaction.lastModified = datetime()
+        transaction.lastModified = datetime(),
+        transaction.bussingSocietyBalance = council.bussingSocietyBalance,
+        transaction.weekdayBalance = council.weekdayBalance
         // transaction.momoNumber = $momoNumber,
         // transaction.momoName = $momoName,
         // transaction.invoiceUrl = $invoiceUrl
@@ -129,6 +135,28 @@ extend type Mutation {
         SET transaction.status = 'declined'
 
       RETURN transaction
+      """
+    )
+  UndoBussingTransaction(transactionId: ID!): Council!
+    @cypher(
+      statement: """
+      MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
+
+        SET council.bussingSocietyBalance = council.bussingSocietyBalance - transaction.amount
+      DETACH DELETE transaction
+
+      RETURN council
+      """
+    )
+  UndoWeekdayTransaction(transactionId: ID!): Council!
+    @cypher(
+      statement: """
+      MATCH (transaction:AccountTransaction {id: $transactionId})<-[:HAS_TRANSACTION]-(council:Council)
+
+        SET council.weekdayBalance = council.weekdayBalance - transaction.amount
+      DETACH DELETE transaction
+
+      RETURN council
       """
     )
 

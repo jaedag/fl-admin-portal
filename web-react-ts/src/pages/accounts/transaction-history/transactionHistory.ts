@@ -25,6 +25,10 @@ export const GET_CAMPUS_TRANSACTION_HISTORY = gql`
         category
         description
         status
+
+        bussingSocietyBalance
+        weekdayBalance
+
         loggedBy {
           id
           firstName
@@ -51,6 +55,10 @@ export const GET_COUNCIL_TRANSACTION_HISTORY = gql`
         category
         description
         status
+
+        bussingSocietyBalance
+        weekdayBalance
+
         loggedBy {
           id
           firstName
@@ -68,6 +76,8 @@ export const GET_TRANSACTION_DETAILS = gql`
       id
       createdAt
       lastModified
+      bussingSocietyBalance
+      weekdayBalance
       amount
       account
       category
@@ -80,6 +90,24 @@ export const GET_TRANSACTION_DETAILS = gql`
         lastName
         fullName
       }
+    }
+  }
+`
+
+export const UNDO_BUSSING_TRANSACTION = gql`
+  mutation undoBussingTransaction($transactionId: ID!) {
+    UndoBussingTransaction(transactionId: $transactionId) {
+      id
+      name
+    }
+  }
+`
+
+export const UNDO_WEEKDAY_TRANSACTION = gql`
+  mutation undoWeekdayTransaction($transactionId: ID!) {
+    UndoWeekdayTransaction(transactionId: $transactionId) {
+      id
+      name
     }
   }
 `

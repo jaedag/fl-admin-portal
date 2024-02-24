@@ -953,6 +953,8 @@ type ServiceRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
   treasurers: [Member!]! @relationship(type: "WAS_TREASURER_FOR", direction: IN)
   serviceLog: ServiceLog! @relationship(type: "HAS_SERVICE", direction: IN)
   noServiceReason: String
+  name: String
+  description: String
   stream_name: String
     @cypher(
       statement: """
@@ -1013,6 +1015,20 @@ type ServiceLog @auth(rules: [{ isAuthenticated: true }]) {
 
 extend type Mutation {
   RecordService(
+    churchId: ID!
+    serviceDate: String!
+    attendance: Int!
+    income: Float!
+    foreignCurrency: String
+    numberOfTithers: Int
+    treasurers: [ID]!
+    treasurerSelfie: String!
+    familyPicture: String!
+  ): ServiceRecord!
+
+  RecordSpecialService(
+    serviceName: String!
+    serviceDescription: String!
     churchId: ID!
     serviceDate: String!
     attendance: Int!

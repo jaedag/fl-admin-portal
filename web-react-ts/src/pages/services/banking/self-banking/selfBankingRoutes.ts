@@ -7,10 +7,12 @@ const StreamSelfBanking = lazy(() => import('./StreamSelfBanking'))
 const CouncilSelfBanking = lazy(() => import('./CouncilSelfBanking'))
 const ConstituencySelfBanking = lazy(() => import('./ConstituencySelfBanking'))
 const FellowshipSelfBanking = lazy(() => import('./FellowshipSelfBanking'))
+const HubSelfBanking = lazy(() => import('./HubSelfBanking'))
 const PayStreamOffering = lazy(() => import('./PayStreamOffering'))
 const PayCouncilOffering = lazy(() => import('./PayCouncilOffering'))
 const PayConstituencyOffering = lazy(() => import('./PayConstituencyOffering'))
 const PayFellowshipOffering = lazy(() => import('./PayFellowshipOffering'))
+const PayHubOffering = lazy(() => import('./PayHubOffering'))
 const ReceiptPage = lazy(() => import('./ReceiptPage'))
 
 export const banking: LazyRouteTypes[] = [
@@ -45,6 +47,11 @@ export const banking: LazyRouteTypes[] = [
     roles: ['leaderFellowship'],
   },
   {
+    path: '/rehearsals/hub/self-banking/pay',
+    element: PayHubOffering,
+    roles: ['leaderHub'],
+  },
+  {
     path: '/services/constituency/self-banking/pay',
     element: PayConstituencyOffering,
     roles: ['leaderConstituency', 'adminConstituency'],
@@ -68,5 +75,12 @@ export const banking: LazyRouteTypes[] = [
     path: '/self-banking/receipt',
     element: ReceiptPage,
     roles: [...permitMe('Constituency'), 'leaderFellowship'],
+  },
+
+  {
+    path: '/services/hub/self-banking',
+    element: HubSelfBanking,
+    roles: ['leaderHub'],
+    placeholder: true,
   },
 ]

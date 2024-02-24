@@ -1,7 +1,11 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useContext } from 'react'
-import { GET_TRANSACTION_DETAILS } from './transactionHistory'
+import {
+  GET_TRANSACTION_DETAILS,
+  UNDO_BUSSING_TRANSACTION,
+  UNDO_WEEKDAY_TRANSACTION,
+} from './transactionHistory'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Button, Container } from 'react-bootstrap'
 import { AccountTransaction } from './transaction-types'
@@ -18,6 +22,8 @@ const TransactionDetails = () => {
   const { data, loading, error } = useQuery(GET_TRANSACTION_DETAILS, {
     variables: { id: transactionId },
   })
+  const [UndoBussingTransaction] = useMutation(UNDO_BUSSING_TRANSACTION)
+  const [UndoWeekdayTransaction] = useMutation(UNDO_WEEKDAY_TRANSACTION)
 
   const transaction: AccountTransaction = data?.accountTransactions[0]
 
@@ -29,6 +35,21 @@ const TransactionDetails = () => {
         <TransactionCard transaction={transaction} />
 
         <div className="text-center mt-5">
+          <Button
+            variant="danger"
+            onClick={async () => {
+              if (transaction.category === 'Bussing')
+                await UndoBussingTransaction({ variables: { transactionId } })
+              else
+                await UndoWeekdayTransaction({ variables: { transactionId } })
+
+              navigate('/accounts/council/transaction-history')
+            }}
+          >
+            Undo Transaction
+          </Button>
+        </div>
+        <div className="text-center mt-2">
           <Button
             variant="success"
             onClick={() => navigate('/accounts/council/transaction-history')}

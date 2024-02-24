@@ -3,8 +3,8 @@ MATCH (church {id: $churchId})
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
 OR church:Hub
 
-OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-WHERE date(date.date).week = date().week AND date(date.date).year = date().year AND (record:ServiceRecord)
+OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+WHERE date(date.date).week = date().week AND date(date.date).year = date().year // AND record.description IS NULL
 
 RETURN church.id AS id, church.name AS name, labels(church) AS labels, record IS NOT NULL AS alreadyFilled
 `
@@ -23,27 +23,33 @@ RETURN DISTINCT higherChurch
 export const getCurrency = `
 MATCH (church {id: $churchId})<-[:HAS|HAS_MINISTRY*0..5]-(campus:Campus)
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
-OR church:Hub OR church:Ministry OR church:CreativeArts
+OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 
-RETURN DISTINCT campus.name, campus.currency AS currency, campus.conversionRateToDollar AS conversionRateToDollar
+RETURN DISTINCT labels(church) AS labels, campus.name, campus.currency AS currency, campus.conversionRateToDollar AS conversionRateToDollar
 `
 
 export const absorbAllTransactions = `
-MATCH (serviceRecord:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:CURRENT_HISTORY]-(church)
-WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:Campus
+MATCH (serviceRecord:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(log:ServiceLog)<-[:CURRENT_HISTORY]-(church)
+WHERE church:Fellowship OR church:Constituency OR church:Council // OR church:Stream OR church:Campus
 MATCH (church)-[:HAS*0..4]->(fellowships:Fellowship)<-[r:GIVEN_AT]-(transaction:Transaction)
 DELETE r
 
-WITH DISTINCT serviceRecord, transaction
+WITH DISTINCT serviceRecord, transaction, log
 MERGE (transaction)-[:GIVEN_AT]->(serviceRecord)
 
-WITH DISTINCT serviceRecord, transaction WHERE transaction.transactionStatus = 'success'
+WITH DISTINCT log, serviceRecord, transaction WHERE transaction.transactionStatus = 'success'
 
-WITH serviceRecord, SUM(transaction.amount) AS amount
+WITH serviceRecord, log, SUM(transaction.amount) AS amount
      SET serviceRecord.onlineGiving = amount,
      serviceRecord.cash = serviceRecord.income,
      serviceRecord.income = amount + serviceRecord.income,
      serviceRecord.dollarIncome = round(toFloat(serviceRecord.income / $conversionRateToDollar), 2)
+
+WITH serviceRecord, log
+MATCH (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id})
+SET aggregate.onlineGiving = aggregate.onlineGiving + serviceRecord.onlineGiving,
+    aggregate.income = aggregate.income + serviceRecord.income,
+    aggregate.dollarIncome = aggregate.dollarIncome + serviceRecord.dollarIncome
 
 RETURN serviceRecord
 `
@@ -89,6 +95,49 @@ export const recordService = `
 
       RETURN serviceRecord
 `
+export const recordSpecialService = `
+      CREATE (serviceRecord:ServiceRecord {id: apoc.create.uuid()})
+        SET serviceRecord.createdAt = datetime(),
+        serviceRecord.attendance = $attendance,
+        serviceRecord.income = $income,
+        serviceRecord.cash = $income,
+        serviceRecord.dollarIncome = round(toFloat($income / $conversionRateToDollar), 2),
+        serviceRecord.foreignCurrency = $foreignCurrency,
+        serviceRecord.numberOfTithers = $numberOfTithers,
+        serviceRecord.treasurerSelfie = $treasurerSelfie,
+        serviceRecord.familyPicture = $familyPicture,
+        serviceRecord.name = $serviceName,
+        serviceRecord.description = $serviceDescription
+      WITH serviceRecord
+
+      MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
+      MATCH (church)-[current:CURRENT_HISTORY]->(log:ServiceLog)
+      MATCH (leader:Member {auth_id: $auth.jwt.sub})
+      
+      MERGE (serviceDate:TimeGraph {date:date($serviceDate)})
+
+      WITH DISTINCT serviceRecord, leader, serviceDate, log
+      MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
+      MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
+      MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
+
+      WITH log, serviceRecord, serviceDate
+      MERGE (aggregate:AggregateServiceRecord {id: serviceDate.date.week + '-' + serviceDate.date.year + '-' + log.id, week: serviceDate.date.week, year: serviceDate.date.year})
+      MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
+
+      WITH serviceRecord, aggregate, SUM(serviceRecord.attendance) AS attendance, SUM(serviceRecord.income) AS income, SUM(serviceRecord.dollarIncome) AS dollarIncome, SUM(aggregate.attendance) AS aggregateAttendance, SUM(aggregate.income) AS aggregateIncome, SUM(aggregate.dollarIncome) AS aggregateDollarIncome
+      MATCH (aggregate)
+      SET aggregate.attendance = aggregateAttendance + attendance,
+      aggregate.income = aggregateIncome + income,
+      aggregate.dollarIncome = aggregateDollarIncome + dollarIncome 
+
+      WITH serviceRecord
+      UNWIND $treasurers AS treasurerId WITH treasurerId, serviceRecord
+      MATCH (treasurer:Active:Member {id: treasurerId})
+      MERGE (treasurer)-[:WAS_TREASURER_FOR]->(serviceRecord)
+
+      RETURN serviceRecord
+`
 
 export const recordCancelledService = `
 CREATE (serviceRecord:ServiceRecord:NoService {createdAt:datetime()})
@@ -111,13 +160,14 @@ RETURN serviceRecord
 export const checkCurrentServiceLog = `
 MATCH (church {id:$churchId}) 
 WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
-OR church:Hub
+OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
 RETURN true AS exists
 `
 export const getServantAndChurch = `
 MATCH (church {id: $churchId}) 
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Hub OR church:HubCouncil
+WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Hub OR church:HubCounci
+OR church:Ministry OR church:CreativeArts
 MATCH (church)<-[:LEADS]-(servant:Active:Member)
 UNWIND labels(church) AS churchType 
 WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Constituency', 'Council', 'Stream','Hub', 'HubCouncil']

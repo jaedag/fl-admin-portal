@@ -1,6 +1,6 @@
 {
   "name": "admin-portal-api",
-  "version": "7.14.12",
+  "version": "7.17.3",
   "description": "API app for First Love Church Admin Portal",
   "main": "src/index.js",
   "scripts": {
@@ -34,9 +34,10 @@
     ]
   },
   "dependencies": {
-    "@apollo/client": "^3.2.5",
-    "@apollo/server": "^4.7.0",
+    "@apollo/client": "^3.8.9",
+    "@apollo/server": "^4.10.0",
     "@as-integrations/aws-lambda": "^2.0.1",
+    "@jaedag/admin-portal-types": "^1.5.13",
     "@neo4j/graphql": "^3.18.2",
     "@neo4j/graphql-plugin-auth": "^2.2.0",
     "@netlify/functions": "^1.2.0",
@@ -52,10 +53,11 @@
     "express": "^4.18.2",
     "firebase-admin": "^11.8.0",
     "form-data": "^4.0.0",
-    "graphql": "^16.3.0",
+    "googleapis": "^131.0.0",
+    "graphql": "^16.8.1",
     "jd-date-utils": "^1.0.9",
     "mailgun.js": "^7.0.0",
-    "neo4j-driver": "^5.7.0",
+    "neo4j-driver": "^5.16.0",
     "node-fetch": "^3.3.2",
     "serverless-http": "^3.2.0"
   },

@@ -15,6 +15,10 @@ import {
   ChurchLevel,
 } from 'global-types'
 
+export interface HigherChurchWithDefaulters extends Church {
+  services?: ServiceRecord[]
+  rehearsals?: ServiceRecord[]
+}
 export interface HubWithDefaulters extends Hub {
   __typename: 'Hub'
   campus: Campus

@@ -52,6 +52,9 @@ export const BACENTA_GRAPHS = gql`
         id
         attendance
         week
+        numberOfSprinters
+        numberOfUrvans
+        numberOfCars
       }
       services(limit: 4) {
         id
@@ -102,6 +105,9 @@ export const CONSTITUENCY_GRAPHS = gql`
         id
         attendance
         week
+        numberOfSprinters
+        numberOfUrvans
+        numberOfCars
       }
       services(limit: 4) {
         id
@@ -143,6 +149,9 @@ export const COUNCIL_GRAPHS = gql`
         id
         attendance
         week
+        numberOfSprinters
+        numberOfUrvans
+        numberOfCars
       }
       services(limit: 4) {
         id
@@ -184,6 +193,9 @@ export const STREAM_GRAPHS = gql`
         id
         attendance
         week
+        numberOfSprinters
+        numberOfUrvans
+        numberOfCars
       }
       services(limit: 4) {
         id
@@ -226,6 +238,9 @@ export const CAMPUS_GRAPHS = gql`
         id
         attendance
         week
+        numberOfSprinters
+        numberOfUrvans
+        numberOfCars
       }
       services(limit: 4) {
         id
@@ -267,6 +282,9 @@ export const OVERSIGHT_GRAPHS = gql`
         id
         attendance
         week
+        numberOfSprinters
+        numberOfUrvans
+        numberOfCars
       }
       services(limit: 4) {
         id
@@ -309,6 +327,9 @@ export const DENOMINATION_GRAPHS = gql`
         id
         attendance
         week
+        numberOfSprinters
+        numberOfUrvans
+        numberOfCars
       }
 
       memberCount

@@ -305,3 +305,48 @@ export const STREAM_SERVICE_RECORDS = gql`
     }
   }
 `
+
+export const HUB_BANKING_SLIP_QUERIES = gql`
+  query hubMeetings($hubId: ID!, $skip: Int) {
+    hubs(where: { id: $hubId }) {
+      id
+      name
+      rehearsals(limit: 10, skip: $skip) {
+        id
+        stream_name
+        noServiceReason
+        createdAt
+        serviceDate {
+          date
+        }
+        created_by {
+          id
+          firstName
+          lastName
+          fullName
+        }
+        bankingProof
+        bankingSlip
+        bankingSlipUploader {
+          id
+          firstName
+          lastName
+          fullName
+        }
+        offeringBankedBy {
+          id
+          firstName
+          lastName
+          fullName
+        }
+        income
+        cash
+        numberOfTithers
+        foreignCurrency
+        transactionId
+        transactionReference
+        transactionStatus
+      }
+    }
+  }
+`

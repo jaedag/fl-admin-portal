@@ -112,6 +112,9 @@ export const getServiceGraphData = (
         income: record.income?.toFixed(2),
         target: record?.target,
         numberOfServices: record?.numberOfServices,
+        numberOfUrvans: record?.numberOfUrvans,
+        numberOfSprinters: record?.numberOfSprinters,
+        numberOfCars: record?.numberOfCars,
       })
     })
   }
@@ -156,8 +159,6 @@ export const getServiceGraphData = (
     pushIntoData(church.aggregateMultiplicationRecords)
   }
 
-  // data = data.sort(sortingFunction('week'))
-
   if (!data.length) {
     return [
       {
@@ -173,5 +174,6 @@ export const getServiceGraphData = (
   if (data.length <= 3) {
     return data
   }
+
   return data.slice(data.length - numberOfWeeks, data.length)
 }

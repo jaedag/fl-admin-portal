@@ -146,7 +146,7 @@ const directoryMutation = {
 
     const member = memberRes.records[0]?.get('member').properties
 
-    if (!member?.imclChecked) {
+    if (member?.imclChecked === false) {
       throw new Error(
         'You cannot move this member without filling IMCL details for them'
       )

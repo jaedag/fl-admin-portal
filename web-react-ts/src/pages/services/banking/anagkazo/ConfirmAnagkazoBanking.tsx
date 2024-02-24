@@ -3,7 +3,6 @@ import { Button, Card, Container, Spinner, Table } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
 import PlaceholderCustom from 'components/Placeholder'
-import { getWeekNumber } from 'jd-date-utils'
 import { CONSTITUENCY_BANKING_DEFUALTERS_THIS_WEEK } from 'pages/services/defaulters/DefaultersQueries'
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -18,6 +17,7 @@ import Popup from 'components/Popup/Popup'
 import NoDataComponent from 'pages/arrivals/CompNoData'
 import Input from 'components/formik/Input'
 import './TellerSelect.css'
+import { getWeekNumber } from '@jaedag/admin-portal-types'
 
 type FormOptions = {
   defaulterSearch: string
@@ -30,7 +30,7 @@ type Defaulter = {
 }
 
 const ConfirmAnagkazoBanking = () => {
-  const { currentUser, theme } = useContext(MemberContext)
+  const { currentUser } = useContext(MemberContext)
   const church = currentUser?.currentChurch
   const churchType = currentUser.currentChurch?.__typename
   const { streamId } = useContext(ChurchContext)
@@ -92,7 +92,7 @@ const ConfirmAnagkazoBanking = () => {
         <PlaceholderCustom xs={12} as="h1">
           <div className="text-center">
             <h1 className="mb-0  page-header">{`${church?.name} ${churchType}`}</h1>
-            <p className={`${theme} menu-subheading`}>Receive Offering</p>
+            <p className={`menu-subheading`}>Receive Offering</p>
           </div>
         </PlaceholderCustom>
 
@@ -123,7 +123,7 @@ const ConfirmAnagkazoBanking = () => {
                       </div>
                     ) : (
                       <>
-                        <h3 className={`${theme} menu-subheading text-center`}>
+                        <h3 className={` menu-subheading text-center`}>
                           {selected?.name} Constituency
                         </h3>
                         <h6 className="text-center">Confirm Offering?</h6>
@@ -151,8 +151,7 @@ const ConfirmAnagkazoBanking = () => {
                         <Button
                           variant="primary"
                           type="submit"
-                          size="lg"
-                          className={`btn-main ${theme}`}
+                          className={`btn-main `}
                           disabled={isSubmitting}
                           onClick={async () => {
                             setSubmitting(true)
@@ -186,7 +185,7 @@ const ConfirmAnagkazoBanking = () => {
                         </Button>
                         <Button
                           variant="primary"
-                          className={`btn-secondary mt-2 ${theme}`}
+                          className={`btn-secondary mt-2 `}
                           onClick={togglePopup}
                         >
                           No, take me back
@@ -208,7 +207,7 @@ const ConfirmAnagkazoBanking = () => {
 
                       <div className="flex-grow-1 ms-3">
                         <h6 className="fw-bold">{`${defaulter?.name} Constituency`}</h6>
-                        <p className={`text-secondary mb-0 ${theme}`}>
+                        <p className={`text-secondary mb-0 `}>
                           <span>{defaulter?.leader?.fullName}</span>
                         </p>
                       </div>

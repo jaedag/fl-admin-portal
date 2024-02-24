@@ -9,7 +9,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { permitAdmin } from 'permission-utils'
 import AllChurchesSummary from 'components/AllChurchesSummary'
 import ChurchSearch from 'components/ChurchSearch'
-import { ChurchLevel } from '@jaedag/admin-portal-types'
+import { ChurchLevel } from 'global-types'
 
 const AllCampusConstituencies = () => {
   const { clickCard, campusId } = useContext(ChurchContext)

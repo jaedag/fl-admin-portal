@@ -4,13 +4,11 @@ import PlaceholderCustom from 'components/Placeholder'
 import { MemberContext } from 'contexts/MemberContext'
 import { useContext } from 'react'
 import { Container } from 'react-bootstrap'
-import { BsSpeakerFill } from 'react-icons/bs'
-import { FaHubspot } from 'react-icons/fa'
-import { GiNotebook } from 'react-icons/gi'
+import { PencilSquare } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 
-const MinistryFormMenu = () => {
-  const { currentUser, theme } = useContext(MemberContext)
+const HubCouncilFormMenu = () => {
+  const { currentUser } = useContext(MemberContext)
   const navigate = useNavigate()
 
   return (
@@ -19,38 +17,28 @@ const MinistryFormMenu = () => {
         <PlaceholderCustom xs={12} as="h1">
           <div className="text-center">
             <h1 className="mb-0  page-header">{`${currentUser.currentChurch?.name} ${currentUser.currentChurch?.__typename}`}</h1>
-            <p className={`${theme} menu-subheading`}>Ministry</p>
+            <p className={`menu-subheading`}>Meetings</p>
           </div>
         </PlaceholderCustom>
 
         <div className="d-grid gap-2 mt-5 text-left">
-          <HeadingSecondary>On Stage Attendance</HeadingSecondary>
-          <MenuButton
-            iconComponent={<BsSpeakerFill />}
-            title="Fill On Stage Attendance"
-            color="red"
-            onClick={() => navigate(`/ministry/record-onstage-attendance`)}
-            noCaption
-          />
-
-          <hr />
           <HeadingSecondary>Rehearsals</HeadingSecondary>
           <MenuButton
-            iconComponent={<FaHubspot />}
-            title="Fill Rehearsals Form"
+            iconComponent={<PencilSquare />}
+            title="Fill Joint Rehearsals Form"
             color="members"
-            onClick={() => navigate(`/ministry/record-rehearsal`)}
-            noCaption
+            onClick={() => navigate(`/hubCouncil/record-rehearsal`)}
+            caption="Council Joint"
           />
 
           <hr />
           <HeadingSecondary>Weekend Ministry Meeting</HeadingSecondary>
           <MenuButton
-            iconComponent={<GiNotebook />}
+            iconComponent={<PencilSquare />}
             title="Fill Sunday Meeting Form"
+            caption="Council Joint"
             color="green"
-            onClick={() => navigate(`/ministry/record-sundayservice`)}
-            noCaption
+            onClick={() => navigate(`/hubCouncil/record-sundayservice`)}
           />
         </div>
       </Container>
@@ -58,4 +46,4 @@ const MinistryFormMenu = () => {
   )
 }
 
-export default MinistryFormMenu
+export default HubCouncilFormMenu

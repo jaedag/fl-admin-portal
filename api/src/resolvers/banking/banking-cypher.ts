@@ -1,12 +1,14 @@
 export const initiateServiceRecordTransaction = `
-MATCH (record:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
+MATCH (record {id: $serviceRecordId}) WHERE record:ServiceRecord OR record:RehearsalRecord
+
+MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
 WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:Campus
+OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 
 
 UNWIND labels(church) AS churchLevel 
 WITH record, church, churchLevel
-WHERE churchLevel = 'Fellowship' OR churchLevel = 'Bacenta' OR churchLevel = 'Constituency' 
-OR churchLevel = 'Council' OR churchLevel = 'Stream' OR churchLevel = 'Campus'
+WHERE churchLevel IN ['Fellowship','Bacenta','Constituency','Council', 'Stream', 'Campus', 'Hub', 'HubCouncil', 'Ministry', 'CreativeArts'] 
 
 MATCH (author:Member {auth_id: $auth.jwt.sub})
 MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
@@ -77,6 +79,33 @@ RETURN record {
 } 
 `
 
+export const checkRehearsalTransactionReference = `
+MATCH (record:RehearsalRecord {id: $rehearsalRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)<-[:HAS*0..3]-(ministry:Ministry)
+WHERE church:Hub OR church:HubCouncil OR church:Ministry
+MATCH (ministry)<-[:HAS_MINISTRY]-(stream:Stream)
+OPTIONAL MATCH (record)-[:OFFERING_BANKED_BY]->(banker)
+
+RETURN record {
+    .id,
+    .transactionReference,
+    .transactionStatus,
+    .transactionTime,
+    .income
+}, banker {
+    .id,
+    .firstName, 
+    .lastName
+}, ministry {
+    .id,
+    .bankAccount,
+    .name
+}, stream {
+    .id,
+    .bankAccount,
+    .name
+}
+`
+
 export const setTransactionStatusFailed = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
 SET record.transactionStatus = $status,
@@ -106,7 +135,8 @@ WITH collect(otherRecords.id) AS recordIds, record.id AS currentServiceId
 WITH apoc.coll.indexOf(recordIds,currentServiceId) + 1 AS lastServiceIndex, recordIds WHERE lastServiceIndex >= 0
 MATCH (lastService:ServiceRecord {id: recordIds[lastServiceIndex]})-[:SERVICE_HELD_ON]->(lastDate:TimeGraph)
 MATCH (record:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
-WHERE church:Fellowship OR church:Constituency OR church:Council
+WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:Campus OR church:Oversight OR church:Denomination
+OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 
 RETURN lastService, lastDate, record, church
 `
@@ -122,7 +152,7 @@ export const checkIfIMCLNotFilled = `
 export const submitBankingSlip = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
 WHERE record.transactionStatus IS NULL
-OR record.transactionStatus = 'failed'
+OR NOT record.transactionStatus IN ['pending', 'success']
 SET record.bankingSlip = $bankingSlip
 WITH record
 MATCH (banker:Member {auth_id: $auth.jwt.sub})
@@ -134,4 +164,14 @@ export const checkIfServicePending = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})
 WHERE record.transactionStatus = 'pending' OR record.transactionStatus = 'send OTP'
 RETURN record
+`
+
+export const manuallyConfirmOfferingPayment = `
+MATCH (service:ServiceRecord {id: $serviceRecordId})
+    SET service.tellerConfirmationTime = datetime()
+
+WITH service
+MATCH (author:Member {auth_id: $auth.jwt.sub})
+MERGE (service)<-[:CONFIRMED_BANKING_FOR]-(author)
+RETURN service
 `

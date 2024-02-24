@@ -1,143 +1,83 @@
-// if someone says that 
-// If someone says he has filled IMCL but is still getting an error,
-//it means he filled it out of order and this must be run
 
-MATCH (record:ServiceRecord {id: "38ec9b84-1293-4c53-b497-f83f44e6d61c"})
+MATCH (stream:Stream {id: $streamId})-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+WHERE date.date.year = 2024
+RETURN record.id, date.date, record.attendance, record.income, record.bankingSlip ORDER BY date.date DESC;
 
-OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member)
-   WHERE absent.imclChecked = false
-// SET absent.imclChecked = true
+// Undo Transaction
+MATCH (transaction:AccountTransaction {id:  "c0f0cffc-8a72-41a9-bfb1-2ab74c0e0d72"})<-[:HAS_TRANSACTION]-(council:Council)
+WITH transaction, council WHERE transaction.account = "Bussing Society"
+    // SET council.bussingSocietyBalance = council.bussingSocietyBalance - transaction.amount
 
-RETURN record.attendance, absent.firstName, absent.lastName, absent.imclChecked;
+MATCH (transaction:AccountTransaction {id:  "c0f0cffc-8a72-41a9-bfb1-2ab74c0e0d72"})<-[:HAS_TRANSACTION]-(council:Council)
+WITH transaction, council WHERE transaction.account = "Weekday Balance"
 
-
-MATCH (stream:Stream {name: "Anagkazo Encounter"})-[:HAS*4]->(fellowship:Fellowship)
-MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph {date: date("2023-09-14")})
-OPTIONAL MATCH (record)<-[:ABSENT_FROM_SERVICE]-(absent:Member)
-   WHERE absent.imclChecked = false
-SET absent.imclChecked = true
-RETURN fellowship.name, record.attendance, COUNT(absent);
-
-MATCH (fellowship:Fellowship {bankingCode: 7035 })<-[:BELONGS_TO]-(member:Member)
-SET member.imclChecked = true
-RETURN member.name, member.imclChecked;
+RETURN transaction, council.name
+// SET council.balance = council.balance - transaction.amount
+// DETACH DELETE transaction;
 
 
-// If a fellowship service is Blocking 
+      MATCH (this:HubCouncil  {id: "430aafb9-bbcb-464f-8266-a22b49b24f09"})
+      WITH date() as today, this
+      WITH  today.weekDay as theDay, today, this
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
 
-MATCH (fellowship:Fellowship {bankingCode: 7035 })-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph {date: date("2023-08-27")})
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:RehearsalRecord)
 
-MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
-MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
-MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
-  SET record.markedAttendance = true
-RETURN fellowship.name, record.attendance, COUNT(members);
+       WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(hubs) WHERE hubs:Hub OR hubs:ClosedHub
 
-// If Sunday Bussing is blocking
+       WITH DISTINCT hubs, this, record
+       MATCH (hubs)<-[:HAS]-(this)
+        MATCH (hubs)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(records:RehearsalRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+      MATCH (records)-[:LOGGED_BY]->(author:Member)
+      WITH DISTINCT records,date, hubs, author
+      RETURN DISTINCT hubs.name, author.firstName, author.lastName, records.attendance, records.noServiceReason, date.date ORDER BY date.date DESC SKIP 0 
+    //    RETURN record.id, record.attendance, record.noServiceReason
 
-MATCH (fellowship:Fellowship {bankingCode: 7413 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date("2023-08-06")})
-
-MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
-MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
-MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
-SET record.markedAttendance = true
-RETURN fellowship.name, record.attendance, COUNT(members);
-
-// Checking 
-MATCH (fellowship:Fellowship {bankingCode: 6775 })-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph {date: date("2023-07-20")})
-OPTIONAL MATCH (record)<-[:PRESENT_AT_SERVICE|ABSENT_FROM_SERVICE]-(member:Member)-[:BELONGS_TO]->(fellowship)
-RETURN fellowship.name, COUNT(member) > 0 AS filled;
-
-// Checking Bussing
-MATCH (fellowship:Fellowship {bankingCode: 7517 })<-[:HAS]-(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph {date: date("2023-09-14")})
-OPTIONAL MATCH (record)<-[:PRESENT_AT_SERVICE|ABSENT_FROM_SERVICE]-(member:Member)-[:BELONGS_TO]->(fellowship)
-RETURN fellowship.name, COUNT(member) > 0 AS filled;
-
-// If Sunday Bussing is blocking
-MATCH (stream:Stream {name: "Anagkazo Encounter"})-[:HAS*4]->(fellowship:Fellowship)
-MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph {date: date("2023-09-14")})
-MATCH (fellowship)<-[:BELONGS_TO]-(members:Member)
-MERGE (record)<-[:PRESENT_AT_SERVICE]-(members)
-MERGE (record)<-[:ABSENT_FROM_SERVICE]-(members)
-SET record.markedAttendance = true
-RETURN fellowship.name, record.attendance, COUNT(members);
+      RETURN DISTINCT hubs.name
 
 
-MATCH (record:ServiceRecord)-[r:SERVICE_HELD_ON]->(date:TimeGraph)
-WHERE date.date.week = date().week
-DETACH DELETE record
-RETURN date().week
+       MATCH (this:Constituency {id: "dd4b3467-52cf-471d-ae64-5bd43cd4d6db"})-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
+      MATCH (agg) WHERE agg.week = $week AND agg.year = date().year
+
+      WITH agg, this
+      WITH date() as today, this, agg
+      WITH  today.weekDay as theDay, today, this, agg
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this, agg
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this, agg
+
+      MATCH (date:TimeGraph)
+      USING INDEX date:TimeGraph(date)
+      WHERE date.date IN dates
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+
+      WITH collect(record.foreignCurrency) as list, agg
+
+      RETURN {
+        id: agg.id,
+        attendance: agg.attendance,
+        income: agg.income,
+        week: agg.week,
+        year: agg.year,
+        foreignCurrency: list
+      }
 
 
-
-MATCH (council:Council {name: "Acts"})
-SET council.bussingSocietyBalance = 5330.34 + 2500
-RETURN council.name, council.bussingSocietyBalance
-
-MATCH (stream:Stream) WHERE stream.bankAccount = 'kumasi_account'
-set stream.bankAccount = 'oa_kumasi'
-RETURN stream.name, stream.bankAccount
+      RETURN date().week
 
 
-MATCH (hub:HubCouncil)<-[r:HAS]-(constituency:Ministry)
-RETURN hub.name, constituency.name, r
+      MATCH (council:Council) WHERe council.name IN ["Galatians"]
+MATCH (council)-[:HAS*3]->(fellowship) WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
+MATCH (fellowship)<-[:LEADS]-(leader:Member)
+MATCH (fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) WHERE date.date.week = date().week - 1 AND date.date.year = 2023
+RETURN  council.name, fellowship.name, leader.firstName, leader.lastName,  record.attendance, record.income;
 
-// Delete hubs that don't have ministries
-MATCH (hub:Hub)
-WHERE NOT EXISTS {
-   MATCH (hub)<-[:HAS_MINISTRY]-(constituency:Constituency)
-}
-DETACH DELETE hub
+MATCH (council:Council {name:  "Galatians"})-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+WHERE date.date.week = 6 AND date.date.year = date().year AND NOT record:NoService
 
-// MATCH (hub)<-[:LEADS]-(leader:Member)-[:BELONGS_TO]->(fellowship:Fellowship)
-// MATCH (fellowship)<-[:HAS*2]-(constituency:Constituency)
-// MERGE (constituency)-[:HAS_MINISTRY]->(hub)
-
-RETURN hub.name
-
-
-MATCH (this:Member {id: "dca6e371-e814-41ef-b46d-606d54bd89b2"})-[:BELONGS_TO]->(basonta:Basonta)
-MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(creativeLevel)<-[:HAS_MINISTRY]-(bacentaLevel)-[:HAS*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-WHERE creativeLevel:Hub OR creativeLevel:HubCouncil OR creativeLevel:Ministry OR creativeLevel:CreativeArts
-MATCH (members)-[:BELONGS_TO]->(basonta)
-WHERE toLower(members.firstName+ ' ' + members.middleName + ' ' + members.lastName) CONTAINS toLower($key)
-OR toLower(members.firstName + ' ' + members.lastName) CONTAINS toLower($key)
-RETURN DISTINCT members.firstName,  members.lastName,basonta.name ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
-
-MATCH (member:Member {email: "glendertetteh212@gmail.com"})
-MATCH (member)-[r:IS_ADMIN_FOR]->(church)
-DELETE r
-RETURN member, church
-
-
-      MATCH (this:Member {email: "mccorlays@gmail.com"})-[:LEADS|IS_ADMIN_FOR]->(creativeChurch)<-[:HAS_MINISTRY]-(bacentaChurch)-[:HAS*2..5]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
-      WHERE creativeChurch:Hub OR creativeChurch:HubCouncil OR creativeChurch:Ministry OR creativeChurch:CreativeArts
-      AND bacentaChurch:Constituency OR bacentaChurch:Council OR bacentaChurch:Stream OR bacentaChurch:Campus
-
-      MATCH (hub:Hub {id: $hubId})<-[:HAS]-(:HubCouncil)<-[:HAS]-(:Ministry)<-[:HAS]-(creative:CreativeArts)
-      MATCH (members:Active:Member)-[:BELONGS_TO]->(creative)
-RETURN members.firstName, members.lastName
-      WHERE toLower(members.firstName+ ' ' + members.middleName + ' ' + members.lastName) CONTAINS toLower($key)
-      OR toLower(members.firstName + ' ' + members.lastName) CONTAINS toLower($key)
-      RETURN DISTINCT members ORDER BY toLower(members.lastName), toLower(members.firstName) LIMIT $limit
-
-      MATCH (constituency:Constituency {name:  "UPSA HOSTEL "})
-OPTIONAL MATCH (constituency)-[:HAS]->(bacentas:Bacenta)<-[:LEADS]-(member:Active:Member)
-OPTIONAL MATCH (constituency)-[:HAS_MINISTRY]->(hub:Active:Hub)
-RETURN constituency.name AS name, COUNT(member) AS memberCount, COUNT(bacentas) AS bacentaCount,  COUNT(hub) AS hubCount 
-
-MATCH (hub:Hub {id: "73be1398-598e-44a5-b65d-581077110a7d"})
-MATCH (constituency:Constituency {id: "bac4271f-3057-458b-8db6-da60cbeb6e16"})
-MERGE (constituency)-[:HAS_MINISTRY]->(hub)
-RETURN hub.name, constituency.name;
-
-
-MATCH (r:StageAttendanceRecord)
-DETACH DELETE r
-
-MATCH (agg:AggregateServiceRecord) WhERE agg.income IS NULL
-DETACH DELETE agg;
-
-MATCH (trans:AccountTransaction {id: "7b5dd5e7-b293-4fa0-96de-b6cc76d8b6c4"})
-SET trans.createdAt = datetime("2023-10-30T16:48:58.943Z")
-RETURN trans;
+MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church) WHERE NOT church:Member
+RETURN church.name, labels(church), record.attendance, record.income, record.bankingSlip, date.date ORDER BY date.date DESC;

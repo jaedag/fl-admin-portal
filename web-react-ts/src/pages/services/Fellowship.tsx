@@ -16,7 +16,7 @@ const Fellowship = () => {
         <PlaceholderCustom xs={12} as="h1">
           <div className="text-center">
             <h1 className="mb-0  page-header">{`${currentUser.currentChurch?.name} ${currentUser.currentChurch?.__typename}`}</h1>
-            <p className={`${theme} menu-subheading`}>Fellowship</p>
+            <p className={`${theme} menu-subheading`}>Meetings</p>
           </div>
         </PlaceholderCustom>
 

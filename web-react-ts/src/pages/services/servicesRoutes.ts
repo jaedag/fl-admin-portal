@@ -11,6 +11,7 @@ import { lazy } from 'react'
 import { downloadReports } from './download-reports/downloadReportsRoutes'
 import { streamServicesRoutes } from './defaulters/stream-services/streamDefaultersRoutes'
 import { onStageRoutes } from './onstage-attendance/onStageRoutes'
+import { rehearsalRoutes } from './rehearsalRoutes'
 
 const BacentaService = lazy(
   () => import('pages/services/record-service/BacentaService')
@@ -37,16 +38,21 @@ const FellowshipServiceDetails = lazy(
   () => import('pages/services/record-service/FellowshipServiceDetails')
 )
 const HubRehearsalCancelled = lazy(
-  () => import('pages/services/rehearsals/HubRehearsalCancelled')
+  () =>
+    import('pages/services/record-service/creative-arts/HubRehearsalCancelled')
 )
 const HubRehearsalService = lazy(
-  () => import('pages/services/rehearsals/HubRehearsalService')
+  () =>
+    import('pages/services/record-service/creative-arts/HubRehearsalService')
 )
 const HubSundayMeeting = lazy(
   () => import('pages/services/ministry-meeting/HubSundayMeeting')
 )
 const HubRehearsalServiceDetails = lazy(
-  () => import('pages/services/rehearsals/HubRehearsalServiceDetails')
+  () =>
+    import(
+      'pages/services/record-service/creative-arts/HubRehearsalServiceDetails'
+    )
 )
 
 const HubSundayMeetingDetails = lazy(
@@ -166,6 +172,9 @@ const CampusJoint = lazy(() => import('pages/services/CampusJoint'))
 const StreamService = lazy(
   () => import('pages/services/record-service/StreamService')
 )
+const StreamRecordSpecialService = lazy(
+  () => import('pages/services/special-service/StreamRecordSpecialService')
+)
 const StreamServiceDetails = lazy(
   () => import('pages/services/record-service/StreamServiceDetails')
 )
@@ -182,7 +191,7 @@ const DefaultersDashboard = lazy(
 const TrendsMenu = lazy(() => import('./graphs/TrendsMenu'))
 
 const HubFormMenu = lazy(() => import('./menus/HubFormMenu'))
-const MinistryMenu = lazy(() => import('./menus/MinistryMenu'))
+const MinistryFormMenu = lazy(() => import('./menus/MinistryFormMenu'))
 const FellowshipBankingSlipSubmission = lazy(
   () => import('pages/services/banking/banking-slip/FellowshipSubmission')
 )
@@ -203,6 +212,7 @@ export const services: LazyRouteTypes[] = [
   ...anagkazoRoutes,
   ...banking,
   ...onStageRoutes,
+  ...rehearsalRoutes,
   {
     path: '/services',
     element: ServicesMenu,
@@ -322,7 +332,7 @@ export const services: LazyRouteTypes[] = [
   },
   {
     path: '/services/ministry',
-    element: MinistryMenu,
+    element: MinistryFormMenu,
     roles: permitLeaderAdmin('Ministry'),
     placeholder: true,
   },
@@ -339,7 +349,8 @@ export const graphs: LazyRouteTypes[] = [
     path: '/fellowship/graphs',
     element: FellowshipReport,
     roles: [
-      ...permitLeaderAdminArrivals('Fellowship'),
+      ...permitLeaderAdminArrivals('Constituency'),
+      ...permitTellerStream(),
       ...permitLeaderAdmin('Hub'),
     ],
     placeholder: true,
@@ -347,21 +358,27 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/bacenta/graphs',
     element: BacentaReport,
-    roles: permitLeaderAdminArrivals('Bacenta'),
+    roles: [
+      ...permitLeaderAdminArrivals('Constituency'),
+      ...permitTellerStream(),
+    ],
     placeholder: true,
   },
 
   {
     path: '/constituency/graphs',
     element: ConstituencyReport,
-    roles: permitLeaderAdminArrivals('Constituency'),
+    roles: [
+      ...permitLeaderAdminArrivals('Constituency'),
+      ...permitTellerStream(),
+    ],
     placeholder: true,
   },
 
   {
     path: '/council/graphs',
     element: CouncilReport,
-    roles: permitLeaderAdminArrivals('Council'),
+    roles: [...permitLeaderAdminArrivals('Council'), ...permitTellerStream()],
     placeholder: true,
   },
   {
@@ -413,7 +430,7 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/fellowship/service-details',
     element: FellowshipServiceDetails,
-    roles: permitLeaderAdmin('Fellowship'),
+    roles: [...permitLeaderAdmin('Fellowship'), ...permitTellerStream()],
     placeholder: true,
   },
   {
@@ -451,7 +468,7 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/hub/service-details',
     element: HubRehearsalServiceDetails,
-    roles: permitLeaderAdmin('Hub'),
+    roles: [...permitLeaderAdmin('Hub'), ...permitTellerStream()],
     placeholder: false,
   },
   {
@@ -471,7 +488,7 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/bacenta/service-details',
     element: BacentaServiceDetails,
-    roles: permitLeaderAdmin('Bacenta'),
+    roles: [...permitLeaderAdmin('Bacenta'), ...permitTellerStream()],
     placeholder: false,
   },
 
@@ -485,7 +502,7 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/constituency/service-details',
     element: ConstituencyServiceDetails,
-    roles: permitLeaderAdmin('Constituency'),
+    roles: [...permitLeaderAdmin('Constituency'), ...permitTellerStream()],
     placeholder: false,
   },
 
@@ -499,7 +516,7 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/council/service-details',
     element: CouncilServiceDetails,
-    roles: permitLeaderAdmin('Council'),
+    roles: [...permitLeaderAdmin('Council'), ...permitTellerStream()],
     placeholder: false,
   },
 
@@ -507,6 +524,12 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/stream/record-service',
     element: StreamService,
+    roles: permitLeaderAdmin('Stream'),
+    placeholder: false,
+  },
+  {
+    path: '/stream/record-special-service',
+    element: StreamRecordSpecialService,
     roles: permitLeaderAdmin('Stream'),
     placeholder: false,
   },

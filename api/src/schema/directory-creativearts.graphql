@@ -158,6 +158,18 @@ type CreativeArts {
 }
 
 type Ministry {
+  bankAccount: String!
+    @cypher(
+      statement: """
+      MATCH (this)<-[:HAS_MINISTRY]-(stream:Stream)
+
+      RETURN 
+        CASE this.bankAccount
+          WHEN NULL THEN stream.bankAccount
+        ELSE this.bankAccount
+        END
+      """
+    )
   vacationStatus: String!
     @cypher(
       statement: """
@@ -1117,7 +1129,7 @@ extend type Mutation {
     familyPicture: String!
   ): MinistryAttendanceRecord!
 
-  RecordHubRehearsalService(
+  RecordRehearsalMeeting(
     churchId: ID!
     serviceDate: String!
     attendance: Int!

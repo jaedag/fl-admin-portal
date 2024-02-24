@@ -26,6 +26,7 @@ import Input from 'components/formik/Input'
 import ImageUpload from 'components/formik/ImageUpload'
 import { MemberContext } from 'contexts/MemberContext'
 import SearchMember from 'components/formik/SearchMember'
+import Textarea from 'components/formik/Textarea'
 
 type ServiceFormProps = {
   church: Church
@@ -70,12 +71,19 @@ const ServiceForm = ({
     familyPicture: '',
   }
 
-  const today = new Date()
+  const todayStartOfDay = new Date()
+  const lastWeek = new Date()
+  lastWeek.setDate(lastWeek.getDate() - 7)
 
   const validationSchema = Yup.object({
     serviceDate: Yup.date()
       .max(new Date(), 'Service could not possibly have happened after today')
-      .min(getMondayThisWeek(today), 'You can only fill forms for this week')
+      .min(
+        currentUser.roles.includes('fishers')
+          ? lastWeek
+          : getMondayThisWeek(todayStartOfDay),
+        'You can only fill forms for this week'
+      )
       .required('Date is a required field'),
     cediIncome: Yup.number()
       .typeError('Please enter a valid number')
@@ -129,10 +137,10 @@ const ServiceForm = ({
         })
 
         if (recordType === 'RehearsalRecord') {
-          clickCard(res.data.RecordHubRehearsalService)
-          navigate(`/hub/service-details`)
+          clickCard(res.data?.RecordRehearsalMeeting)
+          navigate(`/${churchType.toLowerCase()}/service-details`)
         } else {
-          clickCard(res.data.RecordService)
+          clickCard(res.data?.RecordService)
           navigate(`/${churchType.toLowerCase()}/service-details`)
         }
       } catch (error) {
@@ -179,12 +187,16 @@ const ServiceForm = ({
                       name="cediIncome"
                       label={`Income (in ${currentUser.currency})*`}
                     />
-                    <Input
+                    <Textarea
                       name="foreignCurrency"
-                      label="Foreign Currency (if any) (Optional)"
+                      label="Foreign Currency and Cheques (if any) (Optional)"
+                      rows={2}
                     />
                     <Input name="numberOfTithers" label="Number of Tithers*" />
                     <small className="label">Treasurers (minimum of 2)</small>
+                    <small className="yellow">
+                      Please fill the names in the order in which they appear
+                    </small>
                     <FieldArray name="treasurers">
                       {(fieldArrayProps: FieldArrayRenderProps) => {
                         const { push, remove, form } = fieldArrayProps
