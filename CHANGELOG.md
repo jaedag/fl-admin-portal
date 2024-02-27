@@ -1,3 +1,21 @@
+#### 7.18.4 (2024-02-27)
+
+##### New Features
+
+*  add anagkazoAmountBanked query execution ([92c144e4](https://github.com/firstlovecenter/fl-admin-portal/commit/92c144e457ead203402045e18af22b38835814f0))
+*  add debugging scripts and update ServicesMenu component ([3ac116e1](https://github.com/firstlovecenter/fl-admin-portal/commit/3ac116e18d09ec14bdea61fb2f8678a82d79beb1))
+
+##### Bug Fixes
+
+*   update RoleView roles in ServiceDetails component ([23669504](https://github.com/firstlovecenter/fl-admin-portal/commit/2366950487354d06120e87372c9fd26e5a96c5fa))
+*  update banking resolver error handling ([841fcc4e](https://github.com/firstlovecenter/fl-admin-portal/commit/841fcc4eabfe6cf6db32032fbd38d269c781e499))
+*  remove unused import and commented code, handle transaction not found error ([40643420](https://github.com/firstlovecenter/fl-admin-portal/commit/4064342006a3988cfaf33855f967f632ce5ef08c))
+*  correctly import secrets for auto gsheets functions ([05105ad9](https://github.com/firstlovecenter/fl-admin-portal/commit/05105ad9a7108dd4ffd4ee8f6ba757fea5718bee))
+
+##### Refactors
+
+*  anagkazoAmountBankedQuery to not include Donald's attendance and income ([956553f0](https://github.com/firstlovecenter/fl-admin-portal/commit/956553f08f22b59b47ce1bef83a0c4043f5f1ede))
+
 #### 7.18.3 (2024-02-13)
 
 ##### New Features
