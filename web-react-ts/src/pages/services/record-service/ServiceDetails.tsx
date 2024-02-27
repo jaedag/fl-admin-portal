@@ -254,7 +254,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
                         {submitting ? 'Confirming...' : 'Confirm Offering'}
                       </Button>
                     </RoleView>
-                    <RoleView roles={permitAdmin('Campus')}>
+                    <RoleView roles={permitAdmin('Stream')}>
                       <Button
                         className="mb-3"
                         variant="danger"
