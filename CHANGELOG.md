@@ -1,3 +1,9 @@
+#### 7.18.5 (2024-02-28)
+
+##### New Features
+
+*  update banking roles from 'Campus' to 'Stream' ([cb2b0f43](https://github.com/firstlovecenter/fl-admin-portal/commit/cb2b0f43b741991c751267d2cdbb4a4cee0ad2e6))
+
 #### 7.18.4 (2024-02-27)
 
 ##### New Features
