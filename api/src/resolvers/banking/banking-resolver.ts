@@ -638,7 +638,7 @@ const bankingMutation = {
     args: { serviceRecordId: string; bankingSlip: string },
     context: Context
   ) => {
-    isAuth(permitAdmin('Campus'), context.auth.roles)
+    isAuth(permitAdmin('Stream'), context.auth.roles)
     const session = context.executionContext.session()
 
     await checkIfLastServiceBanked(args.serviceRecordId, context).catch(

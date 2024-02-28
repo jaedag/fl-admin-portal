@@ -309,19 +309,19 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/constituency/banking-slip/submission',
     element: ConstituencyBankingSlipSubmission,
-    roles: permitLeaderAdmin('Campus'),
+    roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
   {
     path: '/council/banking-slip/submission',
     element: CouncilBankingSlipSubmission,
-    roles: permitLeaderAdmin('Campus'),
+    roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
   {
     path: '/stream/banking-slip/submission',
     element: StreamBankingSlipSubmission,
-    roles: permitLeaderAdmin('Campus'),
+    roles: permitLeaderAdmin('Stream'),
   },
 
   {
