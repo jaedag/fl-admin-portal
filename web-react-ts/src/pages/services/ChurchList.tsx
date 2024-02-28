@@ -72,7 +72,11 @@ const ChurchList = ({
               }
 
               if (color === 'accounts') {
-                if (!['Council', 'Campus'].includes(church.__typename)) {
+                if (
+                  !['Oversight', 'Council', 'Campus'].includes(
+                    church.__typename
+                  )
+                ) {
                   return null
                 }
               }

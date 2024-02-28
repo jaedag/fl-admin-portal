@@ -20,6 +20,37 @@ type AccountTransaction {
   weekdayBalance: Float!
 }
 
+extend type Oversight {
+  hrAmount: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(council:Council)
+      RETURN SUM(council.hrAmount)
+      """
+    )
+  bussingAmount: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(council:Council)
+      RETURN SUM(council.bussingAmount)
+      """
+    )
+  weekdayBalance: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(council:Council)
+      RETURN SUM(council.weekdayBalance)
+      """
+    )
+  bussingSocietyBalance: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS*3]->(council:Council)
+      RETURN SUM(council.bussingSocietyBalance)
+      """
+    )
+}
+
 extend type Campus {
   hrAmount: Float!
     @cypher(
@@ -53,6 +84,46 @@ extend type Campus {
     @cypher(
       statement: """
       MATCH (this)-[:HAS*2]->(council:Council)
+      MATCH (council)-[:HAS_TRANSACTION]->(transaction:AccountTransaction)
+
+      RETURN transaction ORDER BY transaction.lastModified DESC
+      """
+    )
+}
+
+extend type Stream {
+  hrAmount: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(council:Council)
+      RETURN SUM(council.hrAmount)
+      """
+    )
+  bussingAmount: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(council:Council)
+      RETURN SUM(council.bussingAmount)
+      """
+    )
+  weekdayBalance: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(council:Council)
+      RETURN SUM(council.weekdayBalance)
+      """
+    )
+  bussingSocietyBalance: Float!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(council:Council)
+      RETURN SUM(council.bussingSocietyBalance)
+      """
+    )
+  transactions: [AccountTransaction!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:HAS]->(council:Council)
       MATCH (council)-[:HAS_TRANSACTION]->(transaction:AccountTransaction)
 
       RETURN transaction ORDER BY transaction.lastModified DESC
