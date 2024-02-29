@@ -1,3 +1,13 @@
+#### 7.18.6 (2024-02-29)
+
+##### New Features
+
+*  add Oversight Dashboard component and related GraphQL queries ([050190ff](https://github.com/firstlovecenter/fl-admin-portal/commit/050190ffcd24c4c9182109da32b79efa890fc8f6))
+
+##### Bug Fixes
+
+*  add 'Stream' and 'Bishop' columns to councilList query ([22f3665f](https://github.com/firstlovecenter/fl-admin-portal/commit/22f3665fd3f565039d8997b54d10724e99d58be4))
+
 #### 7.18.5 (2024-02-28)
 
 ##### New Features
