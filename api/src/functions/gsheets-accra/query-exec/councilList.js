@@ -13,6 +13,8 @@ export const councilList = async (neoDriver) => {
 
     const headerRow = [
       'Pastor',
+      'Stream',
+      'Bishop',
       'Council',
       'Active Bacentas',
       'Vacation Bacentas',
@@ -22,6 +24,8 @@ export const councilList = async (neoDriver) => {
       headerRow,
       ...result.records.map((record) => [
         record.get('Pastor'),
+        record.get('Stream'),
+        record.get('Bishop'),
         record.get('Council').join(', ').toString(),
         record.get('ActiveBacentas').toString(),
         record.get('VacationBacentas').toString(),

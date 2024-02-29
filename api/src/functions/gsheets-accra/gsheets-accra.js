@@ -89,14 +89,14 @@ const handler = async () => {
   await clearGSheet(accraSheet)
 
   await Promise.all([
-    writeToGsheet(councilListData, accraSheet, 'A2:D'),
-    writeToGsheet(bacentasThatDidntBusData, accraSheet, 'E2:E'),
-    writeToGsheet(bacentasThatBussedData, accraSheet, 'F2:F'),
-    writeToGsheet(numberOfBussesData, accraSheet, 'G2:G'),
-    writeToGsheet(bussingAttendanceData, accraSheet, 'H2:H'),
-    writeToGsheet(activeVacationFellowshipsData, accraSheet, 'K2:L'),
-    writeToGsheet(servicesThisWeekData, accraSheet, 'N2:N'),
-    writeToGsheet(servicesNotBankedData, accraSheet, 'O2:O'),
+    writeToGsheet(councilListData, accraSheet, 'A2:F'),
+    writeToGsheet(bacentasThatDidntBusData, accraSheet, 'G2:G'),
+    writeToGsheet(bacentasThatBussedData, accraSheet, 'H2:H'),
+    writeToGsheet(numberOfBussesData, accraSheet, 'I2:I'),
+    writeToGsheet(bussingAttendanceData, accraSheet, 'J2:J'),
+    writeToGsheet(activeVacationFellowshipsData, accraSheet, 'M2:N'),
+    writeToGsheet(servicesThisWeekData, accraSheet, 'O2:O'),
+    writeToGsheet(servicesNotBankedData, accraSheet, 'P2:P'),
     writeToGsheet(weekdayIncomeAttendanceData, accraSheet, 'R2:S'),
     writeToGsheet(amountNotBankedData, accraSheet, 'T2:T'),
     writeToGsheet(amountBankedData, accraSheet, 'U2:U'),
