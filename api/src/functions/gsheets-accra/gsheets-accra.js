@@ -107,9 +107,9 @@ const handler = async () => {
   })
 
   await Promise.all([
-    writeToGsheet(anagkazoIncomeAttendanceData, accraSheet, 'R8:S8'),
-    writeToGsheet(anagkazoAmountNotBankedData, accraSheet, 'T8'),
-    writeToGsheet(anagkazoAmountBankedData, accraSheet, 'U8'),
+    writeToGsheet(anagkazoIncomeAttendanceData, accraSheet, 'R11:S11'),
+    writeToGsheet(anagkazoAmountNotBankedData, accraSheet, 'T11'),
+    writeToGsheet(anagkazoAmountBankedData, accraSheet, 'U11'),
     axios({
       method: 'post',
       baseURL: notifyBaseURL,
