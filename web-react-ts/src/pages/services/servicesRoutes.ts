@@ -285,7 +285,7 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/fellowship/banking-slip/submission',
     element: FellowshipBankingSlipSubmission,
-    roles: permitLeaderAdmin('Campus'),
+    roles: permitLeaderAdmin('Stream'),
     placeholder: true,
   },
   {
