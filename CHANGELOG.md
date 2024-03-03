@@ -1,3 +1,14 @@
+#### 7.18.7 (2024-03-03)
+
+##### New Features
+
+*   update RoleView roles to permitAdmin('Stream') ([3759e925](https://github.com/firstlovecenter/fl-admin-portal/commit/3759e925cbe0cf55fc460505e43e4507d6746f56))
+*  update gsheets-accra.js with new data positions ([b70ef0b0](https://github.com/firstlovecenter/fl-admin-portal/commit/b70ef0b0a059f602f3ba649ef7ec3b0a32e037b7))
+
+##### Bug Fixes
+
+*  update roles in servicesRoutes.ts ([91c2e57e](https://github.com/firstlovecenter/fl-admin-portal/commit/91c2e57e33d68d5319ddf7a5e296758e60e64d24))
+
 #### 7.18.6 (2024-02-29)
 
 ##### New Features
