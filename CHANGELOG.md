@@ -1,3 +1,9 @@
+#### 7.18.8 (2024-03-04)
+
+##### Bug Fixes
+
+*  add console log for error response data ([15e3b196](https://github.com/firstlovecenter/fl-admin-portal/commit/15e3b196baf661203651ffb4d6b6679e560eb9a4))
+
 #### 7.18.7 (2024-03-03)
 
 ##### New Features
