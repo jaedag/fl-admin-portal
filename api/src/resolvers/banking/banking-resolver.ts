@@ -574,7 +574,7 @@ const bankingMutation = {
           JSON.stringify(error.response.data)
         )
         console.log(
-          '🚀 ~ file: banking-resolver.ts:572 ~ error.response.data:',
+          '🚀 ~ file: banking-resolver.ts:572 ~ error.response.data 1:',
           error.response.data
         )
 
