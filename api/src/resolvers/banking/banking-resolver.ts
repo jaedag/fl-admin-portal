@@ -573,6 +573,10 @@ const bankingMutation = {
           'There was an error confirming transaction - ',
           JSON.stringify(error.response.data)
         )
+        console.log(
+          '🚀 ~ file: banking-resolver.ts:572 ~ error.response.data:',
+          error.response.data
+        )
 
         if (error.response.data.code === 'transaction_not_found') {
           record = rearrangeCypherObject(
