@@ -1,3 +1,20 @@
+#### 7.18.9 (2024-03-07)
+
+##### New Features
+
+*  add   gsheets-accra-background and gsheets-update-outaccra-background functions ([cc79e68e](https://github.com/firstlovecenter/fl-admin-portal/commit/cc79e68e00fa710e786ea6a99f6238d1cbc56784))
+
+##### Bug Fixes
+
+*  update roles from 'Stream' to 'Campus' ([94da2680](https://github.com/firstlovecenter/fl-admin-portal/commit/94da2680b3b27bff08fcc08bf07346c37e2612a6))
+*  add payment background function and secrets encryption ([1bd6ab04](https://github.com/firstlovecenter/fl-admin-portal/commit/1bd6ab046a309954a703516dab808591899d1be3))
+*  update secrets.js file paths in encrypt-secrets.js ([e5f0105d](https://github.com/firstlovecenter/fl-admin-portal/commit/e5f0105dd402a86f0815b879c9dd7b982e71e68a))
+*  update error logging in banking resolver ([14751d1a](https://github.com/firstlovecenter/fl-admin-portal/commit/14751d1a17541c0f2631785fc815ed92fa4fb848))
+
+##### Refactors
+
+*   anagkazoAmountNotBankedQuery in cypher.js ([b307d7c9](https://github.com/firstlovecenter/fl-admin-portal/commit/b307d7c9606da2dcb8f2d6dbf542572ee6d5e2ee))
+
 #### 7.18.8 (2024-03-04)
 
 ##### Bug Fixes
