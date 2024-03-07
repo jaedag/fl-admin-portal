@@ -10,13 +10,13 @@ async function main() {
     path: 'api/src/functions/code-of-the-day/secrets.js',
   })
   secrets.build(payload, {
-    path: 'api/src/functions/gsheets-accra/secrets.js',
+    path: 'api/src/functions/gsheets-accra-background/secrets.js',
   })
   secrets.build(payload, {
     path: 'api/src/functions/gsheets-services-not-banked/secrets.js',
   })
   secrets.build(payload, {
-    path: 'api/src/functions/gsheets-update-outaccra/secrets.js',
+    path: 'api/src/functions/gsheets-update-outaccra-background/secrets.js',
   })
 }
 
