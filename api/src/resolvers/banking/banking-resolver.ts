@@ -584,6 +584,7 @@ const bankingMutation = {
             )
           )
         }
+
         throwToSentry(
           'There was an error confirming transaction - ',
           JSON.stringify(error.response.data)
