@@ -569,10 +569,6 @@ const bankingMutation = {
 
     const confirmationResponse = await axios(confirmPaymentBody).catch(
       async (error) => {
-        console.log(
-          '🚀 ~ file: banking-resolver.ts:572 ~ error.response.data 1:',
-          error.response.data
-        )
         if (error.response.data.code === 'transaction_not_found') {
           record = rearrangeCypherObject(
             await session.executeWrite((tx) =>
