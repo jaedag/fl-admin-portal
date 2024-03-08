@@ -670,10 +670,7 @@ const bankingMutation = {
     args: { serviceRecordId: string; bankingSlip: string },
     context: Context
   ) => {
-    isAuth(
-      [...permitAdmin('Campus'), ...permitTellerStream()],
-      context.auth.roles
-    )
+    isAuth(['fishers', ...permitTellerStream()], context.auth.roles)
     const session = context.executionContext.session()
 
     const churchRes = await session.executeRead((tx) =>
