@@ -569,15 +569,10 @@ const bankingMutation = {
 
     const confirmationResponse = await axios(confirmPaymentBody).catch(
       async (error) => {
-        throwToSentry(
-          'There was an error confirming transaction - ',
-          JSON.stringify(error.response.data)
-        )
         console.log(
           '🚀 ~ file: banking-resolver.ts:572 ~ error.response.data 1:',
           error.response.data
         )
-
         if (error.response.data.code === 'transaction_not_found') {
           record = rearrangeCypherObject(
             await session.executeWrite((tx) =>
@@ -589,6 +584,10 @@ const bankingMutation = {
             )
           )
         }
+        throwToSentry(
+          'There was an error confirming transaction - ',
+          JSON.stringify(error.response.data)
+        )
       }
     )
 
