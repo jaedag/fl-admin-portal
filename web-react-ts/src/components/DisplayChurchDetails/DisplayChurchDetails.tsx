@@ -331,32 +331,23 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             ))}
           </Row>
         )}
+
         {props.churchType === 'Bacenta' &&
         (props.church?.sprinterTopUp !== 0 ||
           props.church?.urvanTopUp !== 0) ? (
-          <RoleView
-            roles={['leaderBacenta']}
-            permittedStream={[
-              'Gospel Encounter',
-              'First Love Experience',
-              'Holy Ghost Encounter',
-            ]}
-            verifyId={props?.leader?.id}
-          >
+          <RoleView roles={['leaderBacenta']} verifyId={props?.leader?.id}>
             {!props.momoNumber && !props.loading && (
               <p className="my-1 bad fw-bold text-center">
                 There is no valid Mobile Money Number! Please update!
               </p>
             )}
-
-            <div className="d-grid gap-2">
+            <div className="d-grid gap-2 mt-2">
               <PlaceholderCustom
                 loading={props.loading}
-                className={`btn-graphs ${currentTheme}`}
+                className={`btn-graphs`}
                 button="true"
               >
                 <Button
-                  className={`${currentTheme}`}
                   onClick={() => {
                     navigate(`/${props.churchType.toLowerCase()}/editbussing`)
                   }}
@@ -431,7 +422,6 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             </a>
           </Container>
         )}
-
         {props.last3Weeks && props.details[2].number === 'Active' && (
           <Last3WeeksCard last3Weeks={props.last3Weeks} />
         )}
