@@ -1,3 +1,21 @@
+#### 7.18.10 (2024-03-12)
+
+##### New Features
+
+*  update code of the day for March ([a595f935](https://github.com/firstlovecenter/fl-admin-portal/commit/a595f9354e8904805e2e9abf90b1e203142827ef))
+
+##### Bug Fixes
+
+*  add month field to AggregateBussingRecord and AggregateServiceRecord ([af159300](https://github.com/firstlovecenter/fl-admin-portal/commit/af15930054b28074d39d672ce344c9c730254d20))
+*  remove console.log statement in banking-resolver.ts ([7c147136](https://github.com/firstlovecenter/fl-admin-portal/commit/7c147136f3dfdcfd8edb42479a1c91bd0cdc5d7b))
+*  fix error in banking resolver ([86efa01d](https://github.com/firstlovecenter/fl-admin-portal/commit/86efa01d0df0af3689d3fce2229e0b321ddee2c1))
+*  error handling in banking resolver ([9be1733d](https://github.com/firstlovecenter/fl-admin-portal/commit/9be1733d219328692fe7d4c7ffef2ce2cf513339))
+*  refactor authentication in banking resolver ([0bf4f5bd](https://github.com/firstlovecenter/fl-admin-portal/commit/0bf4f5bdac97712f4562b67654cc8a4005cf5172))
+
+##### Refactors
+
+*  displayChurchDetails component ([6497eec1](https://github.com/firstlovecenter/fl-admin-portal/commit/6497eec1a29ce272bb125dfcd7d22c1528886b1f))
+
 #### 7.18.9 (2024-03-07)
 
 ##### New Features
