@@ -242,7 +242,7 @@ export const aggregateBussingDataOnHigherChurches = `
    MATCH (bacenta:Bacenta {id: $bacentaId}) 
    MATCH (bacenta)<-[:HAS]-(constituency:Constituency)
    MATCH (constituency)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year, month: date().month})
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
 
    WITH constituency, aggregate
@@ -270,7 +270,7 @@ export const aggregateBussingDataOnHigherChurches = `
    WITH constituency AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(council:Council)
    MATCH (council)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year, month: date().month})
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
 
    WITH council, aggregate
@@ -296,7 +296,7 @@ export const aggregateBussingDataOnHigherChurches = `
 WITH council AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(stream:Stream)
    MATCH (stream)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year, month: date().month})
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
 
    WITH stream, aggregate
@@ -322,7 +322,7 @@ WITH council AS lowerChurch
    WITH stream AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(gathering:Campus)
    MATCH (gathering)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year, month: date().month})
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
 
    WITH gathering, aggregate
@@ -348,7 +348,7 @@ WITH council AS lowerChurch
    WITH gathering AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(oversight:Oversight)
    MATCH (oversight)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year, month: date().month})
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
 
    WITH oversight, aggregate
@@ -374,7 +374,7 @@ WITH council AS lowerChurch
    WITH oversight AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(denomination:Denomination)
    MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
-   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
+   MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year, month: date().month})
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
 
    WITH denomination, aggregate
