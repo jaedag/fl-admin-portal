@@ -118,6 +118,9 @@ const MemberRoleList = ({
   if (memberAdmin.isAdminForCampus[0]) {
     updateRank(memberAdmin, 'campus')
   }
+  if (memberAdmin.isAdminForOversight[0]) {
+    updateRank(memberAdmin, 'oversight')
+  }
 
   if (memberLeader?.leadsCreativeArts[0]) {
     updateRank(memberLeader, 'creativeArts')

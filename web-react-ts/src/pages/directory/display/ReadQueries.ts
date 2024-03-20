@@ -99,6 +99,10 @@ export const DISPLAY_MEMBER_ADMIN = gql`
       id
 
       #Admin Information
+      isAdminForOversight {
+        id
+        name
+      }
       isAdminForCampus {
         id
         name
