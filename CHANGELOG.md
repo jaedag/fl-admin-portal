@@ -1,3 +1,13 @@
+#### 7.18.11 (2024-04-01)
+
+##### New Features
+
+*  update ministry role in AllMinistries component ([4377edf9](https://github.com/firstlovecenter/fl-admin-portal/commit/4377edf9d07da19859fe144bcb6a6102af009198))
+
+##### Bug Fixes
+
+*  add isAdminForOversight field to MemberRoleList and ReadQueries ([1241ad79](https://github.com/firstlovecenter/fl-admin-portal/commit/1241ad7959120a30b8287e29370f0f32097aa688))
+
 #### 7.18.10 (2024-03-12)
 
 ##### New Features
