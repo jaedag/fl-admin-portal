@@ -1,3 +1,13 @@
+#### 7.18.12 (2024-04-02)
+
+##### New Features
+
+*  moved defaulters into the church list options ([5df298e4](https://github.com/firstlovecenter/fl-admin-portal/commit/5df298e45ac9a0f62cafc8b846132233b075caaf))
+
+##### Bug Fixes
+
+*  remove unused account options ([f0d4c757](https://github.com/firstlovecenter/fl-admin-portal/commit/f0d4c757a2c3498294446d7f99f9e0ec7f8e26bf))
+
 #### 7.18.11 (2024-04-01)
 
 ##### New Features
