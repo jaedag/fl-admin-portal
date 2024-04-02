@@ -11,11 +11,16 @@ import {
   PersonPlus,
   Coin,
   FileEarmarkArrowUpFill,
+  EmojiFrown,
 } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
 import { ChurchLevel } from 'global-types'
 import RoleView from 'auth/RoleView'
-import { permitAdmin, permitTellerStream } from 'permission-utils'
+import {
+  permitAdmin,
+  permitLeaderAdmin,
+  permitTellerStream,
+} from 'permission-utils'
 
 const Services = () => {
   const { currentUser, theme } = useContext(MemberContext)
@@ -153,6 +158,21 @@ const Services = () => {
                 </RoleView>
               </>
             )}
+
+          <RoleView
+            roles={[
+              ...permitLeaderAdmin('Constituency'),
+              ...permitLeaderAdmin('Hub'),
+            ]}
+          >
+            <MenuButton
+              title="Defaulters"
+              color="danger"
+              iconComponent={<EmojiFrown />}
+              onClick={() => navigate('/services/defaulters/dashboard')}
+              noCaption
+            />
+          </RoleView>
         </div>
       </Container>
     </div>
