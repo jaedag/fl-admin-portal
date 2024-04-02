@@ -36,11 +36,8 @@ type Stream = {
   bankAccount:
     | 'manual'
     | 'aes_account'
-    | 'kwabenya_account'
-    | 'adenta_account'
     | 'fle_account'
     | 'oa_kumasi'
-    | 'kwabenya_morning_account'
     | 'oa_ghnorth'
     | 'oa_ghsouth'
     | 'oa_gheast'
@@ -62,15 +59,7 @@ export const getStreamFinancials = (stream: Stream) => {
         'Payment Error' +
           'Anagkazo has a different financial system. Thank you!'
       )
-    case 'adenta_account':
-      subaccount = SECRETS.PS_SB_ADENTA
-      break
-    case 'kwabenya_account':
-      subaccount = SECRETS.PS_SB_KWABENYA
-      break
-    case 'kwabenya_morning_account':
-      subaccount = SECRETS.PS_SB_MORNING_KWABENYA
-      break
+
     case 'fle_account':
       subaccount = SECRETS.PS_SB_FLE
       break

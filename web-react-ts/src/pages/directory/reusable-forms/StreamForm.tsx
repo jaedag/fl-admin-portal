@@ -44,10 +44,7 @@ export interface StreamFormValues extends FormikInitialValues {
   bankAccount:
     | 'manual'
     | 'aes_account'
-    | 'kwabenya_account'
-    | 'adenta_account'
     | 'fle_account'
-    | 'kwabenya_morning_account'
     | 'oa_kumasi'
     | 'oa_ghnorth'
     | 'oa_ghsouth'
