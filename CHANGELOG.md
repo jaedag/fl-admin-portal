@@ -1,3 +1,10 @@
+#### 7.18.13 (2024-04-04)
+
+##### Bug Fixes
+
+*  allow creative peopele to see comparative bacenta side pages ([c3930077](https://github.com/firstlovecenter/fl-admin-portal/commit/c39300777a58d36b2a468708657854ee5876c2cd))
+*  commented out anagkazo from automated gsheet accra ([66633433](https://github.com/firstlovecenter/fl-admin-portal/commit/66633433e11e9827f531dc3f35a9521412d00822))
+
 #### 7.18.12 (2024-04-02)
 
 ##### New Features
