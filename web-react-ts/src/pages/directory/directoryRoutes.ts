@@ -535,26 +535,26 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/bacenta/displaydetails',
     element: DetailsBacenta,
-    roles: permitMe('Bacenta'),
+    roles: [...permitMe('Bacenta'), ...permitMe('Hub')],
     placeholder: true,
   },
   {
     path: '/constituency/displaydetails',
     element: DetailsConstituency,
-    roles: permitMe('Constituency'),
+    roles: [...permitMe('Constituency'), ...permitMe('HubCouncil')],
     placeholder: true,
   },
 
   {
     path: '/council/displaydetails',
     element: DetailsCouncil,
-    roles: permitMe('Council'),
+    roles: [...permitMe('Council'), ...permitMe('Ministry')],
     placeholder: true,
   },
   {
     path: '/stream/displaydetails',
     element: DetailsStream,
-    roles: permitMe('Stream'),
+    roles: [...permitMe('Stream'), ...permitMe('CreativeArts')],
     placeholder: false,
   },
   {
@@ -609,7 +609,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/creativearts/displaydetails',
     element: DetailsCreativeArts,
-    roles: permitMe('CreativeArts'),
+    roles: [...permitMe('CreativeArts'), ...permitMe('Campus')],
     placeholder: true,
   },
 
@@ -617,25 +617,25 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/bacenta/displayall',
     element: DisplayAllBacentas,
-    roles: permitMe('Constituency'),
+    roles: [...permitMe('Constituency'), ...permitMe('Hub')],
     placeholder: false,
   },
   {
     path: '/ic/displayall',
     element: DisplayAllIcs,
-    roles: permitMe('Constituency'),
+    roles: [...permitMe('Constituency'), ...permitMe('Hub')],
     placeholder: false,
   },
   {
     path: '/hubfellowship/displayall',
     element: DisplayAllHubFellowships,
-    roles: permitMe('Hub'),
+    roles: [...permitMe('Constituency'), ...permitMe('Hub')],
     placeholder: false,
   },
   {
     path: '/hub/displayall',
     element: DisplayAllHubs,
-    roles: permitMe('Hub'),
+    roles: [...permitMe('Constituency'), ...permitMe('Hub')],
     placeholder: false,
   },
   {
@@ -690,20 +690,20 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/constituency/displayall',
     element: DisplayAllConstituencies,
-    roles: permitMe('Council'),
+    roles: [...permitMe('Council'), ...permitMe('Ministry')],
     placeholder: false,
   },
 
   {
     path: '/fellowship/displayall',
     element: DisplayAllFellowships,
-    roles: permitMe('Bacenta'),
+    roles: [...permitMe('Bacenta'), ...permitMe('Hub')],
     placeholder: false,
   },
   {
     path: '/council/displayall',
     element: DisplayAllCouncils,
-    roles: permitMe('Stream'),
+    roles: [...permitMe('Stream'), ...permitMe('Ministry')],
     placeholder: false,
   },
   {
