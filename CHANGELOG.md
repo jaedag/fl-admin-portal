@@ -1,3 +1,10 @@
+#### 7.18.15 (2024-04-07)
+
+##### Bug Fixes
+
+*  fix issue with Meeting Forms button not showing ([a2541c10](https://github.com/firstlovecenter/fl-admin-portal/commit/a2541c1040964005ec2a15507c7047941ca6afff))
+*  fix error in cancelLowerChurchRehearsals ([1f7dfb20](https://github.com/firstlovecenter/fl-admin-portal/commit/1f7dfb20a008fec3b98b16abb81b9ce0e9719c1b))
+
 #### 7.18.14 (2024-04-07)
 
 ##### New Features
