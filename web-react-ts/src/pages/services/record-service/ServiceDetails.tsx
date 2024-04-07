@@ -102,7 +102,7 @@ const ServiceDetails = ({ service, church, loading }: ServiceDetailsProps) => {
   return (
     <Container>
       <PlaceholderCustom as="h3" loading={loading}>
-        <HeadingPrimary>{`${church?.__typename} Service Details`}</HeadingPrimary>
+        <HeadingPrimary>{`${church?.__typename} Meeting Details`}</HeadingPrimary>
       </PlaceholderCustom>
       <PlaceholderCustom as="h6" loading={loading}>
         <HeadingSecondary>{`${church?.name} ${church?.__typename}`}</HeadingSecondary>

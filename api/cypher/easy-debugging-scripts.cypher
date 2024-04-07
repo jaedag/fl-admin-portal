@@ -85,3 +85,9 @@ RETURN church.name, labels(church), record.attendance, record.income, record.ban
 MATCH (record:RehearsalRecord:NoService)-[:SERVICE_HELD_ON]->(date:TimeGraph)
 WHERE date.date.year = 2024 AND date.date.week = date().week
 DETACH DELETE record
+
+MATCH (record:MinistryAttendanceRecord )
+DETACH DELETE record
+
+MATCH (node {id:"2e506bcd-3953-405d-82fd-986b22ff451f"})
+RETURN node

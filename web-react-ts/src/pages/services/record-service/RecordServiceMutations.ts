@@ -254,7 +254,7 @@ export const RECORD_HUB_SUNDAY_MEETING = gql`
     $attendance: Int!
     $familyPicture: String!
   ) {
-    RecordHubFellowshipSundayAttendance(
+    RecordHubSundayAttendance(
       churchId: $churchId
       serviceDate: $serviceDate
       attendance: $attendance
@@ -398,11 +398,8 @@ export const DISPLAY_BACENTA_SERVICE = gql`
   }
 `
 
-export const DISPLAY_HUBFELLOWSHIP_SUNDAY_MEETING = gql`
-  query hubFellowshipDisplaySundayMeetingRecords(
-    $serviceId: ID!
-    $hubfellowshipId: ID!
-  ) {
+export const DISPLAY_HUB_SUNDAY_MEETING = gql`
+  query hubDisplaySundayMeetingRecords($serviceId: ID!, $hubId: ID!) {
     ministryAttendanceRecords(where: { id: $serviceId }) {
       id
       createdAt
@@ -419,7 +416,7 @@ export const DISPLAY_HUBFELLOWSHIP_SUNDAY_MEETING = gql`
         fullName
       }
     }
-    hubFellowships(where: { id: $hubfellowshipId }) {
+    hubs(where: { id: $hubId }) {
       id
       name
     }
