@@ -1,3 +1,13 @@
+#### 7.18.14 (2024-04-07)
+
+##### New Features
+
+*  add new codes for upcoming weeks ([37ef3188](https://github.com/firstlovecenter/fl-admin-portal/commit/37ef318852eab5586613f53b30dacc038d1be4fc))
+
+##### Bug Fixes
+
+*  fix typos and rename component for CancelledRehearsalsThisWeek ([5454390d](https://github.com/firstlovecenter/fl-admin-portal/commit/5454390d9e9836f1ace74097967374e55655c9db))
+
 #### 7.18.13 (2024-04-04)
 
 ##### Bug Fixes
