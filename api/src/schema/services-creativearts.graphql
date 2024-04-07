@@ -387,7 +387,7 @@ extend type HubCouncil {
 
       OPTIONAL MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:HubFellowship)-[:MEETS_ON]->(day:ServiceDay)
       WITH collect(DISTINCT fellowships) as services, this
-      MATCH (defaulters:Active:HubFellowship)<-[:HAS]<-[:HAS]-(:Hub)<-[:HAS]-(this)
+      MATCH (defaulters:Active:HubFellowship)<-[:HAS]-(:Hub)<-[:HAS]-(this)
       WHERE NOT defaulters IN services
 
       WITH defaulters, this
@@ -905,7 +905,7 @@ extend type Ministry {
 
       OPTIONAL MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:HubFellowship)-[:MEETS_ON]->(day:ServiceDay)
       WITH collect(DISTINCT fellowships) as services, this
-      MATCH (defaulters:Active:HubFellowship)<-[:HAS]<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(this)
+      MATCH (defaulters:Active:HubFellowship)<-[:HAS]-(:Hub)<-[:HAS]-(:HubCouncil)<-[:HAS]-(this)
       WHERE NOT defaulters IN services
 
       WITH defaulters, this

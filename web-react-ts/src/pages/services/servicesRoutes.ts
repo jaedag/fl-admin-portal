@@ -201,6 +201,12 @@ const FellowshipBankingSlipView = lazy(
 const HubRehearsalsThisWeek = lazy(
   () => import('pages/services/defaulters/creative-arts/HubRehearsalsThisWeek')
 )
+const CancelledRehearsalsThisWeek = lazy(
+  () =>
+    import(
+      'pages/services/defaulters/creative-arts/HubCancelledRehearsalsThisWeek'
+    )
+)
 const HubFormDefaultersThisWeek = lazy(
   () =>
     import('pages/services/defaulters/creative-arts/HubFormDefaultersThisWeek')
@@ -686,6 +692,12 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/rehearsal/rehearsal-this-week',
     element: HubRehearsalsThisWeek,
+    roles: permitLeaderAdmin('HubCouncil'),
+    placeholder: true,
+  },
+  {
+    path: '/rehearsal/cancelled-rehearsals',
+    element: CancelledRehearsalsThisWeek,
     roles: permitLeaderAdmin('HubCouncil'),
     placeholder: true,
   },

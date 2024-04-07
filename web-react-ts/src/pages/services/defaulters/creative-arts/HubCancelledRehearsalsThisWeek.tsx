@@ -21,7 +21,7 @@ import {
 } from './SontaDefaultersQueries'
 import useSontaLevel from 'hooks/useSontaLevel'
 
-const CancelledServicesThisWeek = () => {
+const CancelledRehearsalssThisWeek = () => {
   const [
     hubCouncilCancelledRehearsalsThisWeeek,
     { refetch: hubCouncilRefetch },
@@ -39,7 +39,7 @@ const CancelledServicesThisWeek = () => {
     hubRefetch: hubCouncilRefetch,
     hubCouncilFunction: hubCouncilCancelledRehearsalsThisWeeek,
     hubCouncilRefetch,
-    councilFunction: ministryCancelledRehearsalsThisWeek,
+    ministryFunction: ministryCancelledRehearsalsThisWeek,
     ministryRefetch,
     creativeArtsFunction: creativeArtsCancelledRehearsalsThisWeek,
     creativeArtsRefetch,
@@ -81,4 +81,4 @@ const CancelledServicesThisWeek = () => {
   )
 }
 
-export default CancelledServicesThisWeek
+export default CancelledRehearsalssThisWeek
