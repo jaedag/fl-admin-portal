@@ -81,3 +81,7 @@ WHERE date.date.week = 6 AND date.date.year = date().year AND NOT record:NoServi
 
 MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church) WHERE NOT church:Member
 RETURN church.name, labels(church), record.attendance, record.income, record.bankingSlip, date.date ORDER BY date.date DESC;
+
+MATCH (record:RehearsalRecord:NoService)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+WHERE date.date.year = 2024 AND date.date.week = date().week
+DETACH DELETE record
