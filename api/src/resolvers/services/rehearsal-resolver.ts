@@ -95,12 +95,12 @@ export const checkServantHasCurrentHistory = async (
 }
 
 const SontaServiceMutation = {
-  RecordHubSundayAttendance: async (
+  RecordHubCouncilSundayAttendance: async (
     object: any,
     args: RecordServiceArgs,
     context: Context
   ) => {
-    isAuth(permitLeaderAdmin('Hub'), context.auth.roles)
+    isAuth(permitLeaderAdmin('HubCouncil'), context.auth.roles)
     const session = context.executionContext.session()
 
     await checkServantHasCurrentHistory(session, context, {

@@ -31,8 +31,8 @@ RETURN church.id AS churchId, church.name AS churchName, servant.id AS servantId
 
 export const checkMinistryAttendanceFormFilledThisWeek = `
     MATCH (church {id: $churchId})
-    WHERE church:Hub OR church:HubCouncil OR church:Ministry 
-    MATCH (church)<-[:HAS]-(higherChurch) WHERE higherChurch:Hub OR higherChurch:HubCouncil OR higherChurch:Ministry OR higherChurch:CreativeArts
+    WHERE church:HubCouncil OR church:Ministry 
+    MATCH (church)<-[:HAS]-(higherChurch) WHERE higherChurch:Ministry OR higherChurch:CreativeArts
     
     OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record)-[:SERVICE_HELD_ON]->(date)    
     WHERE date(date.date).week = date().week AND date(date.date).year = date().year AND (record:MinistryAttendanceRecord)
@@ -56,7 +56,7 @@ export const recordSundayMinistryAttendance = `
         ministryAttendanceRecord.familyPicture = $familyPicture
     
     WITH ministryAttendanceRecord
-    MATCH (church {id: $churchId}) WHERE church:HubFellowship OR church:Hub
+    MATCH (church {id: $churchId}) WHERE church:HubCouncil
     MATCH (church)-[current:CURRENT_HISTORY]->(log:ServiceLog)
     MATCH (leader:Member {auth_id: $auth.jwt.sub})
 

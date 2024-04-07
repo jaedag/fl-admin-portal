@@ -247,14 +247,14 @@ export const RECORD_MINISTRY_REHEARSAL_MEETING = gql`
   }
 `
 
-export const RECORD_HUB_SUNDAY_MEETING = gql`
-  mutation RecordHubSundayMeeting(
+export const RECORD_HUBCOUNCIL_SUNDAY_MEETING = gql`
+  mutation RecordHubCouncilSundayMeeting(
     $churchId: ID!
     $serviceDate: String!
     $attendance: Int!
     $familyPicture: String!
   ) {
-    RecordHubSundayAttendance(
+    RecordHubCouncilSundayAttendance(
       churchId: $churchId
       serviceDate: $serviceDate
       attendance: $attendance
@@ -398,8 +398,11 @@ export const DISPLAY_BACENTA_SERVICE = gql`
   }
 `
 
-export const DISPLAY_HUB_SUNDAY_MEETING = gql`
-  query hubDisplaySundayMeetingRecords($serviceId: ID!, $hubId: ID!) {
+export const DISPLAY_HUBCOUNCIL_SUNDAY_MEETING = gql`
+  query hubCouncilDisplaySundayMeetingRecords(
+    $serviceId: ID!
+    $hubCouncilId: ID!
+  ) {
     ministryAttendanceRecords(where: { id: $serviceId }) {
       id
       createdAt
@@ -416,7 +419,7 @@ export const DISPLAY_HUB_SUNDAY_MEETING = gql`
         fullName
       }
     }
-    hubs(where: { id: $hubId }) {
+    hubCouncils(where: { id: $hubCouncilId }) {
       id
       name
     }

@@ -1122,7 +1122,7 @@ type RehearsalRecord implements Record
 }
 
 extend type Mutation {
-  RecordHubSundayAttendance(
+  RecordHubCouncilSundayAttendance(
     churchId: ID!
     serviceDate: String!
     attendance: Int!

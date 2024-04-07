@@ -2,30 +2,32 @@ import React, { useContext } from 'react'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 
 import { useMutation, useQuery } from '@apollo/client'
-import { RECORD_HUB_SUNDAY_MEETING } from '../record-service/RecordServiceMutations'
-import { DISPLAY_HUB } from '../../directory/display/ReadQueries'
+import { RECORD_HUBCOUNCIL_SUNDAY_MEETING } from '../record-service/RecordServiceMutations'
+import { DISPLAY_HUBCOUNCIL } from '../../directory/display/ReadQueries'
 import ServiceFormNoOffering from '../record-service/ServiceFormNoIncome'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
-const HubSundayMeeting = () => {
-  const { hubId } = useContext(ChurchContext)
+const HubCouncilSundayMeeting = () => {
+  const { hubCouncilId } = useContext(ChurchContext)
   const {
     data: hubData,
     loading: hubLoading,
     error: hubError,
-  } = useQuery(DISPLAY_HUB, { variables: { id: hubId } })
-  const [RecordHubSundayMeeting] = useMutation(RECORD_HUB_SUNDAY_MEETING)
+  } = useQuery(DISPLAY_HUBCOUNCIL, { variables: { id: hubCouncilId } })
+  const [RecordHubCouncilSundayMeeting] = useMutation(
+    RECORD_HUBCOUNCIL_SUNDAY_MEETING
+  )
 
   return (
     <ApolloWrapper loading={hubLoading} error={hubError} data={hubData}>
       <ServiceFormNoOffering
-        RecordServiceMutation={RecordHubSundayMeeting}
-        church={hubData?.hubs[0]}
-        churchId={hubId}
+        RecordServiceMutation={RecordHubCouncilSundayMeeting}
+        church={hubData?.hubCouncils[0]}
+        churchId={hubCouncilId}
         churchType="Hub"
         recordType="MinistryAttendanceRecord"
       />
     </ApolloWrapper>
   )
 }
-export default HubSundayMeeting
+export default HubCouncilSundayMeeting
