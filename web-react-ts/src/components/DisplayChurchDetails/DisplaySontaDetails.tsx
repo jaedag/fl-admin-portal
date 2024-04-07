@@ -32,10 +32,7 @@ import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 import { DetailsArray } from 'pages/directory/display/DetailsFellowship'
 import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 import { ChurchContext } from 'contexts/ChurchContext'
-import Last3WeeksCard, {
-  Last3WeeksCardProps,
-  shouldFill,
-} from 'components/Last3WeeksCard'
+import Last3WeeksCard, { Last3WeeksCardProps } from 'components/Last3WeeksCard'
 
 type DisplayChurchDetailsProps = {
   details: DetailsArray
@@ -269,31 +266,27 @@ const DisplaySontaDetails = (props: DisplayChurchDetailsProps) => {
             </Button>
           </PlaceholderCustom>
 
-          {['Hub', 'HubCouncil', 'Ministry'].includes(props.churchType) &&
-            shouldFill({
-              vacation: props.vacation ?? 'Active',
-              last3Weeks: props.last3Weeks ?? [],
-            }) && (
-              <PlaceholderCustom
-                loading={props.loading}
-                className={`btn-sonta w-100`}
-                button="button"
-              >
-                <Button
-                  onClick={() => {
-                    setUserChurch({
-                      id: props.churchId,
-                      name: props.name,
-                      __typename: props.churchType,
-                    })
+          {['Hub', 'HubCouncil', 'Ministry'].includes(props.churchType) && (
+            <PlaceholderCustom
+              loading={props.loading}
+              className={`btn-sonta w-100`}
+              button="button"
+            >
+              <Button
+                onClick={() => {
+                  setUserChurch({
+                    id: props.churchId,
+                    name: props.name,
+                    __typename: props.churchType,
+                  })
 
-                    navigate(`/services/${props.churchType.toLowerCase()}`)
-                  }}
-                >
-                  <CgFileDocument /> Meeting Forms
-                </Button>
-              </PlaceholderCustom>
-            )}
+                  navigate(`/services/${props.churchType.toLowerCase()}`)
+                }}
+              >
+                <CgFileDocument /> Meeting Forms
+              </Button>
+            </PlaceholderCustom>
+          )}
         </div>
         {/* End two buttons */}
         <hr className="hr-line" />
