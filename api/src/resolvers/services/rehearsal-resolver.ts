@@ -23,7 +23,6 @@ import {
   recordOnStageAttendance,
   checkMinistryStageAttendanceFormFilledThisWeek,
   recordCancelledOnStagePerformance,
-  cancelLowerChurchRehearsals,
 } from './rehearsal-cypher'
 
 import { SontaHigherChurches } from '../utils/types'
@@ -231,19 +230,6 @@ const SontaServiceMutation = {
       await Promise.all(aggregatePromises).catch((error: any) =>
         throwToSentry('Error Aggregating Hub Rehearsals', error)
       )
-
-      if (
-        ['Ministry', 'HubCouncil'].some((label) =>
-          serviceCheck.labels?.includes(label)
-        )
-      ) {
-        await sessionThree.executeWrite((tx) =>
-          tx.run(cancelLowerChurchRehearsals, {
-            ...args,
-            auth: context.auth,
-          })
-        )
-      }
 
       const serviceDetails = rearrangeCypherObject(cypherResponse)
 

@@ -440,24 +440,6 @@ export const aggregateHubRehearsalDataForCreativeArts = `
     RETURN creativeArt, aggregate
 `
 
-export const cancelLowerChurchRehearsals = `
-MATCH (church {id: $churchId}) WHERE church:HubCouncil OR church:Ministry
-CREATE (serviceRecord:RehearsalRecord:NoService {createdAt:datetime()})
-SET serviceRecord.id = apoc.create.uuid(),
-serviceRecord.noServiceReason = 'Joint Rehearsal'
-
-WITH serviceRecord, church
-MATCH (church)-[:HAS*1..2]->(lowerChurch) WHERE lowerChurch:Hub
-MATCH (lowerChurch)-[:CURRENT_HISTORY]->(log:ServiceLog)
-MATCH (leader:Member {auth_id: $auth.jwt.sub})
-
-MERGE (serviceDate:TimeGraph {date: date($serviceDate)})
-MERGE (serviceRecord)-[:LOGGED_BY]->(leader)
-MERGE (serviceRecord)-[:SERVICE_HELD_ON]->(serviceDate)
-MERGE (log)-[:HAS_SERVICE]->(serviceRecord)
-
-RETURN serviceRecord
-`
 export const aggregateStageAttendanceDataForCreativeArts = `
     MATCH (ministry:Ministry {id: $churchId})
     
