@@ -163,7 +163,7 @@ type Ministry {
       statement: """
       MATCH (this)<-[:HAS_MINISTRY]-(stream:Stream)
 
-      RETURN 
+      RETURN
         CASE this.bankAccount
           WHEN NULL THEN stream.bankAccount
         ELSE this.bankAccount
@@ -678,14 +678,20 @@ extend type Mutation {
       RETURN creativeArt
       """
     )
-  CreateMinistry(leaderId: ID!, streamId: ID!, creativeArtsId: ID!): Ministry!
+  CreateMinistry(
+    leaderId: ID!
+    streamId: ID!
+    creativeArtsId: ID!
+    bankAccount: String!
+  ): Ministry!
     @auth(
       rules: [{ roles: ["adminCampus", "adminStream", "adminCreativeArts"] }]
     )
     @cypher(
       statement: """
       CREATE (ministry:Ministry)
-        SET	ministry.id = apoc.create.uuid()
+        SET	ministry.id = apoc.create.uuid(),
+          ministry.bankAccount = $bankAccount
 
       WITH ministry
       MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
@@ -834,14 +840,19 @@ extend type Mutation {
       RETURN creativeArt
       """
     )
-  UpdateMinistryDetails(ministryId: ID!, name: String!): Ministry!
+  UpdateMinistryDetails(
+    ministryId: ID!
+    name: String!
+    bankAccount: String!
+  ): Ministry!
     @auth(
       rules: [{ roles: ["adminCampus", "adminStream", "adminCreativeArts"] }]
     )
     @cypher(
       statement: """
        MATCH (ministry:Ministry {id:$ministryId})
-        SET ministry.name = $name
+        SET ministry.name = $name,
+        ministry.bankAccount = $bankAccount
 
       RETURN ministry
       """

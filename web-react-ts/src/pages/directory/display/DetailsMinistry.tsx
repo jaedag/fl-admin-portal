@@ -44,6 +44,11 @@ const DetailsMinistry = () => {
       link: '#',
     },
     {
+      title: 'Bank Account',
+      number: ministry?.bankAccount,
+      link: '#',
+    },
+    {
       title: 'Hub Councils',
       number: ministry?.hubCouncilCount,
       link: 'hubcouncil/displayall',

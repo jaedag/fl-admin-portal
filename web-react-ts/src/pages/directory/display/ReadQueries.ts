@@ -785,6 +785,7 @@ export const DISPLAY_MINISTRY = gql`
       id
       name
       vacationStatus
+      bankAccount
       stream {
         id
         name

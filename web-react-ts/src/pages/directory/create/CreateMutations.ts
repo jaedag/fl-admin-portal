@@ -291,14 +291,17 @@ export const CREATE_MINISTRY_MUTATION = gql`
     $creativeArtsId: ID!
     $leaderId: ID!
     $streamId: ID!
+    $bankAccount: String!
   ) {
     CreateMinistry(
       creativeArtsId: $creativeArtsId
       leaderId: $leaderId
       streamId: $streamId
+      bankAccount: $bankAccount
     ) {
       id
       name
+      bankAccount
     }
   }
 `

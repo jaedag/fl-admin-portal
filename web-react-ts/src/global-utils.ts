@@ -160,6 +160,12 @@ export const STREAM_ACCOUNT_OPTIONS: FormikSelectOptions = [
   { key: 'OA Sunyani', value: 'oa_sunyani' },
 ]
 
+export const MINISTRY_ACCOUNT_OPTIONS: FormikSelectOptions = [
+  { key: 'Accra Greater Love Choir', value: 'accra_greater_love_choir' },
+  { key: 'Accra Dancing Stars', value: 'accra_dancing_stars' },
+  { key: 'Accra Film Stars', value: 'accra_film_stars' },
+]
+
 export const throwToSentry = (
   message: string,
   error?: Error | ApolloError | unknown
