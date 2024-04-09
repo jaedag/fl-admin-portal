@@ -1,3 +1,19 @@
+#### 7.18.16 (2024-04-09)
+
+##### Bug Fixes
+
+*  add tellerConfirmationTime field to ServiceRecord and update related components ([0b11fa2a](https://github.com/firstlovecenter/fl-admin-portal/commit/0b11fa2a48891bc0a0485c5098d08b3b1c252634))
+
+##### Refactors
+
+*  code to add bank account field in ministry details ([bd4e20a9](https://github.com/firstlovecenter/fl-admin-portal/commit/bd4e20a9e76397af6116e835bc19da18a51530c6))
+*  refactor banking-cypher.ts to support multiple record types ([73be28d8](https://github.com/firstlovecenter/fl-admin-portal/commit/73be28d8c1be73de94ceb476e2a710f8da2bef46))
+*  code to update transaction status in payment-background.js ([97b2f783](https://github.com/firstlovecenter/fl-admin-portal/commit/97b2f783cf3750028c94f038ce1e506629506d52))
+*  code to update HubCouncilSundayAttendance and HubCouncilFormMenu ([712fb8b0](https://github.com/firstlovecenter/fl-admin-portal/commit/712fb8b051696a5cd4f0d11d49cb0d85979adb02))
+*  rehearsal-cypher and rehearsal-resolver files ([d90c64df](https://github.com/firstlovecenter/fl-admin-portal/commit/d90c64df61b0b4e614a159f04fc5265079cc8c5e))
+*  code to update HubCouncilSundayAttendance and HubCouncilFormMenu ([2c92e5c2](https://github.com/firstlovecenter/fl-admin-portal/commit/2c92e5c2f7697e5b5cca2b3bb2e239c1266c2587))
+*  refactor code to delete MinistryAttendanceRecord and update HubSundayMeetingDetails comp ([7aa92b8b](https://github.com/firstlovecenter/fl-admin-portal/commit/7aa92b8bf0ed9058cfd7ff3277357ce3c336e862))
+
 #### 7.18.15 (2024-04-07)
 
 ##### Bug Fixes
