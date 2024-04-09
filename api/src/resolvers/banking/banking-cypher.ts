@@ -43,7 +43,7 @@ export const setRecordTransactionReference = `
 `
 
 export const setRecordTransactionReferenceWithOTP = `
-    MATCH (record:ServiceRecord {id: $id})
+    MATCH (record {id: $id}) WHERE record:ServiceRecord OR record:RehearsalRecord
     SET record.transactionStatus = 'send OTP'
     
     RETURN record {
@@ -59,7 +59,8 @@ export const setRecordTransactionReferenceWithOTP = `
     `
 
 export const checkTransactionReference = `
-MATCH (record:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)<-[:HAS*0..5]-(stream:Stream)
+MATCH (record {id: $serviceRecordId}) WHERE record:ServiceRecord OR record:RehearsalRecord
+MATCH (recordd)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)<-[:HAS*0..5]-(stream:Stream)
 WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream
 OPTIONAL MATCH (record)-[:OFFERING_BANKED_BY]->(banker)
 RETURN record {
@@ -107,7 +108,7 @@ RETURN record {
 `
 
 export const setTransactionStatusFailed = `
-MATCH (record:ServiceRecord {id: $serviceRecordId})
+MATCH (record {id: $serviceRecordId}) WHERE record:ServiceRecord OR record:RehearsalRecord
 SET record.transactionStatus = $status,
 record.transactionError = $error
 
@@ -115,7 +116,7 @@ RETURN record
 `
 
 export const setTransactionStatusSuccess = `
-   MATCH (record:ServiceRecord {id: $serviceRecordId})
+   MATCH (record {id: $serviceRecordId}) WHERE record:ServiceRecord OR record:RehearsalRecord
    SET record.transactionStatus = 'success'
    
    RETURN record
