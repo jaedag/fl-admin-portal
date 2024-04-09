@@ -307,6 +307,7 @@ const bankingMutation = {
           .run(initiateServiceRecordTransaction, {
             auth: context.auth,
             ...args,
+            serviceRecordId: args.rehearsalRecordId,
           })
           .catch((error: any) =>
             throwToSentry(
