@@ -16,19 +16,22 @@ const whitelistIPs = (event) => {
 }
 
 const setTransactionStatusSuccess = `
-      MATCH (record {transactionReference: $reference}) WHERE record:ServiceRecord OR record:Transaction
+      MATCH (record {transactionReference: $reference}) 
+      WHERE record:ServiceRecord OR record:Transaction OR record:RehearsalRecord
         SET record.transactionStatus = 'success'
       
       RETURN record
     `
 const setTransactionStatusFailed = `
-      MATCH (record {transactionReference: $reference}) WHERE record:ServiceRecord OR record:Transaction
+      MATCH (record {transactionReference: $reference}) 
+      WHERE record:ServiceRecord OR record:Transaction OR record:RehearsalRecord
         SET record.transactionStatus = 'failed'
       
       RETURN record
     `
 const setTransactionStatusPending = `
-    MATCH (record {transactionReference: $reference}) WHERE record:ServiceRecord OR record:Transaction
+    MATCH (record {transactionReference: $reference})
+    WHERE record:ServiceRecord OR record:Transaction OR record:RehearsalRecord
       SET record.transactionStatus = 'pending'
     
     RETURN record
