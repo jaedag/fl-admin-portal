@@ -394,6 +394,7 @@ export type ServiceRecord = {
   // Offering
   treasurerSelfie: string
   bankingProof: boolean
+  tellerConfirmationTime: string
   bankingSlip: string
   transactionStatus: 'pending' | 'success' | 'failed' | 'send OTP'
   bankingSlipUploader: Member

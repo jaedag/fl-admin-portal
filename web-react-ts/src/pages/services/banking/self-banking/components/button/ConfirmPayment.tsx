@@ -24,6 +24,10 @@ type ButtonConfirmPaymentProps = {
           fellowshipId?: string
           constituencyId?: string
           councilId?: string
+
+          hubId?: string
+          hubCouncilId?: string
+          ministryId?: string
         }>
       | undefined
   ) => Promise<ApolloQueryResult<any>>
@@ -36,8 +40,15 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
   const { refetch, service, handleClose, ...rest } = props
   const [sending, setSending] = useState(false)
   const navigate = useNavigate()
-  const { fellowshipId, constituencyId, councilId, clickCard } =
-    useContext(ChurchContext)
+  const {
+    fellowshipId,
+    constituencyId,
+    councilId,
+    hubId,
+    hubCouncilId,
+    ministryId,
+    clickCard,
+  } = useContext(ChurchContext)
   const [ConfirmOfferingPayment] = useMutation(CONFIRM_OFFERING_PAYMENT)
   const location = useLocation()
 
@@ -54,6 +65,9 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
             fellowshipId,
             constituencyId,
             councilId,
+            hubId,
+            hubCouncilId,
+            ministryId,
           })
           clickCard({
             id: service?.id,
@@ -77,6 +91,21 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
             )
           } else if (res.data?.councils) {
             serviceRecord = res.data?.councils[0].services.find(
+              (serviceFromList: ConfirmPaymentServiceType) =>
+                serviceFromList?.id === service?.id
+            )
+          } else if (res.data?.hubs) {
+            serviceRecord = res.data?.hubs[0].rehearsals.find(
+              (serviceFromList: ConfirmPaymentServiceType) =>
+                serviceFromList?.id === service?.id
+            )
+          } else if (res.data?.hubCouncils) {
+            serviceRecord = res.data?.hubCouncils[0].rehearsals.find(
+              (serviceFromList: ConfirmPaymentServiceType) =>
+                serviceFromList?.id === service?.id
+            )
+          } else if (res.data?.ministries) {
+            serviceRecord = res.data?.ministries[0].services.find(
               (serviceFromList: ConfirmPaymentServiceType) =>
                 serviceFromList?.id === service?.id
             )
