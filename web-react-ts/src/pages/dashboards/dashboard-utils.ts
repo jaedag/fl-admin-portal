@@ -11,7 +11,6 @@ import { churchLevels } from 'pages/directory/update/directory-utils'
 import {
   permitArrivals,
   permitArrivalsHelpers,
-  permitLeader,
   permitLeaderAdmin,
   permitLeaderAdminArrivals,
   permitMe,
@@ -26,8 +25,8 @@ type MenuItem = {
   exact?: 'true'
 }
 
-export const arrayDiff = (a1: any[], a2: any[]) => {
-  return a1.filter((i) => a2.indexOf(i) < 0)
+export const arrayDiff = (membersIn: any[], notIn: any[]) => {
+  return membersIn.filter((i) => notIn.indexOf(i) < 0)
 }
 
 export const menuItems: MenuItem[] = [
@@ -70,10 +69,14 @@ export const menuItems: MenuItem[] = [
   {
     name: 'Accounts',
     to: '/accounts',
-    roles: arrayDiff(
-      [...permitLeader('Council'), 'fishers'],
-      permitLeaderAdminArrivals('Oversight')
-    ),
+    roles: [
+      'fishers',
+      'adminOversight',
+      'adminCampus',
+      'leaderCouncil',
+      'leaderStream',
+      'leaderCampus',
+    ],
   },
   {
     name: 'Maps',
