@@ -1,3 +1,9 @@
+#### 7.18.17 (2024-04-11)
+
+##### Refactors
+
+*  update account menu roles ([3641476e](https://github.com/firstlovecenter/fl-admin-portal/commit/3641476ee0458aec3e66210866bb39326f06e6fe))
+
 #### 7.18.16 (2024-04-09)
 
 ##### Bug Fixes
