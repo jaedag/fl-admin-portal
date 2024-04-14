@@ -87,3 +87,11 @@ WHERE date.date.year = 2024 AND date.date.week = date().week
 DETACH DELETE record
 
 
+
+MATCH (gs:Oversight {name: $oversightName})-[:HAS]->(campus:Campus)-[:HAS]->(stream:Stream)<-[:LEADS]-(pastor:Member)
+MATCH (campus)<-[:LEADS]-(oversightLeader:Member)
+OPTIONAL MATCH (stream)-[:HAS_HISTORY|HAS_SERVICE|HAS*2..7]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+WHERE date.date.year = date($bussingDate).year AND date.date.week = date($bussingDate).week
+MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church) WHERE NOT church:Member
+WITH DISTINCT campus, church, record, pastor, stream
+RETURN campus.name AS CampusName, church.name, labels(church),  pastor.firstName + " " +pastor.lastName,stream.name AS StreamName, record.attendance AS TotalAttendance, SUM(round(record.income,2)) AS TotalIncome ORDER BY CampusName, StreamName
