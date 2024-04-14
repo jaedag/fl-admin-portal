@@ -9,6 +9,7 @@ MATCH (gs:Oversight {name: $oversightName})-[:HAS]->(campus:Campus)-[:HAS]->(str
 MATCH (campus)<-[:LEADS]-(oversightLeader:Member)
 OPTIONAL MATCH (stream)-[:HAS_HISTORY|HAS_SERVICE|HAS*2..7]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
 WHERE date.date.year = date($bussingDate).year AND date.date.week = date($bussingDate).week
+WITH DISTINCT campus, stream, record, pastor
 RETURN campus.name AS CampusName,  pastor.firstName + " " +pastor.lastName,stream.name AS StreamName, SUM(record.attendance) AS TotalAttendance, SUM(round(record.income,2)) AS TotalIncome ORDER BY CampusName, StreamName
 `
 
