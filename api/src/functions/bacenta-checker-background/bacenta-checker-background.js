@@ -44,7 +44,6 @@ const handler = async () => {
         method: 'post',
         baseURL: notifyBaseURL,
         url: '/send-sms',
-        timeout: 15 * 60000,
         headers: {
           'Content-Type': 'application/json',
           'x-secret-key': SECRETS.FLC_NOTIFY_KEY,
@@ -56,12 +55,11 @@ const handler = async () => {
         },
       })
     }),
-    ...demoted.map((bacenta, i) => {
+    ...demoted.map((bacenta) => {
       return axios({
         method: 'post',
         baseURL: notifyBaseURL,
         url: '/send-sms',
-        timeout: 15 * 60000,
         headers: {
           'Content-Type': 'application/json',
           'x-secret-key': SECRETS.FLC_NOTIFY_KEY,
@@ -74,9 +72,7 @@ const handler = async () => {
       })
     }),
   ]).catch((error) => {
-    throw new Error(
-      `Error writing to google sheet\n${error.message}\n${error.stack}`
-    )
+    throw new Error(`Error sending SMS\n${error.message}\n${error.stack}`)
   })
 
   return {

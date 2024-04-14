@@ -40,7 +40,6 @@ import { neonumber, RearragedCypherResponse } from '../utils/types'
 import texts from '../texts.json'
 import { CreateTransferRecipientBody, SendMoneyBody } from './arrivals-types'
 import { checkServantHasCurrentHistory } from '../services/service-resolvers'
-import { setBacentaStatus } from './bacenta-status/utils-bacenta-status'
 
 const dotenv = require('dotenv')
 
@@ -390,9 +389,6 @@ export const arrivalsMutation = {
       streamName,
       numberOfVehicles,
       totalAttendance,
-      leaderPhoneNumber,
-      leaderFirstName,
-      bacentaName,
     }: {
       arrivalEndTime: string
       bacentaId: string
@@ -460,16 +456,6 @@ export const arrivalsMutation = {
           error
         )
       )
-
-    await setBacentaStatus(
-      bacentaId,
-      leaderFirstName,
-      leaderPhoneNumber,
-      bacentaName,
-      context
-    ).catch((error: any) =>
-      console.error('Error Setting bacenta Status', error)
-    )
 
     const vehicleRecord = response.vehicleRecord.properties
     const date = new Date().toISOString().slice(0, 10)
