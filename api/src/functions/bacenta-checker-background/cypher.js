@@ -9,8 +9,8 @@ WITH collect(bacenta) AS dontTouch
 MATCH (council:Council)-[:HAS*2]->(toDemote:Bacenta:Active:Graduated)<-[:LEADS]-(leader:Member)
 WHERE NOT toDemote IN dontTouch
 
-// SET toDemote:IC
-// REMOVE toDemote:Graduated
+SET toDemote:IC
+REMOVE toDemote:Graduated
 
 RETURN DISTINCT toDemote.name AS ToDemoteName, leader.firstName AS LeaderFirstName, leader.firstName + " " + leader.lastName AS LeaderName, leader.phoneNumber AS LeaderPhone
 `
@@ -24,8 +24,8 @@ MATCH (ic)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-
 
 WITH ic as toPromote, COUNT(DISTINCT record) AS bussingCount, leader WHERE bussingCount >= 4
 
-// SET toPromote:Graduated
-// REMOVE toPromote:IC
+SET toPromote:Graduated
+REMOVE toPromote:IC
 
 RETURN DISTINCT toPromote.name AS ToPromoteName, leader.firstName AS LeaderFirstName, leader.firstName + " " + leader.lastName AS LeaderName, leader.phoneNumber AS LeaderPhone
 `

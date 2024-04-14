@@ -1,7 +1,6 @@
 const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
 const { default: axios } = require('axios')
-const { getWeekNumber } = require('@jaedag/admin-portal-types')
 const { SECRETS } = require('./gsecrets.js')
 
 const { notifyBaseURL } = require('./utils/constants.js')
@@ -36,30 +35,43 @@ const handler = async () => {
 
   console.log('Response from database', response)
 
+  const demoted = response[0].map((bacenta) => bacenta)
+  const promoted = response[1].map((bacenta) => bacenta)
+
   await Promise.all([
-    axios({
-      method: 'post',
-      baseURL: notifyBaseURL,
-      url: '/send-sms',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-secret-key': SECRETS.FLC_NOTIFY_KEY,
-      },
-      data: {
-        recipient: ['233594760323'],
-        sender: 'FLC Admin',
-        message: `WEEK ${
-          getWeekNumber() - 1
-        } UPDATE\n\nAccra Google Sheets updated successfully on date ${
-          new Date()
-            .toLocaleString('en-GB', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-            })
-            .split('T')[0]
-        }`,
-      },
+    ...promoted.map((bacenta) => {
+      return axios({
+        method: 'post',
+        baseURL: notifyBaseURL,
+        url: '/send-sms',
+        timeout: 15 * 60000,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-secret-key': SECRETS.FLC_NOTIFY_KEY,
+        },
+        data: {
+          recipient: [bacenta.leaderPhone],
+          sender: 'FLC Admin',
+          message: `Hi ${bacenta.leaderFirstName}\n\nCongratulations on successfully bussing for four consecutive weeks. Your bacenta ${bacenta.name} has been graduated to Bacenta status`,
+        },
+      })
+    }),
+    ...demoted.map((bacenta, i) => {
+      return axios({
+        method: 'post',
+        baseURL: notifyBaseURL,
+        url: '/send-sms',
+        timeout: 15 * 60000,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-secret-key': SECRETS.FLC_NOTIFY_KEY,
+        },
+        data: {
+          recipient: [bacenta.leaderPhone],
+          sender: 'FLC Admin',
+          message: `Hi ${bacenta.leaderFirstName}\n\nSorry! You have not been bussing for four consecutive weeks. Your bacenta ${bacenta.name} has been demoted to IC status`,
+        },
+      })
     }),
   ]).catch((error) => {
     throw new Error(

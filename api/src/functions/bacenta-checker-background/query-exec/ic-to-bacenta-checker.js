@@ -5,29 +5,19 @@ export const ICToBacentaChecker = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
-    const result = await session.executeRead(async (tx) =>
+    const result = await session.executeWrite(async (tx) =>
       tx.run(getBacentasToPromote, {
         campusName: CAMPUS_NAME,
         bussingDate: lastSunday,
       })
     )
 
-    const headerRow = [
-      'ToPromoteName',
-      'LeaderFirstName',
-      'LeaderName',
-      'LeaderPhone',
-    ]
-
-    const returnValues = [
-      headerRow,
-      ...result.records.map((record) => [
-        record.get('ToPromoteName').toString(),
-        record.get('LeaderFirstName').toString(),
-        record.get('LeaderName').toString(),
-        record.get('LeaderPhone').toString(),
-      ]),
-    ]
+    const returnValues = result.records.map((record) => ({
+      name: record.get('ToPromoteName').toString(),
+      leaderFirstName: record.get('LeaderFirstName').toString(),
+      leaderFullName: record.get('LeaderName').toString(),
+      leaderPhone: record.get('LeaderPhone').toString(),
+    }))
 
     return returnValues
   } catch (error) {
