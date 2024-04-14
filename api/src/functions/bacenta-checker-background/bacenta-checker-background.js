@@ -80,4 +80,4 @@ const handler = async () => {
   }
 }
 
-module.exports.handler = schedule('30 23 * * 1', handler)
+module.exports.handler = schedule('30 10 * * 1', handler)
