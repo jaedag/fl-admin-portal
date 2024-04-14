@@ -1,3 +1,19 @@
+#### 7.18.18 (2024-04-14)
+
+##### New Features
+
+*  add history logging for demoting and promoting Bacenta status ([054b9635](https://github.com/firstlovecenter/fl-admin-portal/commit/054b9635cfc91239a6ed61e9ce84d4492a91ae20))
+*  remove old bacenta status work ([1ede8bff](https://github.com/firstlovecenter/fl-admin-portal/commit/1ede8bff9c7797f99f58fcad062183be18c51542))
+*  implemeentation of bacenta checker background fn ([4b96e28e](https://github.com/firstlovecenter/fl-admin-portal/commit/4b96e28e5413dd9cf340c5cae82bac49ad9ea457))
+*  add Cypher query to retrieve campus, church, pastor, stream, ([d8d74d3d](https://github.com/firstlovecenter/fl-admin-portal/commit/d8d74d3dd6ffa0b733d40d316d5b9f10c0df005a))
+
+##### Bug Fixes
+
+*  update Bacenta count display in DetailsStream, DetailsCampus, ([a6bb92ae](https://github.com/firstlovecenter/fl-admin-portal/commit/a6bb92aed8c6fbcd31ee667bced470a471b8a305))
+*  add secrets.js for bacenta-checker-background ([519d4f1f](https://github.com/firstlovecenter/fl-admin-portal/commit/519d4f1fb9ba08d4b5bb22f2aa1f572cc99d3026))
+*  update schedule time for bacenta-checker-background.js ([b2e1b1dc](https://github.com/firstlovecenter/fl-admin-portal/commit/b2e1b1dc49edd45289b1b5f345bb4faf2ca86640))
+*  update cypher.js to include bussing date filter ([0535b36f](https://github.com/firstlovecenter/fl-admin-portal/commit/0535b36fede3c7d8de25a65e24a7b464394d49a8))
+
 #### 7.18.17 (2024-04-11)
 
 ##### Refactors
