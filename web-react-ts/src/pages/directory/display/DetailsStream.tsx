@@ -52,12 +52,12 @@ const DetailsStream = () => {
     },
     {
       title: 'Bacentas',
-      number: stream?.activeBacentaCount,
-      vacationCount: stream?.vacationBacentaCount,
+      number: stream?.activeGraduatedBacentaCount,
+      vacationCount: stream?.vacationGraduatedBacentaCount,
       link: `#`,
     },
     {
-      title: 'IC Bacentas',
+      title: 'ICs',
       number: stream?.activeIcBacentaCount,
       vacationCount: stream?.vacationIcBacentaCount,
       link: '#',

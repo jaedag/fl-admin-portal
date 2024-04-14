@@ -44,12 +44,12 @@ const DetailsCampus = () => {
     },
     {
       title: 'Bacentas',
-      number: gathering?.activeBacentaCount,
-      vacationCount: gathering?.vacationBacentaCount,
+      number: gathering?.activeGraduatedBacentaCount,
+      vacationCount: gathering?.vacationGraduatedBacentaCount,
       link: `#`,
     },
     {
-      title: 'IC Bacentas',
+      title: 'ICs',
       number: gathering?.activeIcBacentaCount,
       vacationCount: gathering?.vacationIcBacentaCount,
       link: '#',

@@ -346,8 +346,8 @@ export const DISPLAY_CONSTITUENCY = gql`
       target
       stream_name
       hubCount
-      activeBacentaCount
-      vacationBacentaCount
+      activeGraduatedBacentaCount
+      vacationGraduatedBacentaCount
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
@@ -417,14 +417,14 @@ export const DISPLAY_COUNCIL = gql`
       }
       stream_name
       constituencyCount
-      activeBacentaCount
+      activeGraduatedBacentaCount
       activeFellowshipCount
       hubCouncilCount
       hubCount
       hubFellowshipCount
       memberCount
       pastorCount
-      vacationBacentaCount
+      vacationGraduatedBacentaCount
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
@@ -484,12 +484,12 @@ export const DISPLAY_STREAM = gql`
       target
       councilCount
       constituencyCount
-      activeBacentaCount
+      activeGraduatedBacentaCount
       activeFellowshipCount
       hubFellowshipCount
       memberCount
       pastorCount
-      vacationBacentaCount
+      vacationGraduatedBacentaCount
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
@@ -557,11 +557,11 @@ export const DISPLAY_CAMPUS = gql`
       streamCount
       councilCount
       constituencyCount
-      activeBacentaCount
+      activeGraduatedBacentaCount
       activeFellowshipCount
       memberCount
       pastorCount
-      vacationBacentaCount
+      vacationGraduatedBacentaCount
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
@@ -622,11 +622,11 @@ export const DISPLAY_OVERSIGHT = gql`
       streamCount
       councilCount
       constituencyCount
-      activeBacentaCount
+      activeGraduatedBacentaCount
       activeFellowshipCount
       memberCount
       pastorCount
-      vacationBacentaCount
+      vacationGraduatedBacentaCount
       vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
@@ -735,11 +735,11 @@ export const DISPLAY_DENOMINATION = gql`
       streamCount
       councilCount
       constituencyCount
-      activeBacentaCount
+      activeGraduatedBacentaCount
       activeFellowshipCount
       memberCount
       pastorCount
-      vacationBacentaCount
+      vacationGraduatedBacentaCount
       vacationFellowshipCount
 
       oversights {

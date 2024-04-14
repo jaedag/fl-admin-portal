@@ -43,15 +43,14 @@ const DetailsCard = (props: DetailsCardPropsType) => {
                 <small>{detail?.match(currentUser.currency)}</small>
               </h3>
               {!!trailing && <>{trailing}</>}
-              {heading === 'IC Bacentas' &&
-                props?.vacationIcBacentaCount !== '0' && (
-                  <div>
-                    <Badge bg="danger" className="badge-vacation mt-auto">
-                      <span className="font-danger">{`+ `}</span>
-                      {`${props?.vacationIcBacentaCount} on Vacation`}
-                    </Badge>
-                  </div>
-                )}
+              {heading === 'ICs' && props?.vacationIcBacentaCount !== '0' && (
+                <div>
+                  <Badge bg="danger" className="badge-vacation mt-auto">
+                    <span className="font-danger">{`+ `}</span>
+                    {`${props?.vacationIcBacentaCount} on Vacation`}
+                  </Badge>
+                </div>
+              )}
               {parseFloat(props?.vacationCount?.toString() || '0') !== 0.0 && (
                 <div>
                   <Badge bg="danger" className="badge-vacation mt-auto">

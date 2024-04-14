@@ -26,12 +26,12 @@ const DetailsConstituency = () => {
     { title: 'Target', number: constituency?.target, link: '#' },
     {
       title: 'Bacentas',
-      number: constituency?.activeBacentaCount || 0,
+      number: constituency?.activeGraduatedBacentaCount || 0,
       link: `/bacenta/displayall`,
-      vacationCount: constituency?.vacationBacentaCount,
+      vacationCount: constituency?.vacationGraduatedBacentaCount,
     },
     {
-      title: 'IC Bacentas',
+      title: 'ICs',
       number: constituency?.activeIcBacentaCount,
       vacationCount: constituency?.vacationIcBacentaCount,
       link: '/ic/displayall',

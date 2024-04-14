@@ -45,12 +45,12 @@ const DetailsDenomination = () => {
     },
     {
       title: 'Bacentas',
-      number: denomination?.activeBacentaCount,
-      vacationCount: denomination?.vacationBacentaCount,
+      number: denomination?.activeGraduatedBacentaCount,
+      vacationCount: denomination?.vacationGraduatedBacentaCount,
       link: `#`,
     },
     {
-      title: 'IC Bacentas',
+      title: 'ICs',
       number: denomination?.activeIcBacentaCount,
       vacationCount: denomination?.vacationIcBacentaCount,
       link: '#',

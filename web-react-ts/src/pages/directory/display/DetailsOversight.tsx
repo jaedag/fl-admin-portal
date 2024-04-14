@@ -46,12 +46,12 @@ const DetailsOversight = () => {
     },
     {
       title: 'Bacentas',
-      number: oversight?.activeBacentaCount,
-      vacationCount: oversight?.vacationBacentaCount,
+      number: oversight?.activeGraduatedBacentaCount,
+      vacationCount: oversight?.vacationGraduatedBacentaCount,
       link: `#`,
     },
     {
-      title: 'IC Bacentas',
+      title: 'ICs',
       number: oversight?.activeIcBacentaCount,
       vacationCount: oversight?.vacationIcBacentaCount,
       link: '#',
