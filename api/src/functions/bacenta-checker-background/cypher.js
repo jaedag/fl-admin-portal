@@ -12,6 +12,19 @@ WHERE NOT toDemote IN dontTouch
 SET toDemote:IC
 REMOVE toDemote:Graduated
 
+WITH toDemote, leader
+
+CREATE (log:HistoryLog)
+        SET log.id =  apoc.create.uuid(),
+        log.timeStamp = datetime(),
+        log.historyRecord = toDemote.name + ' Bacenta has been demoted to IC status'
+        
+WITH toDemote, leader, log
+MERGE (date:TimeGraph {date: date()})
+WITH toDemote, log, date
+MERGE (toDemote)-[:HAS_HISTORY]->(log)
+MERGE (log)-[:RECORDED_ON]->(date)
+
 RETURN DISTINCT toDemote.name AS ToDemoteName, leader.firstName AS LeaderFirstName, leader.firstName + " " + leader.lastName AS LeaderName, leader.phoneNumber AS LeaderPhone
 `
 
@@ -26,6 +39,19 @@ WITH ic as toPromote, COUNT(DISTINCT record) AS bussingCount, leader WHERE bussi
 
 SET toPromote:Graduated
 REMOVE toPromote:IC
+
+WITH toPromote, leader
+
+CREATE (log:HistoryLog)
+        SET log.id =  apoc.create.uuid(),
+        log.timeStamp = datetime(),
+        log.historyRecord = toPromote.name + ' Bacenta has been promoted to Graduated status'
+
+WITH toPromote, leader, log
+MERGE (date:TimeGraph {date: date()})
+WITH toPromote, log, date
+MERGE (toPromote)-[:HAS_HISTORY]->(log)
+MERGE (log)-[:RECORDED_ON]->(date)
 
 RETURN DISTINCT toPromote.name AS ToPromoteName, leader.firstName AS LeaderFirstName, leader.firstName + " " + leader.lastName AS LeaderName, leader.phoneNumber AS LeaderPhone
 `
