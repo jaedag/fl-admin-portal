@@ -21,7 +21,7 @@ CREATE (log:HistoryLog)
         
 WITH toDemote, leader, log
 MERGE (date:TimeGraph {date: date()})
-WITH toDemote, log, date
+WITH toDemote, log, date, leader
 MERGE (toDemote)-[:HAS_HISTORY]->(log)
 MERGE (log)-[:RECORDED_ON]->(date)
 
@@ -49,7 +49,7 @@ CREATE (log:HistoryLog)
 
 WITH toPromote, leader, log
 MERGE (date:TimeGraph {date: date()})
-WITH toPromote, log, date
+WITH toPromote, log, date, leader
 MERGE (toPromote)-[:HAS_HISTORY]->(log)
 MERGE (log)-[:RECORDED_ON]->(date)
 
