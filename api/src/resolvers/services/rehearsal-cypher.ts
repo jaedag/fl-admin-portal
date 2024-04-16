@@ -144,7 +144,8 @@ export const recordOnStageAttendance = `
     MERGE (aggregate:AggregateStageAttendanceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
     MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
 
-    WITH stageAttendanceRecord, aggregate, COUNT(DISTINCT stageAttendanceRecord) AS recordCount, SUM(stageAttendanceRecord.attendance) AS attendance, SUM(aggregate.attendance) AS aggregateAttendance, 
+    WITH stageAttendanceRecord, aggregate, COUNT(DISTINCT stageAttendanceRecord) AS recordCount, SUM(stageAttendanceRecord.attendance) AS attendance, SUM(aggregate.attendance) AS aggregateAttendance
+    
     MATCH (aggregate)
     SET aggregate.attendance = aggregateAttendance + attendance,
     aggregate.numberOfServices = recordCount
