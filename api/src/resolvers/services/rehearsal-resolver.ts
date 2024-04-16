@@ -275,11 +275,11 @@ const SontaServiceMutation = {
         serviceCheckRes[1]?.records
       ) as SontaHigherChurches
 
-      const streamServiceDayCheck = rearrangeCypherObject(serviceCheckRes[2])
+      // const streamServiceDayCheck = rearrangeCypherObject(serviceCheckRes[2])
 
-      if (!streamServiceDayCheck.serviceDay) {
-        throw new Error(errorMessage.not_stream_service_day)
-      }
+      // if (!streamServiceDayCheck.serviceDay) {
+      //   throw new Error(errorMessage.not_stream_service_day)
+      // }
 
       if (
         serviceCheck.alreadyFilled &&
