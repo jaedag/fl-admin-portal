@@ -1,24 +1,4 @@
-
-
-MATCH (trans:AccountTransaction)
-SET trans.createdAt = trans.timestamp,
-trans.lastModified = trans.timestamp
-// REMOVE trans.timestamp
-RETURN COUNT(trans);
-
-
-MATCH (trans:AccountTransaction)
-SET trans.createdAt = trans.timestamp 
-SET trans.lastModified = trans.timestamp 
-RETURN trans.createdAt;
-
-MATCH (trans:AccountTransaction)<-[:HAS_TRANSACTION]-(council:Council)
-SET trans.bussingSocietyBalance = council.bussingSocietyBalance,
-trans.weekdayBalance = council.weekdayBalance
-
-RETURN COUNT(trans);
-
-MATCH (agg:AggregateBussingRecord) WHERE agg.numberOfCars IS NOT NULL
-MATCH (record:BussingRecord) WHERE record.id IN agg.componentBussingIds
-SET agg.numberOfCars = SUM(record.numberOfCars)
-RETURN COUNT(agg)
+MATCH (church) WHERE NOT church:Member
+MATCH (church)-[r:CURRENT_HISTORY]-(log:ServiceLog)
+WITH church, log, COUNT(r) AS rCount WHERE rCount > 1
+RETURN church,log, rCount
