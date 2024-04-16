@@ -22,6 +22,7 @@ export const SHORT_POLL_INTERVAL = 30000
 export const isIncomeGraph = (graphs: GraphTypes, currentUser: any) => {
   const noIncomeGraphLevels = [
     'onStageAttendance',
+    'onStageAttendanceAggregate',
     'bussing',
     'bussingAggregate',
   ]
