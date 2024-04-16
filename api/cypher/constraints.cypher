@@ -108,6 +108,8 @@ CREATE CONSTRAINT uniqueUser IF NOT EXISTS ON (u:User) ASSERT u.id IS UNIQUE;
 CREATE CONSTRAINT uniqueOccupation IF NOT EXISTS ON (o:Occupation) ASSERT o.id IS UNIQUE;
 CREATE CONSTRAINT uniqueServiceLog IF NOT EXISTS ON (s:ServiceLog) ASSERT s.id IS UNIQUE;
 CREATE CONSTRAINT uniqueServiceRecord IF NOT EXISTS ON (s:ServiceRecord) ASSERT s.id IS UNIQUE;
+CREATE CONSTRAINT uniqueServiceRecordTransaction IF NOT EXISTS ON (s:ServiceRecord) ASSERT s.transactionReference IS UNIQUE;
+
 CREATE CONSTRAINT uniqueClosedBacenta IF NOT EXISTS ON (c:ClosedBacenta) ASSERT c.id IS UNIQUE;
 CREATE CONSTRAINT uniqueNoService IF NOT EXISTS ON (n:NoService) ASSERT n.id IS UNIQUE;
 CREATE CONSTRAINT uniqueCouncil IF NOT EXISTS ON (c:Council) ASSERT c.id IS UNIQUE;
@@ -162,6 +164,8 @@ CREATE CONSTRAINT uniqueOutreachVenue IF NOT EXISTS ON (o:OutreachVenue) ASSERT 
 CREATE CONSTRAINT uniqueOutdoorVenue IF NOT EXISTS ON (o:OutdoorVenue) ASSERT o.id IS UNIQUE;
 CREATE CONSTRAINT uniqueOffering IF NOT EXISTS ON (o:Offering) ASSERT o.id IS UNIQUE;
 CREATE CONSTRAINT uniqueTransaction IF NOT EXISTS ON (t:Transaction) ASSERT t.id IS UNIQUE;
+CREATE CONSTRAINT uniqueTransactionReference IF NOT EXISTS ON (t:Transaction) ASSERT t.transactionReference IS UNIQUE;
+
 CREATE CONSTRAINT uniqueOnline IF NOT EXISTS ON (o:Online) ASSERT o.id IS UNIQUE;
 CREATE CONSTRAINT uniqueClosedCampus IF NOT EXISTS ON (c:ClosedCampus) ASSERT c.id IS UNIQUE;
 CREATE CONSTRAINT uniqueMembershipData IF NOT EXISTS ON (m:MembershipData) ASSERT m.id IS UNIQUE;
