@@ -10,7 +10,7 @@ RETURN lastService
 
 export const checkHubHasNoMembers = `
 MATCH (hub:Hub {id:$hubId})
-MATCH (hub)-[:HAS]->(fellowships:HubFellowship)<-[:LEADS]-(member:Active:Member)
+MATCH (hub)-[:HAS]->(fellowships:HubFellowship)<-[:LEADS]-(member:Active:Member) WHERE NOT fellowships:ClosedFellowship
 MATCH (fellowships)<-[:LEADS]-(leader:Member)
 RETURN hub.name AS name, COUNT(member) AS memberCount, COUNT(fellowships) AS fellowshipCount
 `
