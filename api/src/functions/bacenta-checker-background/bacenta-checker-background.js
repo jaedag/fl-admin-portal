@@ -96,14 +96,17 @@ const handler = async () => {
         <p> Here is the list of bacenta(s) that have been promoted</p>
         <ul>
           ${promoted
-            .map((bacenta) => `<li>${bacenta.name}- ${bacenta.leaderName}</li>`)
+            .map(
+              (bacenta) => `<li>${bacenta.name}- ${bacenta.leaderFullName}</li>`
+            )
             .join('')}
         </ul>
         <p> Here is the list of bacenta(s) that have been demoted</p>
         <ul>
           ${demoted
             .map(
-              (bacenta) => `<li>${bacenta.name} - ${bacenta.leaderName}</li>`
+              (bacenta) =>
+                `<li>${bacenta.name} - ${bacenta.leaderFullName}</li>`
             )
             .join('')}
         </ul>
