@@ -60,7 +60,7 @@ export const setRecordTransactionReferenceWithOTP = `
 
 export const checkTransactionReference = `
 MATCH (record {id: $serviceRecordId}) WHERE record:ServiceRecord OR record:RehearsalRecord
-MATCH (recordd)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)<-[:HAS*0..5]-(stream:Stream)
+MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)<-[:HAS*0..5]-(stream:Stream)
 WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream
 OPTIONAL MATCH (record)-[:OFFERING_BANKED_BY]->(banker)
 RETURN record {

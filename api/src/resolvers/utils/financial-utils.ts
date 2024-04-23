@@ -97,6 +97,7 @@ export const getStreamFinancials = (stream: Stream) => {
       break
 
     default:
+      subaccount = SECRETS.PS_SB_FLE
       break
   }
 
