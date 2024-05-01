@@ -110,13 +110,14 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
         </PlaceholderCustom>
         {!member?.auth_id && !loading && (
           <Button
+            className="mb-3"
             disabled={createLoading}
             onClick={async () => {
               try {
-                const response = await CreateMemberAccount({
+                await CreateMemberAccount({
                   variables: { memberId: memberId },
                 })
-                alert(response.data.CreateMemberAccount)
+                alert('Account Created Successfully')
               } catch (error: any) {
                 throwToSentry(error)
               }

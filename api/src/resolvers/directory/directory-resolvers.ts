@@ -841,7 +841,7 @@ const directoryMutation = {
         changePasswordConfig(member, authToken)
       )
 
-      await Promise.all([
+      const res = await Promise.all([
         session.executeWrite((tx) =>
           tx.run(updateMemberAuthId, {
             id: args.memberId,
@@ -855,20 +855,22 @@ const directoryMutation = {
           `<p>Hi ${member.firstName} ${member.lastName},<br/><br/>Welcome to your First Love Membership Portal</b>.<br/><br/>Your account has just been created. Please set up your password by clicking <b><a href=${passwordTicketResponse.data.ticket}>this link</a></b>. After setting up your password, you can log in by clicking <b>https://my.firstlovecenter.com/</b><br/><br/>${texts.html.subscription}`
         ),
       ])
-      return 'Account Created Successfully'
+
+      return res[0].records[0]?.get('member').properties
     }
 
     if (!member.auth_id && authIdResponse.data[0]?.user_id) {
-      await session.executeWrite((tx) =>
+      const res = await session.executeWrite((tx) =>
         tx.run(updateMemberAuthId, {
           id: args.memberId,
           auth_id: authIdResponse.data[0]?.user_id,
         })
       )
-      return 'Account Created Successfully'
+
+      return res.records[0]?.get('member').properties
     }
 
-    return 'Account Already Exists'
+    return member
   },
 }
 
