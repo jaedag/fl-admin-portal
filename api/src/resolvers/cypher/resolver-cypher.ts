@@ -59,6 +59,12 @@ WITH apoc.cypher.runFirstColumn(
   } AS member
   `
 
+export const updateMemberAuthId = `
+MATCH (member:Member {id:$id})
+SET member.auth_id = $auth_id
+RETURN member
+`
+
 export const matchMemberOversightQuery = `
 WITH apoc.cypher.runFirstColumn(  
   "MATCH (member:Member {id:$id})

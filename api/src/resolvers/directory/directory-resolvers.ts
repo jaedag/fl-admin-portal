@@ -13,7 +13,12 @@ import {
 } from '../permissions'
 import { RemoveServant } from './make-remove-servants'
 
-import { updateAuthUserConfig } from '../utils/auth0'
+import {
+  changePasswordConfig,
+  createAuthUserConfig,
+  getAuthIdConfig,
+  updateAuthUserConfig,
+} from '../utils/auth0'
 import {
   makeMemberInactive,
   matchMemberQuery,
@@ -23,10 +28,13 @@ import {
   removeDuplicateMember,
   matchMemberAndIMCLStatus,
   updateMemberFellowship,
+  updateMemberAuthId,
 } from '../cypher/resolver-cypher'
 import { getAuthToken } from '../authenticate'
+import { sendSingleEmail } from '../utils/notify'
 
 const cypher = require('../cypher/resolver-cypher')
+const texts = require('../texts.json')
 const closeChurchCypher = require('../cypher/close-church-cypher')
 
 const directoryMutation = {
@@ -813,7 +821,54 @@ const directoryMutation = {
     return null
   },
   CreateMemberAccount: async (object: any, args: any, context: Context) => {
-    return 'Account Created Successfully'
+    const authToken = await getAuthToken()
+    const session = context.executionContext.session()
+
+    const memberRes = await session.executeRead((tx) =>
+      tx.run(matchMemberQuery, {
+        id: args.memberId,
+      })
+    )
+
+    const member = memberRes.records[0]?.get('member')
+    const authIdResponse = await axios(getAuthIdConfig(member, authToken))
+
+    if (!authIdResponse.data[0]?.user_id) {
+      const authProfileResponse = await axios(
+        createAuthUserConfig(member, authToken)
+      )
+      const passwordTicketResponse = await axios(
+        changePasswordConfig(member, authToken)
+      )
+
+      await Promise.all([
+        session.executeWrite((tx) =>
+          tx.run(updateMemberAuthId, {
+            id: args.memberId,
+            auth_id: authProfileResponse.data.user_id,
+          })
+        ),
+        sendSingleEmail(
+          member,
+          'Welcome to the My First Love Portal',
+          undefined,
+          `<p>Hi ${member.firstName} ${member.lastName},<br/><br/>Welcome to your First Love Membership Portal</b>.<br/><br/>Your account has just been created. Please set up your password by clicking <b><a href=${passwordTicketResponse.data.ticket}>this link</a></b>. After setting up your password, you can log in by clicking <b>https://my.firstlovecenter.com/</b><br/><br/>${texts.html.subscription}`
+        ),
+      ])
+      return 'Account Created Successfully'
+    }
+
+    if (!member.auth_id && authIdResponse.data[0]?.user_id) {
+      await session.executeWrite((tx) =>
+        tx.run(updateMemberAuthId, {
+          id: args.memberId,
+          auth_id: authIdResponse.data[0]?.user_id,
+        })
+      )
+      return 'Account Created Successfully'
+    }
+
+    return 'Account Already Exists'
   },
 }
 
