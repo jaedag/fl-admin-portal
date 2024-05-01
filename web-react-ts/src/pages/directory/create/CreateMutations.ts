@@ -343,3 +343,8 @@ export const CREATE_HUB_MUTATION = gql`
     }
   }
 `
+export const CREATE_MEMBER_ACCOUNT = gql`
+  mutation CreateMemberAccount($memberId: ID!) {
+    CreateMemberAccount(memberId: $memberId)
+  }
+`

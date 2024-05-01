@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import Timeline from 'components/Timeline/Timeline'
 import MemberRoleList from 'components/MemberRoleList'
 import { throwToSentry, USER_PLACEHOLDER } from 'global-utils'
@@ -24,6 +24,7 @@ import { FaPhone } from 'react-icons/fa'
 import { Whatsapp } from 'react-bootstrap-icons'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
+import { CREATE_MEMBER_ACCOUNT } from '../create/CreateMutations'
 
 const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const {
@@ -47,6 +48,9 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
     {
       variables: { id: memberId },
     }
+  )
+  const [CreateMemberAccount, { loading: createLoading }] = useMutation(
+    CREATE_MEMBER_ACCOUNT
   )
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
@@ -104,6 +108,23 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
             memberAdmin={memberAdmin}
           />
         </PlaceholderCustom>
+        {!member?.auth_id && !loading && (
+          <Button
+            disabled={createLoading}
+            onClick={async () => {
+              try {
+                const response = await CreateMemberAccount({
+                  variables: { memberId: memberId },
+                })
+                alert(response.data.CreateMemberAccount)
+              } catch (error: any) {
+                throwToSentry(error)
+              }
+            }}
+          >
+            {createLoading ? 'Loading' : 'Create Member Account'}
+          </Button>
+        )}
       </div>
       <Row>
         <Col>

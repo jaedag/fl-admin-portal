@@ -812,6 +812,9 @@ const directoryMutation = {
     }
     return null
   },
+  CreateMemberAccount: async (object: any, args: any, context: Context) => {
+    return 'Account Created Successfully'
+  },
 }
 
 export default directoryMutation
