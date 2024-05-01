@@ -1,3 +1,9 @@
+#### 7.18.20 (2024-05-01)
+
+##### Refactors
+
+*  directory-resolvers.ts and schema.graphql, and update CreateMemberAccount mutation ([6db8773d](https://github.com/firstlovecenter/fl-admin-portal/commit/6db8773ddf0c30ceed4bd926272c1aefedd2cb14))
+
 #### 7.18.19 (2024-05-01)
 
 ##### New Features
