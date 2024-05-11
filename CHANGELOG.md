@@ -1,3 +1,13 @@
+#### 7.18.21 (2024-05-11)
+
+##### New Features
+
+*  add admin roles for denominations and oversight in directory CRUD schema ([942230f7](https://github.com/firstlovecenter/fl-admin-portal/commit/942230f727a29341404e3a0fbf17e902022a938c))
+
+##### Refactors
+
+*  remove commented code in directory helper functions ([774f1633](https://github.com/firstlovecenter/fl-admin-portal/commit/774f163335ce251f9ea6b44c443c2995c5226ae0))
+
 #### 7.18.20 (2024-05-01)
 
 ##### Refactors
