@@ -1,3 +1,9 @@
+#### 7.18.22 (2024-05-12)
+
+##### Refactors
+
+*  remove commented code in directory helper functions ([5820eb7d](https://github.com/firstlovecenter/fl-admin-portal/commit/5820eb7dbfed63e249cccd1959fcd1ddb673f96f))
+
 #### 7.18.21 (2024-05-11)
 
 ##### New Features
