@@ -30,13 +30,13 @@ export type HistoryRecordArgs = {
 }
 
 export const directoryLock = (userRoles: string[]) => {
-  // if (
-  //   (new Date().getDay() === 1 && new Date().getHours() >= 12) ||
-  //   new Date().getDay() === 2 ||
-  //   ['fishers']?.some((r) => userRoles.includes(r))
-  // ) {
-  //   return false
-  // }
+  if (
+    (new Date().getDay() === 1 && new Date().getHours() >= 12) ||
+    new Date().getDay() === 2 ||
+    ['fishers']?.some((r) => userRoles.includes(r))
+  ) {
+    return false
+  }
 
   return true
 }
