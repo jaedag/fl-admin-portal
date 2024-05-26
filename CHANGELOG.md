@@ -1,3 +1,9 @@
+#### 7.18.23 (2024-05-26)
+
+##### Bug Fixes
+
+*  update permissions for graph routes ([05a80d77](https://github.com/firstlovecenter/fl-admin-portal/commit/05a80d77cc13bd37c1d3785473afd802b1b7d6f5))
+
 #### 7.18.22 (2024-05-12)
 
 ##### Refactors
