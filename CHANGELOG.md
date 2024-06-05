@@ -1,3 +1,58 @@
+#### 7.18.23 (2024-05-26)
+
+##### Bug Fixes
+
+*  update permissions for graph routes ([05a80d77](https://github.com/firstlovecenter/fl-admin-portal/commit/05a80d77cc13bd37c1d3785473afd802b1b7d6f5))
+
+#### 7.18.22 (2024-05-12)
+
+##### Refactors
+
+*  remove commented code in directory helper functions ([5820eb7d](https://github.com/firstlovecenter/fl-admin-portal/commit/5820eb7dbfed63e249cccd1959fcd1ddb673f96f))
+
+#### 7.18.21 (2024-05-11)
+
+##### New Features
+
+*  add admin roles for denominations and oversight in directory CRUD schema ([942230f7](https://github.com/firstlovecenter/fl-admin-portal/commit/942230f727a29341404e3a0fbf17e902022a938c))
+
+##### Refactors
+
+*  remove commented code in directory helper functions ([774f1633](https://github.com/firstlovecenter/fl-admin-portal/commit/774f163335ce251f9ea6b44c443c2995c5226ae0))
+
+#### 7.18.20 (2024-05-01)
+
+##### Refactors
+
+*  directory-resolvers.ts and schema.graphql, and update CreateMemberAccount mutation ([6db8773d](https://github.com/firstlovecenter/fl-admin-portal/commit/6db8773ddf0c30ceed4bd926272c1aefedd2cb14))
+
+#### 7.18.19 (2024-05-01)
+
+##### New Features
+
+*  update member authentication ID in resolver-cypher.ts and directory-resolvers.ts ([ab5a5d18](https://github.com/firstlovecenter/fl-admin-portal/commit/ab5a5d18b4f7f5676b57128000c7fd888a625014))
+*  implement button that makes round trip to db ([b69f6085](https://github.com/firstlovecenter/fl-admin-portal/commit/b69f60850d8e6c0a0535d96a875609af0aee028a))
+*  add debug scripts to retrieve specific service records and their associated member details ([6876837d](https://github.com/firstlovecenter/fl-admin-portal/commit/6876837dc37222f6ea17b02e6c4f606a72901b85))
+*  update email notification content in ([d7c46560](https://github.com/firstlovecenter/fl-admin-portal/commit/d7c4656070233069c94cdd0137c870e47792852d))
+*  add 'onStageAttendanceAggregate' to the list of noIncomeGraphLevels in global-utils.ts ([7b16f30a](https://github.com/firstlovecenter/fl-admin-portal/commit/7b16f30ad1a576ab2fc270c3bd9fed66a66055f7))
+*  add uniqueServiceRecordTransaction and uniqueTransactionReference constraints ([df69bd98](https://github.com/firstlovecenter/fl-admin-portal/commit/df69bd987c64777cf42b0558338e3930386a006f))
+*  update email notification content in bacenta-checker-background.js ([92ca889c](https://github.com/firstlovecenter/fl-admin-portal/commit/92ca889c0a4bd14ac25dfe029150f12e98153e77))
+*  add email notification for successful Bacenta Checker Background Job ([5016d1cb](https://github.com/firstlovecenter/fl-admin-portal/commit/5016d1cb621bf770f9b6efa4224435687a20c230))
+
+##### Bug Fixes
+
+*  fix typo in banking-cypher.ts and financial-utils.ts ([5371d8d7](https://github.com/firstlovecenter/fl-admin-portal/commit/5371d8d742986a6869d3d64a3a485749edbeeb9b))
+*  update imclDefaulters count for anagkazo banking ([131e194b](https://github.com/firstlovecenter/fl-admin-portal/commit/131e194bafa4e5427740c1c13b3094fcc56bd4bf))
+*  missing serviceDay check in rehearsal-resolver.ts ([d272372e](https://github.com/firstlovecenter/fl-admin-portal/commit/d272372e7e4ba3bc10c3f5c7fb3c734641e2016e))
+*  commented out code in rehearsal-resolver.ts ([61b33e53](https://github.com/firstlovecenter/fl-admin-portal/commit/61b33e53a668c5e977f8909fba7ed85b73023f9e))
+
+##### Refactors
+
+*  close-church-creativearts-cypher.ts to exclude closed fellowships ([8e34098f](https://github.com/firstlovecenter/fl-admin-portal/commit/8e34098fce029bfcddd7cfecf7993f6f03736ab0))
+*  recordOnStageAttendance query in rehearsal-cypher.ts ([91262dbb](https://github.com/firstlovecenter/fl-admin-portal/commit/91262dbb263a697eef1a2d3f28dab01f2a9dba56))
+*  rehearsal-cypher.ts to use ([8accc668](https://github.com/firstlovecenter/fl-admin-portal/commit/8accc6686a7db2aa0acd37c757d6e0d5a26a8bab))
+*  refactor cypher queries in before-next-update.cypher and poimen-issue-fixes.cypher ([9fb45acf](https://github.com/firstlovecenter/fl-admin-portal/commit/9fb45acf6530298ad49fb5f0bb1cf4158dc33330))
+
 #### 7.18.18 (2024-04-14)
 
 ##### New Features

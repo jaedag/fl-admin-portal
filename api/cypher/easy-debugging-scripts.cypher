@@ -13,3 +13,29 @@ MATCH (record:ServiceRecord) WHERE record.id IN
 
 MATCH (record)-[:OFFERING_BANKED_BY]->(member:Member)
 RETURN member.firstName, member.lastName, record.id, record.income, record.transactionStatus, record.transactionReference, record.tellerConfirmationTime;
+
+MATCH (ic:Active:Bacenta {name: "Pistis "})<-[:LEADS]-(leader:Member)
+MATCH (ic)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) 
+    WHERE date.date.year = 2024 
+    AND date.date.week IN [date().week, date().week -1,date().week -2, date().week -3, date().week -4]
+    AND record.attendance >= 8
+
+WITH ic as toPromote, COUNT(DISTINCT record) AS bussingCount, leader WHERE bussingCount >= 4
+RETURN toPromote.name, bussingCount, leader.firstName, leader.lastName;
+
+MATCH (council:Council)-[:HAS*2]->(bacenta:Active:Bacenta {id: "1d98a3c4-fd38-46d1-80a0-6e6a8a23d3ad"})<-[:LEADS]-(leader:Member)
+MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord) WHERE record.attendance >= 8
+MATCH (record)-[:BUSSED_ON]->(date:TimeGraph) WHERE  date.date.year = 2024 
+    AND date.date.week IN [date().week, date().week -1,date().week -2, date().week -3, date().week -4]
+
+RETURN bacenta.name,  leader.firstName, leader.lastName, record.attendance, date.date.week
+WITH collect(bacenta) AS dontTouch
+MATCH (council:Council)-[:HAS*2]->(toDemote:Active:Bacenta:Graduated)<-[:LEADS]-(leader:Member)
+WHERE NOT toDemote IN dontTouch
+
+RETURN toDemote.name, leader.firstName, leader.lastName, council.name;
+
+RETURN date().week;
+
+MATCH (record:ServiceRecord {id: "42fe0ffd-e754-4434-b7ba-eab420552291"})
+DETACH DELETE record

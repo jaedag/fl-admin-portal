@@ -355,7 +355,7 @@ export const graphs: LazyRouteTypes[] = [
     path: '/fellowship/graphs',
     element: FellowshipReport,
     roles: [
-      ...permitLeaderAdminArrivals('Constituency'),
+      ...permitLeaderAdminArrivals('Fellowship'),
       ...permitTellerStream(),
       ...permitLeaderAdmin('Hub'),
     ],
@@ -364,10 +364,7 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/bacenta/graphs',
     element: BacentaReport,
-    roles: [
-      ...permitLeaderAdminArrivals('Constituency'),
-      ...permitTellerStream(),
-    ],
+    roles: [...permitLeaderAdminArrivals('Bacenta'), ...permitTellerStream()],
     placeholder: true,
   },
 

@@ -36,6 +36,15 @@ const neoSchema = new Neo4jGraphQL({
       rolesPath: 'https://flcadmin\\.netlify\\.app/roles',
     }),
   },
+  features: {
+    excludeDeprecatedFields: {
+      bookmark: true,
+      negationFilters: true,
+      arrayFilters: true,
+      stringAggregation: true,
+      aggregationFilters: true,
+    },
+  },
 })
 
 /*

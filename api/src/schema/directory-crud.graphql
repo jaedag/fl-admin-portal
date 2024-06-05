@@ -873,6 +873,8 @@ extend type Mutation {
       rules: [
         {
           roles: [
+            "adminDenomination"
+            "adminOversight"
             "adminCampus"
             "adminStream"
             "adminCouncil"
