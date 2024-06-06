@@ -40,16 +40,15 @@ const Services = () => {
           </div>
         </PlaceholderCustom>
         <div className="d-grid gap-2 mt-5 text-left">
-          {churchType === 'Fellowship' &&
-            church?.vacationStatus === 'Active' && (
-              <MenuButton
-                iconComponent={<Book />}
-                title="Fellowship Service"
-                color="members"
-                onClick={() => navigate(`/services/fellowship`)}
-                noCaption
-              />
-            )}
+          {churchType === 'Bacenta' && church?.vacationStatus === 'Active' && (
+            <MenuButton
+              iconComponent={<Book />}
+              title="Bacenta Service"
+              color="members"
+              onClick={() => navigate(`/services/bacenta`)}
+              noCaption
+            />
+          )}
           {['Hub', 'Ministry'].includes(churchType) &&
             church?.vacationStatus === 'Active' && (
               <MenuButton
@@ -62,15 +61,7 @@ const Services = () => {
                 noCaption
               />
             )}
-          {churchType === 'Bacenta' && (
-            <MenuButton
-              iconComponent={<Book />}
-              title="Bacenta Service"
-              color="members"
-              onClick={() => navigate(`/services/bacenta`)}
-              noCaption
-            />
-          )}
+
           {['Stream', 'Constituency', 'Council'].includes(churchType) && (
             <MenuButton
               iconComponent={<Book />}

@@ -76,7 +76,7 @@ export const arrivals: LazyRouteTypes[] = [
     element: Arrivals,
     placeholder: true,
     roles: [
-      ...permitLeaderAdminArrivals('Fellowship'),
+      ...permitLeaderAdminArrivals('Bacenta'),
       ...permitArrivalsHelpers('Stream'),
     ],
   },

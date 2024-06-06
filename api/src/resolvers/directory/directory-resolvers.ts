@@ -27,8 +27,8 @@ import {
   activateInactiveMember,
   removeDuplicateMember,
   matchMemberAndIMCLStatus,
-  updateMemberFellowship,
   updateMemberAuthId,
+  updateMemberBacenta,
 } from '../cypher/resolver-cypher'
 import { getAuthToken } from '../authenticate'
 import { sendSingleEmail } from '../utils/notify'
@@ -134,13 +134,13 @@ const directoryMutation = {
 
     return member
   },
-  UpdateMemberFellowship: async (
+  UpdateMemberBacenta: async (
     object: Member,
-    args: { memberId: string; fellowshipId: string },
+    args: { memberId: string; bacentaId: string },
     context: Context
   ) => {
     isAuth(
-      [...permitMe('Fellowship'), ...permitMe('Hub'), ...permitSheepSeeker()],
+      [...permitMe('Bacenta'), ...permitMe('Hub'), ...permitSheepSeeker()],
       context.auth.roles
     )
 
@@ -161,9 +161,9 @@ const directoryMutation = {
     }
 
     const moveRes = await session.executeWrite((tx) =>
-      tx.run(updateMemberFellowship, {
+      tx.run(updateMemberBacenta, {
         id: args.memberId,
-        fellowshipId: args.fellowshipId,
+        bacentaId: args.bacentaId,
       })
     )
 

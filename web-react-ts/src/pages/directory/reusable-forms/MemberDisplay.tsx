@@ -70,7 +70,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
           ...permitSheepSeeker(),
           ...permitAdmin('Constituency'),
           ...permitAdmin('Ministry'),
-          ...permitLeader('Fellowship'),
+          ...permitLeader('Bacenta'),
         ]}
       >
         <EditButton link="/member/editmember" />

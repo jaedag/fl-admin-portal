@@ -38,7 +38,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..8]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..7]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN DISTINCT members ORDER BY toLower(members.firstName), toLower(members.lastName)
       """
     )
@@ -46,7 +46,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   memberCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..8]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:LEADS|HAS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|IS_SHEEP_SEEKER_FOR*1..7]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
@@ -1004,6 +1004,9 @@ type Constituency implements Church {
 type Bacenta implements Church {
   id: ID @id
   name: String!
+  bankingCode: Int
+  location: Point
+  meetingDay: ServiceDay! @relationship(type: "MEETS_ON", direction: OUT)
   stream_name: String
     @cypher(
       statement: """

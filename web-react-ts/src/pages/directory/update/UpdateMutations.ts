@@ -105,14 +105,14 @@ export const LOG_MEMBER_HISTORY = gql`
   }
 `
 
-export const UPDATE_MEMBER_FELLOWSHIP = gql`
-  mutation UpdateMemberFellowship(
+export const UPDATE_MEMBER_BACENTA = gql`
+  mutation UpdateMemberBacenta(
     $memberId: ID!
-    $fellowshipId: ID!
+    $bacentaId: ID!
     $ids: [ID]
     $historyRecord: String!
   ) {
-    UpdateMemberFellowship(memberId: $memberId, fellowshipId: $fellowshipId) {
+    UpdateMemberBacenta(memberId: $memberId, fellowshipId: $bacentaId) {
       id
       firstName
       lastName
@@ -859,54 +859,6 @@ export const MOVE_BACENTA_TO_CONSTITUENCY = gql`
   }
 `
 
-export const MOVE_FELLOWSHIP_TO_BACENTA = gql`
-  mutation MoveFellowshipToBacenta(
-    $fellowshipId: ID!
-    $newBacentaId: ID!
-    $oldBacentaId: ID!
-    $historyRecord: String!
-  ) {
-    MoveFellowshipToBacenta(
-      fellowshipId: $fellowshipId
-      bacentaId: $newBacentaId
-    ) {
-      id
-      name
-      bacenta {
-        id
-        name
-        fellowships {
-          id
-          name
-        }
-      }
-    }
-    LogFellowshipHistory(
-      fellowshipId: $fellowshipId
-      historyRecord: $historyRecord
-      oldBacentaId: $oldBacentaId
-      newBacentaId: $newBacentaId
-    ) {
-      id
-      name
-      history(limit: 5) {
-        id
-        timeStamp
-        createdAt {
-          date
-        }
-        loggedBy {
-          id
-          firstName
-          lastName
-          stream_name
-        }
-        historyRecord
-      }
-    }
-  }
-`
-
 export const MOVE_CREATIVEARTS_TO_CAMPUS = gql`
   mutation MoveCreativeArtsToCampus(
     $creativeArtsId: ID!
@@ -1260,62 +1212,6 @@ export const MOVE_HUB_TO_CONSTITUENCY = gql`
         id
         name
         hubs {
-          id
-          name
-        }
-      }
-      history(limit: 5) {
-        id
-        timeStamp
-        createdAt {
-          date
-        }
-        loggedBy {
-          id
-          stream_name
-          firstName
-          lastName
-        }
-        historyRecord
-      }
-    }
-  }
-`
-
-export const MOVE_HUBFELLOWSHIP_TO_HUB = gql`
-  mutation MoveHubFellowshipToHub(
-    $hubFellowshipId: ID!
-    $newHubId: ID!
-    $oldHubId: ID!
-    $historyRecord: String!
-  ) {
-    MoveHubFellowshipToHub(
-      hubFellowshipId: $hubFellowshipId
-      hubId: $newHubId
-    ) {
-      id
-      name
-      hub {
-        id
-        name
-        hubFellowships {
-          id
-          name
-        }
-      }
-    }
-    LogHubFellowshipHistory(
-      hubFellowshipId: $hubFellowshipId
-      historyRecord: $historyRecord
-      oldHubId: $oldHubId
-      newHubId: $newHubId
-    ) {
-      id
-      name
-      hub {
-        id
-        name
-        hubFellowships {
           id
           name
         }

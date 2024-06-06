@@ -3,9 +3,9 @@ import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 import { ChurchContext } from 'contexts/ChurchContext'
 import React, { useContext } from 'react'
-import { DetailsArray } from './DetailsFellowship'
 import { DISPLAY_STREAM } from './ReadQueries'
 import { permitAdmin } from 'permission-utils'
+import { DetailsArray } from './DetailsBacenta'
 
 const DetailsStream = () => {
   const { streamId } = useContext(ChurchContext)

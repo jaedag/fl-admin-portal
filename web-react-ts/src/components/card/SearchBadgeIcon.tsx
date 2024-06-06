@@ -2,7 +2,7 @@ import { ChurchLevel } from 'global-types'
 import { BuildingsFill, MusicNoteBeamed } from 'react-bootstrap-icons'
 import { BiBuildingHouse } from 'react-icons/bi'
 import { BsBusFront, BsEyeFill } from 'react-icons/bs'
-import { FaCogs, FaHubspot, FaTrophy, FaUsers } from 'react-icons/fa'
+import { FaCogs, FaHubspot, FaTrophy } from 'react-icons/fa'
 import { GiCampingTent, GiTreeBranch, GiWaterfall } from 'react-icons/gi'
 
 const SearchBadgeIcon = ({
@@ -39,10 +39,6 @@ const SearchBadgeIcon = ({
 
   if (category === 'Bacenta') {
     return <BsBusFront {...rest} />
-  }
-
-  if (category === 'Fellowship') {
-    return <FaUsers {...rest} />
   }
 
   if (category === 'CreativeArts') {

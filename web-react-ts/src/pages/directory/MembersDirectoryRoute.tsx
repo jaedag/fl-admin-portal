@@ -20,9 +20,6 @@ const ConstituencyMembers = React.lazy(
 const BacentaMembers = React.lazy(
   () => import('pages/directory/grids/BacentaMembers')
 )
-const FellowshipMembers = React.lazy(
-  () => import('pages/directory/grids/FellowshipMembers')
-)
 
 const MembersDirectoryRoute = ({
   children,
@@ -54,12 +51,8 @@ const MembersDirectoryRoute = ({
     //If the user does not have permission but is a Bacenta Leader
     church.setBacentaId(currentUser.bacenta)
     return <BacentaMembers />
-  } else if (isAuthorised(permitMe('Fellowship'), currentUser.roles)) {
-    //If the user does not have permission but is a Fellowship Leader
-    church.setFellowshipId(currentUser.fellowship)
-    return <FellowshipMembers />
   } else {
-    return <FellowshipMembers />
+    return <BacentaMembers />
   }
 }
 

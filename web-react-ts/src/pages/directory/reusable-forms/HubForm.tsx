@@ -28,11 +28,8 @@ import SubmitButton from 'components/formik/SubmitButton'
 import SearchMember from 'components/formik/SearchMember'
 import Input from 'components/formik/Input'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { HubFellowship } from 'global-types'
 import { DISPLAY_HUB } from '../display/ReadQueries'
 import HeadingSecondary from 'components/HeadingSecondary'
-import { MOVE_HUBFELLOWSHIP_TO_HUB } from '../update/UpdateMutations'
-import SearchHubFellowship from 'components/formik/SearchHubFellowship'
 import BtnSubmitText from 'components/formik/BtnSubmitText'
 import { permitAdmin, permitMe } from 'permission-utils'
 import { MemberContext } from 'contexts/MemberContext'
@@ -50,8 +47,6 @@ export interface HubFormValues extends FormikInitialValues {
   vacationStatus: 'Active' | 'Vacation'
   venueLatitude: string | number
   venueLongitude: string | number
-  hubFellowship?: HubFellowship
-  hubFellowships?: HubFellowship[]
 }
 
 type HubFormProps = {
@@ -67,7 +62,6 @@ type HubFormProps = {
 const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
   const { clickCard, hubId } = useContext(ChurchContext)
   const { currentUser } = useContext(MemberContext)
-  const [hubFellowshipModal, setHubFellowshipModal] = useState(false)
   const [closeDown, setCloseDown] = useState(false)
   const navigate = useNavigate()
 
@@ -76,14 +70,6 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
     variables: { hubCouncilId: initialValues.hubCouncil },
   })
   const [CloseDownHub] = useMutation(MAKE_HUB_INACTIVE, {
-    refetchQueries: [
-      {
-        query: DISPLAY_HUB,
-        variables: { id: hubId },
-      },
-    ],
-  })
-  const [MoveHubFellowshipToHub] = useMutation(MOVE_HUBFELLOWSHIP_TO_HUB, {
     refetchQueries: [
       {
         query: DISPLAY_HUB,
@@ -141,9 +127,6 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
         <ButtonGroup className="mt-3">
           {!newHub && (
             <>
-              <Button onClick={() => setHubFellowshipModal(true)}>
-                Add Hub
-              </Button>
               <Button variant="success" onClick={() => setCloseDown(true)}>
                 {`Close Down Hub`}
               </Button>
@@ -304,61 +287,6 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                   <SubmitButton formik={formik} />
                 </div>
               </Form>
-              <Modal
-                show={hubFellowshipModal}
-                onHide={() => setHubFellowshipModal(false)}
-                centered
-              >
-                <Modal.Header closeButton>Add A Hub</Modal.Header>
-                <Modal.Body>
-                  <p>Choose a hubFellowship to move to this hub</p>
-                  <SearchHubFellowship
-                    name={`hubFellowship`}
-                    placeholder="Hub Fellowship Name"
-                    initialValue=""
-                    setFieldValue={formik.setFieldValue}
-                    aria-describedby="Hub Fellowship Name"
-                  />
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button
-                    variant="success"
-                    type="submit"
-                    disabled={buttonLoading || !formik.values.hubFellowship}
-                    onClick={async () => {
-                      try {
-                        setButtonLoading(true)
-                        const res = await MoveHubFellowshipToHub({
-                          variables: {
-                            hubFellowshipId: formik.values.hubFellowship?.id,
-                            historyRecord: `${formik.values.hubFellowship?.name} Hub has been moved to ${formik.values.name} Hub from ${formik.values.hubFellowship?.hub.name} Hub`,
-                            newHubId: hubId,
-                            oldHubId: formik.values.hubFellowship?.hub.id,
-                          },
-                        })
-
-                        clickCard(res.data.MoveHubFellowshipToHub)
-                        setHubFellowshipModal(false)
-                      } catch (error) {
-                        throwToSentry(
-                          `There was an error moving this hubFellowship to this hub`,
-                          error
-                        )
-                      } finally {
-                        setButtonLoading(false)
-                      }
-                    }}
-                  >
-                    <BtnSubmitText loading={buttonLoading} />
-                  </Button>
-                  <Button
-                    variant="primary"
-                    onClick={() => setHubFellowshipModal(false)}
-                  >
-                    Close
-                  </Button>
-                </Modal.Footer>
-              </Modal>
 
               <Modal
                 show={closeDown}

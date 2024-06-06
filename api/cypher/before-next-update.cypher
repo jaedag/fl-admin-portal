@@ -17,7 +17,8 @@ RETURN fellowship, day LIMIT 1;
 MATCH (bacenta:Bacenta)-[r:MEETS_ON]->(day:ServiceDay)
 WITH bacenta, day, COUNT(r) AS rCount
 WHERE rCount > 1
-DELETE r
+// MATCH (bacenta:Bacenta)-[r:MEETS_ON]->(day:ServiceDay)
+// DELETE r
 WITH bacenta
 MATCH (day:ServiceDay {name: 'Thursday'})
 MERGE (bacenta)-[:MEETS_ON]->(day)

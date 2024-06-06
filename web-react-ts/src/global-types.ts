@@ -20,7 +20,6 @@ export type HTMLElement =
 
 // CHURCHES
 export type ChurchLevel =
-  | 'Fellowship'
   | 'Bacenta'
   | 'Constituency'
   | 'Council'
@@ -28,7 +27,6 @@ export type ChurchLevel =
   | 'Campus'
   | 'Oversight'
   | 'Denomination'
-  | 'HubFellowship'
   | 'Ministry'
   | 'HubCouncil'
   | 'Hub'
@@ -76,20 +74,15 @@ export interface Church {
   __typename: ChurchLevel
 }
 
-export interface Fellowship extends Church {
-  __typename: 'Fellowship'
-  bacenta: Bacenta
+export interface Bacenta extends Church {
+  __typename: 'Bacenta'
+  constituency: Constituency
   bankingCode: number
   services: ServiceRecord[]
   vacationStatus: VacationStatusOptions
   meetingDay: {
     day: 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
   }
-}
-
-export interface Bacenta extends Church {
-  __typename: 'Bacenta'
-  constituency: Constituency
 }
 
 export type ChurchIdAndName = {
@@ -176,7 +169,6 @@ export interface Hub extends Church {
     latitude: number
     longitude: number
   }
-  hubFellowships?: HubFellowship[]
   activeHubFellowshipCount: number
   vacationHubFellowshipCount: number
   hubCouncil: HubCouncil
@@ -186,11 +178,6 @@ export interface Hub extends Church {
   meetingDay: {
     day: 'Wednesday' | 'Friday' | 'Saturday'
   }
-}
-
-export interface HubFellowship extends Church {
-  __typename: 'HubFellowship'
-  hub: Hub
 }
 
 //MEMBERSHIP

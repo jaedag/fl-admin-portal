@@ -2,12 +2,24 @@ import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client'
 import DisplayChurchDetails from 'components/DisplayChurchDetails/DisplayChurchDetails'
 
-import { DISPLAY_BACENTA } from './ReadQueries'
+import { DISPLAY_BACENTA, DISPLAY_BACENTA_HISTORY } from './ReadQueries'
 import { ChurchContext } from 'contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitAdminArrivals } from 'permission-utils'
-import { DetailsArray } from './DetailsFellowship'
+
 import { MemberContext } from 'contexts/MemberContext'
+import { check } from 'global-utils'
+
+export type DetailsArray = {
+  title: string
+  number: number | string
+  link: string
+  width?: number
+  creativearts?: boolean
+  vacationCount?: number
+  activeIcBacentaCount?: number
+  vacationIcBacentaCount?: number
+}[]
 
 const convertToString = (value: string | boolean) => {
   if (value === true) {
@@ -23,8 +35,11 @@ const DetailsBacenta = () => {
   const { data, loading, error } = useQuery(DISPLAY_BACENTA, {
     variables: { id: bacentaId },
   })
-
+  const { data: historyData } = useQuery(DISPLAY_BACENTA_HISTORY, {
+    variables: { id: bacentaId },
+  })
   const bacenta = data?.bacentas[0]
+  const history = historyData?.bacentas[0]
 
   let breadcrumb = [
     bacenta?.constituency.council,
@@ -46,6 +61,11 @@ const DetailsBacenta = () => {
       vacationCount: bacenta?.vacationFellowshipCount,
     },
     {
+      title: 'Meeting Day',
+      number: bacenta?.meetingDay?.day,
+      link: '#',
+    },
+    {
       title: 'Status',
       number: bacenta?.vacationStatus,
       link: '#',
@@ -60,6 +80,11 @@ const DetailsBacenta = () => {
       title: 'Target',
       number: bacenta?.target,
       link: '#',
+    },
+    {
+      title: 'Code',
+      number: bacenta?.bankingCode,
+      link: `#`,
     },
     {
       title: 'Momo Number',
@@ -105,14 +130,15 @@ const DetailsBacenta = () => {
         name={bacenta?.name}
         leaderTitle="Bacenta Leader"
         leader={bacenta?.leader}
+        location={bacenta?.location}
+        last3Weeks={history && check(history)}
         churchId={bacentaId}
         churchType="Bacenta"
-        subChurch="Fellowship"
         editlink="/bacenta/editbacenta"
         editPermitted={permitAdminArrivals('Constituency')}
-        history={bacenta?.history.length !== 0 ? bacenta?.history : []}
+        history={history?.history.length !== 0 ? history?.history : []}
         breadcrumb={breadcrumb && breadcrumb}
-        buttons={bacenta ? bacenta?.fellowships : []}
+        buttons={[]}
         vacationCount={bacenta?.vacationFellowshipCount}
       />
     </ApolloWrapper>

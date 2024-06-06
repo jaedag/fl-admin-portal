@@ -270,11 +270,48 @@ export const DISPLAY_FELLOWSHIP_HISTORY = gql`
   }
 `
 
+export const DISPLAY_BACENTA_HISTORY = gql`
+  query displayBacentaHistory($id: ID!) {
+    bacentas(where: { id: $id }, options: { limit: 1 }) {
+      id
+      services(limit: 5) {
+        id
+        bankingProof
+        week
+        noServiceReason
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const DISPLAY_BACENTA = gql`
   query displayBacenta($id: ID!) {
     bacentas(where: { id: $id }, options: { limit: 1 }) {
       id
       name
+      bankingCode
+      location {
+        longitude
+        latitude
+      }
+      meetingDay {
+        day
+        dayNumber
+      }
       vacationStatus
       graduationStatus
       target
@@ -320,20 +357,7 @@ export const DISPLAY_BACENTA = gql`
         nameWithTitle
         pictureUrl
       }
-      history(limit: 5) {
-        id
-        timeStamp
-        createdAt {
-          date
-        }
-        loggedBy {
-          id
-          firstName
-          lastName
-          stream_name
-        }
-        historyRecord
-      }
+
       memberCount
     }
   }

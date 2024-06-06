@@ -580,7 +580,7 @@ export const getSubChurchLevel = (churchType: ChurchLevel) => {
       return 'Hub'
 
     default:
-      return 'Fellowship'
+      return 'Bacenta'
   }
 }
 
@@ -675,8 +675,8 @@ export const directoryLock = (
     (new Date().getDay() === 1 && new Date().getHours() >= 12) ||
     new Date().getDay() === 2 ||
     ['fishers']?.some((r) => currentUser?.roles?.includes(r as Role)) ||
-    (churchType === 'Fellowship' &&
-      currentUser?.roles?.includes('leaderFellowship' as Role))
+    (churchType === 'Bacenta' &&
+      currentUser?.roles?.includes('leaderBacenta' as Role))
   ) {
     return true
   }
