@@ -61,13 +61,13 @@ const DetailsBacenta = () => {
       vacationCount: bacenta?.vacationFellowshipCount,
     },
     {
-      title: 'Meeting Day',
-      number: bacenta?.meetingDay?.day,
+      title: 'Status',
+      number: bacenta?.vacationStatus,
       link: '#',
     },
     {
-      title: 'Status',
-      number: bacenta?.vacationStatus,
+      title: 'Meeting Day',
+      number: bacenta?.meetingDay?.day,
       link: '#',
     },
     {

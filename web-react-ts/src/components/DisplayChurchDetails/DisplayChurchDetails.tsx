@@ -422,6 +422,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             </a>
           </Container>
         )}
+
         {props.last3Weeks && props.details[2].number === 'Active' && (
           <Last3WeeksCard last3Weeks={props.last3Weeks} />
         )}

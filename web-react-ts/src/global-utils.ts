@@ -686,11 +686,11 @@ export const directoryLock = (
 
 export const firstDayOfThisYear = new Date(new Date().getFullYear(), 0, 1)
 
-export const check = (fellowship: any) => {
+export const check = (bacenta: any) => {
   let serviceType: 'services' | 'rehearsals' = 'services'
-  if (fellowship.__typename === 'Hub') serviceType = 'rehearsals'
+  if (bacenta.__typename === 'Hub') serviceType = 'rehearsals'
 
-  const lastFilled = fellowship?.[serviceType].map(
+  const lastFilled = bacenta?.[serviceType].map(
     ({
       bankingProof,
       noServiceReason,
