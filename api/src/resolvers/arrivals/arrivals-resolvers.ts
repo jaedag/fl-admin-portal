@@ -386,13 +386,11 @@ export const arrivalsMutation = {
     const {
       arrivalEndTime,
       bacentaId,
-      streamName,
       numberOfVehicles,
       totalAttendance,
     }: {
       arrivalEndTime: string
       bacentaId: string
-      streamName: string
       numberOfVehicles: neonumber
       totalAttendance: neonumber
       leaderPhoneNumber: string
@@ -408,17 +406,7 @@ export const arrivalsMutation = {
 
     const adjustedArgs = args
 
-    if (streamName === 'anagkazo encounter') {
-      if (args.attendance < 20 && parseNeoNumber(numberOfVehicles) < 2) {
-        adjustedArgs.attendance = 0
-      } else if (
-        parseNeoNumber(numberOfVehicles) >= 2 &&
-        parseNeoNumber(totalAttendance) < 20
-      ) {
-        // Two or more vehicles but the combined attendance is less than the expected minimum
-        adjustedArgs.attendance = 0
-      }
-    } else if (args.vehicle !== 'Car') {
+    if (args.vehicle !== 'Car') {
       if (parseNeoNumber(numberOfVehicles) < 1 && args.attendance < 8) {
         // No arrived vehicles and attendance is less than 8
         adjustedArgs.attendance = 0
