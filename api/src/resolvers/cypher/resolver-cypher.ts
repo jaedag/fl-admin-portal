@@ -160,6 +160,8 @@ RETURN member IS NOT NULL AS predicate, member AS member
 
 export const checkMemberHasNoActiveRelationships = `
 MATCH p=(member:Member {id:$id})-[:LEADS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|COUNTS_ARRIVALS_FOR|IS_TELLER_FOR]->(church)
+WHERE NOT church:ClosedFellowship AND NOT church:ClosedBacenta AND NOT church:ClosedConstituency AND NOT church:ClosedCouncil AND NOT church:ClosedStream AND NOT church:ClosedCampus AND NOT church:ClosedOversight AND NOT church:ClosedDenomination 
+AND NOT church:ClosedCreativeArts AND NOT church:ClosedMinistry AND NOT church:ClosedHubCouncil AND NOT church:ClosedHub
 RETURN COUNT(p) as relationshipCount
 `
 
