@@ -1,4 +1,4 @@
-import { getBacentasToPromote } from '../cypher'
+import { getMonthlyData } from '../cypher'
 import { lastMonth } from '../utils/constants'
 
 export const monthlyDataRetrieval = async (neoDriver) => {
@@ -6,7 +6,7 @@ export const monthlyDataRetrieval = async (neoDriver) => {
 
   try {
     const result = await session.executeWrite(async (tx) =>
-      tx.run(getBacentasToPromote, {
+      tx.run(getMonthlyData, {
         month: lastMonth,
       })
     )
