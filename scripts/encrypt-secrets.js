@@ -23,6 +23,9 @@ async function main() {
   secrets.build(payload, {
     path: 'api/src/functions/bacenta-checker-background/secrets.js',
   })
+  secrets.build(payload, {
+    path: 'api/src/functions/hillary-monthly-background/secrets.js',
+  })
 }
 
 main()
