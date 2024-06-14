@@ -41,9 +41,24 @@ const handler = async () => {
     reverends: 3,
   }
 
-  console.log(
-    `Hi Hillary\n\nAccra Oversight\nBacentas: ${accraData.bacentas}\nAverage Attendance: ${accraData.averageAttendance}\nCampuses: ${accraData.campuses}\nPastors: ${accraData.pastors}\nReverends: ${accraData.reverends}\n\nOutside Accra Oversight\nBacentas: ${outsideAccraData.bacentas}\nAverage Attendance: ${outsideAccraData.averageAttendance}\nCampuses: ${outsideAccraData.campuses}\nPastors: ${outsideAccraData.pastors}\nReverends: ${outsideAccraData.reverends}`
-  )
+  const getLastMonthName = () => {
+    const monthNames = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ]
+    return monthNames[new Date().getMonth() - 1]
+  }
+
   await axios({
     method: 'post',
     baseURL: notifyBaseURL,
@@ -55,7 +70,19 @@ const handler = async () => {
     data: {
       recipient: ['233594760323'],
       sender: 'FLC Admin',
-      message: `Hi Hillary\n\nAccra Oversight\nBacentas: ${accraData.bacentas}\nAverage Attendance: ${accraData.averageAttendance}\nCampuses: ${accraData.campuses}\nPastors: ${accraData.pastors}\nReverends: ${accraData.reverends}\n\nOutside Accra Oversight\nBacentas: ${outsideAccraData.bacentas}\nAverage Attendance: ${outsideAccraData.averageAttendance}\nCampuses: ${outsideAccraData.campuses}\nPastors: ${outsideAccraData.pastors}\nReverends: ${outsideAccraData.reverends}`,
+      message: `Hi Hillary\n\n${getLastMonthName()} Data\n\nAccra Oversight\nBacentas: ${
+        accraData.bacentas
+      }\nAverage Attendance: ${accraData.averageAttendance}\nCampuses: ${
+        accraData.campuses
+      }\nPastors: ${accraData.pastors}\nReverends: ${
+        accraData.reverends
+      }\n\nOutside Accra Oversight\nBacentas: ${
+        outsideAccraData.bacentas
+      }\nAverage Attendance: ${outsideAccraData.averageAttendance}\nCampuses: ${
+        outsideAccraData.campuses
+      }\nPastors: ${outsideAccraData.pastors}\nReverends: ${
+        outsideAccraData.reverends
+      }`,
     },
   }).catch((error) => {
     throw new Error(`Error sending SMS\n${error.message}\n${error.stack}`)
@@ -66,4 +93,4 @@ const handler = async () => {
   }
 }
 
-module.exports.handler = schedule('30 10 * * 1', handler)
+module.exports.handler = schedule('0 6 1 * *', handler)
