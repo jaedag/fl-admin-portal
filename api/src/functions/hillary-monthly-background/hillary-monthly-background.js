@@ -3,7 +3,7 @@ const { schedule } = require('@netlify/functions')
 const { default: axios } = require('axios')
 const { SECRETS } = require('./gsecrets.js')
 
-const { notifyBaseURL } = require('./utils/constants.js')
+const { notifyBaseURL, lastMonth } = require('./utils/constants.js')
 const {
   default: monthlyDataRetrieval,
 } = require('./query-exec/monthly-data-query.js')
@@ -56,7 +56,7 @@ const handler = async () => {
       'November',
       'December',
     ]
-    return monthNames[new Date().getMonth() - 1]
+    return monthNames[lastMonth]
   }
 
   await axios({
