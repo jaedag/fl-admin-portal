@@ -19,36 +19,45 @@ const handler = async () => {
 
   console.log('Running function on date', new Date().toISOString())
 
-  const response = await Promise.all([monthlyDataRetrieval(driver)]).catch(
-    (error) => {
-      console.error('Database query failed to complete\n', error.message)
-    }
-  )
+  const response = await monthlyDataRetrieval(driver).catch((error) => {
+    console.error('Database query failed to complete\n', error.message)
+  })
 
   await driver.close()
 
   console.log('Response from database', response)
 
-  const demoted = response[0].map((bacenta) => bacenta)
+  const accraData = {
+    ...response[0],
+    campuses: 1,
+    pastors: 183,
+    reverends: 29,
+  }
 
-  await Promise.all([
-    ...demoted.map((bacenta) => {
-      return axios({
-        method: 'post',
-        baseURL: notifyBaseURL,
-        url: '/send-sms',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-secret-key': SECRETS.FLC_NOTIFY_KEY,
-        },
-        data: {
-          recipient: [bacenta.leaderPhone],
-          sender: 'FLC Admin',
-          message: `Hi ${bacenta.leaderFirstName}\n\nSorry! You have not been bussing for four consecutive weeks. Your bacenta ${bacenta.name} has been demoted to IC status`,
-        },
-      })
-    }),
-  ]).catch((error) => {
+  const outsideAccraData = {
+    ...response[1],
+    campuses: 37,
+    pastors: 21,
+    reverends: 3,
+  }
+
+  console.log(
+    `Hi Hillary\n\nAccra Oversight\nBacentas: ${accraData.bacentas}\nAverage Attendance: ${accraData.averageAttendance}\nCampuses: ${accraData.campuses}\nPastors: ${accraData.pastors}\nReverends: ${accraData.reverends}\n\nOutside Accra Oversight\nBacentas: ${outsideAccraData.bacentas}\nAverage Attendance: ${outsideAccraData.averageAttendance}\nCampuses: ${outsideAccraData.campuses}\nPastors: ${outsideAccraData.pastors}\nReverends: ${outsideAccraData.reverends}`
+  )
+  await axios({
+    method: 'post',
+    baseURL: notifyBaseURL,
+    url: '/send-sms',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-secret-key': SECRETS.FLC_NOTIFY_KEY,
+    },
+    data: {
+      recipient: ['233594760323'],
+      sender: 'FLC Admin',
+      message: `Hi Hillary\n\nAccra Oversight\nBacentas: ${accraData.bacentas}\nAverage Attendance: ${accraData.averageAttendance}\nCampuses: ${accraData.campuses}\nPastors: ${accraData.pastors}\nReverends: ${accraData.reverends}\n\nOutside Accra Oversight\nBacentas: ${outsideAccraData.bacentas}\nAverage Attendance: ${outsideAccraData.averageAttendance}\nCampuses: ${outsideAccraData.campuses}\nPastors: ${outsideAccraData.pastors}\nReverends: ${outsideAccraData.reverends}`,
+    },
+  }).catch((error) => {
     throw new Error(`Error sending SMS\n${error.message}\n${error.stack}`)
   })
 
