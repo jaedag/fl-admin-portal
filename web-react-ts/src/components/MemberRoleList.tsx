@@ -11,6 +11,61 @@ interface MemberForRoles extends MemberWithChurches {
   [key: string]: any
 }
 
+export const getListOfMemberRoles = (member: MemberForRoles) => {
+  const roles = []
+
+  if (member.leadsBacenta[0]) {
+    roles.push('Bacenta Leader')
+  }
+  if (member.leadsConstituency[0]) {
+    roles.push('Constituency Leader')
+  }
+  if (member.leadsCouncil[0]) {
+    roles.push('Council Leader')
+  }
+  if (member.leadsStream[0]) {
+    roles.push('Stream Leader')
+  }
+  if (member.leadsCampus[0]) {
+    roles.push('Campus Leader')
+  }
+  if (member.leadsCreativeArts[0]) {
+    roles.push('Creative Arts Leader')
+  }
+  if (member.leadsMinistry[0]) {
+    roles.push('Ministry Leader')
+  }
+  if (member.leadsHub[0]) {
+    roles.push('Hub Leader')
+  }
+  if (member.leadsHubCouncil[0]) {
+    roles.push('Hub Council Leader')
+  }
+  if (member.isAdminForConstituency[0]) {
+    roles.push('Constituency Admin')
+  }
+  if (member.isAdminForCouncil[0]) {
+    roles.push('Council Admin')
+  }
+  if (member.isAdminForStream[0]) {
+    roles.push('Stream Admin')
+  }
+  if (member.isAdminForCampus[0]) {
+    roles.push('Campus Admin')
+  }
+  if (member.isAdminForOversight[0]) {
+    roles.push('Oversight Admin')
+  }
+  if (member.isAdminForCreativeArts[0]) {
+    roles.push('Creative Arts Admin')
+  }
+  if (member.isAdminForMinistry[0]) {
+    roles.push('Ministry Admin')
+  }
+
+  return roles
+}
+
 const MemberRoleList = ({
   memberLeader,
   memberAdmin,

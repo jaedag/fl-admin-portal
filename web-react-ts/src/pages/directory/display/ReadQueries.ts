@@ -140,7 +140,6 @@ export const DISPLAY_MEMBER_CHURCH = gql`
     members(where: { id: $id }) {
       id
       #church info
-      stream_name
       basonta {
         id
         name
@@ -150,7 +149,7 @@ export const DISPLAY_MEMBER_CHURCH = gql`
         }
       }
 
-      fellowship {
+      bacenta {
         id
         name
         leader {
@@ -159,6 +158,7 @@ export const DISPLAY_MEMBER_CHURCH = gql`
         }
         council {
           id
+          name
           leader {
             id
             firstName

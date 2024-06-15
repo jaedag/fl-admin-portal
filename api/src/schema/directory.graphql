@@ -71,7 +71,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
       statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC  LIMIT $limit"
     )
   loggedHistory: [HistoryLog!]! @relationship(type: "LOGGED_BY", direction: IN)
-  fellowship: Fellowship @relationship(type: "BELONGS_TO", direction: OUT)
+  bacenta: Bacenta @relationship(type: "BELONGS_TO", direction: OUT)
   leadsFellowship: [Fellowship!]! @relationship(type: "LEADS", direction: OUT)
   leadsFellowshipCount: Int
     @cypher(
@@ -1033,44 +1033,26 @@ type Bacenta implements Church {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(fellowship:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN DISTINCT members ORDER BY toLower(members.firstName), toLower(members.lastName)
       """
     )
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
-  pastorCount: Int
+  pastorCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*2]->(:Fellowship)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
+      MATCH (this)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
       RETURN COUNT(DISTINCT pastors)
       """
     )
   leader: Member @relationship(type: "LEADS", direction: IN)
-  fellowships: [Fellowship!]! @relationship(type: "HAS", direction: OUT)
-  fellowshipCount: Int!
-    @cypher(
-      statement: "MATCH (this)-[:HAS]->(fellowship:Fellowship) RETURN COUNT(fellowship)"
-    )
-  vacationFellowshipCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(fellowship:Fellowship:Vacation)
-      RETURN COUNT(DISTINCT fellowship)
-      """
-    )
-  activeFellowshipCount: Int
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(fellowship:Fellowship:Active)
-      RETURN COUNT(DISTINCT fellowship)
-      """
-    )
+
   constituency: Constituency @relationship(type: "HAS", direction: IN)
   history(limit: Int! = 3): [HistoryLog!]!
     @cypher(

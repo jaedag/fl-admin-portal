@@ -39,3 +39,8 @@ RETURN date().week;
 
 MATCH (record:ServiceRecord {id: "42fe0ffd-e754-4434-b7ba-eab420552291"})
 DETACH DELETE record
+
+
+MATCH (bacenta:Bacenta)
+SET bacenta:Graduated
+RETURN bacenta.name;

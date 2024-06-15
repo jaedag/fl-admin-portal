@@ -63,6 +63,44 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const memberAdmin = adminData?.members[0]
   const memberBirthday = getMemberDob(member)
 
+  const generateVCard = async (member: Member) => {
+    let base64Image = ''
+    if (member.pictureUrl) {
+      const response = await fetch(member.pictureUrl)
+      const buffer = await response.arrayBuffer()
+      const uint8 = new Uint8Array(buffer)
+      let binaryData = ''
+      uint8.forEach((byte) => {
+        binaryData += String.fromCharCode(byte)
+      })
+      base64Image = window.btoa(binaryData)
+    }
+
+    const vCard = `BEGIN:VCARD\nVERSION:3.0\nN:${member.lastName};${
+      member.firstName
+    };${member.middleName?.trim() !== '' ? member.middleName + ';' : ''}${
+      !!member.currentTitle ? member.currentTitle + ';' : ''
+    }\nFN:${member.nameWithTitle}\nORG:FLC ${
+      memberChurch?.bacenta?.council.name
+    } Council;${
+      member.email
+        ? '\nEMAIL;type=INTERNET;type=HOME;type=pref:' + member.email
+        : ''
+    }\nTEL;type=CELL;type=VOICE;type=pref:${
+      member.phoneNumber
+    }\nTEL;TYPE=HOME:${member.whatsappNumber}\nNOTE:Visitation Landmark${
+      member.visitationArea
+    }  Occupation: ${member.occupation.occupation || 'None'}  Marital Status: ${
+      member.maritalStatus.status
+    }\n${
+      base64Image ? 'PHOTO;ENCODING=b;TYPE=JPEG:' + base64Image + '\n' : ''
+    }BDAY:${member.dob.date}\nADR;TYPE=HOME:;;;;${
+      member.visitationArea
+    };;\nEND:VCARD`
+
+    return vCard
+  }
+
   return (
     <Container>
       <RoleView
@@ -91,6 +129,20 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
           />
         </PlaceholderCustom>
       </div>
+
+      <Button
+        onClick={async () => {
+          const vCard = await generateVCard(member)
+          const blob = new Blob([vCard], { type: 'text/vcard' })
+          const url = window.URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = `${member.nameWithTitle}.vcf`
+          a.click()
+        }}
+      >
+        Click to Download
+      </Button>
 
       <div className="text-center">
         <PlaceholderCustom as="h3" loading={!member || loading}>
