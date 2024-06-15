@@ -77,6 +77,7 @@ export interface Church {
 export interface Bacenta extends Church {
   __typename: 'Bacenta'
   constituency: Constituency
+  council: Council
   bankingCode: number
   services: ServiceRecord[]
   vacationStatus: VacationStatusOptions
@@ -219,6 +220,7 @@ export interface Member {
   maritalStatus: { status: 'Married' | 'Single' }
   gender: { gender: 'Male' | 'Female' }
   occupation: { occupation: string }
+  bacenta: Bacenta
   fellowship: {
     id: string
     name: string

@@ -39,16 +39,6 @@ export const DISPLAY_MEMBER_LEADERSHIP = gql`
     members(where: { id: $id }) {
       id
 
-      #Leadership Information
-      leadsFellowship {
-        id
-        name
-        stream_name
-        leader {
-          firstName
-          lastName
-        }
-      }
       leadsBacenta {
         id
         name
@@ -321,24 +311,6 @@ export const DISPLAY_BACENTA = gql`
 
       momoNumber
       stream_name
-      activeFellowshipCount
-      vacationFellowshipCount
-      fellowships(options: { limit: 5 }) {
-        id
-        name
-        leader {
-          id
-        }
-        bacenta {
-          id
-          name
-          council {
-            id
-            name
-          }
-          stream_name
-        }
-      }
 
       constituency {
         id

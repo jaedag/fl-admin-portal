@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import Timeline from 'components/Timeline/Timeline'
-import MemberRoleList from 'components/MemberRoleList'
+import MemberRoleList, { getRank } from 'components/MemberRoleList'
 import { throwToSentry, USER_PLACEHOLDER } from 'global-utils'
 import { getMemberDob } from 'jd-date-utils'
 import {
@@ -20,11 +20,71 @@ import CloudinaryImage from 'components/CloudinaryImage'
 import { Member } from 'global-types'
 import { permitAdmin, permitLeader, permitSheepSeeker } from 'permission-utils'
 import { BarLoader } from 'react-spinners'
-import { FaPhone } from 'react-icons/fa'
+import { FaPhone, FaSave } from 'react-icons/fa'
 import { Whatsapp } from 'react-bootstrap-icons'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
 import { CREATE_MEMBER_ACCOUNT } from '../create/CreateMutations'
+
+const generateVCard = async (member: Member, roles: string) => {
+  let base64Image = ''
+  if (member.pictureUrl) {
+    const response = await fetch(member.pictureUrl)
+    const buffer = await response.arrayBuffer()
+    const uint8 = new Uint8Array(buffer)
+    let binaryData = ''
+    uint8.forEach((byte) => {
+      binaryData += String.fromCharCode(byte)
+    })
+    base64Image = window.btoa(binaryData)
+  }
+
+  const vCard = `BEGIN:VCARD\nVERSION:3.0\nN:${member.lastName};${
+    member.firstName
+  };${member.middleName?.trim() !== '' ? member.middleName + ';' : ''}${
+    !!member.currentTitle ? member.currentTitle + ';' : ''
+  }\nFN:${member.nameWithTitle}\nORG:FLC ${
+    member?.bacenta?.council.name
+  } Council;${
+    member.email
+      ? '\nEMAIL;type=INTERNET;type=HOME;type=pref:' + member.email
+      : ''
+  }\nTEL;type=CELL;type=VOICE;type=pref:${member.phoneNumber}\nTEL;TYPE=HOME:${
+    member.whatsappNumber
+  }\nNOTE:Visitation Landmark${member.visitationArea}\\nOccupation: ${
+    member.occupation.occupation || 'None'
+  }  Marital Status: ${
+    member.maritalStatus.status
+  }\\nRoles in Church:\\n${roles}\n${
+    base64Image ? 'PHOTO;ENCODING=b;TYPE=JPEG:' + base64Image + '\n' : ''
+  }BDAY:${member.dob.date}\nADR;TYPE=HOME:;;;;${
+    member.visitationArea
+  };;\nEND:VCARD`
+
+  return vCard
+}
+
+const returnStringMemberRoles = (memberLeader: any, memberAdmin: any) => {
+  const rank = getRank(memberLeader, memberAdmin)
+  const arrayOfRoles: string[] = []
+
+  Object.entries(rank).map((rank: any) => {
+    if (rank[1].length > 0) {
+      const place = {
+        name: rank[1][0].name,
+        __typename: rank[1][0].__typename,
+        admin: rank[1][0].admin,
+        link: rank[1][0].link,
+      }
+      const servant = place.admin ? 'Admin' : 'Leader'
+      arrayOfRoles.push(`${place.__typename} ${servant}: ${place.name}`)
+    }
+
+    return rank
+  })
+
+  return arrayOfRoles.join('\\n')
+}
 
 const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const {
@@ -62,44 +122,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const memberLeader = leaderData?.members[0]
   const memberAdmin = adminData?.members[0]
   const memberBirthday = getMemberDob(member)
-
-  const generateVCard = async (member: Member) => {
-    let base64Image = ''
-    if (member.pictureUrl) {
-      const response = await fetch(member.pictureUrl)
-      const buffer = await response.arrayBuffer()
-      const uint8 = new Uint8Array(buffer)
-      let binaryData = ''
-      uint8.forEach((byte) => {
-        binaryData += String.fromCharCode(byte)
-      })
-      base64Image = window.btoa(binaryData)
-    }
-
-    const vCard = `BEGIN:VCARD\nVERSION:3.0\nN:${member.lastName};${
-      member.firstName
-    };${member.middleName?.trim() !== '' ? member.middleName + ';' : ''}${
-      !!member.currentTitle ? member.currentTitle + ';' : ''
-    }\nFN:${member.nameWithTitle}\nORG:FLC ${
-      memberChurch?.bacenta?.council.name
-    } Council;${
-      member.email
-        ? '\nEMAIL;type=INTERNET;type=HOME;type=pref:' + member.email
-        : ''
-    }\nTEL;type=CELL;type=VOICE;type=pref:${
-      member.phoneNumber
-    }\nTEL;TYPE=HOME:${member.whatsappNumber}\nNOTE:Visitation Landmark${
-      member.visitationArea
-    }  Occupation: ${member.occupation.occupation || 'None'}  Marital Status: ${
-      member.maritalStatus.status
-    }\n${
-      base64Image ? 'PHOTO;ENCODING=b;TYPE=JPEG:' + base64Image + '\n' : ''
-    }BDAY:${member.dob.date}\nADR;TYPE=HOME:;;;;${
-      member.visitationArea
-    };;\nEND:VCARD`
-
-    return vCard
-  }
+  const roles = returnStringMemberRoles(memberLeader, memberAdmin)
 
   return (
     <Container>
@@ -130,23 +153,28 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
         </PlaceholderCustom>
       </div>
 
-      <Button
-        onClick={async () => {
-          const vCard = await generateVCard(member)
-          const blob = new Blob([vCard], { type: 'text/vcard' })
-          const url = window.URL.createObjectURL(blob)
-          const a = document.createElement('a')
-          a.href = url
-          a.download = `${member.nameWithTitle}.vcf`
-          a.click()
-        }}
-      >
-        Click to Download
-      </Button>
-
       <div className="text-center">
         <PlaceholderCustom as="h3" loading={!member || loading}>
-          <h3>{member?.nameWithTitle}</h3>
+          <h3>
+            {member?.nameWithTitle}{' '}
+            <Button
+              size="sm"
+              onClick={async () => {
+                const vCard = await generateVCard(
+                  { ...member, ...memberChurch },
+                  roles
+                )
+                const blob = new Blob([vCard], { type: 'text/vcard' })
+                const url = window.URL.createObjectURL(blob)
+                const a = document.createElement('a')
+                a.href = url
+                a.download = `${member.nameWithTitle}.vcf`
+                a.click()
+              }}
+            >
+              <FaSave size={20} />
+            </Button>
+          </h3>
         </PlaceholderCustom>
 
         {(adminLoading || leaderLoading) && (
