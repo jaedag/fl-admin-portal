@@ -229,7 +229,11 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant="primary" onClick={onDelete}>
-                    {noteLoading ? <Spinner size="sm" /> : 'Delete Note'}
+                    {!formik.isSubmitting && noteLoading ? (
+                      <Spinner size="sm" />
+                    ) : (
+                      'Delete Note'
+                    )}
                   </Button>
                   <Button
                     variant="success"
