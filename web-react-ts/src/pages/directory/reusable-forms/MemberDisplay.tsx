@@ -137,7 +137,9 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const memberBirthday = getMemberDob(member)
   const roles = returnStringMemberRoles(memberLeader, memberAdmin)
 
-  const [UpdateMemberStickyNote] = useMutation(UPDATE_MEMBER_STICKY_NOTE)
+  const [UpdateMemberStickyNote, { loading: noteLoading }] = useMutation(
+    UPDATE_MEMBER_STICKY_NOTE
+  )
   const { show, handleShow, handleClose } = useModal()
   const initialValues = { note: member?.stickyNote ?? '' }
   const validationSchema = Yup.object({
@@ -227,14 +229,14 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant="primary" onClick={onDelete}>
-                    {formik.isSubmitting ? <Spinner /> : 'Delete Note'}
+                    {noteLoading ? <Spinner size="sm" /> : 'Delete Note'}
                   </Button>
                   <Button
                     variant="success"
                     type="submit"
                     disabled={formik.isSubmitting}
                   >
-                    {formik.isSubmitting ? <Spinner /> : 'Save Note'}
+                    {formik.isSubmitting ? <Spinner size="sm" /> : 'Save Note'}
                   </Button>
                 </Modal.Footer>
               </Form>
