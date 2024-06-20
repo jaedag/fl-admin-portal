@@ -24,7 +24,7 @@ const Login = () => {
     arrows: false,
     autoplaySpeed: 2100,
   }
-  const catchPhrase = 'A church full of young people on fire for the Lord'
+  const catchPhrase = 'Be thou diligent to know the state of your flock...'
 
   return (
     <>
