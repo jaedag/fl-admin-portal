@@ -27,7 +27,7 @@ type CardMember = {
   lastName?: string
   nameWithTitle?: string
   pictureUrl?: string
-  fellowship?: {
+  bacenta?: {
     id: string
     name: string
   }
@@ -126,7 +126,7 @@ const MemberDisplayCard = (props: MemberDisplayCardProps) => {
     case 'Member':
       name = member?.nameWithTitle || member.firstName + ' ' + member.lastName
       details = [
-        member.fellowship ? member.fellowship.name + ' Fellowship' : '',
+        member.bacenta ? member.bacenta.name + ' Bacenta' : '',
         member.basonta ? member.basonta.name : '',
       ]
       break

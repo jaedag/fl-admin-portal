@@ -26,6 +26,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   title: [Title!]!
     @relationship(type: "HAS_TITLE", properties: "HasTitle", direction: OUT)
   basonta: Basonta @relationship(type: "BELONGS_TO", direction: OUT)
+  stickyNote: String
   occupation: Occupation @relationship(type: "HAS_OCCUPATION", direction: OUT)
   stream_name: String
     @cypher(

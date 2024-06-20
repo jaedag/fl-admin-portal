@@ -203,6 +203,7 @@ export interface Member {
   id: string
   // eslint-disable-next-line camelcase
   auth_id: string
+  stickyNote?: string
   firstName: string
   middleName?: string
   lastName: string

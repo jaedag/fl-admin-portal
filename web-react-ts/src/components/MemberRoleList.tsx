@@ -76,6 +76,8 @@ export const getRank = (
   memberLeader: MemberForRoles,
   memberAdmin: MemberForRoles
 ) => {
+  if (!memberLeader || !memberAdmin) return {}
+
   let rank = roleTypes.reduce((acc, role) => {
     acc[`${role.toLowerCase()}Leader`] = []
     acc[`${role.toLowerCase()}Admin`] = []

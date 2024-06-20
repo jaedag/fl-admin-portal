@@ -10,7 +10,15 @@ import {
   DISPLAY_MEMBER_CHURCH,
   DISPLAY_MEMBER_LEADERSHIP,
 } from 'pages/directory/display/ReadQueries'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Modal,
+  Row,
+  Spinner,
+} from 'react-bootstrap'
 import PlaceholderCustom from 'components/Placeholder'
 import DetailsCard from 'components/card/DetailsCard'
 import EditButton from 'components/buttons/EditButton'
@@ -20,11 +28,16 @@ import CloudinaryImage from 'components/CloudinaryImage'
 import { Member } from 'global-types'
 import { permitAdmin, permitLeader, permitSheepSeeker } from 'permission-utils'
 import { BarLoader } from 'react-spinners'
-import { FaPhone, FaSave } from 'react-icons/fa'
+import { FaPhone, FaSave, FaStickyNote } from 'react-icons/fa'
 import { Whatsapp } from 'react-bootstrap-icons'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useNavigate } from 'react-router'
 import { CREATE_MEMBER_ACCOUNT } from '../create/CreateMutations'
+import useModal from 'hooks/useModal'
+import { Form, Formik, FormikHelpers } from 'formik'
+import * as Yup from 'yup'
+import Textarea from 'components/formik/Textarea'
+import { UPDATE_MEMBER_STICKY_NOTE } from '../update/UpdateMutations'
 
 const generateVCard = async (member: Member, roles: string) => {
   let base64Image = ''
@@ -124,19 +137,111 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const memberBirthday = getMemberDob(member)
   const roles = returnStringMemberRoles(memberLeader, memberAdmin)
 
+  const [UpdateMemberStickyNote] = useMutation(UPDATE_MEMBER_STICKY_NOTE)
+  const { show, handleShow, handleClose } = useModal()
+  const initialValues = { note: member?.stickyNote ?? '' }
+  const validationSchema = Yup.object({
+    note: Yup.string().required('Note is required'),
+  })
+
+  const onSubmit = async (
+    values: typeof initialValues,
+    onSubmitProps: FormikHelpers<typeof initialValues>
+  ) => {
+    onSubmitProps.setSubmitting(true)
+    try {
+      await UpdateMemberStickyNote({
+        variables: {
+          id: memberId,
+          stickyNote: values.note,
+          ids: [memberId],
+          historyRecord: `Added Sticky Note: ${values.note}`,
+        },
+      })
+    } catch (e) {
+    } finally {
+      onSubmitProps.setSubmitting(false)
+      handleClose()
+    }
+  }
+
+  const onDelete = async () => {
+    try {
+      await UpdateMemberStickyNote({
+        variables: {
+          id: memberId,
+          stickyNote: '',
+          ids: [memberId],
+          historyRecord: `Deleted Sticky Note`,
+        },
+      })
+    } catch (e) {
+    } finally {
+      handleClose()
+    }
+  }
+
   return (
     <Container>
-      <RoleView
-        roles={[
-          ...permitSheepSeeker(),
-          ...permitAdmin('Constituency'),
-          ...permitAdmin('Ministry'),
-          ...permitLeader('Bacenta'),
-        ]}
-      >
-        <EditButton link="/member/editmember" />
-      </RoleView>
+      <Row className="justify-content-between">
+        <Col className="col-auto">
+          <RoleView
+            roles={[
+              ...permitSheepSeeker(),
+              ...permitAdmin('Constituency'),
+              ...permitAdmin('Ministry'),
+              ...permitLeader('Bacenta'),
+            ]}
+          >
+            <EditButton link="/member/editmember" />
+          </RoleView>
+        </Col>
 
+        <RoleView roles={['all']} verifyNotId={member?.id}>
+          <Col className="col-auto">
+            <Button size="sm" variant="warning" onClick={handleShow}>
+              Add Sticky Note
+            </Button>
+          </Col>
+        </RoleView>
+
+        <Modal show={show} onHide={handleClose} centered>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+          >
+            {(formik) => (
+              <Form>
+                <Modal.Header closeButton>
+                  Add or Update Sticky Note
+                </Modal.Header>
+                <Modal.Body>
+                  <p className="text-info">
+                    This note will be visible to all Admins and Leaders
+                  </p>
+                  <small className="text-muted pb-5">
+                    You can put Room Number, Special Instructions etc
+                  </small>
+                  <Textarea name="note" label="Note" />
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="primary" onClick={onDelete}>
+                    {formik.isSubmitting ? <Spinner /> : 'Delete Note'}
+                  </Button>
+                  <Button
+                    variant="success"
+                    type="submit"
+                    disabled={formik.isSubmitting}
+                  >
+                    {formik.isSubmitting ? <Spinner /> : 'Save Note'}
+                  </Button>
+                </Modal.Footer>
+              </Form>
+            )}
+          </Formik>
+        </Modal>
+      </Row>
       <div className="d-flex justify-content-center pb-4">
         <PlaceholderCustom
           as="div"
@@ -207,6 +312,20 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
           </Button>
         )}
       </div>
+      {member?.stickyNote?.trim() !== '' ? (
+        <div className="my-1">
+          <Card border="warning">
+            <Card.Header>
+              <FaStickyNote /> Sticky Note
+            </Card.Header>
+            <Card.Body>
+              <p>{member?.stickyNote}</p>
+            </Card.Body>
+          </Card>
+        </div>
+      ) : (
+        ''
+      )}
       <Row>
         <Col>
           <DetailsCard heading="First Name" detail={member?.firstName} />
@@ -299,8 +418,8 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
             }}
           >
             <DetailsCard
-              heading="Fellowship"
-              detail={memberChurch?.fellowship?.name}
+              heading="Bacenta"
+              detail={memberChurch?.bacenta?.name}
             />
           </div>
         </Col>

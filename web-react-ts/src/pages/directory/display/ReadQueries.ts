@@ -12,6 +12,7 @@ export const DISPLAY_MEMBER_BIO = gql`
       nameWithTitle
       email
       phoneNumber
+      stickyNote
       pictureUrl
       visitationArea
       whatsappNumber

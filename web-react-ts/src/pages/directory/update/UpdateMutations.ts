@@ -57,6 +57,41 @@ export const UPDATE_MEMBER_MUTATION = gql`
   }
 `
 
+export const UPDATE_MEMBER_STICKY_NOTE = gql`
+  mutation UpdateMemberStickyNote(
+    $id: ID!
+    $stickyNote: String
+    $ids: [ID]
+    $historyRecord: String!
+  ) {
+    updateMembers(where: { id: $id }, update: { stickyNote: $stickyNote }) {
+      members {
+        id
+        stickyNote
+      }
+    }
+    LogMemberHistory(ids: $ids, historyRecord: $historyRecord) {
+      id
+      firstName
+      lastName
+      history(limit: 3) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const UPDATE_MEMBER_EMAIL = gql`
   mutation UpdateMemberEmail($id: ID!, $email: String!) {
     UpdateMemberEmail(id: $id, email: $email) {
@@ -112,11 +147,11 @@ export const UPDATE_MEMBER_BACENTA = gql`
     $ids: [ID]
     $historyRecord: String!
   ) {
-    UpdateMemberBacenta(memberId: $memberId, fellowshipId: $bacentaId) {
+    UpdateMemberBacenta(memberId: $memberId, bacentaId: $bacentaId) {
       id
       firstName
       lastName
-      fellowship {
+      bacenta {
         id
         name
       }
@@ -168,7 +203,7 @@ export const UPDATE_STREAM_MUTATION = gql`
         id
         firstName
         lastName
-        fellowship {
+        bacenta {
           id
           stream_name
         }
@@ -219,7 +254,7 @@ export const UPDATE_OVERSIGHT_MUTATION = gql`
         id
         firstName
         lastName
-        fellowship {
+        bacenta {
           id
           stream_name
         }
@@ -264,7 +299,7 @@ export const UPDATE_DENOMINATION_MUTATION = gql`
         id
         firstName
         lastName
-        fellowship {
+        bacenta {
           id
           stream_name
         }
@@ -330,7 +365,7 @@ export const UPDATE_CAMPUS_MUTATION = gql`
         id
         firstName
         lastName
-        fellowship {
+        bacenta {
           id
           stream_name
         }
@@ -381,7 +416,7 @@ export const UPDATE_COUNCIL_MUTATION = gql`
         id
         firstName
         lastName
-        fellowship {
+        bacenta {
           id
           stream_name
         }
@@ -432,7 +467,7 @@ export const UPDATE_CONSTITUENCY_MUTATION = gql`
         id
         firstName
         lastName
-        fellowship {
+        bacenta {
           id
           stream_name
         }
@@ -466,20 +501,7 @@ export const UPDATE_BACENTA_MUTATION = gql`
       name
       sprinterTopUp
       urvanTopUp
-      fellowships {
-        id
-        name
-        bacenta {
-          id
-          name
-          constituency {
-            id
-            council {
-              id
-            }
-          }
-        }
-      }
+
       constituency {
         id
         name
