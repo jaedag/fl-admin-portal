@@ -49,26 +49,26 @@ const resolvers = {
       let shortTitle = ''
 
       if (title === 'Bishop') {
-        shortTitle = 'Bishop '
+        shortTitle = 'Bishop'
       }
       if (title === 'Bishop' && gender === 'Female') {
-        shortTitle = 'Mother '
+        shortTitle = 'Mother'
       }
 
       if (title === 'Reverend') {
-        shortTitle = 'Rev. '
+        shortTitle = 'Rev.'
       }
       if (title === 'Reverend' && gender === 'Female') {
-        shortTitle = 'LR '
+        shortTitle = 'LR'
       }
       if (title === 'Pastor') {
-        shortTitle = 'Ps. '
+        shortTitle = 'Ps.'
       }
       if (title === 'Pastor' && gender === 'Female') {
-        shortTitle = 'LP '
+        shortTitle = 'LP'
       }
 
-      return `${shortTitle}${source.firstName} ${source.lastName}`
+      return `${shortTitle} ${source.firstName} ${source.lastName}`
     },
     ...mapsResolvers.Member,
   },
