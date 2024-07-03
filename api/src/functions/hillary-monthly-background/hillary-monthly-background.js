@@ -56,7 +56,7 @@ const handler = async () => {
       'November',
       'December',
     ]
-    return monthNames[lastMonth]
+    return monthNames[lastMonth - 1]
   }
 
   await axios({
