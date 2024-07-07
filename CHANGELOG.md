@@ -1,3 +1,42 @@
+#### 7.18.24 (2024-07-07)
+
+##### Chores
+
+*  refactor account open logic and update account blocked message ([7d25d707](https://github.com/firstlovecenter/fl-admin-portal/commit/7d25d70708601db5185aa301948dc5702d3dabb7))
+*  update dependencies and secrets for hillary-monthly-background ([62d80a14](https://github.com/firstlovecenter/fl-admin-portal/commit/62d80a1429a64aae755627b78d49f23c7ba860a0))
+*  add recipient for monthly background message ([686086a2](https://github.com/firstlovecenter/fl-admin-portal/commit/686086a26184f8df6b139585cd2b696588abb60e))
+*  refactor monthly background message generation ([c8a86f7e](https://github.com/firstlovecenter/fl-admin-portal/commit/c8a86f7e05d3b753a0f405ac77af1434912866cf))
+*  update monthly data retrieval query and remove unnecessary code ([608c03e9](https://github.com/firstlovecenter/fl-admin-portal/commit/608c03e9063d745b218de554d9cc2166e34c4782))
+*  remove unnecessary code and update monthly data retrieval query ([1be5cc0f](https://github.com/firstlovecenter/fl-admin-portal/commit/1be5cc0faf07f92d6c6332408225279a72f7a4b8))
+*  update checkMemberHasNoActiveRelationships query ([f4672fe9](https://github.com/firstlovecenter/fl-admin-portal/commit/f4672fe906f2d74b0708660918f830f568fff10c))
+*  update meeting day and status in DetailsBacenta component ([243291cf](https://github.com/firstlovecenter/fl-admin-portal/commit/243291cfb70b36579026b1dce1916f72c4a611e6))
+*  update email and portal names in servant account creation and deletion messages ([54b199f5](https://github.com/firstlovecenter/fl-admin-portal/commit/54b199f52f9836269234f746f15194e7081f7b8a))
+*  exclude deprecated fields in Neo4jGraphQL configuration ([dee047fd](https://github.com/firstlovecenter/fl-admin-portal/commit/dee047fdfb4b4832fcf43f630829ccb1ced4b5cd))
+
+##### New Features
+
+*  improve delete note button in MemberDisplay component ([984dcb8e](https://github.com/firstlovecenter/fl-admin-portal/commit/984dcb8e1a70446d2d326e832a7d01956834460a))
+*  optimize sticky note functionality and improve UI in MemberDisplay component ([98e9e4d3](https://github.com/firstlovecenter/fl-admin-portal/commit/98e9e4d3235024a4585e9a80640938027080d2e4))
+*  add functionality to leave a sticky note on member profile ([b06e583c](https://github.com/firstlovecenter/fl-admin-portal/commit/b06e583cba5d4d4f24b1dc6c4a3339d02cfe7dda))
+*  update catch phrase in Login component ([ceaee566](https://github.com/firstlovecenter/fl-admin-portal/commit/ceaee5661747301d6050a54de571ad6cd13ca8e3))
+*  implement saving contact information ([17f7bb17](https://github.com/firstlovecenter/fl-admin-portal/commit/17f7bb1750538cf58152734743e5f9815a616f7e))
+*  implement feature to save contacts on member display screen ([4348c062](https://github.com/firstlovecenter/fl-admin-portal/commit/4348c0629a896b54f1d8f7c358477d749f6fa366))
+*  implement hillary monthly background ([ef744166](https://github.com/firstlovecenter/fl-admin-portal/commit/ef744166f81f4a1236e65d457a49be9b9b9a0e26))
+*  implement bacenta services forms ([d8f10569](https://github.com/firstlovecenter/fl-admin-portal/commit/d8f10569f2fd55fa7b9995cd125425434019807a))
+
+##### Bug Fixes
+
+*  correct lastMonth calculation in hillary-monthly-background ([3d5d225c](https://github.com/firstlovecenter/fl-admin-portal/commit/3d5d225c7cf293638e691125f4746ff329681621))
+*  update lastMonth calculation in hillary-monthly-background ([4f3eb99d](https://github.com/firstlovecenter/fl-admin-portal/commit/4f3eb99d56eaa9e961b459e4c4ac8668b0a6f2cd))
+*  update lastMonth calculation in hillary-monthly-background ([90907e65](https://github.com/firstlovecenter/fl-admin-portal/commit/90907e65f571f1a1c2f4d70beb8bdf7f85c2d853))
+*  remove ability to close down bacentas ([423dead1](https://github.com/firstlovecenter/fl-admin-portal/commit/423dead1589647899ab8a4ab2a0de66ca715b2f8))
+
+##### Refactors
+
+*  update title abbreviations in resolvers.ts ([9e52d763](https://github.com/firstlovecenter/fl-admin-portal/commit/9e52d763bad9e02a51988b2c28a2f88d1000b72b))
+*  adjust attendance and vehicle logic in arrivalsMutation resolver ([f83fdfcf](https://github.com/firstlovecenter/fl-admin-portal/commit/f83fdfcfc3419384278b44f8cfb233ded9543480))
+*  update cypher queries to assign properties and relationships to bacenta ([fa2efffd](https://github.com/firstlovecenter/fl-admin-portal/commit/fa2efffd0ede1fc1df64dfe1de507e63f9ea35fa))
+
 #### 7.18.23 (2024-05-26)
 
 ##### Bug Fixes
