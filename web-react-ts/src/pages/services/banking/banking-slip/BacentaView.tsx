@@ -10,23 +10,23 @@ import React, { useContext } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
-import { FELLOWSHIP_BANKING_SLIP_QUERIES } from '../../ServicesQueries'
+import { BACENTA_BANKING_SLIP_QUERIES } from '../../ServicesQueries'
 
-const FellowshipBankingSlipView = () => {
-  const { fellowshipId, clickCard } = useContext(ChurchContext)
+const BacentaBankingSlipView = () => {
+  const { bacentaId, clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
-  const { data, loading, error } = useQuery(FELLOWSHIP_BANKING_SLIP_QUERIES, {
-    variables: { fellowshipId: fellowshipId },
+  const { data, loading, error } = useQuery(BACENTA_BANKING_SLIP_QUERIES, {
+    variables: { bacentaId: bacentaId },
   })
-  const fellowship = data?.fellowships[0]
+  const bacenta = data?.bacentas[0]
   const placeholder = ['', '', '']
   throwToSentry('', error)
 
   return (
     <Container>
-      <HeadingPrimary loading={loading}>{fellowship?.name}</HeadingPrimary>
+      <HeadingPrimary loading={loading}>{bacenta?.name}</HeadingPrimary>
 
-      {data?.fellowships[0].services.map(
+      {data?.bacentas[0].services.map(
         (service: ServiceRecord, index: number) => {
           if (
             service.noServiceReason ||
@@ -47,7 +47,7 @@ const FellowshipBankingSlipView = () => {
               className="mb-2"
               onClick={() => {
                 clickCard(service)
-                navigate('/fellowship/service-details')
+                navigate('/bacenta/service-details')
               }}
             >
               <Card.Header>
@@ -100,4 +100,4 @@ const FellowshipBankingSlipView = () => {
   )
 }
 
-export default FellowshipBankingSlipView
+export default BacentaBankingSlipView

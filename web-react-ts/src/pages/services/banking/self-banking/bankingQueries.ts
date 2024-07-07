@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
-export const FELLOWSHIP_SERVICE_PAYMENT = gql`
-  query fellowshipServicePayment($id: ID!) {
-    fellowships(where: { id: $id }) {
+export const BACENTA_SERVICE_PAYMENT = gql`
+  query bacentaServicePayment($id: ID!) {
+    bacentas(where: { id: $id }) {
       id
       name
       bankingCode

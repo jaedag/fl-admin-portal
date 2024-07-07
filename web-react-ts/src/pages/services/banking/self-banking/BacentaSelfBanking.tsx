@@ -1,25 +1,25 @@
 import { useQuery } from '@apollo/client'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useContext, useState } from 'react'
-import { FELLOWSHIP_BANKING_SLIP_QUERIES } from '../../ServicesQueries'
+import { BACENTA_BANKING_SLIP_QUERIES } from '../../ServicesQueries'
 import { ConfirmPaymentServiceType } from './components/button/ConfirmPayment'
 import SelfBankingList from './components/SelfBankingList'
 import useModal from 'hooks/useModal'
 
-const FellowshipSelfBanking = () => {
-  const { fellowshipId } = useContext(ChurchContext)
+const BacentaSelfBanking = () => {
+  const { bacentaId } = useContext(ChurchContext)
   const { show, handleShow, handleClose } = useModal()
   const [skip, setSkip] = useState<number>(0)
   const [confirmService, setConfirmService] =
     useState<ConfirmPaymentServiceType>(null)
 
   const { data, loading, error, refetch } = useQuery(
-    FELLOWSHIP_BANKING_SLIP_QUERIES,
+    BACENTA_BANKING_SLIP_QUERIES,
     {
-      variables: { fellowshipId: fellowshipId, skip },
+      variables: { bacentaId: bacentaId, skip },
       onCompleted: (data) => {
-        const fellowship = data?.fellowships[0]
-        const service = fellowship?.services.find(
+        const bacenta = data?.bacentas[0]
+        const service = bacenta?.services.find(
           (service: any) => service.transactionStatus === 'pending'
         )
 
@@ -33,11 +33,11 @@ const FellowshipSelfBanking = () => {
       },
     }
   )
-  const fellowship = data?.fellowships[0]
+  const bacenta = data?.bacentas[0]
 
   return (
     <SelfBankingList
-      church={fellowship}
+      church={bacenta}
       loading={loading}
       error={error}
       refetch={refetch}
@@ -52,4 +52,4 @@ const FellowshipSelfBanking = () => {
   )
 }
 
-export default FellowshipSelfBanking
+export default BacentaSelfBanking

@@ -92,7 +92,7 @@ const Services = () => {
               onClick={() => navigate(`/stream/record-special-service`)}
             />
           )} */}
-          {['Stream', 'Council', 'Constituency', 'Fellowship'].includes(
+          {['Stream', 'Council', 'Constituency', 'Bacenta'].includes(
             churchType
           ) &&
             church?.bankAccount !== 'manual' && (
@@ -110,7 +110,7 @@ const Services = () => {
               />
             )}
 
-          {['Stream', 'Council', 'Constituency', 'Fellowship', 'Hub'].includes(
+          {['Stream', 'Council', 'Constituency', 'Bacenta', 'Hub'].includes(
             churchType
           ) &&
             church?.bankAccount !== 'manual' && (
