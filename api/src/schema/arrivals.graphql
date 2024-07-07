@@ -945,7 +945,7 @@ extend type Bacenta {
       statement: """
       MATCH (this)
       UNWIND labels(this) AS status
-      WITH status WHERE status = 'Graduated' OR status = 'IC'
+      WITH status WHERE status = 'Green' OR status = 'Red'
       RETURN status
       """
     )

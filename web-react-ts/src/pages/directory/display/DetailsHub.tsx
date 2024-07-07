@@ -5,11 +5,11 @@ import { ChurchContext } from '../../../contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Church, Hub } from 'global-types'
 import DisplaySontaDetails from 'components/DisplayChurchDetails/DisplaySontaDetails'
-import { DetailsArray } from './DetailsFellowship'
 import { permitAdmin } from 'permission-utils'
 import { check } from 'global-utils'
 import { Container } from 'react-bootstrap'
 import Breadcrumb from 'components/DisplayChurchDetails/Breadcrumb'
+import { DetailsArray } from './DetailsBacenta'
 
 const DetailsHub = () => {
   const { hubId } = useContext(ChurchContext)
@@ -80,12 +80,11 @@ const DetailsHub = () => {
           leader={hub?.leader}
           location={hub?.location}
           churchType="Hub"
-          subLevel={'HubFellowship'}
           editlink="/hub/edithub"
           history={hub?.history.length !== 0 ? hub?.history : []}
           last3Weeks={history && check(history)}
           breadcrumb={breadcrumb && breadcrumb}
-          buttons={hub?.hubFellowships ?? []}
+          buttons={[]}
         />
       </>
     </ApolloWrapper>

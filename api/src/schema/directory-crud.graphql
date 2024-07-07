@@ -634,7 +634,7 @@ extend type Mutation {
       RETURN member
       """
     )
-  UpdateMemberFellowship(memberId: ID!, fellowshipId: ID!): Member!
+  UpdateMemberBacenta(memberId: ID!, bacentaId: ID!): Member!
 
   UpdateMemberBasonta(memberId: ID!, basontaId: ID!): Member!
     @cypher(

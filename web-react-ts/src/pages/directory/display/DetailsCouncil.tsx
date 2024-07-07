@@ -6,7 +6,7 @@ import { permitAdmin } from 'permission-utils'
 import React, { useContext, useEffect } from 'react'
 import { DISPLAY_COUNCIL } from './ReadQueries'
 import useClickCard from 'hooks/useClickCard'
-import { DetailsArray } from './DetailsFellowship'
+import { DetailsArray } from './DetailsBacenta'
 
 const DetailsCouncil = () => {
   const { councilId } = useContext(ChurchContext)

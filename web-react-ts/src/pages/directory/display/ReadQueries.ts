@@ -12,6 +12,7 @@ export const DISPLAY_MEMBER_BIO = gql`
       nameWithTitle
       email
       phoneNumber
+      stickyNote
       pictureUrl
       visitationArea
       whatsappNumber
@@ -39,16 +40,6 @@ export const DISPLAY_MEMBER_LEADERSHIP = gql`
     members(where: { id: $id }) {
       id
 
-      #Leadership Information
-      leadsFellowship {
-        id
-        name
-        stream_name
-        leader {
-          firstName
-          lastName
-        }
-      }
       leadsBacenta {
         id
         name
@@ -140,7 +131,6 @@ export const DISPLAY_MEMBER_CHURCH = gql`
     members(where: { id: $id }) {
       id
       #church info
-      stream_name
       basonta {
         id
         name
@@ -150,7 +140,7 @@ export const DISPLAY_MEMBER_CHURCH = gql`
         }
       }
 
-      fellowship {
+      bacenta {
         id
         name
         leader {
@@ -159,6 +149,7 @@ export const DISPLAY_MEMBER_CHURCH = gql`
         }
         council {
           id
+          name
           leader {
             id
             firstName
@@ -270,11 +261,48 @@ export const DISPLAY_FELLOWSHIP_HISTORY = gql`
   }
 `
 
+export const DISPLAY_BACENTA_HISTORY = gql`
+  query displayBacentaHistory($id: ID!) {
+    bacentas(where: { id: $id }, options: { limit: 1 }) {
+      id
+      services(limit: 5) {
+        id
+        bankingProof
+        week
+        noServiceReason
+      }
+      history(limit: 5) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const DISPLAY_BACENTA = gql`
   query displayBacenta($id: ID!) {
     bacentas(where: { id: $id }, options: { limit: 1 }) {
       id
       name
+      bankingCode
+      location {
+        longitude
+        latitude
+      }
+      meetingDay {
+        day
+        dayNumber
+      }
       vacationStatus
       graduationStatus
       target
@@ -284,24 +312,6 @@ export const DISPLAY_BACENTA = gql`
 
       momoNumber
       stream_name
-      activeFellowshipCount
-      vacationFellowshipCount
-      fellowships(options: { limit: 5 }) {
-        id
-        name
-        leader {
-          id
-        }
-        bacenta {
-          id
-          name
-          council {
-            id
-            name
-          }
-          stream_name
-        }
-      }
 
       constituency {
         id
@@ -320,20 +330,7 @@ export const DISPLAY_BACENTA = gql`
         nameWithTitle
         pictureUrl
       }
-      history(limit: 5) {
-        id
-        timeStamp
-        createdAt {
-          date
-        }
-        loggedBy {
-          id
-          firstName
-          lastName
-          stream_name
-        }
-        historyRecord
-      }
+
       memberCount
     }
   }

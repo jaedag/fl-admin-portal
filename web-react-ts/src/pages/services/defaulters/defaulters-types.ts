@@ -2,17 +2,16 @@ import { ApolloError } from '@apollo/client'
 import {
   Church,
   StreamOptions,
-  Fellowship,
   ServiceRecord,
   Member,
   Constituency,
   Council,
-  Bacenta,
   MemberWithoutBioData,
   Campus,
   Stream,
   Hub,
   ChurchLevel,
+  Bacenta,
 } from 'global-types'
 
 export interface HigherChurchWithDefaulters extends Church {
@@ -24,9 +23,9 @@ export interface HubWithDefaulters extends Hub {
   campus: Campus
   rehearsals: ServiceRecord[]
 }
-export interface FellowshipWithDefaulters extends Fellowship {
-  __typename: 'Fellowship'
-  bacenta: Bacenta
+export interface BacentaWithDefaulters extends Bacenta {
+  __typename: 'Bacenta'
+  constituency: Constituency
   services: ServiceRecord[]
 }
 export interface ConstituencyWithDefaulters extends Constituency {
@@ -54,11 +53,11 @@ export interface HigherChurchWithDefaulters extends Church {
   __typename: ChurchLevel
   admin?: MemberWithoutBioData
   stream_name: StreamOptions
-  servicesThisWeek: FellowshipWithDefaulters[]
-  formDefaultersThisWeek: FellowshipWithDefaulters[]
-  bankedThisWeek: FellowshipWithDefaulters[]
-  bankingDefaultersThisWeek: FellowshipWithDefaulters[]
-  cancelledServicesThisWeek: FellowshipWithDefaulters[]
+  servicesThisWeek: BacentaWithDefaulters[]
+  formDefaultersThisWeek: BacentaWithDefaulters[]
+  bankedThisWeek: BacentaWithDefaulters[]
+  bankingDefaultersThisWeek: BacentaWithDefaulters[]
+  cancelledServicesThisWeek: BacentaWithDefaulters[]
   constituencyBankingDefaultersThisWeek: ConstituencyWithDefaulters[]
   councilBankingDefaultersThisWeek: CouncilWithDefaulters[]
   constituencyBankedThisWeek: ConstituencyWithDefaulters[]
@@ -92,11 +91,11 @@ export interface HigherSontaChurchWithDefaulters
   __typename: 'Ministry' | 'HubCouncil' | 'CreativeArts'
   admin?: MemberWithoutBioData
   stream_name: StreamOptions
-  hubRehearsalsThisWeek: FellowshipWithDefaulters[]
-  hubFormDefaultersThisWeek: FellowshipWithDefaulters[]
-  hubsBankedThisWeek: FellowshipWithDefaulters[]
-  hubBankingDefaultersThisWeek: FellowshipWithDefaulters[]
-  hubCancelledRehearsalsThisWeek: FellowshipWithDefaulters[]
+  hubRehearsalsThisWeek: BacentaWithDefaulters[]
+  hubFormDefaultersThisWeek: BacentaWithDefaulters[]
+  hubsBankedThisWeek: BacentaWithDefaulters[]
+  hubBankingDefaultersThisWeek: BacentaWithDefaulters[]
+  hubCancelledRehearsalsThisWeek: BacentaWithDefaulters[]
   constituencyBankingDefaultersThisWeek: ConstituencyWithDefaulters[]
   councilBankingDefaultersThisWeek: CouncilWithDefaulters[]
   constituencyBankedThisWeek: ConstituencyWithDefaulters[]

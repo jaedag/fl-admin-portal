@@ -81,9 +81,7 @@ const ConstituencyMembers = lazy(
 const BacentaMembers = lazy(
   () => import('pages/directory/grids/BacentaMembers')
 )
-const FellowshipMembers = lazy(
-  () => import('pages/directory/grids/FellowshipMembers')
-)
+
 const HubMembers = lazy(() => import('pages/directory/grids/HubMembers'))
 const HubCouncilMembers = lazy(
   () => import('pages/directory/grids/HubCouncilMembers')
@@ -94,9 +92,7 @@ const MinistryMembers = lazy(
 const CreativeArtsMembers = lazy(
   () => import('pages/directory/grids/CreativeArtsMembers')
 )
-const DetailsFellowship = lazy(
-  () => import('pages/directory/display/DetailsFellowship')
-)
+
 const DetailsBacenta = lazy(
   () => import('pages/directory/display/DetailsBacenta')
 )
@@ -128,12 +124,7 @@ const DisplayAllBacentas = lazy(
 const DisplayAllConstituencies = lazy(
   () => import('pages/directory/display/AllConstituencies')
 )
-const DisplayAllFellowships = lazy(
-  () => import('pages/directory/display/AllFellowships')
-)
-const DisplayAllHubFellowships = lazy(
-  () => import('pages/directory/display/AllHubFellowships')
-)
+
 const DisplayAllHubs = lazy(() => import('pages/directory/display/AllHubs'))
 const DisplayAllHubCouncils = lazy(
   () => import('pages/directory/display/AllHubCouncils')
@@ -250,12 +241,7 @@ const UpdateBacentaBussing = lazy(
 const AllStreamConstituencies = lazy(
   () => import('pages/directory/display/AllStreamConstituencies')
 )
-const FellowshipAvgWeekdayQuickFacts = lazy(
-  () =>
-    import(
-      'pages/directory/quick-facts/this-month/FellowshipAvgWeekdayQuickFacts'
-    )
-)
+
 const BacentaAvgWeekdayQuickFacts = lazy(
   () =>
     import('pages/directory/quick-facts/this-month/BacentaAvgWeekdayQuickFacts')
@@ -296,11 +282,7 @@ export const quickFacts: LazyRouteTypes[] = [
     element: QuickFactsChurchList,
     roles: ['all'],
   },
-  {
-    path: '/quick-facts/this-month/fellowship',
-    element: FellowshipAvgWeekdayQuickFacts,
-    roles: permitMe('Fellowship'),
-  },
+
   {
     path: '/quick-facts/this-month/bacenta',
     element: BacentaAvgWeekdayQuickFacts,
@@ -360,11 +342,6 @@ export const memberGrids: LazyRouteTypes[] = [
     element: BacentaMembers,
     roles: permitMe('Bacenta'),
   },
-  {
-    path: '/fellowship/members',
-    element: FellowshipMembers,
-    roles: permitLeaderAdmin('Fellowship'),
-  },
 
   {
     path: '/hub/members',
@@ -396,12 +373,12 @@ export const directory: LazyRouteTypes[] = [
     path: '/directory',
     element: Directory,
     placeholder: true,
-    roles: [...permitMe('Fellowship'), ...permitMe('Hub')],
+    roles: [...permitMe('Bacenta'), ...permitMe('Hub')],
   },
   {
     path: '/directory/churches',
     element: Churches,
-    roles: [...permitMe('Fellowship'), ...permitMe('Hub')],
+    roles: [...permitMe('Bacenta'), ...permitMe('Hub')],
   },
   // Member Display and Edit Pages
   {
@@ -485,7 +462,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/member/displaydetails',
     element: DisplayMember,
-    roles: [...permitMe('Fellowship'), ...permitMe('Hub')],
+    roles: [...permitMe('Bacenta'), ...permitMe('Hub')],
     placeholder: true,
   },
   {
@@ -498,7 +475,7 @@ export const directory: LazyRouteTypes[] = [
     path: '/member/addmember',
     element: CreateMember,
     roles: [
-      ...permitLeaderAdmin('Fellowship'),
+      ...permitLeaderAdmin('Bacenta'),
       ...permitSheepSeeker(),
       ...permitLeaderAdmin('Hub'),
     ],
@@ -507,7 +484,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/member/editmember',
     element: UpdateMember,
-    roles: [...permitLeaderAdmin('Fellowship'), ...permitSheepSeeker()],
+    roles: [...permitLeaderAdmin('Bacenta'), ...permitSheepSeeker()],
     placeholder: true,
   },
   {
@@ -526,12 +503,7 @@ export const directory: LazyRouteTypes[] = [
   },
 
   //Display Church Details
-  {
-    path: '/fellowship/displaydetails',
-    element: DetailsFellowship,
-    roles: [...permitLeaderAdmin('Fellowship'), ...permitLeaderAdmin('Hub')],
-    placeholder: true,
-  },
+
   {
     path: '/bacenta/displaydetails',
     element: DetailsBacenta,
@@ -626,12 +598,7 @@ export const directory: LazyRouteTypes[] = [
     roles: [...permitMe('Constituency'), ...permitMe('Hub')],
     placeholder: false,
   },
-  {
-    path: '/hubfellowship/displayall',
-    element: DisplayAllHubFellowships,
-    roles: [...permitMe('Constituency'), ...permitMe('Hub')],
-    placeholder: false,
-  },
+
   {
     path: '/hub/displayall',
     element: DisplayAllHubs,
@@ -694,12 +661,6 @@ export const directory: LazyRouteTypes[] = [
     placeholder: false,
   },
 
-  {
-    path: '/fellowship/displayall',
-    element: DisplayAllFellowships,
-    roles: [...permitMe('Bacenta'), ...permitMe('Hub')],
-    placeholder: false,
-  },
   {
     path: '/council/displayall',
     element: DisplayAllCouncils,

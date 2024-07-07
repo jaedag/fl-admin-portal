@@ -30,7 +30,6 @@ const UpdateHub = () => {
     hubCouncil: hub?.hubCouncil?.id,
     constituency: hub?.constituency?.id ?? '',
     meetingDay: hub?.meetingDay?.day,
-    hubFellowships: hub?.hubFellowships.length ? hub?.hubFellowships : [],
     vacationStatus: hub?.vacationStatus,
     venueLatitude: repackDecimals(hub?.location?.latitude) ?? '',
     venueLongitude: repackDecimals(hub?.location?.longitude) ?? '',

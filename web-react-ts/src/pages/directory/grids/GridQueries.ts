@@ -537,7 +537,7 @@ export const GET_BACENTA_MEMBERS = gql`
         firstName
         lastName
         pictureUrl
-        fellowship {
+        bacenta {
           name
         }
         basonta {

@@ -23,7 +23,6 @@ import { MemberContext } from 'contexts/MemberContext'
 import { CreateMemberFormOptions } from '../create/CreateMember'
 import Input from 'components/formik/Input'
 import ImageUpload from 'components/formik/ImageUpload'
-import SearchFellowship from 'components/formik/SearchFellowship'
 import Select from 'components/formik/Select'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { MAKE_MEMBER_INACTIVE } from '../update/UpdateMutations'
@@ -32,6 +31,7 @@ import Popup from 'components/Popup/Popup'
 import { useNavigate } from 'react-router'
 import RoleView from 'auth/RoleView'
 import RadioButtons from 'components/formik/RadioButtons'
+import SearchBacenta from 'components/formik/SearchBacenta'
 
 type MemberFormProps = {
   initialValues: CreateMemberFormOptions
@@ -101,8 +101,8 @@ const MemberForm = ({
       })
 
       clickCard({
-        __typename: 'Fellowship',
-        id: initialValues.fellowship.id,
+        __typename: 'Bacenta',
+        id: initialValues.bacenta.id,
       })
 
       togglePopup()
@@ -368,16 +368,14 @@ const MemberForm = ({
                     )}
 
                     <Col sm={10}>
-                      <SearchFellowship
-                        name="fellowship"
-                        label="Fellowship*"
+                      <SearchBacenta
+                        name="bacenta"
+                        label="Bacenta*"
                         placeholder="Start Typing"
                         setFieldValue={formik.setFieldValue}
-                        aria-describedby="Fellowship Name"
-                        initialValue={initialValues?.fellowship?.name || null}
-                        error={
-                          formik.errors.fellowship && formik.errors.fellowship
-                        }
+                        aria-describedby="Bacenta Name"
+                        initialValue={initialValues?.bacenta?.name || null}
+                        error={formik.errors.bacenta && formik.errors.bacenta}
                       />
                     </Col>
                     <Col sm={10}>

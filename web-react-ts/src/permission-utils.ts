@@ -4,23 +4,6 @@ import { ChurchLevel, Role } from 'global-types'
 export const permitLeader = (churchLevel: ChurchLevel) => {
   let permittedFor: Role[] = []
   switch (churchLevel.toLowerCase()) {
-    case 'fellowship':
-      permittedFor = [
-        'leaderDenomination',
-        'leaderOversight',
-        'leaderCampus',
-        'leaderStream',
-        'leaderCouncil',
-        'leaderConstituency',
-        'leaderBacenta',
-        'leaderFellowship',
-        'leaderHub',
-        'leaderMinistry',
-        'leaderCreativeArts',
-        'adminMinistry',
-        'adminCreativeArts',
-      ]
-      break
     case 'bacenta':
       permittedFor = [
         'leaderDenomination',
@@ -126,7 +109,6 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
 export const permitAdmin = (churchLevel: ChurchLevel) => {
   let permittedFor: Role[] = []
   switch (churchLevel) {
-    case 'Fellowship':
     case 'Bacenta':
     case 'Hub':
       permittedFor = [
@@ -232,7 +214,6 @@ export const permitMe = (churchLevel: ChurchLevel): Role[] => {
 export const permitArrivals = (churchLevel: ChurchLevel): Role[] => {
   let permittedFor: Role[] = []
   switch (churchLevel) {
-    case 'Fellowship':
     case 'Bacenta':
       permittedFor = [
         'arrivalsAdminCampus',

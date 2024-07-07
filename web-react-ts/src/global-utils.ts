@@ -580,7 +580,7 @@ export const getSubChurchLevel = (churchType: ChurchLevel) => {
       return 'Hub'
 
     default:
-      return 'Fellowship'
+      return 'Bacenta'
   }
 }
 
@@ -675,8 +675,8 @@ export const directoryLock = (
     (new Date().getDay() === 1 && new Date().getHours() >= 12) ||
     new Date().getDay() === 2 ||
     ['fishers']?.some((r) => currentUser?.roles?.includes(r as Role)) ||
-    (churchType === 'Fellowship' &&
-      currentUser?.roles?.includes('leaderFellowship' as Role))
+    (churchType === 'Bacenta' &&
+      currentUser?.roles?.includes('leaderBacenta' as Role))
   ) {
     return true
   }
@@ -686,11 +686,11 @@ export const directoryLock = (
 
 export const firstDayOfThisYear = new Date(new Date().getFullYear(), 0, 1)
 
-export const check = (fellowship: any) => {
+export const check = (bacenta: any) => {
   let serviceType: 'services' | 'rehearsals' = 'services'
-  if (fellowship.__typename === 'Hub') serviceType = 'rehearsals'
+  if (bacenta.__typename === 'Hub') serviceType = 'rehearsals'
 
-  const lastFilled = fellowship?.[serviceType].map(
+  const lastFilled = bacenta?.[serviceType].map(
     ({
       bankingProof,
       noServiceReason,

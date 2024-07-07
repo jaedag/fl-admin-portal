@@ -42,13 +42,13 @@ import { BacentaWithArrivals } from 'pages/arrivals/arrivals-types'
 import SearchMember from 'components/formik/SearchMember'
 import useModal from 'hooks/useModal'
 import SubmitButton from 'components/formik/SubmitButton'
-import { DetailsArray } from 'pages/directory/display/DetailsFellowship'
 import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
 import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 import Last3WeeksCard, {
   Last3WeeksCardProps,
   shouldFill,
 } from 'components/Last3WeeksCard'
+import { DetailsArray } from 'pages/directory/display/DetailsBacenta'
 
 type DisplayChurchDetailsProps = {
   details: DetailsArray
@@ -422,6 +422,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
             </a>
           </Container>
         )}
+
         {props.last3Weeks && props.details[2].number === 'Active' && (
           <Last3WeeksCard last3Weeks={props.last3Weeks} />
         )}

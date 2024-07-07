@@ -29,13 +29,13 @@ import useModal from 'hooks/useModal'
 import SearchMember from 'components/formik/SearchMember'
 import SubmitButton from 'components/formik/SubmitButton'
 import LeaderAvatar from 'components/LeaderAvatar/LeaderAvatar'
-import { DetailsArray } from 'pages/directory/display/DetailsFellowship'
 import MemberAvatarWithName from 'components/LeaderAvatar/MemberAvatarWithName'
 import { ChurchContext } from 'contexts/ChurchContext'
 import Last3WeeksCard, {
   Last3WeeksCardProps,
   shouldFill,
 } from 'components/Last3WeeksCard'
+import { DetailsArray } from 'pages/directory/display/DetailsBacenta'
 
 type DisplayChurchDetailsProps = {
   details: DetailsArray

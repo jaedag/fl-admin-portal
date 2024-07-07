@@ -35,13 +35,13 @@ export const menuItems: MenuItem[] = [
     name: 'Directory',
     exact: 'true',
     to: '/directory',
-    roles: [...permitMe('Fellowship'), ...permitMe('Hub')],
+    roles: [...permitMe('Bacenta'), ...permitMe('Hub')],
   },
   {
     name: 'Services',
     to: '/services/church-list',
     roles: [
-      ...permitLeaderAdmin('Fellowship'),
+      ...permitLeaderAdmin('Bacenta'),
       ...permitTellerStream(),
       ...permitLeaderAdmin('Hub'),
     ],
@@ -62,7 +62,7 @@ export const menuItems: MenuItem[] = [
     name: 'Campaigns',
     to: '/campaigns/churchlist',
     roles: arrayDiff(
-      [...permitLeaderAdmin('Fellowship'), ...permitSheepSeeker()],
+      [...permitLeaderAdmin('Bacenta'), ...permitSheepSeeker()],
       permitLeaderAdminArrivals('Oversight')
     ),
   },
@@ -82,7 +82,7 @@ export const menuItems: MenuItem[] = [
     name: 'Maps',
     to: '/maps',
     roles: [
-      ...permitLeaderAdminArrivals('Fellowship'),
+      ...permitLeaderAdminArrivals('Bacenta'),
       ...permitLeaderAdmin('Hub'),
     ],
   },
@@ -91,7 +91,6 @@ export const menuItems: MenuItem[] = [
 export const roles: {
   [key in ChurchLevel]: VerbTypes[]
 } = {
-  Fellowship: ['leads'],
   Bacenta: ['leads'],
   Constituency: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
   Council: ['leads', 'isAdminFor', 'isArrivalsAdminFor', 'isArrivalsPayerFor'],
@@ -106,7 +105,6 @@ export const roles: {
   Campus: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
   Oversight: ['leads', 'isAdminFor'],
   Denomination: ['leads', 'isAdminFor'],
-  HubFellowship: ['leads'],
   Hub: ['leads'],
   HubCouncil: ['leads'],
   Ministry: ['leads', 'isAdminFor'],
@@ -296,7 +294,7 @@ export const getServantRoles = (servant: MemberWithChurches) => {
       number: servant?.leadsFellowship?.length,
       link: authorisedLink(
         servant,
-        permitMe('Fellowship'),
+        permitMe('Bacenta'),
         '/fellowship/displaydetails'
       ),
     })

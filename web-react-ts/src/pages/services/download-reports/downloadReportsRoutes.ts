@@ -3,7 +3,7 @@ import { permitMe } from 'permission-utils'
 import { lazy } from 'react'
 const CampusDownloadReports = lazy(() => import('./CampusDownloadReports'))
 const CampusFellowshipServicesThisWeek = lazy(
-  () => import('./services-this-week/CampusFellowshipServicesThisWeek')
+  () => import('./services-this-week/CampusBacentaServicesThisWeek')
 )
 
 export const downloadReports: LazyRouteTypes[] = [

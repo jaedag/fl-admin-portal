@@ -11,7 +11,7 @@ export const MEMBER_SEARCH = gql`
         nameWithTitle
         pictureUrl
         stream_name
-        fellowship {
+        bacenta {
           id
           name
         }

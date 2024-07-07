@@ -47,25 +47,20 @@ const SetPermissions = ({
         const streamName = data.memberByEmail.stream_name
 
         const denominationId =
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .campus?.oversight?.denomination.id
+          data.memberByEmail?.bacenta.constituency?.council.stream.campus
+            ?.oversight?.denomination.id
 
         const oversightId =
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .campus?.oversight.id
+          data.memberByEmail?.bacenta.constituency?.council.stream.campus
+            ?.oversight.id
         const campusId =
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .campus?.id
+          data.memberByEmail?.bacenta.constituency?.council.stream.campus?.id
         const campus =
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council?.stream
-            .campus
+          data.memberByEmail?.bacenta.constituency?.council?.stream.campus
         const streamId =
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.stream
-            .id
-        const councilId =
-          data.memberByEmail?.fellowship?.bacenta.constituency?.council.id
-        const constituencyId =
-          data.memberByEmail?.fellowship?.bacenta.constituency?.id
+          data.memberByEmail?.bacenta.constituency?.council.stream.id
+        const councilId = data.memberByEmail?.bacenta.constituency?.council.id
+        const constituencyId = data.memberByEmail?.bacenta.constituency?.id
         const hubId = data.memberByEmail?.fellowship?.hub?.id
 
         const hubCouncilId = data.memberByEmail?.fellowship?.hub?.hubCouncil.id
@@ -103,8 +98,7 @@ const SetPermissions = ({
           nameWithTitle: data.memberByEmail.nameWithTitle,
 
           // Bacenta Levels
-          fellowship: data.memberByEmail?.fellowship.id,
-          bacenta: data.memberByEmail?.fellowship?.bacenta?.id,
+          bacenta: data.memberByEmail?.bacenta.id,
           constituency: constituencyId,
           council: councilId,
           stream: streamId,

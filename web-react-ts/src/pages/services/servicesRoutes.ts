@@ -25,9 +25,7 @@ const ConstituencyService = lazy(
 const ConstituencyServiceDetails = lazy(
   () => import('pages/services/record-service/ConstituencyServiceDetails')
 )
-const FellowshipService = lazy(
-  () => import('pages/services/record-service/FellowshipService')
-)
+
 const FellowshipServiceCancelled = lazy(
   () => import('pages/services/record-service/FellowshipServiceCancelled')
 )
@@ -76,7 +74,6 @@ const CouncilReport = lazy(() => import('pages/services/graphs/CouncilGraphs'))
 const FellowshipReport = lazy(
   () => import('pages/services/graphs/FellowshipGraphs')
 )
-const BacentaJoint = lazy(() => import('pages/services/BacentaJoint'))
 
 const ConstituencyJoint = lazy(() => import('pages/services/ConstituencyJoint'))
 const Banked = lazy(() => import('pages/services/defaulters/Banked'))
@@ -223,7 +220,7 @@ export const services: LazyRouteTypes[] = [
     path: '/services',
     element: ServicesMenu,
     roles: [
-      ...permitLeaderAdmin('Fellowship'),
+      ...permitLeaderAdmin('Bacenta'),
       ...permitTellerStream(),
       ...permitLeader('Hub'),
     ],
@@ -233,27 +230,27 @@ export const services: LazyRouteTypes[] = [
     path: '/services/church-list',
     element: ServicesChurchList,
     roles: [
-      ...permitLeaderAdmin('Fellowship'),
+      ...permitLeaderAdmin('Bacenta'),
       ...permitTellerStream(),
       ...permitLeader('Hub'),
     ],
     placeholder: true,
   },
-  {
-    path: '/fellowship/record-service',
-    element: FellowshipService,
-    roles: permitLeaderAdmin('Fellowship'),
-    placeholder: true,
-  },
+  // {
+  //   path: '/bacenta/record-service',
+  //   element: BacentaService,
+  //   roles: permitLeaderAdmin('Bacenta'),
+  //   placeholder: true,
+  // },
   {
     path: '/services/fellowship',
     element: Fellowship,
-    roles: permitLeaderAdmin('Fellowship'),
+    roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },
   {
     path: '/services/bacenta',
-    element: BacentaJoint,
+    element: Fellowship,
     roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },
@@ -285,7 +282,7 @@ export const services: LazyRouteTypes[] = [
   {
     path: '/services/fellowship/banking-slips',
     element: FellowshipBankingSlipView,
-    roles: permitLeaderAdmin('Fellowship'),
+    roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },
   {
@@ -355,7 +352,7 @@ export const graphs: LazyRouteTypes[] = [
     path: '/fellowship/graphs',
     element: FellowshipReport,
     roles: [
-      ...permitLeaderAdminArrivals('Fellowship'),
+      ...permitLeaderAdminArrivals('Bacenta'),
       ...permitTellerStream(),
       ...permitLeaderAdmin('Hub'),
     ],
@@ -433,20 +430,14 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/fellowship/service-details',
     element: FellowshipServiceDetails,
-    roles: [...permitLeaderAdmin('Fellowship'), ...permitTellerStream()],
+    roles: [...permitLeaderAdmin('Bacenta'), ...permitTellerStream()],
     placeholder: true,
   },
   {
-    path: '/services/fellowship/no-service',
+    path: '/services/Bacenta/no-service',
     element: FellowshipServiceCancelled,
-    roles: permitLeaderAdmin('Fellowship'),
+    roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
-  },
-  {
-    path: '/fellowship/record-service',
-    element: FellowshipService,
-    roles: permitLeaderAdmin('Fellowship'),
-    placeholder: false,
   },
 
   //Hub Service Details
@@ -483,7 +474,7 @@ export const graphs: LazyRouteTypes[] = [
 
   //Bacenta Service Things
   {
-    path: '/bacenta/record-service-not-exist',
+    path: '/bacenta/record-service',
     element: BacentaService,
     roles: permitLeaderAdmin('Bacenta'),
     placeholder: false,

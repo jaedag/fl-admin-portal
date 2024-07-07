@@ -7,14 +7,14 @@ export const matchMemberAndIMCLStatus = `
 MATCH (member:Member {id: $id}) WHERE NOT member:Lost 
 RETURN member
 `
-export const updateMemberFellowship = `
+export const updateMemberBacenta = `
   MATCH (member:Active:Member {id: $id}) 
-  MATCH (fellowship:Fellowship {id: $fellowshipId})
+  MATCH (bacenta:Bacenta {id: $bacentaId})
 
-  OPTIONAL MATCH (member)-[previous:BELONGS_TO]-> (:Fellowship)
+  OPTIONAL MATCH (member)-[previous:BELONGS_TO]-> (:Bacenta)
   DELETE previous
 
-  MERGE (member)-[:BELONGS_TO]-> (fellowship)
+  MERGE (member)-[:BELONGS_TO]-> (bacenta)
   RETURN member
   `
 

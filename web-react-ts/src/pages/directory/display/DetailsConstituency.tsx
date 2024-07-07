@@ -6,7 +6,7 @@ import { DISPLAY_CONSTITUENCY } from './ReadQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { permitAdminArrivals } from 'permission-utils'
-import { DetailsArray } from './DetailsFellowship'
+import { DetailsArray } from './DetailsBacenta'
 
 const DetailsConstituency = () => {
   const { constituencyId } = useContext(ChurchContext)

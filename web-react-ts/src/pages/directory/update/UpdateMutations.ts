@@ -57,6 +57,41 @@ export const UPDATE_MEMBER_MUTATION = gql`
   }
 `
 
+export const UPDATE_MEMBER_STICKY_NOTE = gql`
+  mutation UpdateMemberStickyNote(
+    $id: ID!
+    $stickyNote: String
+    $ids: [ID]
+    $historyRecord: String!
+  ) {
+    updateMembers(where: { id: $id }, update: { stickyNote: $stickyNote }) {
+      members {
+        id
+        stickyNote
+      }
+    }
+    LogMemberHistory(ids: $ids, historyRecord: $historyRecord) {
+      id
+      firstName
+      lastName
+      history(limit: 3) {
+        id
+        timeStamp
+        createdAt {
+          date
+        }
+        loggedBy {
+          id
+          firstName
+          lastName
+          stream_name
+        }
+        historyRecord
+      }
+    }
+  }
+`
+
 export const UPDATE_MEMBER_EMAIL = gql`
   mutation UpdateMemberEmail($id: ID!, $email: String!) {
     UpdateMemberEmail(id: $id, email: $email) {
@@ -105,18 +140,18 @@ export const LOG_MEMBER_HISTORY = gql`
   }
 `
 
-export const UPDATE_MEMBER_FELLOWSHIP = gql`
-  mutation UpdateMemberFellowship(
+export const UPDATE_MEMBER_BACENTA = gql`
+  mutation UpdateMemberBacenta(
     $memberId: ID!
-    $fellowshipId: ID!
+    $bacentaId: ID!
     $ids: [ID]
     $historyRecord: String!
   ) {
-    UpdateMemberFellowship(memberId: $memberId, fellowshipId: $fellowshipId) {
+    UpdateMemberBacenta(memberId: $memberId, bacentaId: $bacentaId) {
       id
       firstName
       lastName
-      fellowship {
+      bacenta {
         id
         name
       }
@@ -168,7 +203,7 @@ export const UPDATE_STREAM_MUTATION = gql`
         id
         firstName
         lastName
-        fellowship {
+        bacenta {
           id
           stream_name
         }
@@ -219,7 +254,7 @@ export const UPDATE_OVERSIGHT_MUTATION = gql`
         id
         firstName
         lastName
-        fellowship {
+        bacenta {
           id
           stream_name
         }
@@ -264,7 +299,7 @@ export const UPDATE_DENOMINATION_MUTATION = gql`
         id
         firstName
         lastName
-        fellowship {
+        bacenta {
           id
           stream_name
         }
@@ -330,7 +365,7 @@ export const UPDATE_CAMPUS_MUTATION = gql`
         id
         firstName
         lastName
-        fellowship {
+        bacenta {
           id
           stream_name
         }
@@ -381,7 +416,7 @@ export const UPDATE_COUNCIL_MUTATION = gql`
         id
         firstName
         lastName
-        fellowship {
+        bacenta {
           id
           stream_name
         }
@@ -432,7 +467,7 @@ export const UPDATE_CONSTITUENCY_MUTATION = gql`
         id
         firstName
         lastName
-        fellowship {
+        bacenta {
           id
           stream_name
         }
@@ -466,20 +501,7 @@ export const UPDATE_BACENTA_MUTATION = gql`
       name
       sprinterTopUp
       urvanTopUp
-      fellowships {
-        id
-        name
-        bacenta {
-          id
-          name
-          constituency {
-            id
-            council {
-              id
-            }
-          }
-        }
-      }
+
       constituency {
         id
         name
@@ -859,54 +881,6 @@ export const MOVE_BACENTA_TO_CONSTITUENCY = gql`
   }
 `
 
-export const MOVE_FELLOWSHIP_TO_BACENTA = gql`
-  mutation MoveFellowshipToBacenta(
-    $fellowshipId: ID!
-    $newBacentaId: ID!
-    $oldBacentaId: ID!
-    $historyRecord: String!
-  ) {
-    MoveFellowshipToBacenta(
-      fellowshipId: $fellowshipId
-      bacentaId: $newBacentaId
-    ) {
-      id
-      name
-      bacenta {
-        id
-        name
-        fellowships {
-          id
-          name
-        }
-      }
-    }
-    LogFellowshipHistory(
-      fellowshipId: $fellowshipId
-      historyRecord: $historyRecord
-      oldBacentaId: $oldBacentaId
-      newBacentaId: $newBacentaId
-    ) {
-      id
-      name
-      history(limit: 5) {
-        id
-        timeStamp
-        createdAt {
-          date
-        }
-        loggedBy {
-          id
-          firstName
-          lastName
-          stream_name
-        }
-        historyRecord
-      }
-    }
-  }
-`
-
 export const MOVE_CREATIVEARTS_TO_CAMPUS = gql`
   mutation MoveCreativeArtsToCampus(
     $creativeArtsId: ID!
@@ -1260,62 +1234,6 @@ export const MOVE_HUB_TO_CONSTITUENCY = gql`
         id
         name
         hubs {
-          id
-          name
-        }
-      }
-      history(limit: 5) {
-        id
-        timeStamp
-        createdAt {
-          date
-        }
-        loggedBy {
-          id
-          stream_name
-          firstName
-          lastName
-        }
-        historyRecord
-      }
-    }
-  }
-`
-
-export const MOVE_HUBFELLOWSHIP_TO_HUB = gql`
-  mutation MoveHubFellowshipToHub(
-    $hubFellowshipId: ID!
-    $newHubId: ID!
-    $oldHubId: ID!
-    $historyRecord: String!
-  ) {
-    MoveHubFellowshipToHub(
-      hubFellowshipId: $hubFellowshipId
-      hubId: $newHubId
-    ) {
-      id
-      name
-      hub {
-        id
-        name
-        hubFellowships {
-          id
-          name
-        }
-      }
-    }
-    LogHubFellowshipHistory(
-      hubFellowshipId: $hubFellowshipId
-      historyRecord: $historyRecord
-      oldHubId: $oldHubId
-      newHubId: $newHubId
-    ) {
-      id
-      name
-      hub {
-        id
-        name
-        hubFellowships {
           id
           name
         }
