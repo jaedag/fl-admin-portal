@@ -1,3 +1,9 @@
+#### 7.18.25 (2024-07-07)
+
+##### New Features
+
+*  fix self banking on bacenta level, hopefully ([2494fcb0](https://github.com/firstlovecenter/fl-admin-portal/commit/2494fcb0bdcc2f94c0c2fc6a56a6eee3ab2a18bc))
+
 #### 7.18.24 (2024-07-07)
 
 ##### Chores
