@@ -44,13 +44,13 @@ const DetailsDenomination = () => {
       link: `/campus/constituencies`,
     },
     {
-      title: 'Bacentas',
+      title: 'Greens',
       number: denomination?.activeGraduatedBacentaCount,
       vacationCount: denomination?.vacationGraduatedBacentaCount,
       link: `#`,
     },
     {
-      title: 'ICs',
+      title: 'Reds',
       number: denomination?.activeIcBacentaCount,
       vacationCount: denomination?.vacationIcBacentaCount,
       link: '#',

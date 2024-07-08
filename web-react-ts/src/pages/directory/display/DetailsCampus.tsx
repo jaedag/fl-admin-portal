@@ -43,13 +43,13 @@ const DetailsCampus = () => {
       link: `/campus/constituencies`,
     },
     {
-      title: 'Bacentas',
+      title: 'Greens',
       number: gathering?.activeGraduatedBacentaCount,
       vacationCount: gathering?.vacationGraduatedBacentaCount,
       link: `#`,
     },
     {
-      title: 'ICs',
+      title: 'Reds',
       number: gathering?.activeIcBacentaCount,
       vacationCount: gathering?.vacationIcBacentaCount,
       link: '#',

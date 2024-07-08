@@ -45,13 +45,13 @@ const DetailsOversight = () => {
       link: `/campus/constituencies`,
     },
     {
-      title: 'Bacentas',
+      title: 'Greens',
       number: oversight?.activeGraduatedBacentaCount,
       vacationCount: oversight?.vacationGraduatedBacentaCount,
       link: `#`,
     },
     {
-      title: 'ICs',
+      title: 'Reds',
       number: oversight?.activeIcBacentaCount,
       vacationCount: oversight?.vacationIcBacentaCount,
       link: '#',

@@ -36,21 +36,15 @@ const DetailsCouncil = () => {
     { title: 'Target', number: council?.target, link: '#' },
     { title: 'Pastors', number: council?.pastorCount, link: '#' },
     {
-      title: 'Bacentas',
+      title: 'Greens',
       number: council?.activeGraduatedBacentaCount,
       vacationCount: council?.vacationGraduatedBacentaCount,
       link: `#`,
     },
     {
-      title: 'ICs',
+      title: 'Reds',
       number: council?.activeIcBacentaCount,
       vacationCount: council?.vacationIcBacentaCount,
-      link: '#',
-    },
-    {
-      title: 'Fellowships',
-      number: council?.activeFellowshipCount,
-      vacationCount: council?.vacationFellowshipCount,
       link: '#',
     },
     {
@@ -63,12 +57,6 @@ const DetailsCouncil = () => {
       title: 'Hubs',
       number: council?.hubCount,
       link: '#',
-      creativearts: true,
-    },
-    {
-      title: 'Hub Fellowships',
-      number: council?.hubFellowshipCount,
-      link: `#`,
       creativearts: true,
     },
   ]

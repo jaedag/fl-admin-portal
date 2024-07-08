@@ -43,7 +43,7 @@ const DetailsCard = (props: DetailsCardPropsType) => {
                 <small>{detail?.match(currentUser.currency)}</small>
               </h3>
               {!!trailing && <>{trailing}</>}
-              {heading === 'ICs' && props?.vacationIcBacentaCount !== '0' && (
+              {heading === 'Reds' && props?.vacationIcBacentaCount !== '0' && (
                 <div>
                   <Badge bg="danger" className="badge-vacation mt-auto">
                     <span className="font-danger">{`+ `}</span>

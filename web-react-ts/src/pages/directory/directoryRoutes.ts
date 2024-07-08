@@ -197,7 +197,7 @@ const DisplayAllStreams = lazy(
 const DisplayAllCampuses = lazy(
   () => import('pages/directory/display/AllCampuses')
 )
-const DisplayAllIcs = lazy(() => import('pages/directory/display/AllICs'))
+const DisplayAllIcs = lazy(() => import('pages/directory/display/AllReds'))
 const CreateCouncil = lazy(() => import('pages/directory/create/CreateCouncil'))
 const AllCampusConstituencies = lazy(
   () => import('pages/directory/display/AllCampusConstituencies')

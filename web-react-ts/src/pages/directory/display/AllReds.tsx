@@ -11,7 +11,7 @@ import AllChurchesSummary from 'components/AllChurchesSummary'
 import 'components/AllChurchesSummary.css'
 import ChurchSearch from 'components/ChurchSearch'
 
-const DisplayAllICs = () => {
+const DisplayAllReds = () => {
   const { constituencyId, setConstituencyId, clickCard } =
     useContext(ChurchContext)
 
@@ -83,4 +83,4 @@ const DisplayAllICs = () => {
   )
 }
 
-export default DisplayAllICs
+export default DisplayAllReds

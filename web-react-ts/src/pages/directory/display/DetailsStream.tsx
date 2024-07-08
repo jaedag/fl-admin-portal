@@ -51,13 +51,13 @@ const DetailsStream = () => {
       link: `/stream/constituencies`,
     },
     {
-      title: 'Bacentas',
+      title: 'Greens',
       number: stream?.activeGraduatedBacentaCount,
       vacationCount: stream?.vacationGraduatedBacentaCount,
       link: `#`,
     },
     {
-      title: 'ICs',
+      title: 'Reds',
       number: stream?.activeIcBacentaCount,
       vacationCount: stream?.vacationIcBacentaCount,
       link: '#',
