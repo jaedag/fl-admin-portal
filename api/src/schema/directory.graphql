@@ -54,7 +54,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   basontaMembers: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..5]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       MATCH (members)-[:BELONGS_TO]->(:Basonta)
       RETURN DISTINCT members ORDER BY toLower(members.firstName), toLower(members.lastName)
       """
@@ -62,7 +62,7 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   basontaMembershipCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:LEADS|HAS|IS_ADMIN_FOR*1..5]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       MATCH (members)-[:BELONGS_TO]->(:Basonta)
       RETURN COUNT(DISTINCT members)
       """
@@ -368,14 +368,14 @@ type Denomination implements Church {
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*7]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS*6]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
   pastorCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*7]->(:Fellowship)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
+      MATCH (this)-[:HAS*6]->(:Bacenta)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
       RETURN COUNT(DISTINCT pastors)
       """
     )
@@ -476,7 +476,7 @@ type Oversight implements Church {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS*5]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN DISTINCT members ORDER BY toLower(members.firstName), toLower(members.lastName)
       """
     )
@@ -484,14 +484,14 @@ type Oversight implements Church {
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*6]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS*5]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
   pastorCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*6]->(:Fellowship)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
+      MATCH (this)-[:HAS*5]->(:Bacenta)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
       RETURN COUNT(DISTINCT pastors)
       """
     )
@@ -596,7 +596,7 @@ type Campus implements Church {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*5]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS*4]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN DISTINCT members ORDER BY toLower(members.firstName), toLower(members.lastName)
       """
     )
@@ -604,14 +604,14 @@ type Campus implements Church {
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*5]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS*4]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
   pastorCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*5]->(:Fellowship)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
+      MATCH (this)-[:HAS*4]->(:Bacenta)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
       RETURN COUNT(DISTINCT pastors)
       """
     )
@@ -723,21 +723,21 @@ type Stream implements Church {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*4]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS*3]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN DISTINCT members ORDER BY toLower(members.firstName), toLower(members.lastName)
       """
     )
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*4]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS*3]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
   pastorCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*4]->(:Fellowship)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
+      MATCH (this)-[:HAS*3]->(:Bacenta)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
       RETURN COUNT(DISTINCT pastors)
       """
     )
@@ -827,21 +827,21 @@ type Council implements Church {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*3]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS*2]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN DISTINCT members ORDER BY toLower(members.firstName), toLower(members.lastName)
       """
     )
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*3]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS*2]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
   pastorCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*3]->(:Fellowship)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
+      MATCH (this)-[:HAS*2]->(:Bacenta)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
       RETURN COUNT(DISTINCT pastors)
       """
     )
@@ -921,21 +921,21 @@ type Constituency implements Church {
   members: [Member!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*2]->(fellowship:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN DISTINCT members ORDER BY toLower(members.firstName), toLower(members.lastName)
       """
     )
   memberCount: Int!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*2]->(:Fellowship)<-[:BELONGS_TO]-(members:Active:Member)
+      MATCH (this)-[:HAS*]->(:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
       RETURN COUNT(DISTINCT members)
       """
     )
   pastorCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS*2]->(:Fellowship)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
+      MATCH (this)-[:HAS*]->(:Bacenta)<-[:BELONGS_TO]-(pastors:Active:Member)-[:HAS_TITLE]->(:Title)
       RETURN COUNT(DISTINCT pastors)
       """
     )

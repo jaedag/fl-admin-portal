@@ -7,7 +7,7 @@ export const GET_FEDERAL_MEMBERS = gql`
       firstName
       lastName
       pictureUrl
-      fellowship {
+      bacenta {
         id
         name
       }
@@ -75,7 +75,7 @@ export const GET_SERVANT_MEMBERS = gql`
         lastName
         pictureUrl
         stream_name
-        fellowship {
+        bacenta {
           id
           name
         }
@@ -92,7 +92,7 @@ export const GET_SERVANT_MEMBERS = gql`
         title {
           name
         }
-        leadsFellowship {
+        bacenta {
           id
           name
         }
@@ -105,7 +105,7 @@ export const GET_SERVANT_MEMBERS = gql`
           name
         }
 
-        leadsHubFellowship {
+        bacenta {
           id
           name
         }
@@ -152,7 +152,7 @@ export const GET_CAMPUS_MEMBERS = gql`
         lastName
         pictureUrl
         stream_name
-        fellowship {
+        bacenta {
           id
           name
         }
@@ -169,7 +169,7 @@ export const GET_CAMPUS_MEMBERS = gql`
         title {
           name
         }
-        leadsFellowship {
+        bacenta {
           id
           name
         }
@@ -182,7 +182,7 @@ export const GET_CAMPUS_MEMBERS = gql`
           name
         }
 
-        leadsHubFellowship {
+        bacenta {
           id
           name
         }
@@ -228,7 +228,7 @@ export const GET_STREAM_MEMBERS = gql`
         lastName
         pictureUrl
         stream_name
-        fellowship {
+        bacenta {
           id
           name
         }
@@ -245,7 +245,7 @@ export const GET_STREAM_MEMBERS = gql`
         title {
           name
         }
-        leadsFellowship {
+        bacenta {
           id
           name
         }
@@ -258,7 +258,7 @@ export const GET_STREAM_MEMBERS = gql`
           name
         }
 
-        leadsHubFellowship {
+        bacenta {
           id
           name
         }
@@ -304,7 +304,7 @@ export const GET_OVERSIGHT_MEMBERS = gql`
         lastName
         pictureUrl
         stream_name
-        fellowship {
+        bacenta {
           id
           name
         }
@@ -321,7 +321,7 @@ export const GET_OVERSIGHT_MEMBERS = gql`
         title {
           name
         }
-        leadsFellowship {
+        bacenta {
           id
           name
         }
@@ -334,7 +334,7 @@ export const GET_OVERSIGHT_MEMBERS = gql`
           name
         }
 
-        leadsHubFellowship {
+        bacenta {
           id
           name
         }
@@ -380,7 +380,7 @@ export const GET_COUNCIL_MEMBERS = gql`
         lastName
         pictureUrl
         stream_name
-        fellowship {
+        bacenta {
           id
           name
         }
@@ -397,7 +397,7 @@ export const GET_COUNCIL_MEMBERS = gql`
         title {
           name
         }
-        leadsFellowship {
+        bacenta {
           id
           name
         }
@@ -410,7 +410,7 @@ export const GET_COUNCIL_MEMBERS = gql`
           name
         }
 
-        leadsHubFellowship {
+        bacenta {
           id
           name
         }
@@ -464,7 +464,8 @@ export const GET_CONSTITUENCY_MEMBERS = gql`
         firstName
         lastName
         pictureUrl
-        fellowship {
+        bacenta {
+          id
           name
         }
         basonta {
@@ -479,7 +480,7 @@ export const GET_CONSTITUENCY_MEMBERS = gql`
         title {
           name
         }
-        leadsFellowship {
+        bacenta {
           id
           name
         }
@@ -492,7 +493,7 @@ export const GET_CONSTITUENCY_MEMBERS = gql`
           name
         }
 
-        leadsHubFellowship {
+        bacenta {
           id
           name
         }
@@ -538,6 +539,7 @@ export const GET_BACENTA_MEMBERS = gql`
         lastName
         pictureUrl
         bacenta {
+          id
           name
         }
         basonta {
@@ -552,7 +554,8 @@ export const GET_BACENTA_MEMBERS = gql`
         title {
           name
         }
-        leadsFellowship {
+        bacenta {
+          id
           name
         }
         leadsBacenta {
@@ -564,7 +567,7 @@ export const GET_BACENTA_MEMBERS = gql`
           name
         }
 
-        leadsHubFellowship {
+        bacenta {
           id
           name
         }
@@ -609,7 +612,8 @@ export const GET_FELLOWSHIP_MEMBERS = gql`
         lastName
         pictureUrl
         stream_name
-        fellowship {
+        bacenta {
+          id
           name
         }
         basonta {
@@ -624,7 +628,7 @@ export const GET_FELLOWSHIP_MEMBERS = gql`
         title {
           name
         }
-        leadsFellowship {
+        bacenta {
           id
           name
         }
@@ -637,7 +641,7 @@ export const GET_FELLOWSHIP_MEMBERS = gql`
           name
         }
 
-        leadsHubFellowship {
+        bacenta {
           id
           name
         }
@@ -681,7 +685,8 @@ export const GET_HUB_MEMBERS = gql`
         firstName
         lastName
         pictureUrl
-        fellowship {
+        bacenta {
+          id
           name
         }
         basonta {
@@ -696,7 +701,7 @@ export const GET_HUB_MEMBERS = gql`
         title {
           name
         }
-        leadsFellowship {
+        bacenta {
           id
           name
         }
@@ -709,7 +714,7 @@ export const GET_HUB_MEMBERS = gql`
           name
         }
 
-        leadsHubFellowship {
+        bacenta {
           id
           name
         }
@@ -755,7 +760,8 @@ export const GET_HUBCOUNCIL_MEMBERS = gql`
         lastName
         pictureUrl
         stream_name
-        fellowship {
+        bacenta {
+          id
           name
         }
         basonta {
@@ -770,7 +776,7 @@ export const GET_HUBCOUNCIL_MEMBERS = gql`
         title {
           name
         }
-        leadsFellowship {
+        bacenta {
           id
           name
         }
@@ -783,7 +789,7 @@ export const GET_HUBCOUNCIL_MEMBERS = gql`
           name
         }
 
-        leadsHubFellowship {
+        bacenta {
           id
           name
         }
@@ -829,7 +835,8 @@ export const GET_MINISTRY_MEMBERS = gql`
         lastName
         pictureUrl
         stream_name
-        fellowship {
+        bacenta {
+          id
           name
         }
         basonta {
@@ -844,7 +851,7 @@ export const GET_MINISTRY_MEMBERS = gql`
         title {
           name
         }
-        leadsFellowship {
+        bacenta {
           id
           name
         }
@@ -857,7 +864,7 @@ export const GET_MINISTRY_MEMBERS = gql`
           name
         }
 
-        leadsHubFellowship {
+        bacenta {
           id
           name
         }
@@ -903,7 +910,8 @@ export const GET_CREATIVEARTS_MEMBERS = gql`
         lastName
         pictureUrl
         stream_name
-        fellowship {
+        bacenta {
+          id
           name
         }
         basonta {
@@ -918,7 +926,7 @@ export const GET_CREATIVEARTS_MEMBERS = gql`
         title {
           name
         }
-        leadsFellowship {
+        bacenta {
           id
           name
         }
@@ -931,7 +939,7 @@ export const GET_CREATIVEARTS_MEMBERS = gql`
           name
         }
 
-        leadsHubFellowship {
+        bacenta {
           id
           name
         }

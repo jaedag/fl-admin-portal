@@ -35,7 +35,7 @@ WHERE NOT EXISTS {
    WHERE (visitation)-[:TOWARDS]->(member) AND (visitation)-[:DURING_CYCLE]->(cycle)
 }
 
-OPTIONAL MATCH (author)-[:LEADS]->(lowerChurch)-[:HAS*0..2]->(:Fellowship)<-[:BELONGS_TO]-(alreadyMember:Member)
+OPTIONAL MATCH (author)-[:LEADS]->(lowerChurch)-[:HAS*0..]->(:Bacenta)<-[:BELONGS_TO]-(alreadyMember:Member)
 WHERE lowerChurch:Constituency OR lowerChurch:Bacenta OR lowerChurch:Fellowship
 WITH member, author, collect(DISTINCT alreadyMember) AS alreadyMembers WHERE NOT member IN alreadyMembers
 WITH member, author WHERE member <> author
@@ -133,7 +133,7 @@ export const memberFellowshipSearchByLocation = `
 `
 
 export const memberMemberSearchByLocation = `
-  MATCH (this:Member {id: $id})-[:LEADS|HAS|IS_ADMIN_FOR*1..6]->(:Fellowship)<-[:BELONGS_TO]-(member:Active:Member)
+  MATCH (this:Member {id: $id})-[:LEADS|HAS|IS_ADMIN_FOR*1..5]->(:Bacenta)<-[:BELONGS_TO]-(member:Active:Member)
   WITH member, point.distance(point({latitude: member.location.latitude, longitude: member.location.longitude}), point({latitude: $latitude, longitude: $longitude})) AS distance
   WHERE distance <= 5000
 
