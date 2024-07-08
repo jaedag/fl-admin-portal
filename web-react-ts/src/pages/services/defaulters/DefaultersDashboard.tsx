@@ -198,7 +198,7 @@ const DefaultersDashboard = () => {
     },
   ]
 
-  const fellowshipDefaulters = [
+  const bacentaDefaulters = [
     {
       title: 'Services This Week',
       data: church?.servicesThisWeekCount,
@@ -396,15 +396,15 @@ const DefaultersDashboard = () => {
                 <>
                   <Accordion.Header>
                     <div>
-                      <HeadingSecondary>Fellowship Services</HeadingSecondary>
+                      <HeadingSecondary>Bacenta Services</HeadingSecondary>
                       <PlaceholderCustom as="h6" loading={!church}>
-                        <h6>{`Active Fellowships: ${church?.activeFellowshipCount}`}</h6>
+                        <h6>{`Active Bacentas: ${church?.activeBacentaCount}`}</h6>
                       </PlaceholderCustom>
                     </div>
                   </Accordion.Header>
                   <Accordion.Body>
                     <Row>
-                      {fellowshipDefaulters.map((defaulter, i) => (
+                      {bacentaDefaulters.map((defaulter, i) => (
                         <Col key={i} xs={6} className="mb-3">
                           <DefaulterInfoCard defaulter={defaulter} />
                         </Col>

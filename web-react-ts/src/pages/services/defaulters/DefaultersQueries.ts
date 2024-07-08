@@ -6,7 +6,7 @@ export const CONSTITUENCY_DEFAULTERS = gql`
       id
       name
 
-      activeFellowshipCount
+      activeBacentaCount
       formDefaultersThisWeekCount
       bankingDefaultersThisWeekCount
       bankedThisWeekCount
@@ -167,7 +167,7 @@ export const COUNCIL_DEFAULTERS = gql`
       id
       name
       constituencyCount
-      activeFellowshipCount
+      activeBacentaCount
       formDefaultersThisWeekCount
       bankingDefaultersThisWeekCount
       bankedThisWeekCount
@@ -386,7 +386,7 @@ export const COUNCIL_BY_CONSTITUENCY = gql`
           firstName
           lastName
         }
-        activeFellowshipCount
+        activeBacentaCount
         formDefaultersThisWeekCount
         bankingDefaultersThisWeekCount
         bankedThisWeekCount
@@ -403,7 +403,7 @@ export const STREAM_DEFAULTERS = gql`
       id
       name
       councilCount
-      activeFellowshipCount
+      activeBacentaCount
       formDefaultersThisWeekCount
       bankingDefaultersThisWeekCount
       bankedThisWeekCount
@@ -642,7 +642,7 @@ export const STREAM_BY_COUNCIL = gql`
           phoneNumber
           whatsappNumber
         }
-        activeFellowshipCount
+        activeBacentaCount
         formDefaultersThisWeekCount
         bankingDefaultersThisWeekCount
         bankedThisWeekCount
@@ -668,7 +668,7 @@ export const CAMPUS_DEFAULTERS = gql`
       streamServicesThisWeekCount
       streamCancelledServicesThisWeekCount
 
-      activeFellowshipCount
+      activeBacentaCount
       formDefaultersThisWeekCount
       bankingDefaultersThisWeekCount
       bankedThisWeekCount
@@ -891,7 +891,7 @@ export const CAMPUS_BY_STREAM = gql`
           phoneNumber
           whatsappNumber
         }
-        activeFellowshipCount
+        activeBacentaCount
         formDefaultersThisWeekCount
         bankingDefaultersThisWeekCount
         bankedThisWeekCount

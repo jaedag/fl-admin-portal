@@ -52,8 +52,7 @@ const CouncilByConstituency = () => {
                         }}
                       >
                         <div className="fw-bold">
-                          Active Fellowships{' '}
-                          {constituency.activeFellowshipCount}
+                          Active Bacentas {constituency.activeBacentaCount}
                         </div>
                         <div className="good">
                           Services This Week{' '}

@@ -56,12 +56,6 @@ const DetailsOversight = () => {
       vacationCount: oversight?.vacationIcBacentaCount,
       link: '#',
     },
-    {
-      title: 'Fellowships',
-      number: oversight?.activeFellowshipCount,
-      vacationCount: oversight?.vacationFellowshipCount,
-      link: '#',
-    },
   ]
 
   return (

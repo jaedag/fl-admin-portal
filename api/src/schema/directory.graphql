@@ -424,18 +424,6 @@ type Denomination implements Church {
       statement: "MATCH (this)-[:HAS*6]-(bacentas:Vacation:Bacenta:Green) RETURN COUNT(bacentas)"
     )
 
-  fellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*7]->(fellowships:Fellowship) RETURN COUNT(DISTINCT fellowships)"
-    )
-  activeFellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*7]->(fellowships:Active:Fellowship) RETURN COUNT(DISTINCT fellowships)"
-    )
-  vacationFellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*7]->(fellowship:Vacation:Fellowship) RETURN COUNT(fellowship)"
-    )
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
   history(limit: Int! = 3): [HistoryLog!]!
     @cypher(
@@ -540,18 +528,6 @@ type Oversight implements Church {
       statement: "MATCH (this)-[:HAS*5]-(bacentas:Vacation:Bacenta:Green) RETURN COUNT(bacentas)"
     )
 
-  fellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*6]->(fellowships:Fellowship) RETURN COUNT(DISTINCT fellowships)"
-    )
-  activeFellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*6]->(fellowships:Active:Fellowship) RETURN COUNT(DISTINCT fellowships)"
-    )
-  vacationFellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*6]->(fellowship:Vacation:Fellowship) RETURN COUNT(fellowship)"
-    )
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
   history(limit: Int! = 3): [HistoryLog!]!
     @cypher(
@@ -655,18 +631,7 @@ type Campus implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*4]-(bacentas:Vacation:Bacenta:Green) RETURN COUNT(bacentas)"
     )
-  fellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*5]->(fellowships:Fellowship) RETURN COUNT(DISTINCT fellowships)"
-    )
-  activeFellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*5]->(fellowships:Active:Fellowship) RETURN COUNT(DISTINCT fellowships)"
-    )
-  vacationFellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*5]->(fellowship:Vacation:Fellowship) RETURN COUNT(fellowship)"
-    )
+
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
   history(limit: Int! = 3): [HistoryLog!]!
     @cypher(
@@ -777,18 +742,7 @@ type Stream implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*3]-(bacentas:Vacation:Bacenta:Green) RETURN COUNT(bacentas)"
     )
-  fellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(fellowships:Fellowship) RETURN COUNT(DISTINCT fellowships)"
-    )
-  activeFellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(fellowships:Active:Fellowship) RETURN COUNT(DISTINCT fellowships)"
-    )
-  vacationFellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(fellowship:Vacation:Fellowship) RETURN COUNT(fellowship)"
-    )
+
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
   history(limit: Int! = 3): [HistoryLog!]!
     @cypher(
@@ -877,18 +831,6 @@ type Council implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*2]-(bacentas:Vacation:Bacenta:Green) RETURN COUNT(bacentas)"
     )
-  fellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(fellowships:Fellowship) RETURN COUNT(DISTINCT fellowships)"
-    )
-  activeFellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(fellowships:Active:Fellowship) RETURN COUNT(DISTINCT fellowships)"
-    )
-  vacationFellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(fellowship:Vacation:Fellowship) RETURN COUNT(fellowship)"
-    )
 
   admin: Member @relationship(type: "IS_ADMIN_FOR", direction: IN)
   history(limit: Int! = 3): [HistoryLog!]!
@@ -940,18 +882,7 @@ type Constituency implements Church {
       """
     )
   bacentas: [Bacenta!]! @relationship(type: "HAS", direction: OUT)
-  fellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Fellowship) RETURN COUNT(fellowship)"
-    )
-  activeFellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Active:Fellowship) RETURN COUNT(fellowship)"
-    )
-  vacationFellowshipCount: Int
-    @cypher(
-      statement: "MATCH (this)-[:HAS]-(:Bacenta)-[:HAS]->(fellowship:Vacation:Fellowship) RETURN COUNT(fellowship)"
-    )
+
   bacentaCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS]->(bacentas:Bacenta)  RETURN COUNT(bacentas)"

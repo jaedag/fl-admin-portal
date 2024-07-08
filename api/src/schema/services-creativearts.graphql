@@ -1,11 +1,4 @@
 extend type Hub {
-  activeFellowshipCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(fellowships:Active:HubFellowship)
-      RETURN COUNT(DISTINCT fellowships)
-      """
-    )
   servicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """
@@ -267,13 +260,7 @@ extend type HubCouncil {
       RETURN COUNT(DISTINCT hubs)
       """
     )
-  activeFellowshipCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(:Hub)-[:HAS]->(fellowships:Active:HubFellowship)
-      RETURN COUNT(DISTINCT fellowships)
-      """
-    )
+
   servicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """
@@ -785,13 +772,6 @@ extend type HubCouncil {
 }
 
 extend type Ministry {
-  activeFellowshipCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(:HubCouncil)-[:HAS]->(:Hub)-[:HAS]->(fellowships:Active:HubFellowship)
-      RETURN COUNT(DISTINCT fellowships)
-      """
-    )
   servicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """
@@ -1357,13 +1337,7 @@ extend type Ministry {
 }
 
 extend type CreativeArts {
-  activeFellowshipCount: Int!
-    @cypher(
-      statement: """
-      MATCH (this)-[:HAS]->(:Ministry)-[:HAS]->(:HubCouncil)-[:HAS]->(:Hub)-[:HAS]->(fellowships:Active:HubFellowship)
-      RETURN COUNT(DISTINCT fellowships)
-      """
-    )
+
   servicesThisWeek: [Fellowship!]!
     @cypher(
       statement: """

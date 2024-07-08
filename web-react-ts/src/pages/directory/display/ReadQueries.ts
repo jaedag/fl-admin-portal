@@ -346,7 +346,6 @@ export const DISPLAY_CONSTITUENCY = gql`
       hubCount
       activeGraduatedBacentaCount
       vacationGraduatedBacentaCount
-      vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
       bacentas(options: { limit: 5 }) {
@@ -398,7 +397,6 @@ export const DISPLAY_CONSTITUENCY = gql`
         historyRecord
       }
       memberCount
-      activeFellowshipCount
     }
   }
 `
@@ -416,14 +414,12 @@ export const DISPLAY_COUNCIL = gql`
       stream_name
       constituencyCount
       activeGraduatedBacentaCount
-      activeFellowshipCount
       hubCouncilCount
       hubCount
       hubFellowshipCount
       memberCount
       pastorCount
       vacationGraduatedBacentaCount
-      vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
       stream {
@@ -483,12 +479,10 @@ export const DISPLAY_STREAM = gql`
       councilCount
       constituencyCount
       activeGraduatedBacentaCount
-      activeFellowshipCount
       hubFellowshipCount
       memberCount
       pastorCount
       vacationGraduatedBacentaCount
-      vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
       ministryCount
@@ -556,11 +550,9 @@ export const DISPLAY_CAMPUS = gql`
       councilCount
       constituencyCount
       activeGraduatedBacentaCount
-      activeFellowshipCount
       memberCount
       pastorCount
       vacationGraduatedBacentaCount
-      vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
       creativeArtsCount
@@ -621,11 +613,9 @@ export const DISPLAY_OVERSIGHT = gql`
       councilCount
       constituencyCount
       activeGraduatedBacentaCount
-      activeFellowshipCount
       memberCount
       pastorCount
       vacationGraduatedBacentaCount
-      vacationFellowshipCount
       activeIcBacentaCount
       vacationIcBacentaCount
       denomination {
@@ -734,11 +724,9 @@ export const DISPLAY_DENOMINATION = gql`
       councilCount
       constituencyCount
       activeGraduatedBacentaCount
-      activeFellowshipCount
       memberCount
       pastorCount
       vacationGraduatedBacentaCount
-      vacationFellowshipCount
 
       oversights {
         id

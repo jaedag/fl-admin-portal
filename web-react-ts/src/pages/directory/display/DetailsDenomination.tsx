@@ -55,12 +55,6 @@ const DetailsDenomination = () => {
       vacationCount: denomination?.vacationIcBacentaCount,
       link: '#',
     },
-    {
-      title: 'Fellowships',
-      number: denomination?.activeFellowshipCount,
-      vacationCount: denomination?.vacationFellowshipCount,
-      link: '#',
-    },
   ]
 
   return (

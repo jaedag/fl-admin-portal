@@ -133,7 +133,6 @@ const DetailsBacenta = () => {
         history={history?.history.length !== 0 ? history?.history : []}
         breadcrumb={breadcrumb && breadcrumb}
         buttons={[]}
-        vacationCount={bacenta?.vacationFellowshipCount}
       />
     </ApolloWrapper>
   )

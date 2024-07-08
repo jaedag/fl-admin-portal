@@ -55,12 +55,6 @@ const DetailsCampus = () => {
       link: '#',
     },
     {
-      title: 'Fellowships',
-      number: gathering?.activeFellowshipCount,
-      vacationCount: gathering?.vacationFellowshipCount,
-      link: '#',
-    },
-    {
       title: 'Creative Arts',
       number: gathering?.creativeArtsCount,
       link: '/campus/creativearts',

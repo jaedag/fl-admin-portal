@@ -49,7 +49,7 @@ const StreamByCouncil = () => {
                         }}
                       >
                         <div className="fw-bold">
-                          Active Fellowships {council.activeFellowshipCount}
+                          Active Bacentas {council.activeBacentaCount}
                         </div>
                         <div className="good">
                           Services This Week {council.servicesThisWeekCount}
