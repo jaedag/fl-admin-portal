@@ -409,19 +409,19 @@ type Denomination implements Church {
     )
   activeBacentaICCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*6]->(bacentas:Active:Bacenta:IC) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*6]->(bacentas:Active:Bacenta:Red) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationBacentaICCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*6]-(bacentas:Vacation:Bacenta:IC) RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS*6]-(bacentas:Vacation:Bacenta:Red) RETURN COUNT(bacentas)"
     )
   activeGraduatedBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*6]->(bacentas:Active:Bacenta:Graduated) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*6]->(bacentas:Active:Bacenta:Green) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationGraduatedBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*6]-(bacentas:Vacation:Bacenta:Graduated) RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS*6]-(bacentas:Vacation:Bacenta:Green) RETURN COUNT(bacentas)"
     )
 
   fellowshipCount: Int
@@ -525,19 +525,19 @@ type Oversight implements Church {
     )
   activeBacentaICCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*5]->(bacentas:Active:Bacenta:IC) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*5]->(bacentas:Active:Bacenta:Red) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationBacentaICCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*5]-(bacentas:Vacation:Bacenta:IC) RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS*5]-(bacentas:Vacation:Bacenta:Red) RETURN COUNT(bacentas)"
     )
   activeGraduatedBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*5]->(bacentas:Active:Bacenta:Graduated) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*5]->(bacentas:Active:Bacenta:Green) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationGraduatedBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*5]-(bacentas:Vacation:Bacenta:Graduated) RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS*5]-(bacentas:Vacation:Bacenta:Green) RETURN COUNT(bacentas)"
     )
 
   fellowshipCount: Int
@@ -641,19 +641,19 @@ type Campus implements Church {
     )
   activeBacentaICCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(bacentas:Bacenta:Active:IC) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*4]->(bacentas:Bacenta:Active:Red) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationBacentaICCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*4]-(bacentas:Vacation:Bacenta:IC) RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS*4]-(bacentas:Vacation:Bacenta:Red) RETURN COUNT(bacentas)"
     )
   activeGraduatedBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta:Graduated) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*4]->(bacentas:Active:Bacenta:Green) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationGraduatedBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*4]-(bacentas:Vacation:Bacenta:Graduated) RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS*4]-(bacentas:Vacation:Bacenta:Green) RETURN COUNT(bacentas)"
     )
   fellowshipCount: Int
     @cypher(
@@ -718,7 +718,7 @@ type Stream implements Church {
       statement: "MATCH (this)-[:HAS*3]->(bacentas:Bacenta)  RETURN bacentas"
     )
   ics(limit: Int): [Bacenta!]!
-    @cypher(statement: "MATCH (this)-[:HAS*3]->(bacentas:IC) RETURN bacentas")
+    @cypher(statement: "MATCH (this)-[:HAS*3]->(bacentas:Red) RETURN bacentas")
 
   members: [Member!]!
     @cypher(
@@ -763,19 +763,19 @@ type Stream implements Church {
     )
   activeBacentaICCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(bacentas:Bacenta:Active:IC)  RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*3]->(bacentas:Bacenta:Active:Red)  RETURN COUNT(DISTINCT bacentas)"
     )
   vacationBacentaICCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*3]-(bacentas:Vacation:Bacenta:IC)  RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS*3]-(bacentas:Vacation:Bacenta:Red)  RETURN COUNT(bacentas)"
     )
   activeGraduatedBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta:Graduated) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*3]->(bacentas:Active:Bacenta:Green) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationGraduatedBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*3]-(bacentas:Vacation:Bacenta:Graduated) RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS*3]-(bacentas:Vacation:Bacenta:Green) RETURN COUNT(bacentas)"
     )
   fellowshipCount: Int
     @cypher(
@@ -863,19 +863,19 @@ type Council implements Church {
     )
   activeBacentaICCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*2]->(bacentas:Bacenta:Active:IC)  RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*2]->(bacentas:Bacenta:Active:Red)  RETURN COUNT(DISTINCT bacentas)"
     )
   vacationBacentaICCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*2]-(bacentas:Vacation:Bacenta:IC)  RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS*2]-(bacentas:Vacation:Bacenta:Red)  RETURN COUNT(bacentas)"
     )
   activeGraduatedBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta:Graduated) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*2]->(bacentas:Active:Bacenta:Green) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationGraduatedBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*2]-(bacentas:Vacation:Bacenta:Graduated) RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS*2]-(bacentas:Vacation:Bacenta:Green) RETURN COUNT(bacentas)"
     )
   fellowshipCount: Int
     @cypher(
@@ -966,19 +966,19 @@ type Constituency implements Church {
     )
   activeBacentaICCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(bacentas:Active:Bacenta:IC)  RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS]->(bacentas:Active:Bacenta:Red)  RETURN COUNT(bacentas)"
     )
   vacationBacentaICCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS]-(bacentas:Vacation:Bacenta:IC)  RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS]-(bacentas:Vacation:Bacenta:Red)  RETURN COUNT(bacentas)"
     )
   activeGraduatedBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(bacentas:Active:Bacenta:Graduated) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS]->(bacentas:Active:Bacenta:Green) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationGraduatedBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS]-(bacentas:Vacation:Bacenta:Graduated) RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS]-(bacentas:Vacation:Bacenta:Green) RETURN COUNT(bacentas)"
     )
 
   leader: Member @relationship(type: "LEADS", direction: IN)

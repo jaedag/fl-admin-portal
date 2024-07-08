@@ -36,23 +36,23 @@ extend type Member {
 extend type Oversight {
   graduatedBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*5]->(bacentas:Graduated:Bacenta) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS*5]->(bacentas:Green:Bacenta) RETURN bacentas"
     )
   icBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*5]->(bacentas:IC:Bacenta) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS*5]->(bacentas:Red:Bacenta) RETURN bacentas"
     )
   icBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*5]->(bacentas:IC:Bacenta) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*5]->(bacentas:Red:Bacenta) RETURN COUNT(DISTINCT bacentas)"
     )
   activeIcBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*5]->(bacentas:IC:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*5]->(bacentas:Red:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationIcBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*5]-(bacentas:IC:Bacenta:Vacation) RETURN COUNT(bacentas)"
+      statement: "MATCH (this)-[:HAS*5]-(bacentas:Red:Bacenta:Vacation) RETURN COUNT(bacentas)"
     )
 }
 
@@ -255,23 +255,23 @@ extend type Campus {
     )
   graduatedBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(bacentas:Graduated:Bacenta) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS*4]->(bacentas:Green:Bacenta) RETURN bacentas"
     )
   icBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(bacentas:IC:Bacenta) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS*4]->(bacentas:Red:Bacenta) RETURN bacentas"
     )
   icBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(bacentas:IC:Bacenta) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*4]->(bacentas:Red:Bacenta) RETURN COUNT(DISTINCT bacentas)"
     )
   activeIcBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*4]->(bacentas:IC:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*4]->(bacentas:Red:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationIcBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*4]-(bacentas:IC:Bacenta:Vacation) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*4]-(bacentas:Red:Bacenta:Vacation) RETURN COUNT(DISTINCT bacentas)"
     )
 }
 
@@ -476,23 +476,23 @@ extend type Stream {
     )
   graduatedBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(bacentas:Graduated:Bacenta) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS*3]->(bacentas:Green:Bacenta) RETURN bacentas"
     )
   icBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(bacentas:IC:Bacenta) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS*3]->(bacentas:Red:Bacenta) RETURN bacentas"
     )
   icBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(bacentas:IC:Bacenta) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*3]->(bacentas:Red:Bacenta) RETURN COUNT(DISTINCT bacentas)"
     )
   activeIcBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*3]->(bacentas:IC:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*3]->(bacentas:Red:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationIcBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*3]-(bacentas:IC:Bacenta:Vacation) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*3]-(bacentas:Red:Bacenta:Vacation) RETURN COUNT(DISTINCT bacentas)"
     )
 }
 
@@ -695,23 +695,23 @@ extend type Council {
     )
   graduatedBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*2]->(bacentas:Graduated:Bacenta) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS*2]->(bacentas:Green:Bacenta) RETURN bacentas"
     )
   icBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS*2]->(bacentas:IC:Bacenta) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS*2]->(bacentas:Red:Bacenta) RETURN bacentas"
     )
   icBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*2]->(bacentas:IC:Bacenta) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*2]->(bacentas:Red:Bacenta) RETURN COUNT(DISTINCT bacentas)"
     )
   activeIcBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*2]->(bacentas:IC:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*2]->(bacentas:Red:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationIcBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS*2]-(bacentas:IC:Bacenta:Vacation) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS*2]-(bacentas:Red:Bacenta:Vacation) RETURN COUNT(DISTINCT bacentas)"
     )
 }
 
@@ -915,23 +915,23 @@ extend type Constituency {
     )
   graduatedBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(bacentas:Graduated:Bacenta) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS]->(bacentas:Green:Bacenta) RETURN bacentas"
     )
   icBacentas: [Bacenta!]!
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(bacentas:IC:Bacenta) RETURN bacentas"
+      statement: "MATCH (this)-[:HAS]->(bacentas:Red:Bacenta) RETURN bacentas"
     )
   icBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(bacentas:IC:Bacenta) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS]->(bacentas:Red:Bacenta) RETURN COUNT(DISTINCT bacentas)"
     )
   activeIcBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS]->(bacentas:IC:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS]->(bacentas:Red:Bacenta:Active) RETURN COUNT(DISTINCT bacentas)"
     )
   vacationIcBacentaCount: Int
     @cypher(
-      statement: "MATCH (this)-[:HAS]-(bacentas:IC:Bacenta:Vacation) RETURN COUNT(DISTINCT bacentas)"
+      statement: "MATCH (this)-[:HAS]-(bacentas:Red:Bacenta:Vacation) RETURN COUNT(DISTINCT bacentas)"
     )
 }
 

@@ -120,11 +120,11 @@ CREATE CONSTRAINT uniqueFellowship IF NOT EXISTS ON (f:Fellowship) ASSERT f.id I
 CREATE CONSTRAINT uniqueClosedFellowship IF NOT EXISTS ON (c:ClosedFellowship) ASSERT c.id IS UNIQUE;
 CREATE CONSTRAINT uniqueVacation IF NOT EXISTS ON (v:Vacation) ASSERT v.id IS UNIQUE;
 CREATE CONSTRAINT uniqueClosedConstituency IF NOT EXISTS ON (c:ClosedConstituency) ASSERT c.id IS UNIQUE;
-CREATE CONSTRAINT uniqueIC IF NOT EXISTS ON (i:IC) ASSERT i.id IS UNIQUE;
+CREATE CONSTRAINT uniqueIC IF NOT EXISTS ON (i:Red) ASSERT i.id IS UNIQUE;
 CREATE CONSTRAINT uniqueBussingRecord IF NOT EXISTS ON (b:BussingRecord) ASSERT b.id IS UNIQUE;
 CREATE CONSTRAINT uniqueArrivalsCodeOfTheDay IF NOT EXISTS ON (a:ArrivalsCodeOfTheDay) ASSERT a.code IS UNIQUE;
 CREATE CONSTRAINT uniqueActive IF NOT EXISTS ON (a:Active) ASSERT a.id IS UNIQUE;
-CREATE CONSTRAINT uniqueGraduated IF NOT EXISTS ON (g:Graduated) ASSERT g.id IS UNIQUE;
+CREATE CONSTRAINT uniqueGraduated IF NOT EXISTS ON (g:Green) ASSERT g.id IS UNIQUE;
 CREATE CONSTRAINT uniqueLastPaySwitchTransactionId IF NOT EXISTS ON (l:LastPaySwitchTransactionId) ASSERT l.id IS UNIQUE;
 CREATE CONSTRAINT uniqueRegistrationLog IF NOT EXISTS ON (r:RegistrationLog) ASSERT r.id IS UNIQUE;
 CREATE CONSTRAINT uniqueSwellDate IF NOT EXISTS ON (s:SwellDate) ASSERT s.date IS UNIQUE;

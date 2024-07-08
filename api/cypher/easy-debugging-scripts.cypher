@@ -30,7 +30,7 @@ MATCH (record)-[:BUSSED_ON]->(date:TimeGraph) WHERE  date.date.year = 2024
 
 RETURN bacenta.name,  leader.firstName, leader.lastName, record.attendance, date.date.week
 WITH collect(bacenta) AS dontTouch
-MATCH (council:Council)-[:HAS*2]->(toDemote:Active:Bacenta:Graduated)<-[:LEADS]-(leader:Member)
+MATCH (council:Council)-[:HAS*2]->(toDemote:Active:Bacenta:Green)<-[:LEADS]-(leader:Member)
 WHERE NOT toDemote IN dontTouch
 
 RETURN toDemote.name, leader.firstName, leader.lastName, council.name;
@@ -42,5 +42,5 @@ DETACH DELETE record
 
 
 MATCH (bacenta:Bacenta)
-SET bacenta:Graduated
+SET bacenta:Green
 RETURN bacenta.name;

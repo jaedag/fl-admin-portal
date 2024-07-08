@@ -39,13 +39,13 @@ RETURN fellowship LIMIT 1;
 
 
 // Change Graduated Nodes to Green Node
-MATCH (bacenta:Graduated:Bacenta)
+MATCH (bacenta:Green:Bacenta)
 SET bacenta:Green
-REMOVE bacenta:Graduated
+REMOVE bacenta:Green
 RETURN COUNT(bacenta);
 
 // Change IC Nodes to Red Nodes
-MATCH (bacenta:IC:Bacenta)
+MATCH (bacenta:Red:Bacenta)
 SET bacenta:Red
-REMOVE bacenta:IC
+REMOVE bacenta:Red
 RETURN COUNT(bacenta);
