@@ -37,16 +37,14 @@ export const CREATE_MEMBER_MUTATION = gql`
       firstName
       lastName
       stream_name
-      fellowship {
-        id
-        bacenta {
-          id
 
-          constituency {
+      bacenta {
+        id
+
+        constituency {
+          id
+          council {
             id
-            council {
-              id
-            }
           }
         }
       }
@@ -111,10 +109,6 @@ export const CREATE_FELLOWSHIP_MUTATION = gql`
       }
       bacenta {
         id
-        fellowships {
-          id
-          name
-        }
       }
     }
   }

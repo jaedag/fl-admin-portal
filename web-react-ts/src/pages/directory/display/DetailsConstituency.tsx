@@ -42,12 +42,6 @@ const DetailsConstituency = () => {
       link: '/constituency/hubs',
       creativearts: true,
     },
-    {
-      title: 'Fellowships',
-      number: constituency?.activeFellowshipCount,
-      vacationCount: constituency?.vacationFellowshipCount,
-      link: '#',
-    },
   ]
 
   return (

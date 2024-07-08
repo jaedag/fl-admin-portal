@@ -55,12 +55,6 @@ const DetailsBacenta = () => {
       width: 12,
     },
     {
-      title: 'Fellowships',
-      number: bacenta?.activeFellowshipCount || 0,
-      link: `/${`Fellowship`.toLowerCase()}/displayall`,
-      vacationCount: bacenta?.vacationFellowshipCount,
-    },
-    {
       title: 'Status',
       number: bacenta?.vacationStatus,
       link: '#',
@@ -76,11 +70,11 @@ const DetailsBacenta = () => {
       link: `#`,
     },
 
-    {
-      title: 'Target',
-      number: bacenta?.target,
-      link: '#',
-    },
+    // {
+    //   title: 'Target',
+    //   number: bacenta?.target,
+    //   link: '#',
+    // },
     {
       title: 'Code',
       number: bacenta?.bankingCode,
