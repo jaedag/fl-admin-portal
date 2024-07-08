@@ -1,3 +1,21 @@
+#### 7.18.26 (2024-07-08)
+
+##### Chores
+
+*  remove unused code and update member details display ([88e0c558](https://github.com/firstlovecenter/fl-admin-portal/commit/88e0c558caabf76de7af3b0e6acf7701934b58a1))
+
+##### Bug Fixes
+
+*  update DisplayPage to use bacenta instead of fellowship ([37a1b775](https://github.com/firstlovecenter/fl-admin-portal/commit/37a1b7754c2a7a330fb08849e4ec0177243b7aea))
+*  replace IC and Graduated with Red and Green ([126ab084](https://github.com/firstlovecenter/fl-admin-portal/commit/126ab08493f72373c84fe92832d154444277ff44))
+*  replace ic and graduated with red and green ([2d030bf4](https://github.com/firstlovecenter/fl-admin-portal/commit/2d030bf4e8e17a1944cb4491f0dfc30c8f5ae163))
+*  members list on constituency level ([d62a8822](https://github.com/firstlovecenter/fl-admin-portal/commit/d62a8822154d1c140bde02816c8915600bf0e5c2))
+
+##### Refactors
+
+*  implement createbacenta form ([84946cf7](https://github.com/firstlovecenter/fl-admin-portal/commit/84946cf748de2c1cee464c958841ecebeb6b9c3c))
+*  refactor DetailsBacenta, DetailsOversight, DetailsDenomination ([9b7ae4a4](https://github.com/firstlovecenter/fl-admin-portal/commit/9b7ae4a4db8e46f067ebeeb8db14105f104ac367))
+
 #### 7.18.25 (2024-07-07)
 
 ##### New Features
