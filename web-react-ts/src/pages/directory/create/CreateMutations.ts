@@ -115,11 +115,21 @@ export const CREATE_FELLOWSHIP_MUTATION = gql`
 `
 
 export const CREATE_BACENTA_MUTATION = gql`
-  mutation CreateBacenta($name: String!, $constituencyId: ID!, $leaderId: ID!) {
+  mutation CreateBacenta(
+    $name: String!
+    $constituencyId: ID!
+    $leaderId: ID!
+    $meetingDay: String!
+    $venueLongitude: Float
+    $venueLatitude: Float
+  ) {
     CreateBacenta(
       name: $name
       constituencyId: $constituencyId
       leaderId: $leaderId
+      meetingDay: $meetingDay
+      venueLongitude: $venueLongitude
+      venueLatitude: $venueLatitude
     ) {
       id
       name

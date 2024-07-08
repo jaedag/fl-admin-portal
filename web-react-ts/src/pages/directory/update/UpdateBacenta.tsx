@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
-import { alertMsg, throwToSentry } from '../../../global-utils'
+import { alertMsg, repackDecimals, throwToSentry } from '../../../global-utils'
 import { GET_CONSTITUENCY_BACENTAS } from '../../../queries/ListQueries'
 import { UPDATE_BACENTA_MUTATION } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
@@ -30,6 +30,9 @@ const UpdateBacenta = () => {
     constituency: bacenta?.constituency,
     vacationStatus: bacenta?.vacationStatus,
     graduationStatus: bacenta?.graduationStatus,
+    meetingDay: bacenta.meetingDay.day,
+    venueLatitude: repackDecimals(bacenta?.location?.latitude) ?? '',
+    venueLongitude: repackDecimals(bacenta?.location?.longitude) ?? '',
   }
 
   const [LogBacentaHistory] = useMutation(LOG_BACENTA_HISTORY, {

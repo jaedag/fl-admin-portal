@@ -1,7 +1,12 @@
 import { useMutation } from '@apollo/client'
 import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
-import { VACATION_OPTIONS, throwToSentry } from 'global-utils'
+import {
+  DECIMAL_NUM_REGEX,
+  SERVICE_DAY_OPTIONS,
+  VACATION_OPTIONS,
+  throwToSentry,
+} from 'global-utils'
 import { FormikInitialValues } from 'components/formik/formik-types'
 import { Constituency } from 'global-types'
 import { permitAdminArrivals } from 'permission-utils'
@@ -17,6 +22,7 @@ import {
   Button,
   ButtonGroup,
   Modal,
+  Spinner,
 } from 'react-bootstrap'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -30,7 +36,10 @@ import BtnSubmitText from 'components/formik/BtnSubmitText'
 export interface BacentaFormValues extends FormikInitialValues {
   constituency?: Constituency
   graduationStatus: string
+  meetingDay: string
   vacationStatus: string
+  venueLatitude: string | number
+  venueLongitude: string | number
 }
 
 type BacentaFormProps = {
@@ -54,6 +63,7 @@ const BacentaForm = ({
 
   const navigate = useNavigate()
   const [buttonLoading, setButtonLoading] = useState(false)
+  const [positionLoading, setPositionLoading] = useState(false)
   const [CloseDownBacenta] = useMutation(MAKE_BACENTA_INACTIVE, {
     refetchQueries: [
       {
@@ -69,6 +79,21 @@ const BacentaForm = ({
     vacationStatus: Yup.string().required(
       'Vacation Status is a required field'
     ),
+    meetingDay: Yup.string().required('Meeting Day is a required field'),
+    venueLatitude: Yup.string()
+      .required('Please fill in your location info')
+      .test(
+        'is-decimal',
+        'Please enter valid coordinates',
+        (value) => !!(value + '').match(DECIMAL_NUM_REGEX)
+      ),
+    venueLongitude: Yup.string()
+      .required('Please fill in your location info')
+      .test(
+        'is-decimal',
+        'Please enter valid coordinates',
+        (value) => !!(value + '').match(DECIMAL_NUM_REGEX)
+      ),
   })
 
   return (
@@ -123,7 +148,6 @@ const BacentaForm = ({
                         />
                       </Col>
                     </Row>
-
                     <Row className="d-flex align-items-center mb-3">
                       <RoleView roles={permitAdminArrivals('Constituency')}>
                         <Col>
@@ -139,6 +163,70 @@ const BacentaForm = ({
                         </Col>
                       </RoleView>
                     </Row>
+                    <Col sm={12}>
+                      <Select
+                        label="Meeting Day"
+                        name="meetingDay"
+                        options={SERVICE_DAY_OPTIONS}
+                        defaultOption="Pick a Service Day"
+                      />
+                    </Col>
+
+                    <small className="text-muted">
+                      Enter The Coordinates for the Service Venue
+                    </small>
+                    <Row className="row-cols-2 d-flex align-items-center">
+                      <Col>
+                        <Input name="venueLatitude" placeholder="Latitude" />
+                      </Col>
+                      <Col>
+                        <Input name="venueLongitude" placeholder="Longitude" />
+                      </Col>
+                      <Col className="my-2">
+                        <Button
+                          variant="primary"
+                          className="btn-loading"
+                          disabled={positionLoading}
+                          onClick={() => {
+                            setPositionLoading(true)
+
+                            window.navigator.geolocation.getCurrentPosition(
+                              (position) => {
+                                formik.setFieldValue(
+                                  'venueLatitude',
+                                  position.coords.latitude
+                                )
+                                formik.setFieldValue(
+                                  'venueLongitude',
+                                  position.coords.longitude
+                                )
+                                document
+                                  .getElementById('venueLongitude')
+                                  ?.focus()
+                                document
+                                  .getElementById('venueLatitude')
+                                  ?.focus()
+                                document.getElementById('venueLatitude')?.blur()
+                                setPositionLoading(false)
+                              }
+                            )
+                          }}
+                        >
+                          {positionLoading ? (
+                            <>
+                              <Spinner animation="grow" size="sm" />
+                              <span> Loading</span>
+                            </>
+                          ) : (
+                            'Locate Me Now'
+                          )}
+                        </Button>
+                      </Col>
+                    </Row>
+                    <small className="text-muted">
+                      Click this button if you are currently at your bacenta
+                      service venue
+                    </small>
                   </Col>
                 </Row>
               </div>

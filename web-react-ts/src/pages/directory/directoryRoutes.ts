@@ -156,9 +156,6 @@ const CreateConstituency = lazy(
   () => import('pages/directory/create/CreateConstituency')
 )
 const CreateBacenta = lazy(() => import('pages/directory/create/CreateBacenta'))
-const CreateFellowship = lazy(
-  () => import('pages/directory/create/CreateFellowship')
-)
 const CreateHub = lazy(() => import('pages/directory/create/CreateHub'))
 const CreateHubCouncil = lazy(
   () => import('pages/directory/create/CreateHubCouncil')
@@ -171,9 +168,6 @@ const CreateCreativeArts = lazy(
 )
 const MakeHubFellowship = lazy(
   () => import('pages/directory/reusable-forms/MakeHubFellowship')
-)
-const UpdateFellowship = lazy(
-  () => import('pages/directory/update/UpdateFellowship')
 )
 const UpdateBacenta = lazy(() => import('pages/directory/update/UpdateBacenta'))
 const UpdateConstituency = lazy(
@@ -197,7 +191,6 @@ const DisplayAllStreams = lazy(
 const DisplayAllCampuses = lazy(
   () => import('pages/directory/display/AllCampuses')
 )
-const DisplayAllIcs = lazy(() => import('pages/directory/display/AllReds'))
 const CreateCouncil = lazy(() => import('pages/directory/create/CreateCouncil'))
 const AllCampusConstituencies = lazy(
   () => import('pages/directory/display/AllCampusConstituencies')
@@ -593,13 +586,6 @@ export const directory: LazyRouteTypes[] = [
     placeholder: false,
   },
   {
-    path: '/ic/displayall',
-    element: DisplayAllIcs,
-    roles: [...permitMe('Constituency'), ...permitMe('Hub')],
-    placeholder: false,
-  },
-
-  {
     path: '/hub/displayall',
     element: DisplayAllHubs,
     roles: [...permitMe('Constituency'), ...permitMe('Hub')],
@@ -686,12 +672,7 @@ export const directory: LazyRouteTypes[] = [
     placeholder: false,
   },
   //Creation Pages
-  {
-    path: '/fellowship/addfellowship',
-    element: CreateFellowship,
-    roles: permitAdmin('Constituency'),
-    placeholder: false,
-  },
+
   {
     path: '/bacenta/addbacenta',
     element: CreateBacenta,
@@ -755,12 +736,6 @@ export const directory: LazyRouteTypes[] = [
   },
 
   //Pages to Update the Directory
-  {
-    path: '/fellowship/editfellowship',
-    element: UpdateFellowship,
-    roles: [...permitAdmin('Constituency'), 'leaderFellowship'],
-    placeholder: false,
-  },
   {
     path: 'fellowship/make-hub-fellowship',
     element: MakeHubFellowship,

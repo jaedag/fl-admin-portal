@@ -20,6 +20,9 @@ const CreateBacenta = () => {
     constituency: constituencyId ?? '',
     graduationStatus: '',
     vacationStatus: '',
+    meetingDay: 'Thursday',
+    venueLatitude: '0.0',
+    venueLongitude: '0.0',
   }
 
   const [NewBacentaLeader] = useMutation(NEW_BACENTA_LEADER)
@@ -44,6 +47,9 @@ const CreateBacenta = () => {
           name: values.name,
           constituencyId: values.constituency,
           leaderId: values.leaderId,
+          meetingDay: values.meetingDay,
+          venueLongitude: parseFloat(values.venueLongitude.toString()),
+          venueLatitude: parseFloat(values.venueLatitude.toString()),
         },
       })
 

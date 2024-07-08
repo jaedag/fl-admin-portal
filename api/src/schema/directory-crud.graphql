@@ -502,22 +502,33 @@ extend type Mutation {
       """
     )
 
-  CreateBacenta(name: String!, constituencyId: ID!, leaderId: ID!): Bacenta  #Return constituency and drill down to get bacenta info
+  CreateBacenta(
+    name: String!
+    constituencyId: ID!
+    leaderId: ID!
+    meetingDay: String!
+    venueLongitude: Float
+    venueLatitude: Float
+  ): Bacenta!
     @auth(
       rules: [{ roles: ["adminStream", "adminCampus", "arrivalsAdminCampus"] }]
     )
     @cypher(
       statement: """
-      CREATE (bacenta:Bacenta:Red:Active {name:$name})
+      MATCH (lastCode:LastBankingCode)
+      CREATE (bacenta:Bacenta:Red:Active {name:$name, location: point({latitude:toFloat($venueLatitude), longitude:toFloat($venueLongitude), crs:'WGS-84'})})
         SET	bacenta.id = apoc.create.uuid(),
         bacenta.sprinterTopUp = 0,
         bacenta.urvanTopUp = 0,
-        bacenta.outbound = false
+        bacenta.outbound = false,
+        bacenta.bankingCode = lastCode.number,
+        lastCode.number = bacenta.bankingCode
 
       WITH bacenta
        MATCH (leader:Active:Member {id:$leaderId}) WHERE leader.email IS NOT NULL
        MATCH (constituency:Constituency {id:$constituencyId})
        MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
+       MATCH (meetingDay:ServiceDay {day: $meetingDay})
 
 
       CREATE (log:HistoryLog:ServiceLog)
@@ -528,6 +539,7 @@ extend type Mutation {
 
        MERGE (constituency)-[:HAS]->(bacenta)
        MERGE (leader)-[:LEADS]->(bacenta)
+       MERGE (bacenta)-[:MEETS_ON]->(meetingDay)
 
        MERGE (date:TimeGraph {date: date()})
        MERGE (log)-[:LOGGED_BY]->(currentUser)
