@@ -1,3 +1,9 @@
+#### 7.18.27 (2024-07-09)
+
+##### Bug Fixes
+
+*  fix issue updating member details ([1caaf7dc](https://github.com/firstlovecenter/fl-admin-portal/commit/1caaf7dcb3e6565e6fe199b4dbe6d813990881c3))
+
 #### 7.18.26 (2024-07-08)
 
 ##### Chores
