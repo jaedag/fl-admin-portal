@@ -318,7 +318,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
           </Button>
         )}
       </div>
-      {member?.stickyNote?.trim() !== '' ? (
+      {member?.stickyNote && member?.stickyNote?.trim() !== '' ? (
         <div className="my-1">
           <Card border="warning">
             <Card.Header>
@@ -330,7 +330,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
           </Card>
         </div>
       ) : (
-        ''
+        <></>
       )}
       <Row>
         <Col>

@@ -309,7 +309,7 @@ extend type Mutation {
     gender: String!
     occupation: String
     visitationArea: String!
-    fellowship: String!
+    bacenta: String!
     basonta: String
     pictureUrl: String!
   ): Member!

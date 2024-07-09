@@ -113,7 +113,7 @@ export interface Member {
   gender: string
   visitationArea?: string
   occupation: string
-  fellowship: string
+  bacenta: string
   basonta: string
 }
 

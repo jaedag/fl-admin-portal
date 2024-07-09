@@ -215,7 +215,7 @@ DETACH DELETE member
 `
 
 export const createMember = `
-MATCH (fellowship:Fellowship {id: $fellowship})
+MATCH (bacenta:Bacenta {id: $bacenta})
 CREATE (member:Active:Member:IDL:Deer {whatsappNumber:$whatsappNumber})
       SET
       	member.id = apoc.create.uuid(),
@@ -239,7 +239,7 @@ CREATE (member:Active:Member:IDL:Deer {whatsappNumber:$whatsappNumber})
         SET
         log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
-        log.historyRecord = $firstName +' ' +$lastName+' was registered on '+apoc.date.convertFormat(toString(date()), 'date', 'dd MMMM yyyy') + ' with ' + fellowship.name + ' Fellowship'
+        log.historyRecord = $firstName +' ' +$lastName+' was registered on '+apoc.date.convertFormat(toString(date()), 'date', 'dd MMMM yyyy') + ' with ' + bacenta.name + ' Bacenta'
 
       WITH member, log
       MERGE (today:TimeGraph {date: date()})
@@ -249,7 +249,7 @@ CREATE (member:Active:Member:IDL:Deer {whatsappNumber:$whatsappNumber})
       MATCH (currentUser:Member {auth_id:$auth_id})
       MATCH (maritalStatus:MaritalStatus {status:$maritalStatus})
       MATCH (gender:Gender {gender: $gender})
-      MATCH (fellowship:Fellowship {id: $fellowship})
+      MATCH (bacenta:Bacenta {id: $bacenta})
 
       MERGE (log)-[:RECORDED_ON]->(today)
       MERGE (log)-[:LOGGED_BY]->(currentUser)
@@ -257,7 +257,7 @@ CREATE (member:Active:Member:IDL:Deer {whatsappNumber:$whatsappNumber})
       MERGE (member)-[:HAS_MARITAL_STATUS]-> (maritalStatus)
       MERGE (member)-[:HAS_GENDER]-> (gender)
       MERGE (member)-[:WAS_BORN_ON]->(date)
-      MERGE (member)-[:BELONGS_TO]->(fellowship)
+      MERGE (member)-[:BELONGS_TO]->(bacenta)
 
 
       WITH member
@@ -278,11 +278,10 @@ CREATE (member:Active:Member:IDL:Deer {whatsappNumber:$whatsappNumber})
          	RETURN count(member) AS member_basonta
          	}
 
-           MATCH (fellowship:Fellowship {id: $fellowship})
-           MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)
+           MATCH (bacenta:Bacenta {id: $bacenta})
           MATCH (bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(council:Council)
            RETURN member  {.id, .firstName,.middleName,.lastName,.email,.phoneNumber,.whatsappNumber,
-            fellowship:fellowship {.id,bacenta:bacenta{.id,constituency:constituency{.id}}}}
+            bacenta:bacenta{.id,constituency:constituency{.id}}}
       `
 
 export const activateInactiveMember = `
