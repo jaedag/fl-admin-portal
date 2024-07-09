@@ -1,3 +1,9 @@
+#### 7.18.28 (2024-07-09)
+
+##### Refactors
+
+*  update createMember resolver to use bacenta instead of fellowship ([92321e06](https://github.com/firstlovecenter/fl-admin-portal/commit/92321e069ebbc22b7197778208e3565fdeb90887))
+
 #### 7.18.27 (2024-07-09)
 
 ##### Bug Fixes
