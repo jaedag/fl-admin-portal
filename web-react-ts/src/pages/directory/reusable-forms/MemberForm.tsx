@@ -107,7 +107,7 @@ const MemberForm = ({
 
       togglePopup()
       alertMsg('Member has been deleted successfully')
-      navigate('/fellowship/displaydetails')
+      navigate('/bacenta/displaydetails')
     } catch (e) {
       throwToSentry('Cannot delete member', e)
     } finally {
@@ -152,9 +152,7 @@ const MemberForm = ({
         `Phone Number must start with + and country code (eg. '+233')`
       ),
     visitationArea: Yup.string().required('Location is a required field'),
-    fellowship: Yup.object().required(
-      'Please pick a fellowship from the dropdown'
-    ),
+    bacenta: Yup.object().required('Please pick a bacenta from the dropdown'),
   })
 
   if (basontasLoading || loading) {

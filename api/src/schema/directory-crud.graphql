@@ -680,7 +680,7 @@ extend type Mutation {
     maritalStatus: String!
     gender: String!
     occupation: String
-    fellowship: String!
+    bacenta: String!
     ministry: String
     pictureUrl: String!
   ): Member

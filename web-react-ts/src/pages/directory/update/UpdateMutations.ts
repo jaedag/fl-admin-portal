@@ -12,7 +12,7 @@ export const UPDATE_MEMBER_MUTATION = gql`
     $maritalStatus: String!
     $gender: String!
     $occupation: String
-    $fellowship: String!
+    $bacenta: String!
     $pictureUrl: String!
   ) {
     UpdateMemberDetails(
@@ -26,7 +26,7 @@ export const UPDATE_MEMBER_MUTATION = gql`
       maritalStatus: $maritalStatus
       gender: $gender
       occupation: $occupation
-      fellowship: $fellowship
+      bacenta: $bacenta
       pictureUrl: $pictureUrl
     ) {
       firstName
