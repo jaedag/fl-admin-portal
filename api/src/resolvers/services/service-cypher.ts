@@ -1,6 +1,6 @@
 export const checkFormFilledThisWeek = `
 MATCH (church {id: $churchId})
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
+WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
 OR church:Hub OR church:HubCouncil  OR church:Ministry
 
 OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
@@ -146,7 +146,7 @@ SET serviceRecord.id = apoc.create.uuid(),
 serviceRecord.noServiceReason = $noServiceReason
 
 WITH serviceRecord
-MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Stream
+MATCH (church {id: $churchId}) WHERE church:Bacenta OR church:Stream
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (leader:Active:Member {auth_id: $auth.jwt.sub})
 
@@ -160,14 +160,14 @@ RETURN serviceRecord
 
 export const checkCurrentServiceLog = `
 MATCH (church {id:$churchId}) 
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
+WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream
 OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
 RETURN true AS exists
 `
 export const getServantAndChurch = `
 MATCH (church {id: $churchId}) 
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Hub OR church:HubCounci
+WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Hub OR church:HubCounci
 OR church:Ministry OR church:CreativeArts
 MATCH (church)<-[:LEADS]-(servant:Active:Member)
 UNWIND labels(church) AS churchType 
