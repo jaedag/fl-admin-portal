@@ -58,13 +58,19 @@ const UpdateBacenta = () => {
   ) => {
     const { setSubmitting, resetForm } = onSubmitProps
     setSubmitting(true)
+
+    values.venueLongitude = parseFloat(values.venueLongitude.toString())
+    values.venueLatitude = parseFloat(values.venueLatitude.toString())
     try {
       await UpdateBacenta({
         variables: {
-          bacentaId: bacentaId,
+          id: bacentaId,
           name: values.name,
           leaderId: values.leaderId,
+          meetingDay: values.meetingDay,
           constituencyId: values.constituency,
+          venueLongitude: values.venueLongitude,
+          venueLatitude: values.venueLatitude,
         },
       })
 
@@ -78,6 +84,21 @@ const UpdateBacenta = () => {
             oldConstituencyId: '',
             newConstituencyId: '',
             historyRecord: `Bacenta name has been changed from ${initialValues.name} to ${values.name}`,
+          },
+        })
+      }
+
+      // Log if the Meeting Day Changes
+      if (values.meetingDay !== initialValues.meetingDay) {
+        await LogBacentaHistory({
+          variables: {
+            bacentaId: bacentaId,
+            newLeaderId: '',
+            oldLeaderId: '',
+            oldBacentaId: '',
+            newBacentaId: '',
+
+            historyRecord: `${values.name} Bacenta has changed their meeting day from ${initialValues.meetingDay} to ${values.meetingDay}`,
           },
         })
       }
@@ -98,6 +119,26 @@ const UpdateBacenta = () => {
             },
           })
         }
+      }
+
+      //Log if the Venue Changes
+      if (
+        repackDecimals(values.venueLongitude) !==
+          repackDecimals(initialValues.venueLongitude) ||
+        repackDecimals(values.venueLatitude) !==
+          repackDecimals(initialValues.venueLatitude)
+      ) {
+        await LogBacentaHistory({
+          variables: {
+            bacentaId: bacentaId,
+            newLeaderId: '',
+            oldLeaderId: '',
+            oldBacentaId: '',
+            newBacentaId: '',
+
+            historyRecord: `${values.name} Bacenta has changed their venue`,
+          },
+        })
       }
 
       //Log if the Leader Changes

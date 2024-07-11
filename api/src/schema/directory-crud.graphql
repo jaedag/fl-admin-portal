@@ -880,7 +880,13 @@ extend type Mutation {
       RETURN constituency
       """
     )
-  UpdateBacentaDetails(bacentaId: ID!, name: String!): Bacenta
+  UpdateBacentaDetails(
+    id: ID!
+    name: String!
+    meetingDay: String!
+    venueLongitude: Float!
+    venueLatitude: Float!
+  ): Bacenta
     @auth(
       rules: [
         {
@@ -898,8 +904,20 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      MATCH (bacenta:Bacenta {id: $bacentaId})
-      	SET bacenta.name = $name
+      MATCH (bacenta:Bacenta {id: $id})
+               	SET bacenta.name = $name
+              	SET bacenta.location = point({latitude:toFloat($venueLatitude), longitude:toFloat($venueLongitude), crs:'WGS-84'})
+
+               WITH bacenta 
+                    CALL {
+                     	WITH bacenta 
+                      WITH bacenta WHERE $meetingDay IS NOT NULL
+                      MATCH (meetingDay:ServiceDay {day: $meetingDay})
+                      OPTIONAL MATCH (bacenta)-[r:MEETS_ON]->()
+                      DELETE r
+                      MERGE (bacenta)-[:MEETS_ON]->(meetingDay)
+                     	RETURN count(bacenta)
+                     	}
 
       RETURN bacenta
       """

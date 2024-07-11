@@ -495,8 +495,20 @@ export const UPDATE_CONSTITUENCY_MUTATION = gql`
 `
 
 export const UPDATE_BACENTA_MUTATION = gql`
-  mutation UpdateBacenta($bacentaId: ID!, $name: String!) {
-    UpdateBacentaDetails(bacentaId: $bacentaId, name: $name) {
+  mutation UpdateBacenta(
+    $id: ID!
+    $name: String!
+    $meetingDay: String!
+    $venueLongitude: Float!
+    $venueLatitude: Float!
+  ) {
+    UpdateBacentaDetails(
+      id: $id
+      name: $name
+      meetingDay: $meetingDay
+      venueLongitude: $venueLongitude
+      venueLatitude: $venueLatitude
+    ) {
       id
       name
       sprinterTopUp
