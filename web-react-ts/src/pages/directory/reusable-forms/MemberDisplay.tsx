@@ -64,11 +64,11 @@ const generateVCard = async (member: Member, roles: string) => {
       : ''
   }\nTEL;type=CELL;type=VOICE;type=pref:${member.phoneNumber}\nTEL;TYPE=HOME:${
     member.whatsappNumber
-  }\nNOTE:Visitation Landmark${member.visitationArea}\\nOccupation: ${
+  }\nNOTE:Visitation Landmark: ${member.visitationArea}\\nOccupation: ${
     member.occupation.occupation || 'None'
-  }  Marital Status: ${
+  }\\nMarital Status: ${
     member.maritalStatus.status
-  }\\nRoles in Church:\\n${roles}\n${
+  }\\n\\nRoles in Church:\\n${roles}\n${
     base64Image ? 'PHOTO;ENCODING=b;TYPE=JPEG:' + base64Image + '\n' : ''
   }BDAY:${member.dob.date}\nADR;TYPE=HOME:;;;;${
     member.visitationArea
@@ -102,14 +102,17 @@ const returnStringMemberRoles = (memberLeader: any, memberAdmin: any) => {
 const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const {
     data: bioData,
-    loading,
+    loading: bioLoading,
     error,
   } = useQuery(DISPLAY_MEMBER_BIO, {
     variables: { id: memberId },
   })
-  const { data: churchData } = useQuery(DISPLAY_MEMBER_CHURCH, {
-    variables: { id: memberId },
-  })
+  const { data: churchData, loading: churchLoading } = useQuery(
+    DISPLAY_MEMBER_CHURCH,
+    {
+      variables: { id: memberId },
+    }
+  )
   const { data: leaderData, loading: leaderLoading } = useQuery(
     DISPLAY_MEMBER_LEADERSHIP,
     {
@@ -122,6 +125,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
       variables: { id: memberId },
     }
   )
+  const loading = bioLoading || churchLoading || leaderLoading || adminLoading
   const [CreateMemberAccount, { loading: createLoading }] = useMutation(
     CREATE_MEMBER_ACCOUNT
   )
@@ -419,8 +423,8 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
         <Col sm={12}>
           <div
             onClick={() => {
-              clickCard(memberChurch?.fellowship)
-              navigate('/fellowship/displaydetails')
+              clickCard(memberChurch?.bacenta)
+              navigate('/bacenta/displaydetails')
             }}
           >
             <DetailsCard
