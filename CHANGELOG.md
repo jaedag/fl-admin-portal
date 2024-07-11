@@ -1,3 +1,14 @@
+#### 7.18.30 (2024-07-11)
+
+##### Bug Fixes
+
+*  bacenta service cancellationn form ([5e6b9102](https://github.com/firstlovecenter/fl-admin-portal/commit/5e6b9102aecd8fbd52fefb43a4607ebf52111ad9))
+
+##### Refactors
+
+*  update banking-cypher to use Bacenta instead of Fellowship ([66021b21](https://github.com/firstlovecenter/fl-admin-portal/commit/66021b21aabca4f6af443c3c2272cc353c1b4790))
+*  update service query to match all campuses ([869aca41](https://github.com/firstlovecenter/fl-admin-portal/commit/869aca41fa5f24b66bb36474dfd4e2784d7e551a))
+
 #### 7.18.29 (2024-07-11)
 
 ##### Bug Fixes
