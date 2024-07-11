@@ -1,3 +1,15 @@
+#### 7.18.29 (2024-07-11)
+
+##### Bug Fixes
+
+*  fix service defaulters and changing bacenta service day ([1e5313b5](https://github.com/firstlovecenter/fl-admin-portal/commit/1e5313b5adf9ca6c51bbf9a6647d22edb133b72f))
+*  reemove poimen checker in synago app ([af478f86](https://github.com/firstlovecenter/fl-admin-portal/commit/af478f86ad20cd4aa67b0c8e34ac9838c193618f))
+
+##### Refactors
+
+*  update MemberDisplay component to use Bacenta instead of Fellowship ([71ed1c76](https://github.com/firstlovecenter/fl-admin-portal/commit/71ed1c7694dba8d205d6cc6c643f50f756c1410b))
+*  update service cancellation logic to use Bacenta instead of Fellowship ([72e4658f](https://github.com/firstlovecenter/fl-admin-portal/commit/72e4658fc2a6646107eba0a431e51524e62c4701))
+
 #### 7.18.28 (2024-07-09)
 
 ##### Refactors
