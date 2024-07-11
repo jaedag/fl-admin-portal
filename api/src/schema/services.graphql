@@ -830,7 +830,7 @@ extend type Constituency {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(this)
 
       RETURN DISTINCT bacentas
       """
@@ -857,7 +857,7 @@ extend type Constituency {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -882,7 +882,7 @@ extend type Constituency {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(this)
 
       RETURN DISTINCT bacentas
       """
@@ -907,7 +907,7 @@ extend type Constituency {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
