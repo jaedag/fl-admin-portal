@@ -26,8 +26,8 @@ const ConstituencyServiceDetails = lazy(
   () => import('pages/services/record-service/ConstituencyServiceDetails')
 )
 
-const FellowshipServiceCancelled = lazy(
-  () => import('pages/services/record-service/FellowshipServiceCancelled')
+const BacentaServiceCancelled = lazy(
+  () => import('pages/services/record-service/BacentaServiceCancelled')
 )
 const StreamServiceCancelled = lazy(
   () => import('pages/services/record-service/StreamServiceCancelled')
@@ -434,8 +434,8 @@ export const graphs: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/services/Bacenta/no-service',
-    element: FellowshipServiceCancelled,
+    path: '/services/bacenta/no-service',
+    element: BacentaServiceCancelled,
     roles: permitLeaderAdmin('Bacenta'),
     placeholder: true,
   },

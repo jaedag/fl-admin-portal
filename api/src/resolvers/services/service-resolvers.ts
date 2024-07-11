@@ -322,7 +322,7 @@ const serviceMutation = {
     args: RecordCancelledServiceArgs,
     context: Context
   ) => {
-    isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
+    isAuth(permitLeaderAdmin('Bacenta'), context.auth.roles)
     const session = context.executionContext.session()
 
     const relationshipCheck = rearrangeCypherObject(

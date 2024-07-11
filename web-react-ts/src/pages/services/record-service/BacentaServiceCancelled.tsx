@@ -2,25 +2,25 @@ import { useContext } from 'react'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 
 import { useQuery } from '@apollo/client'
-import { DISPLAY_FELLOWSHIP } from '../../directory/display/ReadQueries'
+import { DISPLAY_BACENTA } from '../../directory/display/ReadQueries'
 import CancelledServiceForm from './CancelledServiceForm'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
-const FellowshipServiceCancelled = () => {
-  const { fellowshipId } = useContext(ChurchContext)
-  const { data, loading, error } = useQuery(DISPLAY_FELLOWSHIP, {
-    variables: { id: fellowshipId },
+const BacentaServiceCancelled = () => {
+  const { bacentaId } = useContext(ChurchContext)
+  const { data, loading, error } = useQuery(DISPLAY_BACENTA, {
+    variables: { id: bacentaId },
   })
 
   return (
     <ApolloWrapper loading={loading} error={error} data={data} placeholder>
       <CancelledServiceForm
-        church={data?.fellowships[0]}
-        churchId={fellowshipId}
-        churchType="fellowship"
+        church={data?.bacentas[0]}
+        churchId={bacentaId}
+        churchType="bacenta"
       />
     </ApolloWrapper>
   )
 }
 
-export default FellowshipServiceCancelled
+export default BacentaServiceCancelled
