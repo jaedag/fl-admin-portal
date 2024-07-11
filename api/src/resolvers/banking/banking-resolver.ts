@@ -105,7 +105,7 @@ const bankingMutation = {
     },
     context: Context
   ) => {
-    isAuth(permitLeaderAdmin('Fellowship'), context.auth.roles)
+    isAuth(permitLeaderAdmin('Bacenta'), context.auth.roles)
 
     const session = context.executionContext.session()
     // This code checks if there has already been a successful transaction
