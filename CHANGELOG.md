@@ -1,3 +1,12 @@
+#### 7.18.31 (2024-07-11)
+
+##### Refactors
+
+*  update service query to match all campuses ([35f5f04b](https://github.com/firstlovecenter/fl-admin-portal/commit/35f5f04bc877a8cbb65c8d719736f382afa6bac6))
+*  update banking-cypher to use Bacenta instead of Fellowship ([ff4a738f](https://github.com/firstlovecenter/fl-admin-portal/commit/ff4a738f7e4f3eadf11453bad40ecc3d68ee7e57))
+*  update banking-cypher to use Bacenta instead of Fellowship ([ae7c3127](https://github.com/firstlovecenter/fl-admin-portal/commit/ae7c3127493fa9ef4e2b181c6a6c3e8ee7d686ba))
+*  update banking-cypher to use Bacenta instead of Fellowship ([cca09e1e](https://github.com/firstlovecenter/fl-admin-portal/commit/cca09e1e8b338bf151ab0f7c04262a56b2a76881))
+
 #### 7.18.30 (2024-07-11)
 
 ##### Bug Fixes
