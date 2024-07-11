@@ -21,7 +21,7 @@ type ButtonConfirmPaymentProps = {
       | Partial<{
           id?: string
           serviceRecordId?: string
-          fellowshipId?: string
+          bacentaId?: string
           constituencyId?: string
           councilId?: string
 
@@ -41,7 +41,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
   const [sending, setSending] = useState(false)
   const navigate = useNavigate()
   const {
-    fellowshipId,
+    bacentaId,
     constituencyId,
     councilId,
     hubId,
@@ -62,13 +62,14 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
 
         try {
           const res = await refetch({
-            fellowshipId,
+            bacentaId,
             constituencyId,
             councilId,
             hubId,
             hubCouncilId,
             ministryId,
           })
+
           clickCard({
             id: service?.id,
             __typename: 'ServiceRecord',
@@ -79,8 +80,8 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
             transactionStatus: '',
           }
 
-          if (res.data?.fellowships) {
-            serviceRecord = res.data?.fellowships[0].services.find(
+          if (res.data?.bacentas) {
+            serviceRecord = res.data?.bacentas[0].services.find(
               (serviceFromList: ConfirmPaymentServiceType) =>
                 serviceFromList?.id === service?.id
             )

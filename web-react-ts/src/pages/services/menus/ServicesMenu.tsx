@@ -116,7 +116,7 @@ const Services = () => {
             church?.bankAccount !== 'manual' && (
               <MenuButton
                 iconComponent={<Coin />}
-                title="Self Banking Option"
+                title="Self Banking"
                 color="banking"
                 noCaption
                 onClick={() =>

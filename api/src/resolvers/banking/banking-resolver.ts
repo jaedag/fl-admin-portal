@@ -32,6 +32,7 @@ import {
   PayStackRequestBody,
   SendPaymentOTP,
 } from './banking-types'
+import SECRETS from '../getSecrets'
 
 export const checkIfLastServiceBanked = async (
   serviceRecordId: string,
@@ -125,7 +126,7 @@ const bankingMutation = {
         transactionResponse?.stream
       )
 
-      if (!subaccount) {
+      if (!subaccount && SECRETS.TEST_ENV !== 'true') {
         throw new Error(
           `There was an error with the payment. Please email admin@firstlovecenter.com ${JSON.stringify(
             {
