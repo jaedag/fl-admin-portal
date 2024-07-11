@@ -82,7 +82,7 @@ const ServicesThisWeek = () => {
               <Col key={i} xs={12} className="mb-3">
                 <DefaulterCard
                   defaulter={service}
-                  link="/fellowship/service-details"
+                  link="/bacenta/service-details"
                 />
               </Col>
             ))}

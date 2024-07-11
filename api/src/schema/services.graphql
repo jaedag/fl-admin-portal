@@ -1046,7 +1046,7 @@ extend type Mutation {
     noServiceReason: String!
   ): NoService!
 
-  UndoCancelledService(serviceRecordId: ID!): Fellowship!
+  UndoCancelledService(serviceRecordId: ID!): Bacenta!
     @auth(
       rules: [
         {
@@ -1061,9 +1061,9 @@ extend type Mutation {
     )
     @cypher(
       statement: """
-      MATCH (this:NoService {id: $serviceRecordId})<-[:HAS_SERVICE]-(serviceLog:ServiceLog)<-[:HAS_HISTORY]-(fellowship:Bacenta)
+      MATCH (this:NoService {id: $serviceRecordId})<-[:HAS_SERVICE]-(serviceLog:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)
       DETACH DELETE this
-      RETURN fellowship
+      RETURN bacenta
       """
     )
 }
@@ -1362,7 +1362,7 @@ extend type Campus {
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
       WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, this
-      
+
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates

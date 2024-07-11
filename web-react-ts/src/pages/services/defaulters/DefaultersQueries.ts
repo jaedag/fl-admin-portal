@@ -199,12 +199,9 @@ export const COUNCIL_SERVICES_LIST = gql`
         meetingDay {
           day
         }
-        bacenta {
+        constituency {
           id
-          constituency {
-            id
-            name
-          }
+          name
         }
         services(limit: 1) {
           id
@@ -234,12 +231,9 @@ export const COUNCIL_CANCELLED_SERVICES_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        bacenta {
+        constituency {
           id
-          constituency {
-            id
-            name
-          }
+          name
         }
         meetingDay {
           day
@@ -270,12 +264,9 @@ export const COUNCIL_FORM_DEFAULTERS_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        bacenta {
+        constituency {
           id
-          constituency {
-            id
-            name
-          }
+          name
         }
         meetingDay {
           day
@@ -302,12 +293,9 @@ export const COUNCIL_BANKING_DEFAULTERS_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        bacenta {
+        constituency {
           id
-          constituency {
-            id
-            name
-          }
+          name
         }
         meetingDay {
           day
@@ -339,12 +327,9 @@ export const COUNCIL_BANKED_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        bacenta {
+        constituency {
           id
-          constituency {
-            id
-            name
-          }
+          name
         }
         meetingDay {
           day
@@ -709,12 +694,9 @@ export const CAMPUS_SERVICES_LIST = gql`
         meetingDay {
           day
         }
-        bacenta {
+        constituency {
           id
-          constituency {
-            id
-            name
-          }
+          name
         }
         services(limit: 1) {
           id
@@ -744,12 +726,9 @@ export const CAMPUS_CANCELLED_SERVICES_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        bacenta {
+        constituency {
           id
-          constituency {
-            id
-            name
-          }
+          name
         }
         meetingDay {
           day
@@ -780,12 +759,9 @@ export const CAMPUS_FORM_DEFAULTERS_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        bacenta {
+        constituency {
           id
-          constituency {
-            id
-            name
-          }
+          name
         }
         meetingDay {
           day
@@ -812,12 +788,9 @@ export const CAMPUS_BANKING_DEFAULTERS_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        bacenta {
+        constituency {
           id
-          constituency {
-            id
-            name
-          }
+          name
         }
         meetingDay {
           day
@@ -849,12 +822,9 @@ export const CAMPUS_BANKED_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        bacenta {
+        constituency {
           id
-          constituency {
-            id
-            name
-          }
+          name
         }
         meetingDay {
           day
