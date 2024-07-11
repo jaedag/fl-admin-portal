@@ -1357,7 +1357,7 @@ extend type Campus {
   formDefaultersThisWeek: [Bacenta!]!
     @cypher(
       statement: """
-      MATCH (this:Campus {name: 'Accra'})
+      MATCH (this)
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
