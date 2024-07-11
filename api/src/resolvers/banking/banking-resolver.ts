@@ -498,7 +498,7 @@ const bankingMutation = {
     args: { serviceRecordId: string },
     context: Context
   ) => {
-    isAuth(permitMe('Fellowship'), context.auth.roles)
+    isAuth(permitMe('Bacenta'), context.auth.roles)
     const session = context.executionContext.session()
 
     const transactionResponse = rearrangeCypherObject(
@@ -515,7 +515,7 @@ const bankingMutation = {
     let record = transactionResponse?.record
     const banker = transactionResponse?.banker
     const stream = transactionResponse?.stream
-    const { auth } = getStreamFinancials(stream.bankAccount)
+    const { auth } = getStreamFinancials(stream)
 
     // if transactionTime is within the last 1 minute then return the record
     if (

@@ -29,8 +29,8 @@ export const FELLOWSHIP_GRAPHS = gql`
 `
 
 export const BACENTA_GRAPHS = gql`
-  query bacentaGraphs($bacentaId: ID!) {
-    bacentas(where: { id: $bacentaId }) {
+  query bacentaGraphs($id: ID!) {
+    bacentas(where: { id: $id }) {
       id
       name
       leader {
