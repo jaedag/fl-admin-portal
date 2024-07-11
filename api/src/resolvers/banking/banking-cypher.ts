@@ -2,13 +2,13 @@ export const initiateServiceRecordTransaction = `
 MATCH (record {id: $serviceRecordId}) WHERE record:ServiceRecord OR record:RehearsalRecord
 
 MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
-WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:Campus
+WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
 OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 
 
 UNWIND labels(church) AS churchLevel 
 WITH record, church, churchLevel
-WHERE churchLevel IN ['Fellowship','Bacenta','Constituency','Council', 'Stream', 'Campus', 'Hub', 'HubCouncil', 'Ministry', 'CreativeArts'] 
+WHERE churchLevel IN ['Bacenta','Constituency','Council', 'Stream', 'Campus', 'Hub', 'HubCouncil', 'Ministry', 'CreativeArts'] 
 
 MATCH (author:Member {auth_id: $auth.jwt.sub})
 MATCH (record)-[:SERVICE_HELD_ON]->(date:TimeGraph)
@@ -125,7 +125,7 @@ export const setTransactionStatusSuccess = `
 export const getLastServiceRecord = `
 MATCH (record:ServiceRecord {id: $serviceRecordId})-[:SERVICE_HELD_ON]->(date:TimeGraph)
 MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church) 
-WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:Campus
+WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
 OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(otherRecords:ServiceRecord)-[:SERVICE_HELD_ON]->(otherDate:TimeGraph)
 WHERE NOT (otherRecords:NoService) AND duration.between(otherDate.date, date.date).weeks < 52 AND otherDate.date < date.date
