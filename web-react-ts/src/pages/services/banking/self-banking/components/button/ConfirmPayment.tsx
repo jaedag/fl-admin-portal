@@ -144,7 +144,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
               confirmationRes.data.ConfirmOfferingPayment?.transactionStatus ===
               'failed'
             ) {
-              navigate('/services/fellowship/self-banking')
+              navigate('/services/bacenta/self-banking')
               alertMsg('Your Payment Failed 😞. Please try again!')
               return
             }
@@ -162,7 +162,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
           if (
             ['failed', 'abandoned'].includes(serviceRecord.transactionStatus)
           ) {
-            navigate('/services/fellowship/self-banking')
+            navigate('/services/bacenta/self-banking')
             alertMsg('Your Payment Failed 😞. Please try again!')
             return
           }
@@ -173,7 +173,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
             return
           }
         } catch (error: any) {
-          navigate('/services/fellowship/self-banking')
+          navigate('/services/bacenta/self-banking')
           alert('Something went wrong 😞' + JSON.stringify(error))
         } finally {
           if (handleClose) {
