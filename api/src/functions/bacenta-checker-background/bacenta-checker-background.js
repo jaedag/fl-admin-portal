@@ -24,19 +24,23 @@ const handler = async () => {
 
   console.log('Running function on date', new Date().toISOString())
 
-  const response = await Promise.all([
-    BacentaToICChecker(driver),
-    ICToBacentaChecker(driver),
-  ]).catch((error) => {
+  let demoted = []
+  let promoted = []
+
+  try {
+    const bacentaToICResponse = await BacentaToICChecker(driver)
+    demoted = bacentaToICResponse.map((bacenta) => bacenta)
+
+    const icToBacentaResponse = await ICToBacentaChecker(driver)
+    promoted = icToBacentaResponse.map((bacenta) => bacenta)
+  } catch (error) {
     console.error('Database query failed to complete\n', error.message)
-  })
+  } finally {
+    await driver.close()
+  }
 
-  await driver.close()
-
-  console.log('Response from database', response)
-
-  const demoted = response[0].map((bacenta) => bacenta)
-  const promoted = response[1].map((bacenta) => bacenta)
+  console.log('Demoted:', demoted)
+  console.log('Promoted:', promoted)
 
   await Promise.all([
     ...promoted.map((bacenta) => {
@@ -51,7 +55,7 @@ const handler = async () => {
         data: {
           recipient: [bacenta.leaderPhone],
           sender: 'FLC Admin',
-          message: `Hi ${bacenta.leaderFirstName}\n\nCongratulations on successfully bussing for four consecutive weeks. Your bacenta ${bacenta.name} has been graduated to Bacenta status`,
+          message: `Hi ${bacenta.leaderFirstName}\n\nCongratulations on successfully bussing for four consecutive weeks. Your bacenta ${bacenta.name} has been graduated to Green status`,
         },
       })
     }),
@@ -67,7 +71,7 @@ const handler = async () => {
         data: {
           recipient: [bacenta.leaderPhone],
           sender: 'FLC Admin',
-          message: `Hi ${bacenta.leaderFirstName}\n\nSorry! You have not been bussing for four consecutive weeks. Your bacenta ${bacenta.name} has been demoted to IC status`,
+          message: `Hi ${bacenta.leaderFirstName}\n\nSorry! You have not been bussing for four consecutive weeks. Your bacenta ${bacenta.name} has been demoted to Red status`,
         },
       })
     }),
