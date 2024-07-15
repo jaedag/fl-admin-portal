@@ -100,7 +100,9 @@ const AppWithApollo = () => {
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
-      graphQLErrors.forEach(({ message, locations, path }) =>
+      graphQLErrors.forEach(({ message, locations, path }) => {
+        if (message.includes('Unauthorized')) return
+
         enqueueSnackbar(
           <Card>
             <Card.Header className="fw-bold">GraphQL Error</Card.Header>
@@ -122,7 +124,7 @@ const AppWithApollo = () => {
             },
           }
         )
-      )
+      })
     }
 
     if (
