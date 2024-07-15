@@ -1,12 +1,13 @@
 export const getBacentasToDemote = `
-MATCH (bacenta:Active:Bacenta:Green)<-[:LEADS]-(leader:Member)
-MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord) WHERE record.attendance >= 8
-MATCH (record)-[:BUSSED_ON]->(date:TimeGraph) WHERE  date.date.year = date().year
-    AND date.date.week IN [date().week -1,date().week -2, date().week -3, date().week -4]
+MATCH (green:Active:Bacenta:Green)<-[:LEADS]-(leader:Member)
+WHERE NOT EXISTS {
+    MATCH (green)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
+    WHERE date.date.year = date().year
+    AND date.date.week >= date().week - 4 AND date.date.week < date().week
+    AND record.attendance > 7
+}
 
-WITH collect(bacenta) AS dontTouch
-MATCH (council:Council)-[:HAS*2]->(toDemote:Active:Bacenta:Green)<-[:LEADS]-(leader:Member)
-WHERE NOT toDemote IN dontTouch
+WITH DISTINCT green AS toDemote
 
 SET toDemote:Red
 REMOVE toDemote:Green
