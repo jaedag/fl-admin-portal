@@ -1,8 +1,8 @@
 export const getBacentasToDemote = `
 MATCH (bacenta:Active:Bacenta:Green)<-[:LEADS]-(leader:Member)
 MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord) WHERE record.attendance >= 8
-MATCH (record)-[:BUSSED_ON]->(date:TimeGraph) WHERE  date.date.year = 2024 
-    AND date.date.week IN [date().week, date().week -1,date().week -2, date().week -3, date().week -4]
+MATCH (record)-[:BUSSED_ON]->(date:TimeGraph) WHERE  date.date.year = date().year
+    AND date.date.week IN [date().week -1,date().week -2, date().week -3, date().week -4]
 
 WITH collect(bacenta) AS dontTouch
 MATCH (council:Council)-[:HAS*2]->(toDemote:Active:Bacenta:Green)<-[:LEADS]-(leader:Member)
@@ -16,7 +16,7 @@ WITH toDemote, leader
 CREATE (log:HistoryLog)
         SET log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
-        log.historyRecord = toDemote.name + ' Bacenta has been demoted to IC status'
+        log.historyRecord = toDemote.name + ' Bacenta has been demoted to Red status'
         
 WITH toDemote, leader, log
 MERGE (date:TimeGraph {date: date()})
@@ -28,23 +28,23 @@ RETURN DISTINCT toDemote.name AS ToDemoteName, leader.firstName AS LeaderFirstNa
 `
 
 export const getBacentasToPromote = `
-MATCH (ic:Active:Bacenta:Red)<-[:LEADS]-(leader:Member)
-MATCH (ic)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) 
-    WHERE date.date.year = 2024 
-    AND date.date.week IN [date().week, date().week -1,date().week -2, date().week -3, date().week -4]
+MATCH (red:Active:Bacenta:Red)<-[:LEADS]-(leader:Member)
+MATCH (red)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) 
+    WHERE date.date.year = date().year
+    AND date.date.week IN [date().week -1,date().week -2, date().week -3, date().week -4]
     AND record.attendance >= 8
 
-WITH ic as toPromote, COUNT(DISTINCT record) AS bussingCount, leader WHERE bussingCount >= 4
+WITH red as toPromote, COUNT(DISTINCT record) AS bussingCount, leader WHERE bussingCount = 4
 
 SET toPromote:Green
 REMOVE toPromote:Red
 
-WITH toPromote, leader
+WITH DISTINCT toPromote, leader
 
 CREATE (log:HistoryLog)
         SET log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
-        log.historyRecord = toPromote.name + ' Bacenta has been promoted to Graduated status'
+        log.historyRecord = toPromote.name + ' Bacenta has been promoted to Green status'
 
 WITH toPromote, leader, log
 MERGE (date:TimeGraph {date: date()})
