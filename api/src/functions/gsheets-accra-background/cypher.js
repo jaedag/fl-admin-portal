@@ -58,9 +58,9 @@ RETURN  DISTINCT  stream.name, pastor.firstName, pastor.lastName,COUNT(DISTINCT 
 
 export const servicesThisWeekQuery = `
 MATCH (gs:Campus {name:  $campusName})-[:HAS]->(stream:Stream)-[:HAS]->(council:Council)<-[:LEADS]-(pastor:Member)
-MATCH (council)-[:HAS*3]- >(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
-OPTIONAL MATCH (fellowships)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
-         WHERE date.date.week =date($bussingDate).week AND date.date.year = date($bussingDate).year
+MATCH (council)-[:HAS*2]- >(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
+OPTIONAL MATCH (bacentas)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
+         WHERE date.date.week = date($bussingDate).week AND date.date.year = date($bussingDate).year
          AND record.attendance IS NOT NULL
 RETURN  DISTINCT  stream.name, pastor.firstName, pastor.lastName,COUNT(DISTINCT record) AS servicesThisWeek ORDER BY pastor.firstName, pastor.lastName
       `
