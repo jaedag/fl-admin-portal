@@ -1,3 +1,9 @@
+#### 7.18.33 (2024-07-16)
+
+##### New Features
+
+*  implement button to  delete member title ([c156eb3c](https://github.com/firstlovecenter/fl-admin-portal/commit/c156eb3ca026f96be689ae5b43aacd7d997c88e2))
+
 #### 7.18.32 (2024-07-16)
 
 ##### Bug Fixes
