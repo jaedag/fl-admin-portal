@@ -1,3 +1,21 @@
+#### 7.18.32 (2024-07-16)
+
+##### Bug Fixes
+
+*   fix broken bacenta banking slip submission ([5b7a95c2](https://github.com/firstlovecenter/fl-admin-portal/commit/5b7a95c2399c89a9ef1e87edbcb1a279d17106f2))
+
+##### Refactors
+
+*  handle unauthorized GraphQL errors in AppWithApollo component ([3b834ff0](https://github.com/firstlovecenter/fl-admin-portal/commit/3b834ff07240eca3e11b135af7029700e500f38c))
+*  handle network errors in AppWithApollo component ([56cb7259](https://github.com/firstlovecenter/fl-admin-portal/commit/56cb7259de026dc92cf287807915b0988f722a8c))
+*  update cypher queries to use current year in bacenta-checker-background ([f464c876](https://github.com/firstlovecenter/fl-admin-portal/commit/f464c876f3e304a0caa7d7c5f0776579084d0a82))
+*  update cypher queries to use current year in bacenta-checker-background ([aa131e2c](https://github.com/firstlovecenter/fl-admin-portal/commit/aa131e2c86cae24caea8497ad2303bbb2d77b706))
+*  update cypher queries to use current year in bacenta-checker-background ([3249e7c7](https://github.com/firstlovecenter/fl-admin-portal/commit/3249e7c76b31b62c64f28584e64b6a3a2cc2909f))
+*  update cypher queries to use current year in bacenta-checker-background ([81e82b30](https://github.com/firstlovecenter/fl-admin-portal/commit/81e82b301c953240ee3145c9b4e61c0e3a499354))
+*  update service query to use Bacenta instead of Fellowship ([1a9f0922](https://github.com/firstlovecenter/fl-admin-portal/commit/1a9f09220fc0870b5f670f1231ea0f7ff827817b))
+*  update service query to match all campuses ([838237aa](https://github.com/firstlovecenter/fl-admin-portal/commit/838237aab614204a60dea18412c200a767126966))
+*  update navigation paths for failed payments in ConfirmPayment component ([c0bb5590](https://github.com/firstlovecenter/fl-admin-portal/commit/c0bb5590b270a70f36afb4735aa5227ce57d8baa))
+
 #### 7.18.31 (2024-07-11)
 
 ##### Refactors
