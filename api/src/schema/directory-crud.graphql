@@ -646,6 +646,17 @@ extend type Mutation {
       RETURN member
       """
     )
+
+  DeleteMemberTitles(id: ID!): Member!
+    @auth(rules: [{ roles: ["adminDenomination"] }])
+    @cypher(
+      statement: """
+      MATCH (member:Active:Member {id: $id})
+      OPTIONAL MATCH (member)-[r:HAS_TITLE]->()
+       DELETE r
+      RETURN member
+      """
+    )
   UpdateMemberBacenta(memberId: ID!, bacentaId: ID!): Member!
 
   UpdateMemberBasonta(memberId: ID!, basontaId: ID!): Member!

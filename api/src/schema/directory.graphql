@@ -8,7 +8,8 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
   currentTitle: String
     @cypher(
       statement: """
-      MATCH (this)-[:HAS_TITLE]->(title:Title)
+      MATCH (this)-[r:HAS_TITLE]->(title:Title)
+      WHERE NOT r.inactive = true
       RETURN title.name ORDER BY title.priority DESC LIMIT 1
       """
     )
