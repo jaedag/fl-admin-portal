@@ -189,8 +189,8 @@ const TrendsMenu = lazy(() => import('./graphs/TrendsMenu'))
 
 const HubFormMenu = lazy(() => import('./menus/HubFormMenu'))
 const MinistryFormMenu = lazy(() => import('./menus/MinistryFormMenu'))
-const FellowshipBankingSlipSubmission = lazy(
-  () => import('pages/services/banking/banking-slip/FellowshipSubmission')
+const BacentaBankingSlipSubmission = lazy(
+  () => import('pages/services/banking/banking-slip/BacentaSubmission')
 )
 const BacentaBankingSlipView = lazy(
   () => import('pages/services/banking/banking-slip/BacentaView')
@@ -286,8 +286,8 @@ export const services: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/fellowship/banking-slip/submission',
-    element: FellowshipBankingSlipSubmission,
+    path: '/bacenta/banking-slip/submission',
+    element: BacentaBankingSlipSubmission,
     roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },

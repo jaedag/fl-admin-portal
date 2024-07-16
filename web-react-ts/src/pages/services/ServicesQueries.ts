@@ -193,12 +193,12 @@ export const COUNCIL_BANKING_SLIP_QUERIES = gql`
   }
 `
 
-export const FELLOWSHIP_SERVICE_RECORDS = gql`
-  query FellowshipServiceRecords($serviceId: ID!) {
+export const BACENTA_SERVICE_RECORDS = gql`
+  query BacentaServiceRecords($serviceId: ID!) {
     serviceRecords(where: { id: $serviceId }) {
       id
       serviceLog {
-        fellowship {
+        bacenta {
           id
           name
           bankingCode

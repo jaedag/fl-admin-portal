@@ -6,7 +6,7 @@ import React, { useContext, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
   BANKING_SLIP_SUBMISSION,
-  FELLOWSHIP_SERVICE_RECORDS,
+  BACENTA_SERVICE_RECORDS,
 } from '../../ServicesQueries'
 import { useMutation, useQuery } from '@apollo/client'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -22,16 +22,16 @@ type FormOptions = {
   bankingSlip: string
 }
 
-const FellowshipBankingSlipSubmission = () => {
+const BacentaBankingSlipSubmission = () => {
   const { serviceRecordId } = useContext(ServiceContext)
   const navigate = useNavigate()
   const { togglePopup, isOpen } = usePopup()
   const [errorMessage, setErrorMessage] = useState('')
 
-  const { data, loading, error } = useQuery(FELLOWSHIP_SERVICE_RECORDS, {
+  const { data, loading, error } = useQuery(BACENTA_SERVICE_RECORDS, {
     variables: { serviceId: serviceRecordId },
   })
-  const fellowship = data?.serviceRecords[0]?.serviceLog?.fellowship[0]
+  const bacenta = data?.serviceRecords[0]?.serviceLog?.bacenta[0]
 
   const initialValues = {
     bankingSlip: '',
@@ -57,7 +57,7 @@ const FellowshipBankingSlipSubmission = () => {
       onSubmitProps.setSubmitting(false)
       onSubmitProps.resetForm()
 
-      navigate(`/fellowship/service-details`)
+      navigate(`/bacenta/service-details`)
     } catch (error: any) {
       setErrorMessage(error.message)
       togglePopup()
@@ -70,11 +70,11 @@ const FellowshipBankingSlipSubmission = () => {
         <ErrorPopup
           errorMessage={errorMessage}
           togglePopup={togglePopup}
-          link="/services/fellowship/banking-slips"
+          link="/services/bacenta/banking-slips"
         />
       )}
 
-      <ApolloWrapper loading={loading} error={error} data={data && fellowship}>
+      <ApolloWrapper loading={loading} error={error} data={data && bacenta}>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -84,7 +84,7 @@ const FellowshipBankingSlipSubmission = () => {
           {(formik) => (
             <Container>
               <HeadingPrimary>Banking Slip Submission</HeadingPrimary>
-              <HeadingSecondary>{fellowship?.name}</HeadingSecondary>
+              <HeadingSecondary>{bacenta?.name}</HeadingSecondary>
               <p>
                 Date of Service :{' '}
                 {getHumanReadableDate(
@@ -118,4 +118,4 @@ const FellowshipBankingSlipSubmission = () => {
   )
 }
 
-export default FellowshipBankingSlipSubmission
+export default BacentaBankingSlipSubmission
