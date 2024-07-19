@@ -1,3 +1,9 @@
+#### 7.18.34 (2024-07-19)
+
+##### New Features
+
+*  update DefaultersQueries to include council name in services list ([20ee8688](https://github.com/firstlovecenter/fl-admin-portal/commit/20ee8688adefeb63486407064f63cbb5957223c6))
+
 #### 7.18.33 (2024-07-16)
 
 ##### New Features
