@@ -422,13 +422,12 @@ export const STREAM_SERVICES_LIST = gql`
         meetingDay {
           day
         }
-        bacenta {
+
+        council {
           id
-          council {
-            id
-            name
-          }
+          name
         }
+
         services(limit: 1) {
           id
           noServiceReason
@@ -457,13 +456,12 @@ export const STREAM_CANCELLED_SERVICES_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        bacenta {
+
+        council {
           id
-          council {
-            id
-            name
-          }
+          name
         }
+
         meetingDay {
           day
         }
@@ -493,13 +491,12 @@ export const STREAM_FORM_DEFAULTERS_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        bacenta {
+
+        council {
           id
-          council {
-            id
-            name
-          }
+          name
         }
+
         meetingDay {
           day
         }
@@ -526,13 +523,12 @@ export const STREAM_BANKING_DEFAULTERS_LIST = gql`
           whatsappNumber
           pictureUrl
         }
-        bacenta {
+
+        council {
           id
-          council {
-            id
-            name
-          }
+          name
         }
+
         meetingDay {
           day
         }
@@ -585,12 +581,10 @@ export const STREAM_BANKED_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        bacenta {
+
+        council {
           id
-          council {
-            id
-            name
-          }
+          name
         }
         meetingDay {
           day
