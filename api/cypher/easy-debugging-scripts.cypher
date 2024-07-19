@@ -1,53 +1,54 @@
-MATCH (red:Active:Bacenta:Red {id: "d7d50295-62d0-42e0-8cff-0522469ed7f1"})<-[:LEADS]-(leader:Member)
-MATCH (red)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) 
-    WHERE date.date.year = date().year
-    AND date.date.week IN [date().week -1,date().week -2, date().week -3, date().week -4]
-    AND record.attendance >= 8
+  MATCH (lastCode:LastBankingCode)
+      CREATE (bacenta:Bacenta:Red:Active {name:$name, location: point({latitude:toFloat($venueLatitude), longitude:toFloat($venueLongitude), crs:'WGS-84'})})
+        SET	bacenta.id = apoc.create.uuid(),
+        bacenta.sprinterTopUp = 0,
+        bacenta.urvanTopUp = 0,
+        bacenta.outbound = false,
+        bacenta.bankingCode = lastCode.number,
+        lastCode.number = bacenta.bankingCode
 
-WITH red as toPromote, COUNT(DISTINCT record) AS bussingCount, leader WHERE bussingCount = 4
-
-RETURN toPromote.name
-
-
-MATCH (red:Active:Bacenta {id: "d7d50295-62d0-42e0-8cff-0522469ed7f1"})
-RETURN red;
-
-MATCH (bacenta:Active:Bacenta:Green {id: "d7d50295-62d0-42e0-8cff-0522469ed7f1"})<-[:LEADS]-(leader:Member)
-MATCH (bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord) WHERE record.attendance >= 8
-MATCH (record)-[:BUSSED_ON]->(date:TimeGraph) WHERE  date.date.year = date().year
-    AND date.date.week IN [date().week -1,date().week -2, date().week -3, date().week -4]
-
-WITH collect(bacenta) AS dontTouch
-MATCH (council:Council)-[:HAS*2]->(toDemote:Active:Bacenta:Green)<-[:LEADS]-(leader:Member)
-WHERE NOT toDemote IN dontTouch
-RETURN toDemote.name AS ToDemoteName, leader.firstName AS LeaderFirstName, leader.firstName + " " + leader.lastName AS LeaderName, leader.phoneNumber AS LeaderPhone
-
-// SET toDemote:Red
-// REMOVE toDemote:Green
-
-// WITH toDemote, leader
-
-// CREATE (log:HistoryLog)
-//         SET log.id =  apoc.create.uuid(),
-//         log.timeStamp = datetime(),
-//         log.historyRecord = toDemote.name + ' Bacenta has been demoted to Red status'
-        
-// WITH toDemote, leader, log
-// MERGE (date:TimeGraph {date: date()})
-// WITH toDemote, log, date, leader
-// MERGE (toDemote)-[:HAS_HISTORY]->(log)
-// MERGE (log)-[:RECORDED_ON]->(date)
-
-// RETURN DISTINCT toDemote.name AS ToDemoteName, leader.firstName AS LeaderFirstName, leader.firstName + " " + leader.lastName AS LeaderName, leader.phoneNumber AS LeaderPhone
+      WITH bacenta
+       MATCH (leader:Active:Member {id:$leaderId}) WHERE leader.email IS NOT NULL
+       MATCH (constituency:Constituency {id:$constituencyId})
+       MATCH (currentUser:Active:Member {email: "jaedagy@gmail.com"})
+       MATCH (meetingDay:ServiceDay {day: $meetingDay})
 
 
+      CREATE (log:HistoryLog:ServiceLog)
+      SET log.id = apoc.create.uuid(),
+       log.timeStamp = datetime(),
+       log.historyRecord = bacenta.name +' Bacenta History Begins',
+       log.priority = 7
 
-MATCH (green:Active:Bacenta:Green)<-[:LEADS]-(leader:Member)
-WHERE NOT EXISTS {
-    MATCH (green)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph)
-    WHERE date.date.year = date().year
-    AND date.date.week >= date().week - 4 AND date.date.week < date().week
-    AND record.attendance > 7
-}
+       MERGE (constituency)-[:HAS]->(bacenta)
+       MERGE (leader)-[:LEADS]->(bacenta)
+       MERGE (bacenta)-[:MEETS_ON]->(meetingDay)
 
-RETURN DISTINCT green.name, leader.firstName, leader.lastName
+       MERGE (date:TimeGraph {date: date()})
+       MERGE (log)-[:LOGGED_BY]->(currentUser)
+       MERGE (log)-[:RECORDED_ON]->(date)
+
+       WITH bacenta
+       MATCH (lastCode:LastBacentaCode)
+       SET
+        bacenta.code = lastCode.number + 1,
+        lastCode.number = bacenta.code
+
+
+      RETURN bacenta
+
+
+      MATCH (n)
+      WHERE ID(n) = 5798
+      RETURN n
+CALL db.constraints()
+
+RETURN bacenta with the highest bankingCode
+MATCH (n:Bacenta)
+RETURN n.code  as code ORDER BY code DESC  LIMIT 1;
+
+MATCH  (lastCode:LastBacentaCode)
+SET lastCode.number = 20022
+RETURn lastCode
+
+DROP CONSTRAINT con_bacenta_code

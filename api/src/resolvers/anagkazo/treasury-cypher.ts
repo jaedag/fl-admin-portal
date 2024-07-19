@@ -19,7 +19,7 @@ const anagkazo = {
 
 
     WITH constituency, record
-    MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(:Fellowship)<-[:HAS]-(:Bacenta)<-[:HAS]-(constituency)
+    MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(:Bacenta)<-[:HAS]-(constituency)
     SET record.tellerConfirmationTime = datetime()
 
     WITH constituency, record
@@ -42,11 +42,11 @@ const anagkazo = {
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
        WITH DISTINCT record, this
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
-       MATCH (fellowships)-[:MEETS_ON]->(day:ServiceDay)
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas:Active:Bacenta)
+       MATCH (bacentas)-[:MEETS_ON]->(day:ServiceDay)
 
-       WITH collect(DISTINCT fellowships) as services, this
-       MATCH (defaulters:Active:Fellowship)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
+       WITH collect(DISTINCT bacentas) as services, this
+       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
        RETURN COUNT(DISTINCT defaulters) as defaulters, collect(defaulters.name) AS defaultersNames
@@ -64,16 +64,16 @@ const anagkazo = {
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
        WITH DISTINCT record, this
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships:Active:Fellowship)
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas:Active:Bacenta)
        WHERE record.markedAttendance = false
 
-       WITH collect(DISTINCT fellowships) as services, this
-       MATCH (defaulters:Active:Fellowship)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
+       WITH collect(DISTINCT bacentas) as services, this
+       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(this)
 
        RETURN COUNT(DISTINCT defaulters) as defaulters, collect(defaulters.name) AS defaultersNames
       `,
   imclDefaultersCount: `
-    MATCH (this:Constituency {id: $constituencyId})-[:HAS]->(bacenta:Bacenta)-[:HAS]->(defaulters:Fellowship)
+    MATCH (this:Constituency {id: $constituencyId})-[:HAS]->(defaulters:Bacenta)
     MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
     WHERE date.date.week = date().week
     AND record.markedAttendance = false
@@ -98,12 +98,12 @@ const anagkazo = {
         AND record.bankingSlip IS NULL
         AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
         AND record.tellerConfirmationTime IS NULL
-    MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(fellowships) WHERE fellowships:Fellowship OR fellowships:ClosedFellowship
+    MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
-    WITH DISTINCT fellowships, this
-    MATCH (fellowships)<-[:HAS]-(:Bacenta)<-[:HAS]-(this)
+    WITH DISTINCT bacentas, this
+    MATCH (bacentas)<-[:HAS]-(this)
 
-    RETURN COUNT(DISTINCT fellowships) as bankingDefaulters
+    RETURN COUNT(DISTINCT bacentas) as bankingDefaulters
   `,
 }
 

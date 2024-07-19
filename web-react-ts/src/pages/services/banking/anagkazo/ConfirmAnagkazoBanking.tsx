@@ -148,48 +148,45 @@ const ConfirmAnagkazoBanking = () => {
                           constituency is submitting is the same as what is
                           displayed here
                         </i>
-                        <Button
-                          variant="primary"
-                          type="submit"
-                          className={`btn-main `}
-                          disabled={isSubmitting}
-                          onClick={async () => {
-                            setSubmitting(true)
+                        <div className="text-end mt-3">
+                          <Button
+                            variant="primary"
+                            type="submit"
+                            disabled={isSubmitting}
+                            onClick={async () => {
+                              setSubmitting(true)
 
-                            try {
-                              await ConfirmBanking({
-                                variables: {
-                                  constituencyId: selected?.id,
-                                },
-                              })
-                              togglePopup()
-                              alertMsg('Banking Confirmed Successfully')
+                              try {
+                                await ConfirmBanking({
+                                  variables: {
+                                    constituencyId: selected?.id,
+                                  },
+                                })
+                                togglePopup()
+                                alertMsg('Banking Confirmed Successfully')
 
-                              setSubmitting(false)
-                              refetch({ id: streamId })
-                              navigate('/anagkazo/receive-banking')
-                            } catch (error: any) {
-                              setSubmitting(false)
-                              throwToSentry(error)
-                            }
-                          }}
-                        >
-                          {isSubmitting ? (
-                            <>
-                              <Spinner animation="grow" size="sm" />
-                              <span> Submitting</span>
-                            </>
-                          ) : (
-                            `Yes, I'm sure`
-                          )}
-                        </Button>
-                        <Button
-                          variant="primary"
-                          className={`btn-secondary mt-2 `}
-                          onClick={togglePopup}
-                        >
-                          No, take me back
-                        </Button>
+                                setSubmitting(false)
+                                refetch({ id: streamId })
+                                navigate('/anagkazo/receive-banking')
+                              } catch (error: any) {
+                                setSubmitting(false)
+                                throwToSentry(error)
+                              }
+                            }}
+                          >
+                            {isSubmitting ? (
+                              <>
+                                <Spinner animation="grow" size="sm" />
+                                <span> Submitting</span>
+                              </>
+                            ) : (
+                              `Yes, I'm sure`
+                            )}
+                          </Button>
+                          <Button variant="secondary" onClick={togglePopup}>
+                            No, take me back
+                          </Button>
+                        </div>
                       </>
                     )}
                   </Popup>

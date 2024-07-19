@@ -545,12 +545,6 @@ extend type Mutation {
        MERGE (log)-[:LOGGED_BY]->(currentUser)
        MERGE (log)-[:RECORDED_ON]->(date)
 
-       WITH bacenta
-       MATCH (lastCode:LastBacentaCode)
-       SET
-        bacenta.code = lastCode.number + 1,
-        lastCode.number = bacenta.code
-
 
       RETURN bacenta
       """
@@ -919,9 +913,9 @@ extend type Mutation {
                	SET bacenta.name = $name
               	SET bacenta.location = point({latitude:toFloat($venueLatitude), longitude:toFloat($venueLongitude), crs:'WGS-84'})
 
-               WITH bacenta 
+               WITH bacenta
                     CALL {
-                     	WITH bacenta 
+                     	WITH bacenta
                       WITH bacenta WHERE $meetingDay IS NOT NULL
                       MATCH (meetingDay:ServiceDay {day: $meetingDay})
                       OPTIONAL MATCH (bacenta)-[r:MEETS_ON]->()
