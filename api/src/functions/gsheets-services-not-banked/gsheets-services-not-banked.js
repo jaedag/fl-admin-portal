@@ -13,7 +13,7 @@ WHERE record.noServiceReason IS NULL
       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)-[:HAS_HISTORY]-(church) WHERE church:Bacenta OR church:Constituency OR church:Council
       MATCH (church)<-[:LEADS]-(leader:Member)
 RETURN DISTINCT toString(date.date.week) AS week, toString(date.date) AS date, pastor.firstName, pastor.lastName,church.name AS churchName, leader.firstName, 
-leader.lastName, labels(church), record.attendance AS attendance, record.income AS NotBanked ORDER BY pastor.firstName,
+leader.lastName, labels(church), toString(record.attendance) AS attendance, record.income AS NotBanked ORDER BY pastor.firstName,
 pastor.lastName, date, week
 `
 
@@ -53,7 +53,7 @@ const executeQuery = async (neoDriver) => {
         record.get('leader.firstName'),
         record.get('leader.lastName'),
         record.get('labels(church)').toString(),
-        record.get('attendance').low,
+        record.get('attendance'),
         record.get('NotBanked'),
       ]),
     ]
