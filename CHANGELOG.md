@@ -1,3 +1,9 @@
+#### 7.18.36 (2024-07-24)
+
+##### Bug Fixes
+
+*   allow constituency admins to delete members ([9bf5051d](https://github.com/firstlovecenter/fl-admin-portal/commit/9bf5051de8d8cf96c368448e411f31977abc1760))
+
 #### 7.18.35 (2024-07-24)
 
 ##### Chores
