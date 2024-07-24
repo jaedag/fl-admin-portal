@@ -1,3 +1,18 @@
+#### 7.18.35 (2024-07-24)
+
+##### Chores
+
+*  update permit roles for directory mutation ([2c333a7f](https://github.com/firstlovecenter/fl-admin-portal/commit/2c333a7f1ac9353444a7900806f3d81b36a557cf))
+*  update scheduled time for gsheets-services-not-banked function ([efb682b4](https://github.com/firstlovecenter/fl-admin-portal/commit/efb682b42aad3f3fb99ad20e33e1883b4e15230f))
+
+##### Bug Fixes
+
+*  fix unauthorized error handling in AppWithApollo component ([7c235d16](https://github.com/firstlovecenter/fl-admin-portal/commit/7c235d16da0826cf527a1c83613baea0ce8c8260))
+
+##### Refactors
+
+*  optimize GSheets query for fetching services not banked ([0bd90039](https://github.com/firstlovecenter/fl-admin-portal/commit/0bd900393aec20b1faba72eb8d61d6d6c8845af4))
+
 #### 7.18.34 (2024-07-19)
 
 ##### New Features
