@@ -17,7 +17,7 @@ import ErrorScreen from 'components/base-component/ErrorScreen'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { Button, ButtonGroup, Col, Container, Row } from 'react-bootstrap'
 import LoadingScreen from 'components/base-component/LoadingScreen'
-import { permitAdmin } from 'permission-utils'
+import { permitAdmin, permitLeaderAdmin } from 'permission-utils'
 import SubmitButton from 'components/formik/SubmitButton'
 import { MemberContext } from 'contexts/MemberContext'
 import { CreateMemberFormOptions } from '../create/CreateMember'
@@ -235,7 +235,7 @@ const MemberForm = ({
                               Add Title
                             </Button>
                           </RoleView>
-                          <RoleView roles={permitAdmin('Council')}>
+                          <RoleView roles={permitLeaderAdmin('Constituency')}>
                             <Button
                               onClick={() => togglePopup()}
                               variant="danger"

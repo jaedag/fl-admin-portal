@@ -219,7 +219,7 @@ const directoryMutation = {
     context: Context
   ) => {
     isAuth(
-      [...permitLeaderAdmin('Council'), ...permitSheepSeeker()],
+      [...permitLeaderAdmin('Constituency'), ...permitSheepSeeker()],
       context.auth.roles
     )
     const session = context.executionContext.session()
