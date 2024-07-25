@@ -150,20 +150,22 @@ const Services = () => {
               </>
             )}
 
-          <RoleView
-            roles={[
-              ...permitLeaderAdmin('Constituency'),
-              ...permitLeaderAdmin('Hub'),
-            ]}
-          >
-            <MenuButton
-              title="Defaulters"
-              color="danger"
-              iconComponent={<EmojiFrown />}
-              onClick={() => navigate('/services/defaulters/dashboard')}
-              noCaption
-            />
-          </RoleView>
+          {church.typename !== 'Bacenta' ? (
+            <RoleView
+              roles={[
+                ...permitLeaderAdmin('Constituency'),
+                ...permitLeaderAdmin('Hub'),
+              ]}
+            >
+              <MenuButton
+                title="Defaulters"
+                color="danger"
+                iconComponent={<EmojiFrown />}
+                onClick={() => navigate('/services/defaulters/dashboard')}
+                noCaption
+              />
+            </RoleView>
+          ) : null}
         </div>
       </Container>
     </div>
