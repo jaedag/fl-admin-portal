@@ -24,8 +24,6 @@ WITH apoc.cypher.runFirstColumn(
   "MATCH (member:Member {id:$id})
   RETURN member", {offset:0, first:5, id: $id}, True) AS x UNWIND x AS member
   RETURN member { .id,.auth_id, .firstName,.lastName,.email,.phoneNumber,.whatsappNumber,.pictureUrl,
-  leadsFellowship: [ member_fellowships IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(fellowship:Fellowship)
-  RETURN fellowship", {this: member}, true) | member_fellowships { .id,.name }],
   leadsBacenta: [ member_bacentas IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(bacenta:Bacenta)
   RETURN bacenta", {this: member}, true) | member_bacentas { .id,.name }],
    leadsConstituency: [ member_constituency IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(constituency:Constituency)
@@ -107,8 +105,8 @@ export const matchMemberSheepSeekerQuery = `
 
 export const matchChurchQuery = `
   MATCH (church {id:$id}) 
-  WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus OR church:Oversight OR church:Denomination
-  OR church:ClosedFellowship OR church:ClosedBacenta 
+  WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus OR church:Oversight OR church:Denomination
+  OR church:ClosedBacenta 
   OR church:CreativeArts OR church:Ministry OR church:HubCouncil OR church:Hub
 
   WITH church, labels(church) as labels 
@@ -286,8 +284,8 @@ CREATE (member:Active:Member:IDL:Deer {whatsappNumber:$whatsappNumber})
 
 export const activateInactiveMember = `
 MATCH (member:Inactive:Member {id: $id})
-MATCH (fellowship:Fellowship {id: $fellowship})
-MATCH (member)-[r1:BELONGS_TO]->(oldChurch) WHERE oldChurch:Fellowship OR oldChurch:ClosedFellowship
+MATCH (bacenta:Bacenta {id: $bacenta})
+MATCH (member)-[r1:BELONGS_TO]->(oldChurch) WHERE oldChurch:Bacenta OR oldChurch:ClosedBacenta
 MATCH (member)-[r2:HAS_MARITAL_STATUS]-> (maritalStatus)
 MATCH  (member)-[r3:WAS_BORN_ON]->(date)
 DELETE r1, r2, r3
@@ -309,7 +307,7 @@ WITH member, fellowship
         SET
         log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
-        log.historyRecord = $firstName +' ' +$lastName+' was reregistered on '+apoc.date.convertFormat(toString(date()), 'date', 'dd MMMM yyyy') + ' with ' + fellowship.name + ' Fellowship'
+        log.historyRecord = $firstName +' ' +$lastName+' was reregistered on '+apoc.date.convertFormat(toString(date()), 'date', 'dd MMMM yyyy') + ' with ' + bacenta.name + ' Bacenta'
 
       WITH member, log
       MERGE (today:TimeGraph {date: date()})
@@ -318,14 +316,14 @@ WITH member, fellowship
       WITH member, log, today, date
       MATCH (currentUser:Member {auth_id:$auth_id})
       MATCH (maritalStatus:MaritalStatus {status:$maritalStatus})
-      MATCH (fellowship:Fellowship {id: $fellowship})
+      MATCH (bacenta:Bacenta {id: $bacenta})
 
       MERGE (log)-[:RECORDED_ON]->(today)
       MERGE (log)-[:LOGGED_BY]->(currentUser)
       MERGE (member)-[:HAS_HISTORY]->(log)
       MERGE (member)-[:HAS_MARITAL_STATUS]-> (maritalStatus)
       MERGE (member)-[:WAS_BORN_ON]->(date)
-      MERGE (member)-[:BELONGS_TO]->(fellowship)
+      MERGE (member)-[:BELONGS_TO]->(bacenta)
 
 
       WITH member
@@ -346,11 +344,10 @@ WITH member, fellowship
           RETURN count(member) AS member_basonta
           }
 
-           MATCH (fellowship:Fellowship {id: $fellowship})
-           MATCH (fellowship)<-[:HAS]-(bacenta:Bacenta)
+           MATCH (bacenta:Bacenta {id: $bacenta})
           MATCH (bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(council:Council)
            RETURN member  {.id, .firstName,.middleName,.lastName,.email,.phoneNumber,.whatsappNumber,
-            fellowship:fellowship {.id,bacenta:bacenta{.id,constituency:constituency{.id}}}}
+            bacenta:bacenta {.id,constituency:constituency{.id}}}
       `
 
 export const checkInactiveMember = `

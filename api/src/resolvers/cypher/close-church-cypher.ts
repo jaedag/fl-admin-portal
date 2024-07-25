@@ -5,7 +5,7 @@ RETURN fellowship.name AS name, COUNT(member) AS memberCount
 `
 
 export const getLastServiceRecord = `
-MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Constituency OR church:Council OR church:Stream OR church:Campus
+MATCH (church {id: $churchId}) WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
 MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(otherRecords:ServiceRecord)-[:SERVICE_HELD_ON]->(otherDate:TimeGraph)
 WHERE NOT (otherRecords:NoService) AND duration.between(otherDate.date, date()).weeks < 52
 

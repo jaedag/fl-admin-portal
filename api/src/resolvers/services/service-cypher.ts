@@ -12,7 +12,7 @@ RETURN church.id AS id, church.name AS name, labels(church) AS labels, record IS
 
 export const getHigherChurches = `
 MATCH (church {id: $churchId})
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
+WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream
 OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 MATCH (church)<-[:HAS*1..7]-(higherChurch)
 WHERE higherChurch:Bacenta OR higherChurch:Constituency OR higherChurch:Council OR higherChurch:Stream OR higherChurch:Campus OR higherChurch:Oversight OR higherChurch:Denomination
@@ -23,7 +23,7 @@ RETURN DISTINCT higherChurch
 
 export const getCurrency = `
 MATCH (church {id: $churchId})<-[:HAS|HAS_MINISTRY*0..5]-(campus:Campus)
-WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
+WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
 OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 
 RETURN DISTINCT labels(church) AS labels, campus.name, campus.currency AS currency, campus.conversionRateToDollar AS conversionRateToDollar
@@ -31,8 +31,8 @@ RETURN DISTINCT labels(church) AS labels, campus.name, campus.currency AS curren
 
 export const absorbAllTransactions = `
 MATCH (serviceRecord:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(log:ServiceLog)<-[:CURRENT_HISTORY]-(church)
-WHERE church:Fellowship OR church:Constituency OR church:Council // OR church:Stream OR church:Campus
-MATCH (church)-[:HAS*0..4]->(fellowships:Fellowship)<-[r:GIVEN_AT]-(transaction:Transaction)
+WHERE church:Bacenta OR church:Constituency OR church:Council // OR church:Stream OR church:Campus
+MATCH (church)-[:HAS*0..3]->(bacentas:Bacenta)<-[r:GIVEN_AT]-(transaction:Transaction)
 DELETE r
 
 WITH DISTINCT serviceRecord, transaction, log
