@@ -70,6 +70,7 @@ export interface Church {
   hubs?: Church[]
   lowerChurch?: Church[]
   memberCount: number
+  members: Member[]
   history: HistoryLog[]
   __typename: ChurchLevel
 }
