@@ -98,6 +98,10 @@ const accounts = fs
   .readFileSync(path.join(__dirname, './accounts.graphql'))
   .toString('utf-8')
 
+const downloadCredits = fs
+  .readFileSync(path.join(__dirname, './download-credits.graphql'))
+  .toString('utf-8')
+
 const array = [
   schema,
   directory,
@@ -122,6 +126,7 @@ const array = [
   creativeartsChurches,
   maps,
   accounts,
+  downloadCredits,
 ]
 
 exports.typeDefs = array.join(' ')

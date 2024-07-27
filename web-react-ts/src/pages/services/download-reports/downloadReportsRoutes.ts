@@ -11,6 +11,10 @@ const DownloadCouncilMembership = lazy(
   () => import('./membership-list/DownloadCouncilMembership')
 )
 
+const PurchaseCouncilCredits = lazy(
+  () => import('./purchase-credits/PurchaseCouncilCredits')
+)
+
 export const downloadReports: LazyRouteTypes[] = [
   {
     path: '/download-reports/campus',
@@ -25,6 +29,11 @@ export const downloadReports: LazyRouteTypes[] = [
   {
     path: '/dowload-reports/council/membership',
     element: DownloadCouncilMembership,
+    roles: permitMe('Council'),
+  },
+  {
+    path: '/download-reports/council/purchase-credits',
+    element: PurchaseCouncilCredits,
     roles: permitMe('Council'),
   },
   {

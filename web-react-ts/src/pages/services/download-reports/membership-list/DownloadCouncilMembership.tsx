@@ -10,6 +10,7 @@ import NoDataComponent from 'pages/arrivals/CompNoData'
 import { CSVLink } from 'react-csv'
 import { getHumanReadableDate } from '@jaedag/admin-portal-types'
 import { ArrowDownCircle } from 'react-bootstrap-icons'
+import { useNavigate } from 'react-router'
 
 const formatDate = (dateString: string) => {
   if (!dateString) return ''
@@ -58,6 +59,7 @@ const DownloadCouncilMembership = () => {
   const { data, loading, error } = useQuery(DISPLAY_COUNCIL_MEMBERSHIP, {
     variables: { id: councilId },
   })
+  const navigate = useNavigate()
 
   const council: Council = data?.councils[0]
   const membersData = council?.members.map((member: Member) => ({
@@ -76,6 +78,21 @@ const DownloadCouncilMembership = () => {
     dateOfBirth: formatDate(member.dob?.date),
     visitationArea: member.visitationArea,
   }))
+
+  if (council?.downloadCredits <= 0 || !council?.downloadCredits) {
+    return (
+      <Container>
+        <HeadingPrimary>
+          You have exhausted your download credits for {council?.name} Council
+        </HeadingPrimary>
+        <Button
+          onClick={() => navigate('/download-reports/council/purchase-credits')}
+        >
+          Purchase More
+        </Button>
+      </Container>
+    )
+  }
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
