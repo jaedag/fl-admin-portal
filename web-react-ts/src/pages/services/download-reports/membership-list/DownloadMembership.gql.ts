@@ -5,6 +5,7 @@ export const DISPLAY_COUNCIL_MEMBERSHIP = gql`
     councils(where: { id: $id }) {
       id
       name
+      downloadCredits
       members {
         id
         firstName

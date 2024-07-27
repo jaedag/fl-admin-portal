@@ -63,6 +63,7 @@ export type HistoryLog = {
 export interface Church {
   id: string
   name: string
+  downloadCredits: number
   vacationStatus?: VacationStatusOptions
   stream_name?: StreamOptions
   leader: MemberWithoutBioData
