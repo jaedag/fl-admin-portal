@@ -290,7 +290,7 @@ MATCH (member)-[r2:HAS_MARITAL_STATUS]-> (maritalStatus)
 MATCH  (member)-[r3:WAS_BORN_ON]->(date)
 DELETE r1, r2, r3
 
-WITH member, fellowship
+WITH member, bacenta
   SET
         member:IDL, member:Active,
         member.firstName = $firstName,
