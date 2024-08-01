@@ -1,3 +1,24 @@
+#### 7.18.37 (2024-08-01)
+
+##### New Features
+
+*  implement deduction of credits upon download ([ac892967](https://github.com/firstlovecenter/fl-admin-portal/commit/ac8929678944bea93704f41c3cb63228faa54d16))
+*  implement payment options for council membership ([380454a5](https://github.com/firstlovecenter/fl-admin-portal/commit/380454a5f67c74859d9ef92070d0213140ae553f))
+*  implement auto credit of accounts ([dc61231e](https://github.com/firstlovecenter/fl-admin-portal/commit/dc61231e2452eec81ff000cb08915f32ea8ad6a6))
+*  implement backend resolver to pay for download credits ([e7f1d646](https://github.com/firstlovecenter/fl-admin-portal/commit/e7f1d6461ef4f1795143710f228b615f80d4ca21))
+*  implement feature to download  membership list as a report ([9ff6ca36](https://github.com/firstlovecenter/fl-admin-portal/commit/9ff6ca361bba2f676cdb84ef31e262cbb8058aae))
+*  add conditional rendering for Defaulters menu button based on church type ([d65a4519](https://github.com/firstlovecenter/fl-admin-portal/commit/d65a45193882e274e808bb9048a318e64ab26763))
+
+##### Bug Fixes
+
+*  update amount calculation for initiating Paystack charge ([80c7636a](https://github.com/firstlovecenter/fl-admin-portal/commit/80c7636a3146daa1015d14984b9c608951df3b5d))
+*  fix bug where online giving was not absorbed to serviceRecord ([d470d5d4](https://github.com/firstlovecenter/fl-admin-portal/commit/d470d5d4218dc6c22a6c98f4e798414dd2d2c907))
+
+##### Refactors
+
+*  update member's fellowship to bacenta in resolver-cypher.ts ([ca7a8f21](https://github.com/firstlovecenter/fl-admin-portal/commit/ca7a8f213332d91e556fcd27207e1d6c3fd5a91e))
+*  optimize GSheets query for fetching services not banked ([12dfbe48](https://github.com/firstlovecenter/fl-admin-portal/commit/12dfbe4807f3b74beed574faf6c8ec0bff71c6ca))
+
 #### 7.18.36 (2024-07-24)
 
 ##### Bug Fixes
