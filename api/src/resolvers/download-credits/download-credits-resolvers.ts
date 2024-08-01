@@ -50,6 +50,7 @@ export const downloadCreditsMutations = {
               phone: args.mobileNumber,
               provider: args.mobileNetwork,
             },
+            bearCharges: true,
             customer: member,
             subaccount,
             auth,
