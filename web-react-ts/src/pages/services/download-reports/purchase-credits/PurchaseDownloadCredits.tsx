@@ -103,7 +103,9 @@ const PurchaseDownloadCredits = (props: PurchaseCreditsProps) => {
         handleShow()
       } else {
         setSubmitting(false)
-        navigate('/download-reports/council/confirm-payment-delay')
+        navigate(
+          `/download-reports/${church.__typename.toLowerCase()}/confirm-payment-delay`
+        )
       }
     } catch (error: any) {
       setErrorMessage(error.message)

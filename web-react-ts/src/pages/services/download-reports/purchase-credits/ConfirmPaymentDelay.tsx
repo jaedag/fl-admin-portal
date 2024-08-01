@@ -1,12 +1,17 @@
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import Popup from 'components/Popup/Popup'
+import { ChurchLevelLower } from 'global-types'
 import usePopup from 'hooks/usePopup'
 import ManualApprovalSteps from 'pages/services/banking/self-banking/ManualApprovalSteps'
 import { useEffect, useState } from 'react'
 import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 
-const ConfirmPayment = () => {
+const ConfirmPaymentDelay = ({
+  churchLevel,
+}: {
+  churchLevel: ChurchLevelLower
+}) => {
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
   const [countdown, setCountdown] = useState(15)
@@ -36,7 +41,7 @@ const ConfirmPayment = () => {
             <Button
               disabled={countdown > 0}
               onClick={() =>
-                navigate('/download-reports/council/confirm-payment-delay')
+                navigate(`/download-reports/${churchLevel}/purchase-history`)
               }
             >
               Confirm Transaction
@@ -53,4 +58,4 @@ const ConfirmPayment = () => {
   )
 }
 
-export default ConfirmPayment
+export default ConfirmPaymentDelay

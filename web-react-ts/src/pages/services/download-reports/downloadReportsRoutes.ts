@@ -18,8 +18,8 @@ const CouncilPurchaseHistoy = lazy(
   () => import('./purchase-credits/CouncilPurchaseHistory')
 )
 
-const ConfirmPaymentDelay = lazy(
-  () => import('./purchase-credits/ConfirmPaymentDelay')
+const CouncilConfirmPaymentDelay = lazy(
+  () => import('./purchase-credits/CouncilConfirmPaymentDelay')
 )
 
 export const downloadReports: LazyRouteTypes[] = [
@@ -55,7 +55,7 @@ export const downloadReports: LazyRouteTypes[] = [
   },
   {
     path: '/download-reports/council/confirm-payment-delay',
-    element: ConfirmPaymentDelay,
+    element: CouncilConfirmPaymentDelay,
     roles: permitMe('Bacenta'),
   },
 ]
