@@ -40,6 +40,7 @@ const setTransactionStatusPending = `
 const executeQuery = async (neoDriver, paymentResponse) => {
   const session = neoDriver.session()
   let response = ''
+
   try {
     const neoRes = await session.executeWrite(async (tx) => {
       const { reference, status } = paymentResponse
@@ -70,6 +71,36 @@ const executeQuery = async (neoDriver, paymentResponse) => {
   return null
 }
 
+const executeCreditChurchesQuery = async (neoDriver, paymentResponse) => {
+  const session = neoDriver.session()
+  let response = ''
+
+  try {
+    const neoRes = await session.executeWrite(async (tx) => {
+      const { reference } = paymentResponse
+      const query = `
+        MATCH (record:Transaction {transactionReference: $reference})
+        MATCH (record)<-[r:MADE_TRANSACTION]-(church)
+          SET church.downloadCredits = church.downlaodCredits + record.amount
+
+        RETURN church
+      `
+      response = `Successfully updated transaction status to success ${reference}`
+
+      return tx.run(query, { reference })
+    })
+    console.log('🚀 ~ file: payment.js:40 ~ response:', response)
+
+    return neoRes
+  } catch (error) {
+    console.error('There was an error writing to db', error)
+  } finally {
+    session.close()
+  }
+
+  return null
+}
+
 const handlePaystackReq = async (event, neoDriver) => {
   if (!whitelistIPs(event)) {
     throw new Error('IP not whitelisted ')
@@ -84,6 +115,9 @@ const handlePaystackReq = async (event, neoDriver) => {
 
   console.log('🚀 ~ file: payment.js:80 ~ categories:', categories)
 
+  if (categories.includes('DownloadCredits')) {
+    await executeCreditChurchesQuery(neoDriver, { reference })
+  }
   if (categories.includes('Offering')) {
     await db
       .collection('offerings')

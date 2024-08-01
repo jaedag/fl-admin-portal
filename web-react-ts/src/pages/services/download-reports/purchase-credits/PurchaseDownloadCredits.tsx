@@ -14,13 +14,13 @@ import usePopup from 'hooks/usePopup'
 import { MOBILE_NETWORK_OPTIONS } from 'pages/arrivals/arrivals-utils'
 import {
   CONFIRM_OFFERING_PAYMENT,
-  PAY_OFFERING_MUTATION,
   SEND_PAYMENT_OTP,
 } from 'pages/services/banking/self-banking/bankingQueries'
 import React, { useState } from 'react'
 import { Button, Col, Container, Modal, Row, Spinner } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import * as Yup from 'yup'
+import { PURCHASE_DOWNLOAD_CREDITS } from './PurchaseCredits.gql'
 
 type PurchaseCreditsProps = {
   church: Church
@@ -30,8 +30,7 @@ type PurchaseCreditsProps = {
 
 type FormOptions = {
   purchaseDate: string
-  credits: number
-  momoName: string
+  amount: number
   mobileNetwork: string
   mobileNumber: string
 }
@@ -39,7 +38,7 @@ type FormOptions = {
 const PurchaseDownloadCredits = (props: PurchaseCreditsProps) => {
   const { church, loading, error } = props
 
-  const [PurchaseCredits] = useMutation(PAY_OFFERING_MUTATION)
+  const [PurchaseCredits] = useMutation(PURCHASE_DOWNLOAD_CREDITS)
   const [SendPaymentOTP] = useMutation(SEND_PAYMENT_OTP)
   const [ConfirmOfferingPayment] = useMutation(CONFIRM_OFFERING_PAYMENT)
   const navigate = useNavigate()
@@ -52,8 +51,7 @@ const PurchaseDownloadCredits = (props: PurchaseCreditsProps) => {
 
   const initialValues: FormOptions = {
     purchaseDate: new Date().toISOString().slice(0, 10),
-    credits: 0,
-    momoName: '',
+    amount: 0,
     mobileNetwork: '',
     mobileNumber: '',
   }
@@ -65,17 +63,13 @@ const PurchaseDownloadCredits = (props: PurchaseCreditsProps) => {
   // }, [service])
 
   const validationSchema = Yup.object({
-    credits: Yup.number().required('Please enter the number of credits'),
+    amount: Yup.number().required('Please enter the number of credits'),
     mobileNumber: Yup.string()
       .required('You must enter a mobile number')
       .matches(
         MOMO_NUM_REGEX,
         `Enter a valid MoMo Number without spaces. eg. (02XXXXXXXX)`
       ),
-    momoName: Yup.string().when('mobileNumber', {
-      is: (mobileNumber: string) => mobileNumber && mobileNumber.length > 0,
-      then: Yup.string().required('Please enter the Momo Name'),
-    }),
     mobileNetwork: Yup.string().when('mobileNumber', {
       is: (mobileNumber: string) => mobileNumber && mobileNumber.length > 0,
       then: Yup.string().required('Please enter the Mobile Network'),
@@ -89,24 +83,27 @@ const PurchaseDownloadCredits = (props: PurchaseCreditsProps) => {
     const { setSubmitting } = onSubmitProps
 
     setSubmitting(true)
+
     try {
       const paymentRes = await PurchaseCredits({
         variables: {
           churchId: church.id,
+          amount: parseFloat(values.amount.toString()),
           mobileNetwork: values.mobileNetwork,
           mobileNumber: values.mobileNumber,
-          momoName: values.momoName,
         },
       })
+
       if (paymentRes.errors) {
         throw new Error(paymentRes.errors[0]?.message)
       } else if (
-        paymentRes.data?.PurchaseCredits.transactionStatus === 'send OTP'
+        paymentRes.data?.PurchaseDownloadCredits.transactionStatus ===
+        'send_otp'
       ) {
         handleShow()
       } else {
         setSubmitting(false)
-        navigate('/self-banking/confirm-payment')
+        // navigate('/self-banking/confirm-payment')
       }
     } catch (error: any) {
       setErrorMessage(error.message)
@@ -120,7 +117,7 @@ const PurchaseDownloadCredits = (props: PurchaseCreditsProps) => {
         <ErrorPopup
           errorMessage={errorMessage}
           togglePopup={togglePopup}
-          link={`/services/${church?.__typename.toLowerCase()}/self-banking`}
+          link={`/download-reports/${church.__typename}`}
         />
       )}
 
@@ -132,7 +129,6 @@ const PurchaseDownloadCredits = (props: PurchaseCreditsProps) => {
           <HeadingSecondary loading={loading}>
             {church?.name} {church?.__typename}
           </HeadingSecondary>
-
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -205,22 +201,21 @@ const PurchaseDownloadCredits = (props: PurchaseCreditsProps) => {
                 </Modal>
                 <Row className="row-cols-1 row-cols-md-2 mt-2">
                   <Col className="mb-2">
-                    <Input name="credits" label="Credits (GHS 20 per credit)" />
+                    <Input name="amount" label="Credits (GHS 20 per credit)" />
                     <Select
                       name="mobileNetwork"
                       label="Mobile Network"
                       options={MOBILE_NETWORK_OPTIONS}
                     />
                     <Input name="mobileNumber" label="MoMo Number" />
-                    <Input name="momoName" label="MoMo Name" />
                   </Col>
                 </Row>
 
-                <p className="text-warning mt-5 text-center">
-                  <p className="card fs-4">{formik.values.credits * 20} GHS </p>
+                <div className="text-warning mt-5 text-center">
+                  <p className="card fs-4">{formik.values.amount * 20} GHS </p>
                   Above is the amount you have to pay. Click the button below to
                   confirm
-                </p>
+                </div>
                 <div className="d-flex justify-content-center">
                   <SubmitButton formik={formik}>
                     <>Make Payment</>
