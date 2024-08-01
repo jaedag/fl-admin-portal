@@ -1,8 +1,11 @@
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useContext } from 'react'
 import { Button, Container } from 'react-bootstrap'
-import { DISPLAY_COUNCIL_MEMBERSHIP } from './DownloadMembership.gql'
-import { useQuery } from '@apollo/client'
+import {
+  DISPLAY_COUNCIL_MEMBERSHIP,
+  REMOVE_DOWNLOAD_CREDIT,
+} from './DownloadMembership.gql'
+import { useMutation, useQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import { Council, Member } from 'global-types'
@@ -60,9 +63,10 @@ const DownloadCouncilMembership = () => {
   const { data, loading, error } = useQuery(DISPLAY_COUNCIL_MEMBERSHIP, {
     variables: { id: councilId },
   })
+  const [RemoveDownloadCredit] = useMutation(REMOVE_DOWNLOAD_CREDIT)
 
   const council: Council = data?.councils[0]
-  const membersData = council?.members.map((member: Member) => ({
+  const membersData = council?.downloadMembership.map((member: Member) => ({
     council: council.name,
     constituency: member.bacenta.constituency.name,
     constituencyLeader: member.bacenta.constituency.leader.fullName,
@@ -93,7 +97,13 @@ const DownloadCouncilMembership = () => {
 
           {membersData?.length > 0 && (
             <>
-              <Button variant="outline-success" className="mb-3">
+              <Button
+                variant="outline-success"
+                className="mb-3"
+                onClick={() => {
+                  RemoveDownloadCredit({ variables: { churchId: councilId } })
+                }}
+              >
                 <CSVLink
                   data={membersData}
                   headers={headers}

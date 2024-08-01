@@ -1,9 +1,4 @@
-MATCH (trans:CreditTransaction {transactionReference: "31ljknrjmjrwvgm"})-[]-(church)
-SET trans.credited = false
-
-RETURN SUM(church.downloadCredtis), SUM(church.downloadCredits) + 10
-
-
+export const councilDownloadMembers = `
     MATCH (council:Council {id: $id})-[:HAS]->(constituency:Constituency)-[:HAS]->(bacenta:Bacenta)<-[:BELONGS_TO]-(members:Member)
     MATCH (constituency)<-[:LEADS]-(constituencyLeader:Member)
     MATCH (bacenta)<-[:LEADS]-(bacentaLeader:Member)
@@ -13,11 +8,7 @@ RETURN SUM(church.downloadCredtis), SUM(church.downloadCredits) + 10
     MATCH (members)-[:WAS_BORN_ON]->(dob:TimeGraph)
 
 
-    RETURN council {
-        .id,
-        .name, 
-        .downloadCredits,
-        members: members {
+    RETURN collect(members {
             .id,
             .firstName,
             .lastName,
@@ -25,7 +16,7 @@ RETURN SUM(church.downloadCredtis), SUM(church.downloadCredits) + 10
             .whatsappNumber,
             .email,
             .visitationArea,
-              maritalStatus: maritalStatus {
+            maritalStatus: maritalStatus {
                 .status
             },
             gender: gender {
@@ -34,7 +25,7 @@ RETURN SUM(church.downloadCredtis), SUM(church.downloadCredits) + 10
             dob: dob {
                 .date
             },
-              bacenta: bacenta {
+            bacenta: bacenta {
                 .id,
                 .name,
                 leader: bacentaLeader {
@@ -42,12 +33,19 @@ RETURN SUM(church.downloadCredtis), SUM(church.downloadCredits) + 10
                     .firstName,
                     .lastName,
                     fullName: bacentaLeader.firstName + ' ' + bacentaLeader.lastName
+                },
+                constituency: constituency{
+                    .id,
+                    .name,
+                    leader: constituencyLeader {
+                        .id,
+                        .firstName,
+                        .lastName,
+                        fullName: constituencyLeader.firstName + ' ' + constituencyLeader.lastName
+                    }
                 }
-           
-        }
-    }
+            }
+    }) AS members, council
+`
 
-    }
-
-
-    
+export const StreamDownloadMembers = ``

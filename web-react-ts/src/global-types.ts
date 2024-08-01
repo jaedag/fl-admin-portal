@@ -64,6 +64,7 @@ export interface Church {
   id: string
   name: string
   downloadCredits: number
+  downloadMembership: Member[]
   creditsTransactionHistory: CreditTransaction[]
   vacationStatus?: VacationStatusOptions
   stream_name?: StreamOptions

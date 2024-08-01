@@ -10,13 +10,19 @@ export const COUNCIL_WITH_CREDITS = gql`
   }
 `
 
+export const REMOVE_DOWNLOAD_CREDIT = gql`
+  mutation RemoveDownloadCredit($churchId: ID!) {
+    RemoveDownloadCredit(churchId: $churchId)
+  }
+`
+
 export const DISPLAY_COUNCIL_MEMBERSHIP = gql`
   query DisplayCouncilMembership($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
       downloadCredits
-      members {
+      downloadMembership {
         id
         firstName
         lastName
