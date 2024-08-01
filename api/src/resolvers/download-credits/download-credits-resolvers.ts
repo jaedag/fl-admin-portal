@@ -45,7 +45,7 @@ export const downloadCreditsMutations = {
       const response = await Promise.all([
         axios(
           initiatePaystackCharge({
-            amount: args.amount,
+            amount: args.amount * 20,
             mobile_money: {
               phone: args.mobileNumber,
               provider: args.mobileNetwork,
