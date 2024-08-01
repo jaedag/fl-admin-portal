@@ -4,7 +4,7 @@ import {
   initiatePaystackCharge,
   confirmTransactionStatus,
 } from '@jaedag/admin-portal-api-core'
-import { Member, Network } from '@jaedag/admin-portal-types'
+import { Council, Member, Network } from '@jaedag/admin-portal-types'
 import { permitMe } from '../permissions'
 import { getCreditsFinancials } from '../utils/financial-utils'
 import { Context } from '../utils/neo4j-types'
@@ -15,6 +15,7 @@ import {
   initiateDownloadCreditsTransaction,
   updateTransactionStatus,
 } from './download-credits-cypher'
+import { councilDownloadMembers } from './download-credits-member-cypher'
 
 export const downloadCreditsMutations = {
   PurchaseDownloadCredits: async (
@@ -129,4 +130,39 @@ export const downloadCreditsMutations = {
   },
 }
 
-export default downloadCreditsMutations
+export const downloadCreditsQueries = {
+  Council: {
+    downloadMembership: async (
+      object: Council,
+      args: unknown,
+      context: Context
+    ) => {
+      const session = context.executionContext.session()
+      isAuth(permitMe('Council'), context.auth.roles)
+
+      try {
+        const councilRes = await session.executeRead((tx) => {
+          return tx.run(councilDownloadMembers, {
+            id: object.id,
+          })
+        })
+
+        const council = councilRes.records[0].get('council')
+
+        if (council.downloadCredits < 1) {
+          throw new Error(
+            'You do not have enough credits to download this report'
+          )
+        }
+
+        return councilRes.records[0].get('members')
+      } catch (error) {
+        throwToSentry('Error getting council membership', error)
+      } finally {
+        await session.close()
+      }
+
+      return {}
+    },
+  },
+}

@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import React, { useContext } from 'react'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Button, Card, Col, Container, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router'
 import { COUNCIL_WITH_CREDITS } from './membership-list/DownloadMembership.gql'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -21,6 +21,11 @@ const CouncilDownloadReports = () => {
       <Container>
         <HeadingPrimary>Download Reports</HeadingPrimary>
         <CheckDownloadCredits church={data?.councils[0]}>
+          <Card border="success">
+            <Card.Header>No of Download Credits</Card.Header>
+            <Card.Body>{data?.councils[0].downloadCredits}</Card.Body>
+          </Card>
+
           <div>Choose a report to download</div>
 
           <Button

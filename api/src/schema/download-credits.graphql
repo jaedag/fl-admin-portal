@@ -1,5 +1,6 @@
 extend type Council {
   downloadCredits: Int
+  downloadMembership: [Member!]!
   creditsTransactionHistory: [CreditTransaction!]!
     @relationship(type: "PURCHASED_CREDITS", direction: OUT)
 }
@@ -11,6 +12,18 @@ extend type Mutation {
     mobileNetwork: String!
     mobileNumber: String!
   ): CreditTransaction!
+
+  RemoveDownloadCredit(churchId: ID!): Int!
+    @cypher(
+      statement: """
+      MATCH (church {id: $churchId})
+      WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
+
+      SET church.downloadCredits = church.downloadCredits - 1
+
+      RETURN church.downloadCredits
+      """
+    )
 
   ConfirmCreditTransaction(transactionReference: String!): CreditTransaction!
 }
