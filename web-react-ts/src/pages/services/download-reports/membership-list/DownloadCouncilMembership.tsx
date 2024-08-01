@@ -1,5 +1,5 @@
 import { ChurchContext } from 'contexts/ChurchContext'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { Button, Container } from 'react-bootstrap'
 import { DISPLAY_COUNCIL_MEMBERSHIP } from './DownloadMembership.gql'
 import { useQuery } from '@apollo/client'
@@ -31,6 +31,7 @@ const formatDate = (dateString: string) => {
     'November',
     'December',
   ]
+
   const month = monthNames[date.getMonth()] // getMonth() returns 0-based month
 
   return `${day} ${month}`

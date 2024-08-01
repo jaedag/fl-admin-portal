@@ -16,6 +16,7 @@ import { mapsResolvers } from './maps/maps-resolvers'
 import SontaServiceMutation from './services/rehearsal-resolver'
 import { Context } from './utils/neo4j-types'
 import MakeServantResolvers from './directory/make-servant-resolvers'
+import { downloadCreditsMutations } from './download-credits/download-credits-resolvers'
 
 const dotenv = require('dotenv')
 
@@ -104,6 +105,7 @@ const resolvers = {
     ...SontaServiceMutation,
     ...accountsMutations,
     ...directoryCreativeArtsMutation,
+    ...downloadCreditsMutations,
   },
 }
 

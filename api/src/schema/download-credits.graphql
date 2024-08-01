@@ -1,3 +1,24 @@
 extend type Council {
-  downloadCredits: Int
+  downloadCredits: Int!
+}
+
+extend type Mutation {
+  PurchaseDownloadCredits(
+    churchId: ID!
+    amount: Float!
+    mobileNetwork: String!
+    mobileNumber: String!
+  ): CreditTransaction!
+}
+
+type CreditTransaction {
+  id: ID!
+  amount: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  mobileNetwork: String!
+  mobileNumber: String!
+  transactionReference: String!
+  transactionStatus: String!
+  council: Council! @relationship(type: "HAS_TRANSACTION", direction: IN)
 }

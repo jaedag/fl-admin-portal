@@ -14,14 +14,13 @@ import {
 } from './download-credits-cypher'
 
 export const downloadCreditsMutations = {
-  PurchaseCouncilCredits: async (
+  PurchaseDownloadCredits: async (
     object: unknown,
     args: {
       churchId: string
       amount: number
       mobileNetwork: Network
       mobileNumber: string
-      momoName: string
     },
     context: Context
   ) => {
@@ -67,7 +66,7 @@ export const downloadCreditsMutations = {
       )
 
       return cypherRes.records[0].get('transaction').properties
-    } catch {
+    } catch (error) {
       throw new Error('Error purchasing credits')
     } finally {
       await session.close()
