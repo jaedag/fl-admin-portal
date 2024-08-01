@@ -10,7 +10,7 @@ import NoDataComponent from 'pages/arrivals/CompNoData'
 import { CSVLink } from 'react-csv'
 import { getHumanReadableDate } from '@jaedag/admin-portal-types'
 import { ArrowDownCircle } from 'react-bootstrap-icons'
-import { useNavigate } from 'react-router'
+import CheckDownloadCredits from '../CheckDownloadCredits'
 
 const formatDate = (dateString: string) => {
   if (!dateString) return ''
@@ -60,7 +60,6 @@ const DownloadCouncilMembership = () => {
   const { data, loading, error } = useQuery(DISPLAY_COUNCIL_MEMBERSHIP, {
     variables: { id: councilId },
   })
-  const navigate = useNavigate()
 
   const council: Council = data?.councils[0]
   const membersData = council?.members.map((member: Member) => ({
@@ -80,91 +79,78 @@ const DownloadCouncilMembership = () => {
     visitationArea: member.visitationArea,
   }))
 
-  if (council?.downloadCredits <= 0 || !council?.downloadCredits) {
-    return (
-      <Container>
-        <HeadingPrimary>
-          You have exhausted your download credits for {council?.name} Council
-        </HeadingPrimary>
-        <Button
-          onClick={() => navigate('/download-reports/council/purchase-credits')}
-        >
-          Purchase More
-        </Button>
-      </Container>
-    )
-  }
-
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
       <Container>
-        <HeadingPrimary>
-          Download {council?.name} Council Membership
-        </HeadingPrimary>
+        <CheckDownloadCredits church={data?.councils[0]}>
+          <HeadingPrimary>
+            Download {council?.name} Council Membership
+          </HeadingPrimary>
 
-        {membersData?.length === 0 && (
-          <NoDataComponent text="There is no membership data to download" />
-        )}
+          {membersData?.length === 0 && (
+            <NoDataComponent text="There is no membership data to download" />
+          )}
 
-        {membersData?.length > 0 && (
-          <>
-            <Button variant="outline-success" className="mb-3">
-              <CSVLink
-                data={membersData}
-                headers={headers}
-                filename={`${
-                  council?.name
-                } Council Membership - ${getHumanReadableDate(today)} .csv`}
-              >
-                <span className="text-success">
-                  Download CSV <ArrowDownCircle />
-                </span>
-              </CSVLink>
-            </Button>
-            <div style={{ width: 'auto', overflowX: 'scroll' }}>
-              <table className="table table-dark">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Council</th>
-                    <th scope="col">Constituency</th>
-                    <th scope="col">Constituency Leader</th>
-                    <th scope="col">Bacenta</th>
-                    <th scope="col">Bacenta Leader</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Phone Number</th>
-                    <th scope="col">Whatsapp Number</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Marital Status</th>
-                    <th scope="col">Birthday</th>
-                    <th scope="col">Visitation Area</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {membersData?.slice(0, 5)?.map((data, index: number) => (
-                    <tr key={index}>
-                      <th scope="row">{index}</th>
-                      <td>{data?.council}</td>
-                      <td>{data?.constituency}</td>
-                      <td>{data?.constituencyLeader}</td>
-                      <td>{data?.bacenta}</td>
-                      <td>{data?.bacentaLeader}</td>
-                      <td>{data?.firstName}</td>
-                      <td>{data?.lastName}</td>
-                      <td>{data?.phoneNumber}</td>
-                      <td>{data?.whatsappNumber}</td>
-                      <td>{data?.email}</td>
-                      <td>{data?.maritalStatus}</td>
-                      <td>{data?.dateOfBirth}</td>
-                      <td>{data?.visitationArea}</td>
+          {membersData?.length > 0 && (
+            <>
+              <Button variant="outline-success" className="mb-3">
+                <CSVLink
+                  data={membersData}
+                  headers={headers}
+                  filename={`${
+                    council?.name
+                  } Council Membership - ${getHumanReadableDate(today)} .csv`}
+                >
+                  <span className="text-success">
+                    Download CSV <ArrowDownCircle />
+                  </span>
+                </CSVLink>
+              </Button>
+              <div style={{ width: 'auto', overflowX: 'scroll' }}>
+                <table className="table table-dark">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Council</th>
+                      <th scope="col">Constituency</th>
+                      <th scope="col">Constituency Leader</th>
+                      <th scope="col">Bacenta</th>
+                      <th scope="col">Bacenta Leader</th>
+                      <th scope="col">First Name</th>
+                      <th scope="col">Last Name</th>
+                      <th scope="col">Phone Number</th>
+                      <th scope="col">Whatsapp Number</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Marital Status</th>
+                      <th scope="col">Birthday</th>
+                      <th scope="col">Visitation Area</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
-        )}
+                  </thead>
+                  <tbody>
+                    {membersData?.slice(0, 5)?.map((data, index: number) => (
+                      <tr key={index}>
+                        <th scope="row">{index}</th>
+                        <td>{data?.council}</td>
+                        <td>{data?.constituency}</td>
+                        <td>{data?.constituencyLeader}</td>
+                        <td>{data?.bacenta}</td>
+                        <td>{data?.bacentaLeader}</td>
+                        <td>{data?.firstName}</td>
+                        <td>{data?.lastName}</td>
+                        <td>{data?.phoneNumber}</td>
+                        <td>{data?.whatsappNumber}</td>
+                        <td>{data?.email}</td>
+                        <td>{data?.maritalStatus}</td>
+                        <td>{data?.dateOfBirth}</td>
+                        <td>{data?.visitationArea}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+        </CheckDownloadCredits>
       </Container>
     </ApolloWrapper>
   )

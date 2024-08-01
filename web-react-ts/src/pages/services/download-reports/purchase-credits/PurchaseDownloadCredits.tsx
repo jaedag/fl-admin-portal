@@ -103,7 +103,7 @@ const PurchaseDownloadCredits = (props: PurchaseCreditsProps) => {
         handleShow()
       } else {
         setSubmitting(false)
-        // navigate('/self-banking/confirm-payment')
+        navigate('/download-reports/council/confirm-payment-delay')
       }
     } catch (error: any) {
       setErrorMessage(error.message)
@@ -157,7 +157,9 @@ const PurchaseDownloadCredits = (props: PurchaseCreditsProps) => {
                               otp: otp,
                             },
                           }).then(() =>
-                            navigate('/self-banking/confirm-payment')
+                            navigate(
+                              '/download-reports/council/confirm-payment-delay'
+                            )
                           )
                         }}
                       >
@@ -182,7 +184,9 @@ const PurchaseDownloadCredits = (props: PurchaseCreditsProps) => {
                           })
                             .then(() => {
                               setOtpSent(false)
-                              navigate('/self-banking/confirm-payment')
+                              navigate(
+                                '/download-reports/council/confirm-payment-delay'
+                              )
                             })
                             .catch((error: any) => {
                               setOtpSent(false)

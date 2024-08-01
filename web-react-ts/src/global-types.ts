@@ -64,6 +64,7 @@ export interface Church {
   id: string
   name: string
   downloadCredits: number
+  creditsTransactionHistory: CreditTransaction[]
   vacationStatus?: VacationStatusOptions
   stream_name?: StreamOptions
   leader: MemberWithoutBioData
@@ -74,6 +75,17 @@ export interface Church {
   members: Member[]
   history: HistoryLog[]
   __typename: ChurchLevel
+}
+
+export interface CreditTransaction {
+  id: string
+  amount: number
+  mobileNetwork: 'MTN' | 'Vodafone' | 'AirtelTigo'
+  mobileNumber: string
+  transactionStatus: 'pending' | 'success' | 'failed' | 'send_otp'
+  transactionReference: string
+  createdAt: string
+  credited: boolean
 }
 
 export interface Bacenta extends Church {
