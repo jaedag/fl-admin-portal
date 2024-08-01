@@ -1,3 +1,13 @@
+#### 7.18.38 (2024-08-01)
+
+##### Chores
+
+*  update @jaedag/admin-portal-api-core to version 2.2.1 ([0d02d0c3](https://github.com/firstlovecenter/fl-admin-portal/commit/0d02d0c307317eaefdbc56bd3d1dfe401cdaff0a))
+
+##### New Features
+
+*  update routes and components for council confirm payment delay ([a32cf98d](https://github.com/firstlovecenter/fl-admin-portal/commit/a32cf98de3216aae7ca462742c315d2fe63bdcb9))
+
 #### 7.18.37 (2024-08-01)
 
 ##### New Features
