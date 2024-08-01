@@ -1,5 +1,7 @@
 extend type Council {
-  downloadCredits: Int!
+  downloadCredits: Int
+  creditsTransactionHistory: [CreditTransaction!]!
+    @relationship(type: "PURCHASED_CREDITS", direction: OUT)
 }
 
 extend type Mutation {
@@ -9,6 +11,8 @@ extend type Mutation {
     mobileNetwork: String!
     mobileNumber: String!
   ): CreditTransaction!
+
+  ConfirmCreditTransaction(transactionReference: String!): CreditTransaction!
 }
 
 type CreditTransaction {
@@ -20,5 +24,6 @@ type CreditTransaction {
   mobileNumber: String!
   transactionReference: String!
   transactionStatus: String!
-  council: Council! @relationship(type: "HAS_TRANSACTION", direction: IN)
+  credited: Boolean!
+  council: Council! @relationship(type: "PURCHASED_CREDITS", direction: IN)
 }

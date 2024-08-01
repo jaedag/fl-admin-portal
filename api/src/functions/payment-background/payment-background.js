@@ -81,7 +81,8 @@ const executeCreditChurchesQuery = async (neoDriver, paymentResponse) => {
       const query = `
         MATCH (record:Transaction {transactionReference: $reference})
         MATCH (record)<-[r:MADE_TRANSACTION]-(church)
-          SET church.downloadCredits = church.downlaodCredits + record.amount
+          SET church.downloadCredits = church.downloadCredits + record.amount
+          SET record.credited = true
 
         RETURN church
       `
@@ -115,7 +116,7 @@ const handlePaystackReq = async (event, neoDriver) => {
 
   console.log('🚀 ~ file: payment.js:80 ~ categories:', categories)
 
-  if (categories.includes('DownloadCredits')) {
+  if (categories.includes('CreditTransaction')) {
     await executeCreditChurchesQuery(neoDriver, { reference })
   }
   if (categories.includes('Offering')) {

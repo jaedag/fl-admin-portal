@@ -12,7 +12,14 @@ const DownloadCouncilMembership = lazy(
 )
 
 const PurchaseCouncilCredits = lazy(
-  () => import('./purchase-credits/PurchaseCouncilCredits')
+  () => import('./purchase-credits/CouncilPurchaseCredits')
+)
+const CouncilPurchaseHistoy = lazy(
+  () => import('./purchase-credits/CouncilPurchaseHistory')
+)
+
+const ConfirmPaymentDelay = lazy(
+  () => import('./purchase-credits/ConfirmPaymentDelay')
 )
 
 export const downloadReports: LazyRouteTypes[] = [
@@ -37,8 +44,18 @@ export const downloadReports: LazyRouteTypes[] = [
     roles: permitMe('Council'),
   },
   {
+    path: '/download-reports/council/purchase-history',
+    element: CouncilPurchaseHistoy,
+    roles: permitMe('Council'),
+  },
+  {
     path: '/campus/download-fellowship-services',
     element: CampusFellowshipServicesThisWeek,
     roles: permitMe('Campus'),
+  },
+  {
+    path: '/download-reports/council/confirm-payment-delay',
+    element: ConfirmPaymentDelay,
+    roles: permitMe('Bacenta'),
   },
 ]

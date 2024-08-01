@@ -2,15 +2,18 @@ import axios from 'axios'
 import {
   updatePaystackCustomerBody,
   initiatePaystackCharge,
+  confirmTransactionStatus,
 } from '@jaedag/admin-portal-api-core'
 import { Member, Network } from '@jaedag/admin-portal-types'
 import { permitMe } from '../permissions'
 import { getCreditsFinancials } from '../utils/financial-utils'
 import { Context } from '../utils/neo4j-types'
-import { isAuth } from '../utils/utils'
+import { isAuth, throwToSentry } from '../utils/utils'
 import {
+  creditSuccessfulTransaction,
   getMember,
   initiateDownloadCreditsTransaction,
+  updateTransactionStatus,
 } from './download-credits-cypher'
 
 export const downloadCreditsMutations = {
@@ -67,10 +70,62 @@ export const downloadCreditsMutations = {
 
       return cypherRes.records[0].get('transaction').properties
     } catch (error) {
-      throw new Error('Error purchasing credits')
+      throwToSentry('Error purchasing credits', error)
     } finally {
       await session.close()
     }
+
+    return {}
+  },
+
+  ConfirmCreditTransaction: async (
+    object: unknown,
+    args: { transactionReference: string },
+    context: Context
+  ) => {
+    const session = context.executionContext.session()
+    isAuth(permitMe('Bacenta'), context.auth.roles)
+
+    try {
+      const { auth } = getCreditsFinancials()
+
+      const confirmRes = await axios(
+        confirmTransactionStatus({
+          reference: args.transactionReference,
+          auth,
+        })
+      )
+
+      const cypherRes = await session.executeWrite((tx) =>
+        tx.run(updateTransactionStatus, {
+          transactionReference: args.transactionReference,
+          status: confirmRes.data.data.status,
+        })
+      )
+
+      const transaction = cypherRes.records[0].get('transaction').properties
+
+      if (
+        transaction.transactionStatus === 'success' &&
+        !transaction.credited
+      ) {
+        const response = await session.executeWrite((tx) =>
+          tx.run(creditSuccessfulTransaction, {
+            transactionReference: args.transactionReference,
+          })
+        )
+
+        return response.records[0].get('record').properties
+      }
+
+      return cypherRes.records[0].get('transaction').properties
+    } catch (error) {
+      throwToSentry('Error confirming transaction', error)
+    } finally {
+      await session.close()
+    }
+
+    return {}
   },
 }
 

@@ -1,5 +1,15 @@
 import { gql } from '@apollo/client'
 
+export const COUNCIL_WITH_CREDITS = gql`
+  query CouncilWithCredits($id: ID!) {
+    councils(where: { id: $id }) {
+      id
+      name
+      downloadCredits
+    }
+  }
+`
+
 export const DISPLAY_COUNCIL_MEMBERSHIP = gql`
   query DisplayCouncilMembership($id: ID!) {
     councils(where: { id: $id }) {
