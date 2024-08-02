@@ -37,6 +37,16 @@ const CouncilDownloadReports = () => {
         <Row className="mt-5">
           <Col>
             <Button
+              variant="success"
+              onClick={() =>
+                navigate('/download-reports/council/purchase-credits')
+              }
+            >
+              Purchase Credits
+            </Button>
+          </Col>
+          <Col>
+            <Button
               onClick={() =>
                 navigate('/download-reports/council/purchase-history')
               }
