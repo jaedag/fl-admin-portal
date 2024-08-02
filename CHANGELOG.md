@@ -1,3 +1,9 @@
+#### 7.18.39 (2024-08-02)
+
+##### Chores
+
+*  update @jaedag/admin-portal-api-core to version 2.2.2 ([6554450a](https://github.com/firstlovecenter/fl-admin-portal/commit/6554450aaf2617a8024de76832bca59d2ed2a5f1))
+
 #### 7.18.38 (2024-08-01)
 
 ##### Chores
