@@ -150,7 +150,7 @@ const Services = () => {
               </>
             )}
 
-          {church.typename !== 'Bacenta' ? (
+          {church.__typename !== 'Bacenta' ? (
             <RoleView
               roles={[
                 ...permitLeaderAdmin('Constituency'),
