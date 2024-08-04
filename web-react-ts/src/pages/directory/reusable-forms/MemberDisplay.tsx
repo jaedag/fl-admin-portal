@@ -62,11 +62,11 @@ const generateVCard = async (member: Member, roles: string) => {
     member.email
       ? '\nEMAIL;type=INTERNET;type=HOME;type=pref:' + member.email
       : ''
-  }\nTEL;type=CELL;type=VOICE;type=pref:${member.phoneNumber}\nTEL;TYPE=HOME:${
-    member.whatsappNumber
-  }\nNOTE:Visitation Landmark: ${member.visitationArea}\\nOccupation: ${
-    member.occupation.occupation || 'None'
-  }\\nMarital Status: ${
+  }\nTEL;type=CELL;type=VOICE;type=pref:+${
+    member.phoneNumber
+  }\nTEL;TYPE=HOME:+${member.whatsappNumber}\nNOTE:Visitation Landmark: ${
+    member.visitationArea
+  }\\nOccupation: ${member.occupation.occupation || 'None'}\\nMarital Status: ${
     member.maritalStatus.status
   }\\n\\nRoles in Church:\\n${roles}\n${
     base64Image ? 'PHOTO;ENCODING=b;TYPE=JPEG:' + base64Image + '\n' : ''
