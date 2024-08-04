@@ -6,6 +6,7 @@ export const councilDownloadMembers = `
     MATCH (members)-[:HAS_MARITAL_STATUS]->(maritalStatus:MaritalStatus)
     MATCH (members)-[:HAS_GENDER]->(gender:Gender)
     MATCH (members)-[:WAS_BORN_ON]->(dob:TimeGraph)
+    MATCH (members)-[:BELONGS_TO]->(basonta:Basonta)
 
 
     RETURN collect(members {
@@ -24,6 +25,10 @@ export const councilDownloadMembers = `
             },
             dob: dob {
                 .date
+            },
+            basonta: basonta {
+                .id,
+                .name,
             },
             bacenta: bacenta {
                 .id,

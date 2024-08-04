@@ -241,7 +241,7 @@ export interface Member {
     id: string
     name: string
   }
-  ministry: {
+  basonta: {
     id: string
     name: string
   }

@@ -58,6 +58,7 @@ const DownloadCouncilMembership = () => {
     { label: 'Gender', key: 'gender' },
     { label: 'Date of Birth', key: 'dateOfBirth' },
     { label: 'Visitation Area', key: 'visitationArea' },
+    { label: 'Basonta', key: 'basonta' },
   ]
 
   const { data, loading, error } = useQuery(DISPLAY_COUNCIL_MEMBERSHIP, {
@@ -81,6 +82,7 @@ const DownloadCouncilMembership = () => {
     gender: member.gender.gender,
     dateOfBirth: formatDate(member.dob?.date),
     visitationArea: member.visitationArea,
+    basonta: member.basonta.name,
   }))
 
   return (
@@ -134,6 +136,7 @@ const DownloadCouncilMembership = () => {
                       <th scope="col">Marital Status</th>
                       <th scope="col">Birthday</th>
                       <th scope="col">Visitation Area</th>
+                      <th scope="col">Basonta</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -153,6 +156,7 @@ const DownloadCouncilMembership = () => {
                         <td>{data?.maritalStatus}</td>
                         <td>{data?.dateOfBirth}</td>
                         <td>{data?.visitationArea}</td>
+                        <td>{data?.basonta}</td>
                       </tr>
                     ))}
                   </tbody>

@@ -39,6 +39,10 @@ export const DISPLAY_COUNCIL_MEMBERSHIP = gql`
         dob {
           date
         }
+        basonta {
+          id
+          name
+        }
         bacenta {
           id
           name
