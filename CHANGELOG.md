@@ -1,3 +1,20 @@
+#### 7.18.40 (2024-08-04)
+
+##### Chores
+
+*  ensure npx is available for commit-msg hook ([f806c352](https://github.com/firstlovecenter/fl-admin-portal/commit/f806c35297e451e47b999330416898153315e946))
+*  update code of the day for August ([336125ed](https://github.com/firstlovecenter/fl-admin-portal/commit/336125edbcf3322b72cd1c4f650aa3094b1a75bb))
+
+##### New Features
+
+*  add Basonta information to council member download ([12f3b746](https://github.com/firstlovecenter/fl-admin-portal/commit/12f3b746529962c1a565db29661cda81269a814c))
+
+##### Refactors
+
+*  update phone number formatting in MemberDisplay ([0c3de3db](https://github.com/firstlovecenter/fl-admin-portal/commit/0c3de3db98e16459ca84df29f9da23c165fc7f50))
+*  update phone number formatting in MemberDisplay ([4c25b7ef](https://github.com/firstlovecenter/fl-admin-portal/commit/4c25b7eff5a2f8bcc56c9f0800b5785854daf6cd))
+*  the ServicesMenu component to use correct property name for church type ([3566ec18](https://github.com/firstlovecenter/fl-admin-portal/commit/3566ec18c58cfc8c21d1448c42702e0d788f5370))
+
 #### 7.18.39 (2024-08-02)
 
 ##### Chores
