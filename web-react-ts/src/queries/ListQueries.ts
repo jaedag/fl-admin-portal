@@ -33,7 +33,7 @@ export const GET_CONSTITUENCY_BACENTAS = gql`
       bacentas {
         id
         name
-        stream_name
+        memberCount
         vacationStatus
         target
         council {
@@ -56,7 +56,6 @@ export const GET_CONSTITUENCY_ICBACENTAS = gql`
       id
       name
 
-      stream_name
       council {
         id
       }
@@ -72,7 +71,7 @@ export const GET_CONSTITUENCY_ICBACENTAS = gql`
       icBacentas {
         id
         name
-        stream_name
+        memberCount
         vacationStatus
         target
         council {
