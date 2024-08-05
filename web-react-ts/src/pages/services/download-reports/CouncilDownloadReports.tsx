@@ -22,11 +22,11 @@ const CouncilDownloadReports = () => {
         <HeadingPrimary>Download Reports</HeadingPrimary>
         <CheckDownloadCredits church={data?.councils[0]}>
           <Card border="success">
-            <Card.Header>No of Download Credits</Card.Header>
+            <Card.Header>Download Credits</Card.Header>
             <Card.Body>{data?.councils[0].downloadCredits}</Card.Body>
           </Card>
 
-          <div>Choose a report to download</div>
+          <div className="mt-5">Choose a report to download</div>
 
           <Button
             onClick={() => navigate('/dowload-reports/council/membership')}

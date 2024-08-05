@@ -28,7 +28,7 @@ export const councilDownloadMembers = `
             },
             basonta: basonta {
                 .id,
-                .name,
+                .name
             },
             bacenta: bacenta {
                 .id,
