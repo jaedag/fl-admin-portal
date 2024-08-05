@@ -7,7 +7,7 @@ WHERE NOT EXISTS {
     AND record.attendance > 7
 }
 
-WITH DISTINCT green AS toDemote
+WITH DISTINCT green AS toDemote, leader
 
 SET toDemote:Red
 REMOVE toDemote:Green
