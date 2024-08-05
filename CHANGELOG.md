@@ -1,3 +1,11 @@
+#### 7.18.41 (2024-08-05)
+
+##### Refactors
+
+*  update ListQueries to include memberCount instead of stream_name ([7934475b](https://github.com/firstlovecenter/fl-admin-portal/commit/7934475b4490b9c7d01bd21fecc45c620349e382))
+*  update MemberTable to display bacenta name instead of fellowship name ([142f9d1b](https://github.com/firstlovecenter/fl-admin-portal/commit/142f9d1bc34857af307d410befb0f706b4bd2f30))
+*  update phone number formatting in MemberDisplay ([cdb2244e](https://github.com/firstlovecenter/fl-admin-portal/commit/cdb2244e04df4df930ffffe9488c4ffca59dd066))
+
 #### 7.18.40 (2024-08-04)
 
 ##### Chores
