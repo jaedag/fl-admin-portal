@@ -1,12 +1,12 @@
 export const councilDownloadMembers = `
-    MATCH (council:Council {id: $id})-[:HAS]->(constituency:Constituency)-[:HAS]->(bacenta:Bacenta)<-[:BELONGS_TO]-(members:Member)
+    MATCH (council:Council {id: $id})-[:HAS]->(constituency:Constituency)-[:HAS]->(bacenta:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
     MATCH (constituency)<-[:LEADS]-(constituencyLeader:Member)
     MATCH (bacenta)<-[:LEADS]-(bacentaLeader:Member)
 
     MATCH (members)-[:HAS_MARITAL_STATUS]->(maritalStatus:MaritalStatus)
     MATCH (members)-[:HAS_GENDER]->(gender:Gender)
     MATCH (members)-[:WAS_BORN_ON]->(dob:TimeGraph)
-    MATCH (members)-[:BELONGS_TO]->(basonta:Basonta)
+    OPTIONAL MATCH (members)-[:BELONGS_TO]->(basonta:Basonta)
 
 
     RETURN collect(members {
