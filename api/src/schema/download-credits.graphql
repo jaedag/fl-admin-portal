@@ -18,6 +18,7 @@ extend type Mutation {
       statement: """
       MATCH (church {id: $churchId})
       WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
+      AND church.downloadCredits > 0
 
       SET church.downloadCredits = church.downloadCredits - 1
 
