@@ -1,3 +1,17 @@
+#### 7.18.42 (2024-08-08)
+
+##### Bug Fixes
+
+*  download credit only is subtracted when > 0 ([6eb23efa](https://github.com/firstlovecenter/fl-admin-portal/commit/6eb23efad62b916beee8f9c52fb694b6a6e76736))
+*  bring back poimen checkers for banking ([eb175ddf](https://github.com/firstlovecenter/fl-admin-portal/commit/eb175ddfb3b549ede2ad6c87528de14e9befa64e))
+
+##### Refactors
+
+*  handle optional basonta name in DownloadCouncilMembership ([4431725c](https://github.com/firstlovecenter/fl-admin-portal/commit/4431725c272e8b56a9d70141e3caf6220ccbcfb5))
+*  update download credits member cypher and council download reports ([e3060d91](https://github.com/firstlovecenter/fl-admin-portal/commit/e3060d919302f27ba817412f2767685b2821b14b))
+*  update download credits member cypher and council download reports ([4a46c140](https://github.com/firstlovecenter/fl-admin-portal/commit/4a46c14018e1d5e0ef556081ce77ca97f476e51e))
+*  demote green to red and remove green label ([e67838af](https://github.com/firstlovecenter/fl-admin-portal/commit/e67838aff5108c87ef046761172c9f6a2d0e6e16))
+
 #### 7.18.41 (2024-08-05)
 
 ##### Refactors
