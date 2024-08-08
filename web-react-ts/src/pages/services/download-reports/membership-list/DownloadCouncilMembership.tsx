@@ -82,7 +82,7 @@ const DownloadCouncilMembership = () => {
     gender: member.gender.gender,
     dateOfBirth: formatDate(member.dob?.date),
     visitationArea: member.visitationArea,
-    basonta: member.basonta.name,
+    basonta: member.basonta?.name,
   }))
 
   return (
