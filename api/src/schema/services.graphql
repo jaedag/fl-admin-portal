@@ -373,7 +373,7 @@ extend type Council {
        WITH DISTINCT bacentas, this
        MATCH (bacentas)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
 
-      RETURN DISTINCT bacentas
+      RETURN bacentas ORDER BY constituency.name
       """
     )
   servicesThisWeekCount: Int
@@ -419,7 +419,7 @@ extend type Council {
        WITH DISTINCT bacentas, this
        MATCH (bacentas)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
 
-      RETURN DISTINCT bacentas
+      RETURN bacentas ORDER BY constituency.name
       """
     )
   cancelledServicesThisWeekCount: Int
@@ -467,10 +467,11 @@ extend type Council {
        MATCH (defaulters:Active:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
-       WITH defaulters, this
+       WITH defaulters, this, constituency
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
         WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
-       RETURN DISTINCT defaulters
+        WITH DISTINCT defaulters, constituency
+       RETURN defaulters ORDER BY constituency.name
       """
     )
   formDefaultersThisWeekCount: Int
@@ -525,7 +526,7 @@ extend type Council {
        WITH DISTINCT bacentas, this
        MATCH (bacentas)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
 
-      RETURN DISTINCT bacentas
+      RETURN bacentas ORDER BY constituency.name
       """
     )
   bankingDefaultersThisWeekCount: Int
@@ -577,7 +578,7 @@ extend type Council {
        WITH DISTINCT bacentas, this
        MATCH (bacentas)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(this)
 
-      RETURN DISTINCT bacentas
+      RETURN bacentas ORDER BY constituency.name
       """
     )
   bankedThisWeekCount: Int
