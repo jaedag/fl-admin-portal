@@ -90,7 +90,7 @@ const BankingDefaulters = () => {
               <Col key={i} xs={12} className="mb-3">
                 <DefaulterCard
                   defaulter={defaulter}
-                  link="/fellowship/service-details"
+                  link="/bacenta/service-details"
                 />
               </Col>
             ))}
