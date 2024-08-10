@@ -1,3 +1,10 @@
+#### 7.18.43 (2024-08-10)
+
+##### Refactors
+
+*  update link to service details page in BankingDefaulters ([94306252](https://github.com/firstlovecenter/fl-admin-portal/commit/94306252b5ad7a9f2b5826f1e5c9b1583b783cff))
+*  update link to service details page in BankingDefaulters ([a429794f](https://github.com/firstlovecenter/fl-admin-portal/commit/a429794fb19e0cc020ed37b31bd4690ea73f2688))
+
 #### 7.18.42 (2024-08-08)
 
 ##### Bug Fixes
