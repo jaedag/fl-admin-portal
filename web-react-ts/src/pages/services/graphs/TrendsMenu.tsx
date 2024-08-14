@@ -9,7 +9,7 @@ import Charts from 'assets/icons/Charts'
 import PieChart from 'assets/icons/PieChart'
 import { Download } from 'react-bootstrap-icons'
 import RoleView from 'auth/RoleView'
-import { permitAdmin } from 'permission-utils'
+import { permitLeaderAdmin } from 'permission-utils'
 
 const TrendsMenu = () => {
   const { currentUser, theme } = useContext(MemberContext)
@@ -47,7 +47,7 @@ const TrendsMenu = () => {
             caption={'Quick facts about your church'}
           />
           {['Council'].includes(churchType) && (
-            <RoleView roles={permitAdmin('Council')}>
+            <RoleView roles={permitLeaderAdmin('Council')}>
               <MenuButton
                 title="Download Reports"
                 color="green"
