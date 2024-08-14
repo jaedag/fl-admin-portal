@@ -1,3 +1,9 @@
+#### 7.18.44 (2024-08-14)
+
+##### Refactors
+
+*  update TrendsMenu permission to use permitLeaderAdmin instead of permitAdmin ([647356fd](https://github.com/firstlovecenter/fl-admin-portal/commit/647356fd5bfbb0ae0e060e8b455e56e8680c5076))
+
 #### 7.18.43 (2024-08-10)
 
 ##### Refactors
