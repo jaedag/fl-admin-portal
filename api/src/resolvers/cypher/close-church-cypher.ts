@@ -16,9 +16,8 @@ RETURN lastService
 
 export const checkBacentaHasNoMembers = `
 MATCH (bacenta:Bacenta {id:$bacentaId})
-MATCH (bacenta)-[:HAS]->(fellowships:Fellowship)<-[:LEADS]-(member:Active:Member)
-MATCH (fellowships)<-[:LEADS]-(leader:Member)
-RETURN bacenta.name AS name, COUNT(member) AS memberCount, COUNT(fellowships) AS fellowshipCount
+OPTIONAL MATCH (bacenta)<-[:BELONGS_TO]-(member:Active:Member)
+RETURN bacenta.name AS name, COUNT(member) AS memberCount
 `
 
 export const checkConstituencyHasNoMembers = `
