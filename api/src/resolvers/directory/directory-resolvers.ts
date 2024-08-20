@@ -341,7 +341,7 @@ const directoryMutation = {
 
       if (bacentaCheck.memberCount) {
         throw new Error(
-          `${bacentaCheck?.name} Bacenta has ${bacentaCheck?.fellowshipCount} active fellowships. Please close down all fellowships and try again.`
+          `${bacentaCheck?.name} Bacenta has ${bacentaCheck?.memberCount} members. Please transfer all members and try again.`
         )
       }
 
@@ -366,7 +366,7 @@ const directoryMutation = {
       const bacentaResponse = rearrangeCypherObject(closeBacentaResponse)
       return bacentaResponse.constituency
     } catch (error: any) {
-      throwToSentry('There was an error closing down this bacenta', error)
+      throwToSentry('a', error)
     } finally {
       await session.close()
     }
