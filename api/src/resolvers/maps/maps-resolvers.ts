@@ -2,8 +2,8 @@ import type { Node, Integer, Point } from 'neo4j-driver'
 import { Member } from '../utils/types'
 import { rearrangeCypherObject, throwToSentry } from '../utils/utils'
 import {
-  memberFellowshipSearchByLocation,
-  memberFellowshipSearchByName,
+  memberBacentaSearchByLocation,
+  memberBacentaSearchByName,
   memberMemberSearchByLocation,
   memberMemberSearchByName,
   indoorOutreachVenuesSearchByLocation,
@@ -216,7 +216,7 @@ export const mapsResolvers = {
             })
           ),
           sessionTwo.executeRead((tx: any) =>
-            tx.run(memberFellowshipSearchByName, {
+            tx.run(memberBacentaSearchByName, {
               id: source.id,
               key: args.key,
               limit: args.limit,
@@ -304,7 +304,7 @@ export const mapsResolvers = {
             })
           ),
           sessionTwo.executeRead((tx: any) =>
-            tx.run(memberFellowshipSearchByLocation, {
+            tx.run(memberBacentaSearchByLocation, {
               id: source.id,
 
               latitude: args.latitude,
