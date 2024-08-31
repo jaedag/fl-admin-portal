@@ -1,4 +1,12 @@
-  MATCH (council:Council {id: "51a821a3-9cb2-424b-85ff-36b8ca96f7e6"})
-  SET council.downloadCredits = 1
-  RETURN council.downloadCredits
-  RETURN COUNT(members)
+MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
+MATCH (bacenta)<-[:LEADS]-(leader:Member)
+RETURN record, leader
+// OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(records:VehicleRecord) WHERE records.arrivalTime IS NOT NULL
+// RETURN stream.arrivalEndTime AS arrivalEndTime, 
+// bacenta.id AS bacentaId, 
+// COUNT(DISTINCT records) AS numberOfVehicles, 
+// SUM(records.attendance) AS totalAttendance, T
+// leader.phoneNumber AS leaderPhoneNumber,
+// leader.firstName AS leaderFirstName, 
+// bacenta.name AS bacentaName
+
