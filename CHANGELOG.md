@@ -1,3 +1,9 @@
+#### 7.18.46 (2024-09-01)
+
+##### Refactors
+
+*  update history queries to fetch 100 records instead of 10 ([4c7d931e](https://github.com/firstlovecenter/fl-admin-portal/commit/4c7d931e409740adf25d65d48728c69093edc33c))
+
 #### 7.18.45 (2024-09-01)
 
 ##### Bug Fixes
