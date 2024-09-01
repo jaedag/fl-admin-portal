@@ -1,3 +1,18 @@
+#### 7.18.45 (2024-09-01)
+
+##### Bug Fixes
+
+*  fix checker for bacenta members before deleting ([20ff5dec](https://github.com/firstlovecenter/fl-admin-portal/commit/20ff5dec877bf43a79e47ccdcce6f2046573f4da))
+*  update the checkBacenta Has no members ([4eb9fbbe](https://github.com/firstlovecenter/fl-admin-portal/commit/4eb9fbbe0af8d9c9baf47cdd10d31da6909e78bd))
+
+##### Refactors
+
+*  update history queries to fetch 100 records instead of 10 ([f7d56fe0](https://github.com/firstlovecenter/fl-admin-portal/commit/f7d56fe0bbeee66dfee1b82bca3d24000bf69035))
+*  update code of the day for september ([04b3c6ff](https://github.com/firstlovecenter/fl-admin-portal/commit/04b3c6ffc084201fc4601697f63e0c8583fe3948))
+*  update member search queries to use Bacenta instead of Fellowship ([c0d41250](https://github.com/firstlovecenter/fl-admin-portal/commit/c0d412505f5123444a326722d4f906fcf93795e1))
+*  update member search queries to use Bacenta instead of Fellowship ([62d35ca8](https://github.com/firstlovecenter/fl-admin-portal/commit/62d35ca87dee1e5a4900a344fa1028edadfcd7dd))
+*  update permission case for council in permitLeader ([a41888ad](https://github.com/firstlovecenter/fl-admin-portal/commit/a41888ada5fe10592a1b613ab23d171e476d8ae4))
+
 #### 7.18.44 (2024-08-14)
 
 ##### Refactors
