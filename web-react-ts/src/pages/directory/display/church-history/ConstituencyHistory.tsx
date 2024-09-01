@@ -23,7 +23,7 @@ function ConstituencyHistory() {
           <HeadingSecondary>Constituency History</HeadingSecondary>
         </div>
         <Container>
-          <Timeline record={constituency?.history} limit={10} />
+          <Timeline record={constituency?.history} limit={100} />
         </Container>
       </>
     </ApolloWrapper>
