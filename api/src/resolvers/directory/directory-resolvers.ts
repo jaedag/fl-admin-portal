@@ -339,7 +339,7 @@ const directoryMutation = {
       )
       const bacentaCheck = rearrangeCypherObject(bacentaCheckResponse)
 
-      if (bacentaCheck.memberCount) {
+      if (bacentaCheck.memberCount > 0) {
         throw new Error(
           `${bacentaCheck?.name} Bacenta has ${bacentaCheck?.memberCount} members. Please transfer all members and try again.`
         )
