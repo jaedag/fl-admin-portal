@@ -1,3 +1,9 @@
+#### 7.18.47 (2024-09-03)
+
+##### Refactors
+
+*  update bacenta member check condition in directory resolvers ([431a866e](https://github.com/firstlovecenter/fl-admin-portal/commit/431a866ee773ca68336d31ec6db7b0e3ba5cfe19))
+
 #### 7.18.46 (2024-09-01)
 
 ##### Refactors
