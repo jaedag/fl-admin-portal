@@ -1,3 +1,9 @@
+#### 7.18.48 (2024-09-18)
+
+##### Refactors
+
+*  add new stream options in financial-utils and StreamForm ([1b2a2756](https://github.com/firstlovecenter/fl-admin-portal/commit/1b2a275655aaff4c44886360aa8a413d26ede93f))
+
 #### 7.18.47 (2024-09-03)
 
 ##### Refactors
