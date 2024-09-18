@@ -151,6 +151,8 @@ export const BUSSING_STATUS_OPTIONS: FormikSelectOptions = [
 export const STREAM_ACCOUNT_OPTIONS: FormikSelectOptions = [
   { key: 'Manual Finances', value: 'manual' },
   { key: 'FLE Account', value: 'fle_account' },
+  { key: 'Accra Area 1', value: 'acc_area_1' },
+  { key: 'BJosh Special', value: 'bjosh_special' },
   { key: 'AES Account', value: 'aes_account' },
   { key: 'Kumasi Account', value: 'oa_kumasi' },
   { key: 'OA GH North', value: 'oa_ghnorth' },

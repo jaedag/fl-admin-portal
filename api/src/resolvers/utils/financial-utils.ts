@@ -37,6 +37,8 @@ type Stream = {
     | 'manual'
     | 'aes_account'
     | 'fle_account'
+    | 'acc_area_1'
+    | 'bjosh_special'
     | 'oa_kumasi'
     | 'oa_ghnorth'
     | 'oa_ghsouth'
@@ -69,6 +71,12 @@ export const getStreamFinancials = (stream: Stream) => {
 
     case 'fle_account':
       subaccount = SECRETS.PS_SB_FLE
+      break
+    case 'acc_area_1':
+      subaccount = SECRETS.PS_SB_AREA_1
+      break
+    case 'bjosh_special':
+      subaccount = SECRETS.PS_SB_BJOSH
       break
     case 'oa_kumasi':
       subaccount = SECRETS.PS_SB_KUMASI
