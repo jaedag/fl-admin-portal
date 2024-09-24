@@ -304,7 +304,6 @@ export const DISPLAY_BACENTA = gql`
         dayNumber
       }
       vacationStatus
-      graduationStatus
       target
       outbound
       sprinterTopUp

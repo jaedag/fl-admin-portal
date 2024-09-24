@@ -18,7 +18,6 @@ const CreateBacenta = () => {
     leaderName: '',
     leaderEmail: '',
     constituency: constituencyId ?? '',
-    graduationStatus: '',
     vacationStatus: '',
     meetingDay: 'Thursday',
     venueLatitude: '0.0',

@@ -35,7 +35,6 @@ import BtnSubmitText from 'components/formik/BtnSubmitText'
 
 export interface BacentaFormValues extends FormikInitialValues {
   constituency?: Constituency
-  graduationStatus: string
   meetingDay: string
   vacationStatus: string
   venueLatitude: string | number

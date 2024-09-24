@@ -64,11 +64,6 @@ const DetailsBacenta = () => {
       number: bacenta?.meetingDay?.day,
       link: '#',
     },
-    {
-      title: 'Grad. Status',
-      number: bacenta?.graduationStatus,
-      link: `#`,
-    },
 
     // {
     //   title: 'Target',
