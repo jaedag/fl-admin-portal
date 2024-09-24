@@ -6,6 +6,9 @@ async function main() {
   secrets.build(payload, { path: 'lib/secrets.js' })
   secrets.build(payload, { path: 'api/src/resolvers/secrets.ts' })
   secrets.build(payload, {
+    path: 'api/src/functions/payment-background/secrets.js',
+  })
+  secrets.build(payload, {
     path: 'api/src/functions/code-of-the-day/secrets.js',
   })
   secrets.build(payload, {
