@@ -18,9 +18,6 @@ async function main() {
     path: 'api/src/functions/gsheets-update-outaccra-background/secrets.js',
   })
   secrets.build(payload, {
-    path: 'api/src/functions/bacenta-checker-background/secrets.js',
-  })
-  secrets.build(payload, {
     path: 'api/src/functions/hillary-monthly-background/secrets.js',
   })
 }
