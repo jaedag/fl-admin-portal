@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { getHumanReadableDate } from 'jd-date-utils'
+import { Integer } from 'neo4j-driver'
 import { getStreamFinancials } from '../utils/financial-utils'
 import { Context } from '../utils/neo4j-types'
 import {
@@ -316,7 +317,6 @@ export const arrivalsMutation = {
         momoNumber: bacenta.momoNumber ?? '',
         mobileNetwork: bacenta.mobileNetwork ?? '',
         outbound: bacenta.outbound,
-        vehicleCostWithOutbound: args.vehicleCost,
         auth: context.auth,
       })
     )
@@ -504,8 +504,12 @@ export const arrivalsMutation = {
 
     const calculateVehicleTopUp = (data: responseType) => {
       const outbound = response.outbound ? 2 : 1
-      const sprinterTopUp = data.bacentaSprinterTopUp * outbound
-      const urvanTopUp = data.bacentaUrvanTopUp * outbound
+      const sprinterTopUp =
+        parseNeoNumber(data.bacentaSprinterTopUp as unknown as Integer) *
+        outbound
+
+      const urvanTopUp =
+        parseNeoNumber(data.bacentaUrvanTopUp as unknown as Integer) * outbound
 
       const amountToPay = data.vehicleCost
 
@@ -530,6 +534,7 @@ export const arrivalsMutation = {
 
       return 0
     }
+    console.log('🚀 ~ file: arrivals-resolvers.ts:544 ~ response:', response)
     const vehicleTopUp = calculateVehicleTopUp(response)
 
     if (response.vehicle === 'Car') {
