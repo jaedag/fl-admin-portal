@@ -21,20 +21,18 @@ const TrendsButton = (props: TrendsButtonProps) => {
   const pulpits = church?.equipmentRecord.pulpits
   const name = church?.name
 
-  const constituencyTotal = () => {
+  const teamTotal = () => {
     if (church?.equipmentRecord.pulpits === null) return 0
     else return 1
   }
 
-  const constituencyCount =
-    churchType === 'Constituency'
-      ? constituencyTotal()
-      : church?.constituencyEquipmentFilledCount
+  const teamCount =
+    churchType === 'Team' ? teamTotal() : church?.teamEquipmentFilledCount
   const fellowshipCount = church?.fellowshipEquipmentFilledCount
   const offeringBagsPercentage = Math.round(
     (offeringBags / fellowshipCount) * 100
   )
-  const pulpitsPercentage = Math.round((pulpits / constituencyCount) * 100)
+  const pulpitsPercentage = Math.round((pulpits / teamCount) * 100)
   const bluetoothSpeakersPercentage = Math.round(
     (bluetoothSpeakers / fellowshipCount) * 100
   )
@@ -56,7 +54,7 @@ const TrendsButton = (props: TrendsButtonProps) => {
         </div>
         <ProgressBar percentage={offeringBagsPercentage} />
         <div className="lowercase-text text-secondary">
-          Pulpits: {pulpits ? pulpits : 0} / {constituencyCount}
+          Pulpits: {pulpits ? pulpits : 0} / {teamCount}
         </div>
         <ProgressBar percentage={pulpitsPercentage} />
         <div className="lowercase-text text-secondary">

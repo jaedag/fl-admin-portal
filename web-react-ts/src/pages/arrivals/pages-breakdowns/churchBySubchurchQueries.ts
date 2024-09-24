@@ -1,12 +1,12 @@
 import { gql } from '@apollo/client'
 
-export const COUNCIL_BY_CONSTITUENCY_ARRIVALS = gql`
-  query councilByConstituencyArrivals($id: ID!, $arrivalDate: String!) {
+export const COUNCIL_BY_TEAM_ARRIVALS = gql`
+  query councilByTeamArrivals($id: ID!, $arrivalDate: String!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
-      constituencies {
+      teams {
         id
         name
         leader {

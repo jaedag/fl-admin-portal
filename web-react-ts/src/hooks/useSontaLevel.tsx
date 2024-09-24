@@ -13,8 +13,8 @@ import { HigherChurchWithDefaulters } from 'pages/services/defaulters/defaulters
 import { useContext, useEffect, useState } from 'react'
 
 type useSontaLevelProps = {
-  constituencyFunction?: LazyQueryExecFunction<any, OperationVariables>
-  constituencyRefetch?: () => Promise<ApolloQueryResult<any>>
+  teamFunction?: LazyQueryExecFunction<any, OperationVariables>
+  teamRefetch?: () => Promise<ApolloQueryResult<any>>
   councilFunction?: LazyQueryExecFunction<any, OperationVariables>
   councilRefetch?: () => Promise<ApolloQueryResult<any>>
   streamFunction?: LazyQueryExecFunction<any, OperationVariables>
@@ -63,8 +63,8 @@ const useSontaLevel = (props: useSontaLevelProps) => {
         return props.hubCouncilRefetch
       case 'Hub':
         return props.hubRefetch
-      case 'Constituency':
-        return props.constituencyRefetch
+      case 'Team':
+        return props.teamRefetch
       case 'Council':
         return props.councilRefetch
       case 'Stream':
@@ -143,17 +143,17 @@ const useSontaLevel = (props: useSontaLevelProps) => {
             setError(res.error)
           }
           break
-        case 'Constituency':
+        case 'Team':
           {
-            if (!props.constituencyFunction) break
-            const res = await props.constituencyFunction({
+            if (!props.teamFunction) break
+            const res = await props.teamFunction({
               variables: {
                 id: currentChurch?.id,
                 arrivalDate: arrivalDate,
               },
             })
 
-            setChurch(res.data?.constituencies[0])
+            setChurch(res.data?.teams[0])
             setLoading(res.loading)
             setError(res.error)
           }

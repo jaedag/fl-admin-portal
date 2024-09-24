@@ -19,12 +19,12 @@
 // "NoService"
 // "Council"
 // "Stream"
-// "Constituency"
+// "Team"
 // "LastBankingCode"
 // "Fellowship"
 // "ClosedFellowship"
 // "Vacation"
-// "ClosedConstituency"
+// "ClosedTeam"
 // "IC"
 // "BussingRecord"
 // "ArrivalsCodeOfTheDay"
@@ -51,7 +51,7 @@
 // "PastoralComment"
 // "MissedChurchComment"
 // "BacentaCycle"
-// "ConstituencyCycle"
+// "TeamCycle"
 // "CouncilCycle"
 // "LastBacentaCode"
 // "BussingSociety"
@@ -80,7 +80,7 @@
 // "ClosedHub"
 // "RehearsalRecord"
 // "AggregateRehearsalRecord"
-// "Closedconstituency"
+// "Closedteam"
 // "ClosedMinistry"
 // "MinistryAttendanceRecord"
 // "ClosedHubCouncil"
@@ -114,12 +114,12 @@ CREATE CONSTRAINT uniqueClosedBacenta IF NOT EXISTS ON (c:ClosedBacenta) ASSERT 
 CREATE CONSTRAINT uniqueNoService IF NOT EXISTS ON (n:NoService) ASSERT n.id IS UNIQUE;
 CREATE CONSTRAINT uniqueCouncil IF NOT EXISTS ON (c:Council) ASSERT c.id IS UNIQUE;
 CREATE CONSTRAINT uniqueStream IF NOT EXISTS ON (s:Stream) ASSERT s.id IS UNIQUE;
-CREATE CONSTRAINT uniqueConstituency IF NOT EXISTS ON (c:Constituency) ASSERT c.id IS UNIQUE;
+CREATE CONSTRAINT uniqueTeam IF NOT EXISTS ON (c:Team) ASSERT c.id IS UNIQUE;
 CREATE CONSTRAINT uniqueLastBankingCode IF NOT EXISTS ON (l:LastBankingCode) ASSERT l.number IS UNIQUE;
 CREATE CONSTRAINT uniqueFellowship IF NOT EXISTS ON (f:Fellowship) ASSERT f.id IS UNIQUE;
 CREATE CONSTRAINT uniqueClosedFellowship IF NOT EXISTS ON (c:ClosedFellowship) ASSERT c.id IS UNIQUE;
 CREATE CONSTRAINT uniqueVacation IF NOT EXISTS ON (v:Vacation) ASSERT v.id IS UNIQUE;
-CREATE CONSTRAINT uniqueClosedConstituency IF NOT EXISTS ON (c:ClosedConstituency) ASSERT c.id IS UNIQUE;
+CREATE CONSTRAINT uniqueClosedTeam IF NOT EXISTS ON (c:ClosedTeam) ASSERT c.id IS UNIQUE;
 CREATE CONSTRAINT uniqueIC IF NOT EXISTS ON (i:Red) ASSERT i.id IS UNIQUE;
 CREATE CONSTRAINT uniqueBussingRecord IF NOT EXISTS ON (b:BussingRecord) ASSERT b.id IS UNIQUE;
 CREATE CONSTRAINT uniqueArrivalsCodeOfTheDay IF NOT EXISTS ON (a:ArrivalsCodeOfTheDay) ASSERT a.code IS UNIQUE;
@@ -149,7 +149,7 @@ CREATE CONSTRAINT uniqueIMCL IF NOT EXISTS ON (i:IMCL) ASSERT i.id IS UNIQUE;
 CREATE CONSTRAINT uniquePastoralComment IF NOT EXISTS ON (p:PastoralComment) ASSERT p.id IS UNIQUE;
 CREATE CONSTRAINT uniqueMissedChurchComment IF NOT EXISTS ON (m:MissedChurchComment) ASSERT m.id IS UNIQUE;
 CREATE CONSTRAINT uniqueBacentaCycle IF NOT EXISTS ON (b:BacentaCycle) ASSERT b.id IS UNIQUE;
-CREATE CONSTRAINT uniqueConstituencyCycle IF NOT EXISTS ON (c:ConstituencyCycle) ASSERT c.id IS UNIQUE;
+CREATE CONSTRAINT uniqueTeamCycle IF NOT EXISTS ON (c:TeamCycle) ASSERT c.id IS UNIQUE;
 CREATE CONSTRAINT uniqueCouncilCycle IF NOT EXISTS ON (c:CouncilCycle) ASSERT c.id IS UNIQUE;
 CREATE CONSTRAINT uniqueLastBacentaCode IF NOT EXISTS ON (l:LastBacentaCode) ASSERT l.code IS UNIQUE;
 CREATE CONSTRAINT uniqueBussingSociety IF NOT EXISTS ON (b:BussingSociety) ASSERT b.id IS UNIQUE;
@@ -180,7 +180,7 @@ CREATE CONSTRAINT uniqueHubCouncil IF NOT EXISTS ON (h:HubCouncil) ASSERT h.id I
 CREATE CONSTRAINT uniqueClosedHub IF NOT EXISTS ON (c:ClosedHub) ASSERT c.id IS UNIQUE;
 CREATE CONSTRAINT uniqueRehearsalRecord IF NOT EXISTS ON (r:RehearsalRecord) ASSERT r.id IS UNIQUE;
 CREATE CONSTRAINT uniqueAggregateRehearsalRecord IF NOT EXISTS ON (a:AggregateRehearsalRecord) ASSERT a.id IS UNIQUE;
-CREATE CONSTRAINT uniqueClosedconstituency IF NOT EXISTS ON (c:Closedconstituency) ASSERT c.id IS UNIQUE;
+CREATE CONSTRAINT uniqueClosedteam IF NOT EXISTS ON (c:Closedteam) ASSERT c.id IS UNIQUE;
 CREATE CONSTRAINT uniqueClosedMinistry IF NOT EXISTS ON (c:ClosedMinistry) ASSERT c.id IS UNIQUE;
 CREATE CONSTRAINT uniqueMinistryAttendanceRecord IF NOT EXISTS ON (m:MinistryAttendanceRecord) ASSERT m.id IS UNIQUE;
 CREATE CONSTRAINT uniqueClosedHubCouncil IF NOT EXISTS ON (c:ClosedHubCouncil) ASSERT c.id IS UNIQUE;

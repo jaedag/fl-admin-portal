@@ -67,9 +67,9 @@ export const COUNCIL_HISTORY = gql`
     }
   }
 `
-export const CONSTITUENCY_HISTORY = gql`
-  query ConstituenciesHistory($id: ID!) {
-    constituencies(where: { id: $id }) {
+export const TEAM_HISTORY = gql`
+  query TeamsHistory($id: ID!) {
+    teams(where: { id: $id }) {
       id
       name
       history(limit: 100) {

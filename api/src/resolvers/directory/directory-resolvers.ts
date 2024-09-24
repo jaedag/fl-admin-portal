@@ -219,7 +219,7 @@ const directoryMutation = {
     context: Context
   ) => {
     isAuth(
-      [...permitLeaderAdmin('Constituency'), ...permitSheepSeeker()],
+      [...permitLeaderAdmin('Team'), ...permitSheepSeeker()],
       context.auth.roles
     )
     const session = context.executionContext.session()
@@ -252,7 +252,7 @@ const directoryMutation = {
     return member?.properties
   },
   CloseDownFellowship: async (object: any, args: any, context: Context) => {
-    isAuth(permitAdmin('Constituency'), context.auth.roles)
+    isAuth(permitAdmin('Team'), context.auth.roles)
 
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
@@ -301,7 +301,7 @@ const directoryMutation = {
       await RemoveServant(
         context,
         args,
-        ['adminCampus', 'adminStream', 'adminCouncil', 'adminConstituency'],
+        ['adminCampus', 'adminStream', 'adminCouncil', 'adminTeam'],
         'Fellowship',
         'Leader',
         true
@@ -349,7 +349,7 @@ const directoryMutation = {
       await RemoveServant(
         context,
         args,
-        permitAdmin('Constituency'),
+        permitAdmin('Team'),
         'Bacenta',
         'Leader',
         true
@@ -364,7 +364,7 @@ const directoryMutation = {
       )
 
       const bacentaResponse = rearrangeCypherObject(closeBacentaResponse)
-      return bacentaResponse.constituency
+      return bacentaResponse.team
     } catch (error: any) {
       throwToSentry('a', error)
     } finally {
@@ -372,35 +372,32 @@ const directoryMutation = {
     }
     return null
   },
-  CloseDownConstituency: async (object: any, args: any, context: Context) => {
+  CloseDownTeam: async (object: any, args: any, context: Context) => {
     isAuth(permitAdmin('Council'), context.auth.roles)
 
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
 
     const res: any = await Promise.all([
-      session.run(closeChurchCypher.checkConstituencyHasNoMembers, args),
+      session.run(closeChurchCypher.checkTeamHasNoMembers, args),
       sessionTwo.run(closeChurchCypher.getLastServiceRecord, {
-        churchId: args.constituencyId,
+        churchId: args.teamId,
       }),
     ]).catch((error: any) => {
-      throwToSentry(
-        'There was an error running checkConstituencyHasNoMembers',
-        error
-      )
+      throwToSentry('There was an error running checkTeamHasNoMembers', error)
     })
 
-    const constituencyCheck = rearrangeCypherObject(res[0])
+    const teamCheck = rearrangeCypherObject(res[0])
     const lastServiceRecord = rearrangeCypherObject(res[1])
 
-    if (constituencyCheck.bacentaCount.toNumber()) {
+    if (teamCheck.bacentaCount.toNumber()) {
       throw new Error(
-        `${constituencyCheck?.name} Constituency has ${constituencyCheck?.bacentaCount} active bacentas. Please close down all bacentas and try again.`
+        `${teamCheck?.name} Team has ${teamCheck?.bacentaCount} active bacentas. Please close down all bacentas and try again.`
       )
     }
-    if (constituencyCheck.hubCount.toNumber()) {
+    if (teamCheck.hubCount.toNumber()) {
       throw new Error(
-        `${constituencyCheck?.name} Constituency has ${constituencyCheck?.hubCount} active hubs. Please close down all hubs and try again.`
+        `${teamCheck?.name} Team has ${teamCheck?.hubCount} active hubs. Please close down all hubs and try again.`
       )
     }
 
@@ -418,7 +415,7 @@ const directoryMutation = {
       throw new Error(
         `Please bank outstanding offering for your service filled on ${getHumanReadableDate(
           record.createdAt
-        )} before attempting to close down this constituency`
+        )} before attempting to close down this team`
       )
     }
 
@@ -429,7 +426,7 @@ const directoryMutation = {
           context,
           args,
           permitAdmin('Council'),
-          'Constituency',
+          'Team',
           'Leader',
           true
         ),
@@ -438,26 +435,24 @@ const directoryMutation = {
               context,
               args,
               permitAdmin('Council'),
-              'Constituency',
+              'Team',
               'Admin'
             )
           : null,
       ])
 
-      const closeConstituencyResponse = await session.run(
-        closeChurchCypher.closeDownConstituency,
+      const closeTeamResponse = await session.run(
+        closeChurchCypher.closeDownTeam,
         {
           auth: context.auth,
-          constituencyId: args.constituencyId,
+          teamId: args.teamId,
         }
       )
 
-      const constituencyResponse = rearrangeCypherObject(
-        closeConstituencyResponse
-      )
-      return constituencyResponse.council
+      const teamResponse = rearrangeCypherObject(closeTeamResponse)
+      return teamResponse.council
     } catch (error: any) {
-      throwToSentry('There was an error closing down this constituency', error)
+      throwToSentry('There was an error closing down this team', error)
     } finally {
       await session.close()
       await sessionTwo.close()
@@ -486,9 +481,9 @@ const directoryMutation = {
     const councilCheck = rearrangeCypherObject(res[0])
     const lastServiceRecord = rearrangeCypherObject(res[1])
 
-    if (councilCheck.constituencyCount.toNumber()) {
+    if (councilCheck.teamCount.toNumber()) {
       throw new Error(
-        `${councilCheck?.name} Council has ${councilCheck?.constituencyCount} active constituencies. Please close down all constituencies and try again.`
+        `${councilCheck?.name} Council has ${councilCheck?.teamCount} active teams. Please close down all teams and try again.`
       )
     }
 

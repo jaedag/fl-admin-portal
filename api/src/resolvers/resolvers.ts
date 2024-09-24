@@ -82,8 +82,8 @@ const resolvers = {
   Bacenta: {
     ...campaignsResolvers.Bacenta,
   },
-  Constituency: {
-    ...campaignsResolvers.Constituency,
+  Team: {
+    ...campaignsResolvers.Team,
   },
   Council: {
     ...campaignsResolvers.Council,

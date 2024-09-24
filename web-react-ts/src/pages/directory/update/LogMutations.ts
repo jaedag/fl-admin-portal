@@ -41,16 +41,16 @@ export const LOG_BACENTA_HISTORY = gql`
     $historyRecord: String!
     $oldLeaderId: ID
     $newLeaderId: ID
-    $oldConstituencyId: ID
-    $newConstituencyId: ID
+    $oldTeamId: ID
+    $newTeamId: ID
   ) {
     LogBacentaHistory(
       bacentaId: $bacentaId
       historyRecord: $historyRecord
       newLeaderId: $newLeaderId
       oldLeaderId: $oldLeaderId
-      oldConstituencyId: $oldConstituencyId
-      newConstituencyId: $newConstituencyId
+      oldTeamId: $oldTeamId
+      newTeamId: $newTeamId
     ) {
       id
       name
@@ -76,17 +76,17 @@ export const LOG_BACENTA_HISTORY = gql`
   }
 `
 
-export const LOG_CONSTITUENCY_HISTORY = gql`
-  mutation LogConstituencyHistory(
-    $constituencyId: ID!
+export const LOG_TEAM_HISTORY = gql`
+  mutation LogTeamHistory(
+    $teamId: ID!
     $historyRecord: String!
     $oldLeaderId: ID
     $newLeaderId: ID
     $oldCouncilId: ID
     $newCouncilId: ID
   ) {
-    LogConstituencyHistory(
-      constituencyId: $constituencyId
+    LogTeamHistory(
+      teamId: $teamId
       historyRecord: $historyRecord
       newLeaderId: $newLeaderId
       oldLeaderId: $oldLeaderId

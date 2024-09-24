@@ -14,7 +14,7 @@ type TargetArg = {
 }
 
 type TargetFields = {
-  constituency: string
+  team: string
   bacenta: string
   target: number
   code: number
@@ -73,7 +73,7 @@ const UploadBacentaTargets = async (
 
   jsonData.every((item: TargetFields) => {
     if (
-      item.constituency === '' ||
+      item.team === '' ||
       item.bacenta === '' ||
       item.code === null ||
       item.leader === '' ||

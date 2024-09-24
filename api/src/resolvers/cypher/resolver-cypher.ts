@@ -26,8 +26,8 @@ WITH apoc.cypher.runFirstColumn(
   RETURN member { .id,.auth_id, .firstName,.lastName,.email,.phoneNumber,.whatsappNumber,.pictureUrl,
   leadsBacenta: [ member_bacentas IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(bacenta:Bacenta)
   RETURN bacenta", {this: member}, true) | member_bacentas { .id,.name }],
-   leadsConstituency: [ member_constituency IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(constituency:Constituency)
-  RETURN constituency", {this: member}, true) | member_constituency { .id,.name }],
+   leadsTeam: [ member_team IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(team:Team)
+  RETURN team", {this: member}, true) | member_team { .id,.name }],
    leadsCouncil: [ member_council IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(council:Council)
   RETURN council", {this: member}, true) | member_council { .id,.name }],
   leadsStream: [ member_stream IN apoc.cypher.runFirstColumn("MATCH (this)-[:LEADS]->(stream:Stream)
@@ -36,14 +36,14 @@ WITH apoc.cypher.runFirstColumn(
   RETURN campus", {this: member}, true) | member_campus { .id,.name }],
   isAdminForCampus: [ member_adminCampuses IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminCampus:Campus)
   RETURN adminCampus", {this: member}, true) | member_adminCampuses { .id,.name }],
-  isAdminForConstituency: [ member_adminConstituencies IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminConstituency:Constituency)
-  RETURN adminConstituency", {this: member}, true) | member_adminConstituencies { .id,.name }],
+  isAdminForTeam: [ member_adminTeams IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminTeam:Team)
+  RETURN adminTeam", {this: member}, true) | member_adminTeams { .id,.name }],
   isAdminForCouncil: [ member_adminCouncils IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminCouncil:Council)
   RETURN adminCouncil", {this: member}, true) | member_adminCouncils { .id,.name}],
    isAdminForStream: [ member_adminStreams IN apoc.cypher.runFirstColumn("MATCH (this)-[:IS_ADMIN_FOR]->(adminStream:Stream)
   RETURN adminStream", {this: member}, true) | member_adminStreams { .id,.name}],
-  isArrivalsAdminForConstituency: [ member_arrivalsAdminConstituency IN apoc.cypher.runFirstColumn("MATCH (this)-[:DOES_ARRIVALS_FOR]->(arrivalsAdminConstituency:Constituency)
-  RETURN arrivalsAdminConstituency", {this: member}, true) | member_arrivalsAdminConstituency { .id,.name }],
+  isArrivalsAdminForTeam: [ member_arrivalsAdminTeam IN apoc.cypher.runFirstColumn("MATCH (this)-[:DOES_ARRIVALS_FOR]->(arrivalsAdminTeam:Team)
+  RETURN arrivalsAdminTeam", {this: member}, true) | member_arrivalsAdminTeam { .id,.name }],
   isArrivalsAdminForCouncil: [ member_arrivalsAdminCouncils IN apoc.cypher.runFirstColumn("MATCH (this)-[:DOES_ARRIVALS_FOR]->(arrivalsAdminCouncil:Council)
   RETURN arrivalsAdminCouncil", {this: member}, true) | member_arrivalsAdminCouncils { .id,.name}],
   isArrivalsAdminForStream: [ member_arrivalsAdminStreams IN apoc.cypher.runFirstColumn("MATCH (this)-[:DOES_ARRIVALS_FOR]->(arrivalsAdminStream:Stream)
@@ -105,13 +105,13 @@ export const matchMemberSheepSeekerQuery = `
 
 export const matchChurchQuery = `
   MATCH (church {id:$id}) 
-  WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus OR church:Oversight OR church:Denomination
+  WHERE church:Bacenta OR church:Team OR church:Council OR church:Stream OR church:Campus OR church:Oversight OR church:Denomination
   OR church:ClosedBacenta 
   OR church:CreativeArts OR church:Ministry OR church:HubCouncil OR church:Hub
 
   WITH church, labels(church) as labels 
   UNWIND labels AS label 
-  WITH church, label WHERE label IN ['Fellowship','Bacenta', 'Constituency', 'Council', 
+  WITH church, label WHERE label IN ['Fellowship','Bacenta', 'Team', 'Council', 
   'Stream', 'Campus', 'Oversight', 'Denomination', 'ClosedFellowship', 'ClosedBacenta', 'CreativeArts', 'Ministry', 'HubCouncil', 'Hub']
 
   RETURN church.id AS id, church.name AS name, church.firstName AS firstName, church.lastName AS lastName, label AS type
@@ -158,7 +158,7 @@ RETURN member IS NOT NULL AS predicate, member AS member
 
 export const checkMemberHasNoActiveRelationships = `
 MATCH p=(member:Member {id:$id})-[:LEADS|DOES_ARRIVALS_FOR|IS_ADMIN_FOR|COUNTS_ARRIVALS_FOR|IS_TELLER_FOR]->(church)
-WHERE NOT church:ClosedFellowship AND NOT church:ClosedBacenta AND NOT church:ClosedConstituency AND NOT church:ClosedCouncil AND NOT church:ClosedStream AND NOT church:ClosedCampus AND NOT church:ClosedOversight AND NOT church:ClosedDenomination 
+WHERE NOT church:ClosedFellowship AND NOT church:ClosedBacenta AND NOT church:ClosedTeam AND NOT church:ClosedCouncil AND NOT church:ClosedStream AND NOT church:ClosedCampus AND NOT church:ClosedOversight AND NOT church:ClosedDenomination 
 AND NOT church:ClosedCreativeArts AND NOT church:ClosedMinistry AND NOT church:ClosedHubCouncil AND NOT church:ClosedHub
 RETURN COUNT(p) as relationshipCount
 `
@@ -277,9 +277,9 @@ CREATE (member:Active:Member:IDL:Deer {whatsappNumber:$whatsappNumber})
          	}
 
            MATCH (bacenta:Bacenta {id: $bacenta})
-          MATCH (bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(council:Council)
+          MATCH (bacenta:Bacenta)<-[:HAS]-(team:Team)<-[:HAS]-(council:Council)
            RETURN member  {.id, .firstName,.middleName,.lastName,.email,.phoneNumber,.whatsappNumber,
-            bacenta:bacenta{.id,constituency:constituency{.id}}}
+            bacenta:bacenta{.id,team:team{.id}}}
       `
 
 export const activateInactiveMember = `
@@ -345,9 +345,9 @@ WITH member, bacenta
           }
 
            MATCH (bacenta:Bacenta {id: $bacenta})
-          MATCH (bacenta:Bacenta)<-[:HAS]-(constituency:Constituency)<-[:HAS]-(council:Council)
+          MATCH (bacenta:Bacenta)<-[:HAS]-(team:Team)<-[:HAS]-(council:Council)
            RETURN member  {.id, .firstName,.middleName,.lastName,.email,.phoneNumber,.whatsappNumber,
-            bacenta:bacenta {.id,constituency:constituency{.id}}}
+            bacenta:bacenta {.id,team:team{.id}}}
       `
 
 export const checkInactiveMember = `

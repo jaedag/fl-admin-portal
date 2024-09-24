@@ -45,7 +45,7 @@ export const DISPLAY_MEMBER_LEADERSHIP = gql`
         name
         stream_name
       }
-      leadsConstituency {
+      leadsTeam {
         id
         name
         stream_name
@@ -108,7 +108,7 @@ export const DISPLAY_MEMBER_ADMIN = gql`
         name
         stream_name
       }
-      isAdminForConstituency {
+      isAdminForTeam {
         id
         name
         stream_name
@@ -215,7 +215,7 @@ export const DISPLAY_FELLOWSHIP = gql`
       bacenta {
         id
         name
-        constituency {
+        team {
           id
           name
         }
@@ -312,7 +312,7 @@ export const DISPLAY_BACENTA = gql`
       momoNumber
       stream_name
 
-      constituency {
+      team {
         id
         name
         stream_name
@@ -335,15 +335,15 @@ export const DISPLAY_BACENTA = gql`
   }
 `
 
-export const DISPLAY_CONSTITUENCY = gql`
-  query displayConstituency($id: ID!) {
-    constituencies(where: { id: $id }, options: { limit: 1 }) {
+export const DISPLAY_TEAM = gql`
+  query displayTeam($id: ID!) {
+    teams(where: { id: $id }, options: { limit: 1 }) {
       id
       name
       target
       stream_name
       hubCount
-      activeGraduatedBacentaCount
+      bacentaCount
       vacationGraduatedBacentaCount
       activeIcBacentaCount
       vacationIcBacentaCount
@@ -411,8 +411,8 @@ export const DISPLAY_COUNCIL = gql`
         name
       }
       stream_name
-      constituencyCount
-      activeGraduatedBacentaCount
+      teamCount
+      bacentaCount
       hubCouncilCount
       hubCount
       hubFellowshipCount
@@ -425,7 +425,7 @@ export const DISPLAY_COUNCIL = gql`
         id
         name
       }
-      constituencies(options: { limit: 5 }) {
+      teams(options: { limit: 5 }) {
         id
         name
       }
@@ -476,8 +476,8 @@ export const DISPLAY_STREAM = gql`
       bankAccount
       target
       councilCount
-      constituencyCount
-      activeGraduatedBacentaCount
+      teamCount
+      bacentaCount
       hubFellowshipCount
       memberCount
       pastorCount
@@ -547,8 +547,8 @@ export const DISPLAY_CAMPUS = gql`
       target
       streamCount
       councilCount
-      constituencyCount
-      activeGraduatedBacentaCount
+      teamCount
+      bacentaCount
       memberCount
       pastorCount
       vacationGraduatedBacentaCount
@@ -610,8 +610,8 @@ export const DISPLAY_OVERSIGHT = gql`
       campusCount
       streamCount
       councilCount
-      constituencyCount
-      activeGraduatedBacentaCount
+      teamCount
+      bacentaCount
       memberCount
       pastorCount
       vacationGraduatedBacentaCount
@@ -721,8 +721,8 @@ export const DISPLAY_DENOMINATION = gql`
       campusCount
       streamCount
       councilCount
-      constituencyCount
-      activeGraduatedBacentaCount
+      teamCount
+      bacentaCount
       memberCount
       pastorCount
       vacationGraduatedBacentaCount
@@ -896,7 +896,7 @@ export const DISPLAY_HUB = gql`
         longitude
         latitude
       }
-      constituency {
+      team {
         id
         name
       }
@@ -1001,7 +1001,7 @@ export const DISPLAY_HUBFELLOWSHIP = gql`
       bacenta {
         id
         name
-        constituency {
+        team {
           id
           name
         }

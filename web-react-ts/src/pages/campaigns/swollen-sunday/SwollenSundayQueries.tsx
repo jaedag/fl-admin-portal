@@ -9,7 +9,7 @@ export const COUNCIL_SWOLLEN_SUNDAY_GRAPHS = gql`
     councils(where: { id: $councilId }) {
       id
       name
-      constituencyCount
+      teamCount
       bacentaCount
       fellowshipCount
       leader {
@@ -32,7 +32,7 @@ export const COUNCIL_SWOLLEN_DETAILS = gql`
     councils(where: { id: $councilId }) {
       id
       name
-      constituencyCount
+      teamCount
       bacentaCount
       fellowshipCount
       leader {
@@ -56,7 +56,7 @@ export const STREAM_SWOLLEN_SUNDAY_GRAPHS = gql`
       name
       bacentaCount
       fellowshipCount
-      constituencyCount
+      teamCount
       councilCount
       leader {
         id
@@ -80,7 +80,7 @@ export const STREAM_SWOLLEN_DETAILS = gql`
       name
       bacentaCount
       fellowshipCount
-      constituencyCount
+      teamCount
       councilCount
       leader {
         id
@@ -101,13 +101,13 @@ export const CAMPUS = gql`
   }
 `
 
-export const CONSTITUENCY_SWOLLEN_SUNDAY_GRAPHS = gql`
-  query constituencySwollenSundayGraphs(
-    $constituencyId: ID!
+export const TEAM_SWOLLEN_SUNDAY_GRAPHS = gql`
+  query teamSwollenSundayGraphs(
+    $teamId: ID!
     $startDate: String!
     $endDate: String!
   ) {
-    constituencies(where: { id: $constituencyId }) {
+    teams(where: { id: $teamId }) {
       id
       name
       bacentaCount
@@ -127,9 +127,9 @@ export const CONSTITUENCY_SWOLLEN_SUNDAY_GRAPHS = gql`
   }
 `
 
-export const CONSTITUENCY_SWOLLEN_DETAILS = gql`
-  query constituencySwollenDetails($constituencyId: ID!) {
-    constituencies(where: { id: $constituencyId }) {
+export const TEAM_SWOLLEN_DETAILS = gql`
+  query teamSwollenDetails($teamId: ID!) {
+    teams(where: { id: $teamId }) {
       id
       name
       bacentaCount
@@ -155,7 +155,7 @@ export const CAMPUS_SWOLLEN_SUNDAY_GRAPHS = gql`
       name
       bacentaCount
       fellowshipCount
-      constituencyCount
+      teamCount
       councilCount
       streamCount
       leader {
@@ -180,7 +180,7 @@ export const CAMPUS_SWOLLEN_DETAILS = gql`
       name
       bacentaCount
       fellowshipCount
-      constituencyCount
+      teamCount
       councilCount
       streamCount
       leader {
@@ -248,7 +248,7 @@ export const STREAM_SWOLLEN_TARGET_TEMPLATE = gql`
           firstName
           lastName
         }
-        constituency {
+        team {
           id
           name
           council {
@@ -273,7 +273,7 @@ export const COUNCIL_SWOLLEN_TARGET_TEMPLATE = gql`
           firstName
           lastName
         }
-        constituency {
+        team {
           name
         }
       }
@@ -319,12 +319,12 @@ export const COUNCIL_LIST = gql`
   }
 `
 
-export const CONSTITUENCY_LIST = gql`
-  query constituencyList($councilId: ID!) {
+export const TEAM_LIST = gql`
+  query teamList($councilId: ID!) {
     councils(where: { id: $councilId }) {
       id
       name
-      constituencies {
+      teams {
         id
         name
       }
@@ -333,8 +333,8 @@ export const CONSTITUENCY_LIST = gql`
 `
 
 export const BACENTA_LIST = gql`
-  query bacentaList($constituencyId: ID!) {
-    constituencies(where: { id: $constituencyId }) {
+  query bacentaList($teamId: ID!) {
+    teams(where: { id: $teamId }) {
       id
       name
       bacentas {

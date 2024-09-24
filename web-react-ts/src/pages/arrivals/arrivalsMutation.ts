@@ -1,13 +1,13 @@
 import { gql } from '@apollo/client'
 
-export const MAKE_CONSTITUENCYARRIVALS_ADMIN = gql`
-  mutation MakeConstituencyArrrivalsAdmin(
-    $constituencyId: ID!
+export const MAKE_TEAMARRIVALS_ADMIN = gql`
+  mutation MakeTeamArrrivalsAdmin(
+    $teamId: ID!
     $newAdminId: ID!
     $oldAdminId: ID!
   ) {
-    RemoveConstituencyArrivalsAdmin(
-      constituencyId: $constituencyId
+    RemoveTeamArrivalsAdmin(
+      teamId: $teamId
       arrivalsAdminId: $oldAdminId
       newArrivalsAdminId: $newAdminId
     ) {
@@ -15,8 +15,8 @@ export const MAKE_CONSTITUENCYARRIVALS_ADMIN = gql`
       firstName
       lastName
     }
-    MakeConstituencyArrivalsAdmin(
-      constituencyId: $constituencyId
+    MakeTeamArrivalsAdmin(
+      teamId: $teamId
       arrivalsAdminId: $newAdminId
       oldArrivalsAdminId: $oldAdminId
     ) {
@@ -24,7 +24,7 @@ export const MAKE_CONSTITUENCYARRIVALS_ADMIN = gql`
       firstName
       lastName
       fullName
-      isArrivalsAdminForConstituency {
+      isArrivalsAdminForTeam {
         id
         arrivalsAdmin {
           id

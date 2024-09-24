@@ -23,7 +23,7 @@ export const CAMPUS_TRENDS = gql`
         pulpits
       }
       fellowshipEquipmentFilledCount
-      constituencyEquipmentFilledCount
+      teamEquipmentFilledCount
     }
   }
 `
@@ -42,7 +42,7 @@ export const CAMPUS_BY_STREAM = gql`
           pulpits
         }
         fellowshipEquipmentFilledCount
-        constituencyEquipmentFilledCount
+        teamEquipmentFilledCount
       }
     }
   }
@@ -73,15 +73,13 @@ export const EQUIPMENT_END_DATE = gql`
   }
 `
 
-export const CAMPUS_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP = gql`
-  query campusEquipmentDefaultersNumberByConstituencyAndFellowship(
-    $campusId: ID
-  ) {
+export const CAMPUS_EQUIPMENT_DEFAULTERS_NUMBER_BY_TEAM_AND_FELLOWSHIP = gql`
+  query campusEquipmentDefaultersNumberByTeamAndFellowship($campusId: ID) {
     campuses(where: { id: $campusId }) {
       id
-      constituencyCount
-      constituencyEquipmentFilledCount
-      constituencyEquipmentNotFilledCount
+      teamCount
+      teamEquipmentFilledCount
+      teamEquipmentNotFilledCount
       fellowshipCount
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
@@ -98,10 +96,10 @@ export const CAMPUS_BY_STREAM_EQUIPMENT_DEFAULTERS = gql`
       streams {
         id
         name
-        constituencyCount
+        teamCount
         fellowshipCount
-        constituencyEquipmentFilledCount
-        constituencyEquipmentNotFilledCount
+        teamEquipmentFilledCount
+        teamEquipmentNotFilledCount
         fellowshipEquipmentFilledCount
         fellowshipEquipmentNotFilledCount
         admin {
@@ -116,11 +114,11 @@ export const CAMPUS_BY_STREAM_EQUIPMENT_DEFAULTERS = gql`
   }
 `
 
-export const CAMPUS_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
-  query equipmentCampusDefaultersByConstituency($campusId: ID) {
+export const CAMPUS_EQUIPMENT_DEFAULTERS_LIST_BY_TEAM = gql`
+  query equipmentCampusDefaultersByTeam($campusId: ID) {
     campuses(where: { id: $campusId }) {
       id
-      constituencyEquipmentNotFilled {
+      teamEquipmentNotFilled {
         id
         name
         leader {
@@ -176,7 +174,7 @@ export const STREAM_TRENDS = gql`
         pulpits
       }
       fellowshipEquipmentFilledCount
-      constituencyEquipmentFilledCount
+      teamEquipmentFilledCount
     }
   }
 `
@@ -195,7 +193,7 @@ export const STREAM_BY_COUNCIL = gql`
           pulpits
         }
         fellowshipEquipmentFilledCount
-        constituencyEquipmentFilledCount
+        teamEquipmentFilledCount
       }
     }
   }
@@ -208,10 +206,10 @@ export const STREAM_BY_COUNCIL_EQUIPMENT_DEFAULTERS = gql`
       councils {
         id
         name
-        constituencyCount
+        teamCount
         fellowshipCount
-        constituencyEquipmentFilledCount
-        constituencyEquipmentNotFilledCount
+        teamEquipmentFilledCount
+        teamEquipmentNotFilledCount
         fellowshipEquipmentFilledCount
         fellowshipEquipmentNotFilledCount
         admin {
@@ -226,15 +224,13 @@ export const STREAM_BY_COUNCIL_EQUIPMENT_DEFAULTERS = gql`
   }
 `
 
-export const STREAM_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP = gql`
-  query streamEquipmentDefaultersNumberByConstituencyAndFellowship(
-    $streamId: ID
-  ) {
+export const STREAM_EQUIPMENT_DEFAULTERS_NUMBER_BY_TEAM_AND_FELLOWSHIP = gql`
+  query streamEquipmentDefaultersNumberByTeamAndFellowship($streamId: ID) {
     streams(where: { id: $streamId }) {
       id
-      constituencyCount
-      constituencyEquipmentFilledCount
-      constituencyEquipmentNotFilledCount
+      teamCount
+      teamEquipmentFilledCount
+      teamEquipmentNotFilledCount
       fellowshipCount
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
@@ -243,11 +239,11 @@ export const STREAM_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP =
   }
 `
 
-export const STREAM_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
-  query equipmentStreamDefaultersByConstituency($streamId: ID) {
+export const STREAM_EQUIPMENT_DEFAULTERS_LIST_BY_TEAM = gql`
+  query equipmentStreamDefaultersByTeam($streamId: ID) {
     streams(where: { id: $streamId }) {
       id
-      constituencyEquipmentNotFilled {
+      teamEquipmentNotFilled {
         id
         name
         leader {
@@ -303,17 +299,17 @@ export const COUNCIL_TRENDS = gql`
         pulpits
       }
       fellowshipEquipmentFilledCount
-      constituencyEquipmentFilledCount
+      teamEquipmentFilledCount
     }
   }
 `
 
-export const COUNCIL_BY_CONSTITUENCY = gql`
-  query equipmentCouncilByConstituency($councilId: ID) {
+export const COUNCIL_BY_TEAM = gql`
+  query equipmentCouncilByTeam($councilId: ID) {
     councils(where: { id: $councilId }) {
       id
       name
-      constituencies {
+      teams {
         id
         name
         equipmentRecord {
@@ -328,15 +324,13 @@ export const COUNCIL_BY_CONSTITUENCY = gql`
   }
 `
 
-export const COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_CONSTITUENCY_AND_FELLOWSHIP = gql`
-  query councilEquipmentDefaultersNumberByConstituencyAndFellowship(
-    $councilId: ID
-  ) {
+export const COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_TEAM_AND_FELLOWSHIP = gql`
+  query councilEquipmentDefaultersNumberByTeamAndFellowship($councilId: ID) {
     councils(where: { id: $councilId }) {
       id
-      constituencyCount
-      constituencyEquipmentFilledCount
-      constituencyEquipmentNotFilledCount
+      teamCount
+      teamEquipmentFilledCount
+      teamEquipmentNotFilledCount
       fellowshipCount
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
@@ -362,12 +356,12 @@ export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
     }
   }
 `
-export const COUNCIL_BY_CONSTITUENCY_EQUIPMENT_DEFAULTERS = gql`
-  query equipmentCouncilByConstituencyDefaulters($councilId: ID) {
+export const COUNCIL_BY_TEAM_EQUIPMENT_DEFAULTERS = gql`
+  query equipmentCouncilByTeamDefaulters($councilId: ID) {
     councils(where: { id: $councilId }) {
       id
       name
-      constituencies {
+      teams {
         id
         name
         fellowshipCount
@@ -389,11 +383,11 @@ export const COUNCIL_BY_CONSTITUENCY_EQUIPMENT_DEFAULTERS = gql`
   }
 `
 
-export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
-  query equipmentConstituencyDefaultersByConstituency($councilId: ID) {
+export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_TEAM = gql`
+  query equipmentTeamDefaultersByTeam($councilId: ID) {
     councils(where: { id: $councilId }) {
       id
-      constituencyEquipmentNotFilled {
+      teamEquipmentNotFilled {
         id
         name
         leader {
@@ -408,10 +402,10 @@ export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_CONSTITUENCY = gql`
   }
 `
 
-//Constituencies and Mutations
-export const CONSTITUENCY_CAMPAIGN_LIST = gql`
-  query constituencyCampaigns($constituencyId: ID) {
-    constituencies(where: { id: $constituencyId }) {
+//Teams and Mutations
+export const TEAM_CAMPAIGN_LIST = gql`
+  query teamCampaigns($teamId: ID) {
+    teams(where: { id: $teamId }) {
       id
       name
       campaigns
@@ -419,9 +413,9 @@ export const CONSTITUENCY_CAMPAIGN_LIST = gql`
   }
 `
 
-export const CONSTITUENCY_TRENDS = gql`
-  query constituenciesTrends($constituencyId: ID) {
-    constituencies(where: { id: $constituencyId }) {
+export const TEAM_TRENDS = gql`
+  query teamsTrends($teamId: ID) {
+    teams(where: { id: $teamId }) {
       id
       name
       equipmentRecord {
@@ -435,13 +429,9 @@ export const CONSTITUENCY_TRENDS = gql`
   }
 `
 
-export const CREATE_CONSTITUENCY_EQUIPMENT_RECORD = gql`
-  mutation CreateConstituencyEquipmentRecord(
-    $id: ID!
-    $pulpits: Int!
-    $date: Date!
-  ) {
-    CreateConstituencyEquipmentRecord(id: $id, pulpits: $pulpits, date: $date) {
+export const CREATE_TEAM_EQUIPMENT_RECORD = gql`
+  mutation CreateTeamEquipmentRecord($id: ID!, $pulpits: Int!, $date: Date!) {
+    CreateTeamEquipmentRecord(id: $id, pulpits: $pulpits, date: $date) {
       id
       equipmentRecord {
         id
@@ -451,9 +441,9 @@ export const CREATE_CONSTITUENCY_EQUIPMENT_RECORD = gql`
   }
 `
 
-export const CONSTITUENCY_LATEST_EQUIPMENT_RECORD = gql`
-  query LatestEquipmentRecord($constituencyId: ID) {
-    constituencies(where: { id: $constituencyId }) {
+export const TEAM_LATEST_EQUIPMENT_RECORD = gql`
+  query LatestEquipmentRecord($teamId: ID) {
+    teams(where: { id: $teamId }) {
       id
       equipmentRecord {
         id
@@ -463,9 +453,9 @@ export const CONSTITUENCY_LATEST_EQUIPMENT_RECORD = gql`
   }
 `
 
-export const CONSTITUENCY_BY_BACENTA = gql`
-  query equipmentConstituencyByBacenta($constituencyId: ID) {
-    constituencies(where: { id: $constituencyId }) {
+export const TEAM_BY_BACENTA = gql`
+  query equipmentTeamByBacenta($teamId: ID) {
+    teams(where: { id: $teamId }) {
       id
       name
       bacentas {
@@ -481,9 +471,9 @@ export const CONSTITUENCY_BY_BACENTA = gql`
   }
 `
 
-export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
-  query equipmentConstituencyDefaultersNumberByFellowship($constituencyId: ID) {
-    constituencies(where: { id: $constituencyId }) {
+export const TEAM_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
+  query equipmentTeamDefaultersNumberByFellowship($teamId: ID) {
+    teams(where: { id: $teamId }) {
       id
       name
       fellowshipEquipmentFilledCount
@@ -493,9 +483,9 @@ export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
   }
 `
 
-export const CONSTITUENCY_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
-  query equipmentConstituencyDefaultersListByFellowship($constituencyId: ID) {
-    constituencies(where: { id: $constituencyId }) {
+export const TEAM_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
+  query equipmentTeamDefaultersListByFellowship($teamId: ID) {
+    teams(where: { id: $teamId }) {
       id
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
@@ -619,9 +609,9 @@ export const FELLOWSHIP_LATEST_EQUIPMENT_RECORD = gql`
 `
 
 // use bacenta by fellowship instrad and drill down
-export const FELLOWSHIP_RECORDS_PER_CONSTITUENCY = gql`
-  query Constituencies($constituencyId: ID) {
-    constituencies(where: { id: $constituencyId }) {
+export const FELLOWSHIP_RECORDS_PER_TEAM = gql`
+  query Teams($teamId: ID) {
+    teams(where: { id: $teamId }) {
       id
       bacentas {
         id

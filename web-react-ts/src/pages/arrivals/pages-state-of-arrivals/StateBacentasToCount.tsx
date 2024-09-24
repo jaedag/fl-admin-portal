@@ -14,7 +14,7 @@ import { Button, ButtonGroup, Container } from 'react-bootstrap'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import { ArrivalsUseChurchType, BacentaWithArrivals } from '../arrivals-types'
 import {
-  CONSTITUENCY_BACENTAS_TO_COUNT,
+  TEAM_BACENTAS_TO_COUNT,
   COUNCIL_BACENTAS_TO_COUNT,
   CAMPUS_BACENTAS_TO_COUNT,
   STREAM_BACENTAS_TO_COUNT,
@@ -28,8 +28,8 @@ type FormOptions = {
 
 const StateBacentasToCount = () => {
   const { clickCard } = useContext(ChurchContext)
-  const [constituencyOnTheWay, { refetch: constituencyRefetch }] = useLazyQuery(
-    CONSTITUENCY_BACENTAS_TO_COUNT,
+  const [teamOnTheWay, { refetch: teamRefetch }] = useLazyQuery(
+    TEAM_BACENTAS_TO_COUNT,
     {
       pollInterval: SHORT_POLL_INTERVAL,
     }
@@ -53,8 +53,8 @@ const StateBacentasToCount = () => {
   const [seeBusses, setSeeBusses] = useState(true)
 
   const data = useChurchLevel({
-    constituencyFunction: constituencyOnTheWay,
-    constituencyRefetch,
+    teamFunction: teamOnTheWay,
+    teamRefetch,
     councilFunction: councilOnTheWay,
     councilRefetch,
     streamFunction: streamOnTheWay,

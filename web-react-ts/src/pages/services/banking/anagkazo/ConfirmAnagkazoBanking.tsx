@@ -3,7 +3,7 @@ import { Button, Card, Container, Spinner, Table } from 'react-bootstrap'
 import { MemberContext } from 'contexts/MemberContext'
 import { ChurchContext } from 'contexts/ChurchContext'
 import PlaceholderCustom from 'components/Placeholder'
-import { CONSTITUENCY_BANKING_DEFUALTERS_THIS_WEEK } from 'pages/services/defaulters/DefaultersQueries'
+import { TEAM_BANKING_DEFUALTERS_THIS_WEEK } from 'pages/services/defaulters/DefaultersQueries'
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { Formik, Form, FormikHelpers } from 'formik'
@@ -42,7 +42,7 @@ const ConfirmAnagkazoBanking = () => {
   const navigate = useNavigate()
 
   const { data, loading, error, refetch } = useQuery(
-    CONSTITUENCY_BANKING_DEFUALTERS_THIS_WEEK,
+    TEAM_BANKING_DEFUALTERS_THIS_WEEK,
     {
       variables: { id: streamId },
       fetchPolicy: 'cache-and-network',
@@ -50,14 +50,13 @@ const ConfirmAnagkazoBanking = () => {
   )
 
   const [
-    getConstituencyServiceRecordThisWeek,
-    { data: constituencyServiceData, loading: constituencyServiceLoading },
+    getTeamServiceRecordThisWeek,
+    { data: teamServiceData, loading: teamServiceLoading },
   ] = useLazyQuery(DISPLAY_AGGREGATE_SERVICE_RECORD)
 
   const [ConfirmBanking] = useMutation(CONFIRM_BANKING)
 
-  const service =
-    constituencyServiceData?.constituencies[0]?.aggregateServiceRecordForWeek
+  const service = teamServiceData?.teams[0]?.aggregateServiceRecordForWeek
 
   const bankingDefaultersList =
     data?.streams[0]?.constitiuencyBankingDefaultersThisWeek
@@ -117,14 +116,14 @@ const ConfirmAnagkazoBanking = () => {
               <div className="d-grid ">
                 {isOpen && (
                   <Popup handleClose={togglePopup}>
-                    {constituencyServiceLoading ? (
+                    {teamServiceLoading ? (
                       <div className="center-spinner">
                         <Spinner animation="border" variant="secondary" />
                       </div>
                     ) : (
                       <>
                         <h3 className={` menu-subheading text-center`}>
-                          {selected?.name} Constituency
+                          {selected?.name} Team
                         </h3>
                         <h6 className="text-center">Confirm Offering?</h6>
                         <Table striped bordered hover variant="dark">
@@ -145,8 +144,8 @@ const ConfirmAnagkazoBanking = () => {
                         </Table>
                         <i className="text-danger">
                           NB: You must only click this button if the amount the
-                          constituency is submitting is the same as what is
-                          displayed here
+                          team is submitting is the same as what is displayed
+                          here
                         </i>
                         <div className="text-end mt-3">
                           <Button
@@ -159,7 +158,7 @@ const ConfirmAnagkazoBanking = () => {
                               try {
                                 await ConfirmBanking({
                                   variables: {
-                                    constituencyId: selected?.id,
+                                    teamId: selected?.id,
                                   },
                                 })
                                 togglePopup()
@@ -203,7 +202,7 @@ const ConfirmAnagkazoBanking = () => {
                       </div>
 
                       <div className="flex-grow-1 ms-3">
-                        <h6 className="fw-bold">{`${defaulter?.name} Constituency`}</h6>
+                        <h6 className="fw-bold">{`${defaulter?.name} Team`}</h6>
                         <p className={`text-secondary mb-0 `}>
                           <span>{defaulter?.leader?.fullName}</span>
                         </p>
@@ -211,22 +210,21 @@ const ConfirmAnagkazoBanking = () => {
                     </div>
                     <Card.Footer className="text-center">
                       <Button
-                        disabled={constituencyServiceLoading}
+                        disabled={teamServiceLoading}
                         onClick={async () => {
                           setDefaulterIndex(index)
                           setSelected(defaulter)
                           togglePopup()
-                          await getConstituencyServiceRecordThisWeek({
+                          await getTeamServiceRecordThisWeek({
                             variables: {
-                              constituencyId: defaulter.id,
+                              teamId: defaulter.id,
                               week: getWeekNumber(),
                             },
                           })
                         }}
                         variant="info"
                       >
-                        {constituencyServiceLoading &&
-                        index === defaulterIndex ? (
+                        {teamServiceLoading && index === defaulterIndex ? (
                           <>
                             <Spinner animation="border" size="sm" />{' '}
                             <span>Loading...</span>

@@ -11,7 +11,7 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
         'leaderCampus',
         'leaderStream',
         'leaderCouncil',
-        'leaderConstituency',
+        'leaderTeam',
         'leaderBacenta',
         'leaderFellowship',
         'leaderHub',
@@ -26,18 +26,18 @@ export const permitLeader = (churchLevel: ChurchLevel) => {
         'leaderCampus',
         'leaderStream',
         'leaderCouncil',
-        'leaderConstituency',
+        'leaderTeam',
         'leaderBacenta',
       ]
       break
-    case 'constituency':
+    case 'team':
       permittedFor = [
         'leaderDenomination',
         'leaderOversight',
         'leaderCampus',
         'leaderStream',
         'leaderCouncil',
-        'leaderConstituency',
+        'leaderTeam',
       ]
       break
     case 'council':
@@ -113,7 +113,7 @@ export const permitAdmin = (churchLevel: ChurchLevel) => {
       permittedFor = [
         'adminMinistry',
         'adminCreativeArts',
-        'adminConstituency',
+        'adminTeam',
         'adminCouncil',
         'adminStream',
         'adminCampus',
@@ -132,14 +132,14 @@ export const permitAdmin = (churchLevel: ChurchLevel) => {
         'adminDenomination',
       ]
       break
-    case 'Constituency':
+    case 'Team':
       permittedFor = [
         'adminDenomination',
         'adminOversight',
         'adminCampus',
         'adminStream',
         'adminCouncil',
-        'adminConstituency',
+        'adminTeam',
       ]
       break
 
@@ -211,15 +211,15 @@ export const permitArrivals = (churchLevel: ChurchLevel): Role[] => {
         'arrivalsAdminCampus',
         'arrivalsAdminStream',
         'arrivalsAdminCouncil',
-        'arrivalsAdminConstituency',
+        'arrivalsAdminTeam',
       ]
       break
-    case 'Constituency':
+    case 'Team':
       permittedFor = [
         'arrivalsAdminCampus',
         'arrivalsAdminStream',
         'arrivalsAdminCouncil',
-        'arrivalsAdminConstituency',
+        'arrivalsAdminTeam',
       ]
       break
     case 'Council':

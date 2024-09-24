@@ -23,13 +23,13 @@ const treasuryMutations = {
     ),
   ConfirmBanking: async (
     object: never,
-    args: { constituencyId: string },
+    args: { teamId: string },
     context: Context
   ): Promise<any> => {
     isAuth(permitTellerStream(), context?.auth.roles)
     const session = context.executionContext.session()
     const sessionTwo = context.executionContext.session()
-    noEmptyArgsValidation(['constituencyId'])
+    noEmptyArgsValidation(['teamId'])
 
     // const today = new Date()
     // if (today.getDay() > 6) {
@@ -71,7 +71,7 @@ const treasuryMutations = {
 
     if (formDefaultersCount > 0) {
       throw new Error(
-        `You cannot confirm this constituency until all the active fellowships have filled their forms. Outstanding fellowships are: ${formDefaultersList.join(
+        `You cannot confirm this team until all the active fellowships have filled their forms. Outstanding fellowships are: ${formDefaultersList.join(
           ', '
         )}`
       )
@@ -79,7 +79,7 @@ const treasuryMutations = {
 
     // if (membershipAttendanceDefaultersCount > 0) {
     //   throw new Error(
-    //     `You cannot confirm this constituency until all the active fellowships have marked their attendance on the Poimen App. Outstanding fellowships are: ${membershipAttendanceDefaultersList.join(
+    //     `You cannot confirm this team until all the active fellowships have marked their attendance on the Poimen App. Outstanding fellowships are: ${membershipAttendanceDefaultersList.join(
     //       ', '
     //     )}`
     //   )
@@ -87,7 +87,7 @@ const treasuryMutations = {
 
     // if (imclDefaultersCount > 0) {
     //   throw new Error(
-    //     `You cannot confirm this constituency until all the active fellowships have filled their IMCL forms on the Poimen App. Oustanding fellowships are: ${imcleDefaultersList.join(
+    //     `You cannot confirm this team until all the active fellowships have filled their IMCL forms on the Poimen App. Oustanding fellowships are: ${imcleDefaultersList.join(
     //       ', '
     //     )}`
     //   )
@@ -105,7 +105,7 @@ const treasuryMutations = {
       checkAlreadyConfirmedResponse.bankingDefaulters.low
 
     if (checkAlreadyConfirmed < 1) {
-      throw new Error("This constituency's offering has already been banked!")
+      throw new Error("This team's offering has already been banked!")
     }
 
     try {
@@ -121,9 +121,9 @@ const treasuryMutations = {
         return confirmationResponse
       }
 
-      // return confirmationResponse.constituency.properties
+      // return confirmationResponse.team.properties
       return {
-        ...confirmationResponse.constituency.properties,
+        ...confirmationResponse.team.properties,
         banked: true,
       }
     } catch (error: any) {

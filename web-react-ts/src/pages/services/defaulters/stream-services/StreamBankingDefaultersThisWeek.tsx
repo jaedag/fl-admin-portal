@@ -27,8 +27,8 @@ const StreamBankingDefaulters = () => {
     useLazyQuery(DENOMINATION_STREAM_BANKING_DEFAULTERS_LIST)
 
   const data = useChurchLevel({
-    constituencyFunction: campusBankingDefaulters,
-    constituencyRefetch: campusRefetch,
+    teamFunction: campusBankingDefaulters,
+    teamRefetch: campusRefetch,
     councilFunction: campusBankingDefaulters,
     councilRefetch: campusRefetch,
     streamFunction: campusBankingDefaulters,

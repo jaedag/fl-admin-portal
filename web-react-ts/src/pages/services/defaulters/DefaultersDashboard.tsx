@@ -5,7 +5,7 @@ import { capitalise, plural } from 'global-utils'
 import React, { useContext } from 'react'
 import { Accordion, Col, Container, Row } from 'react-bootstrap'
 import {
-  CONSTITUENCY_DEFAULTERS,
+  TEAM_DEFAULTERS,
   COUNCIL_DEFAULTERS,
   STREAM_DEFAULTERS,
   CAMPUS_DEFAULTERS,
@@ -33,8 +33,8 @@ import useSontaLevel from 'hooks/useSontaLevel'
 
 const DefaultersDashboard = () => {
   const { currentUser } = useContext(MemberContext)
-  const [constituencyDefaulters, { refetch: constituencyRefetch }] =
-    useLazyQuery(CONSTITUENCY_DEFAULTERS)
+  const [teamDefaulters, { refetch: teamRefetch }] =
+    useLazyQuery(TEAM_DEFAULTERS)
   const [councilDefaulters, { refetch: councilRefetch }] =
     useLazyQuery(COUNCIL_DEFAULTERS)
   const [streamDefaulters, { refetch: streamRefetch }] =
@@ -55,8 +55,8 @@ const DefaultersDashboard = () => {
   let subChurch: ChurchLevel | string = ''
 
   const data = useSontaLevel({
-    constituencyFunction: constituencyDefaulters,
-    constituencyRefetch,
+    teamFunction: teamDefaulters,
+    teamRefetch,
     councilFunction: councilDefaulters,
     councilRefetch,
     streamFunction: streamDefaulters,
@@ -79,7 +79,7 @@ const DefaultersDashboard = () => {
 
   switch (currentUser?.currentChurch?.__typename) {
     case 'Council':
-      subChurch = 'constituency'
+      subChurch = 'team'
       break
     case 'Stream':
       subChurch = 'council'
@@ -244,21 +244,17 @@ const DefaultersDashboard = () => {
 
   const jointServiceDefaulters = [
     {
-      title: 'Constituency Banked',
-      data: church?.constituencyBankedThisWeekCount,
-      color: church?.constituencyBankedThisWeekCount ? 'good' : 'bad',
-      link: church?.constituencyBankedThisWeekCount
-        ? '/services/constituency-banked'
-        : '#',
+      title: 'Team Banked',
+      data: church?.teamBankedThisWeekCount,
+      color: church?.teamBankedThisWeekCount ? 'good' : 'bad',
+      link: church?.teamBankedThisWeekCount ? '/services/team-banked' : '#',
     },
     {
-      title: 'Constituency Not Banked',
-      data: church?.constituencyBankingDefaultersThisWeekCount,
-      color: church?.constituencyBankingDefaultersThisWeekCount
-        ? 'bad'
-        : 'good',
-      link: church?.constituencyBankingDefaultersThisWeekCount
-        ? '/services/constituency-banking-defaulters'
+      title: 'Team Not Banked',
+      data: church?.teamBankingDefaultersThisWeekCount,
+      color: church?.teamBankingDefaultersThisWeekCount ? 'bad' : 'good',
+      link: church?.teamBankingDefaultersThisWeekCount
+        ? '/services/team-banking-defaulters'
         : '#',
     },
     {
@@ -291,9 +287,7 @@ const DefaultersDashboard = () => {
     ) {
       return '0'
     }
-    if (
-      ['Stream', 'Council', 'Constituency'].includes(church?.__typename ?? '')
-    ) {
+    if (['Stream', 'Council', 'Team'].includes(church?.__typename ?? '')) {
       return '2'
     }
 
@@ -387,7 +381,7 @@ const DefaultersDashboard = () => {
                 'Campus',
                 'Stream',
                 'Council',
-                'Constituency',
+                'Team',
                 'Hub',
                 'HubCouncil',
                 'Ministry',

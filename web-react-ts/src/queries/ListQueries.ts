@@ -11,9 +11,9 @@ export const GET_BISHOPS = gql`
   }
 `
 
-export const GET_CONSTITUENCY_BACENTAS = gql`
-  query getConstituencyBacentas($id: ID!) {
-    constituencies(where: { id: $id }) {
+export const GET_TEAM_BACENTAS = gql`
+  query getTeamBacentas($id: ID!) {
+    teams(where: { id: $id }) {
       id
       name
 
@@ -50,9 +50,9 @@ export const GET_CONSTITUENCY_BACENTAS = gql`
   }
 `
 
-export const GET_CONSTITUENCY_ICBACENTAS = gql`
-  query getConstituencyIcBacentas($id: ID!) {
-    constituencies(where: { id: $id }) {
+export const GET_TEAM_ICBACENTAS = gql`
+  query getTeamIcBacentas($id: ID!) {
+    teams(where: { id: $id }) {
       id
       name
 
@@ -88,8 +88,8 @@ export const GET_CONSTITUENCY_ICBACENTAS = gql`
   }
 `
 
-export const GET_COUNCIL_CONSTITUENCIES = gql`
-  query getCouncilConstituencies($id: ID!) {
+export const GET_COUNCIL_TEAMS = gql`
+  query getCouncilTeams($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
@@ -106,7 +106,7 @@ export const GET_COUNCIL_CONSTITUENCIES = gql`
         lastName
         stream_name
       }
-      constituencies {
+      teams {
         name
         id
         stream_name
@@ -135,8 +135,8 @@ export const GET_COUNCIL_CONSTITUENCIES = gql`
     }
   }
 `
-export const GET_CAMPUS_CONSTITUENCIES = gql`
-  query getGatheringConstituencies($id: ID!) {
+export const GET_CAMPUS_TEAMS = gql`
+  query getGatheringTeams($id: ID!) {
     campuses(where: { id: $id }) {
       id
       name
@@ -157,7 +157,7 @@ export const GET_CAMPUS_CONSTITUENCIES = gql`
         stream_name
         fullName
       }
-      constituencies {
+      teams {
         name
         id
         stream_name
@@ -207,8 +207,8 @@ export const GET_STREAM_COUNCILS = gql`
         stream_name
         memberCount
         target
-        constituencyCount
-        constituencies {
+        teamCount
+        teams {
           id
         }
         leader {
@@ -365,8 +365,8 @@ export const GET_OVERSIGHT_CAMPUSES = gql`
   }
 `
 
-export const GET_STREAM_CONSTITUENCIES = gql`
-  query getStreamConstituencies($id: ID!) {
+export const GET_STREAM_TEAMS = gql`
+  query getStreamTeams($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
@@ -384,7 +384,7 @@ export const GET_STREAM_CONSTITUENCIES = gql`
         fullName
         stream_name
       }
-      constituencies {
+      teams {
         name
         id
         stream_name
@@ -409,7 +409,7 @@ export const GET_COUNCILS = gql`
     councils {
       id
       name
-      constituencies {
+      teams {
         id
       }
     }
@@ -530,7 +530,7 @@ export const GET_HUB_HUBFELLOWSHIPS = gql`
             lastName
             fullName
           }
-          constituency {
+          team {
             id
           }
         }
@@ -855,9 +855,9 @@ export const GET_COUNCIL_HUBCOUNCILS = gql`
   }
 `
 
-export const GET_CONSTITUENCY_HUBS = gql`
-  query getConstituencyHubs($id: ID!) {
-    constituencies(where: { id: $id }) {
+export const GET_TEAM_HUBS = gql`
+  query getTeamHubs($id: ID!) {
+    teams(where: { id: $id }) {
       id
       name
 

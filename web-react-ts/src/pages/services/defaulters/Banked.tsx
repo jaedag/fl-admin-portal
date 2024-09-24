@@ -8,7 +8,7 @@ import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import DefaulterCard from './DefaulterCard'
 import {
-  CONSTITUENCY_BANKED_LIST,
+  TEAM_BANKED_LIST,
   COUNCIL_BANKED_LIST,
   STREAM_BANKED_LIST,
   CAMPUS_BANKED_LIST,
@@ -25,9 +25,7 @@ import {
 import useSontaLevel from 'hooks/useSontaLevel'
 
 const Banked = () => {
-  const [constituencyBanked, { refetch: constituencyRefetch }] = useLazyQuery(
-    CONSTITUENCY_BANKED_LIST
-  )
+  const [teamBanked, { refetch: teamRefetch }] = useLazyQuery(TEAM_BANKED_LIST)
   const [councilBanked, { refetch: councilRefetch }] =
     useLazyQuery(COUNCIL_BANKED_LIST)
   const [streamBanked, { refetch: streamRefetch }] =
@@ -45,8 +43,8 @@ const Banked = () => {
   const [hubBanked, { refetch: hubRefetch }] = useLazyQuery(HUB_BANKED_LIST)
 
   const data = useSontaLevel({
-    constituencyFunction: constituencyBanked,
-    constituencyRefetch,
+    teamFunction: teamBanked,
+    teamRefetch,
     councilFunction: councilBanked,
     councilRefetch,
     streamFunction: streamBanked,

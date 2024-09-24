@@ -12,7 +12,7 @@ import {
   COUNCIL_FELLOWSHIP_SEARCH,
   CAMPUS_FELLOWSHIP_SEARCH,
   STREAM_FELLOWSHIP_SEARCH,
-  CONSTITUENCY_FELLOWSHIP_SEARCH,
+  TEAM_FELLOWSHIP_SEARCH,
   BACENTA_FELLOWSHIP_SEARCH,
   MEMBER_FELLOWSHIP_SEARCH,
 } from './SearchFellowshipQueries'
@@ -51,11 +51,11 @@ const SearchFellowship = (props: RoleBasedSearch) => {
     }
   )
 
-  const [constituencySearch, { error: constituencyError }] = useLazyQuery(
-    CONSTITUENCY_FELLOWSHIP_SEARCH,
+  const [teamSearch, { error: teamError }] = useLazyQuery(
+    TEAM_FELLOWSHIP_SEARCH,
     {
       onCompleted: (data) => {
-        setSuggestions(data.constituencies[0].fellowshipSearch)
+        setSuggestions(data.teams[0].fellowshipSearch)
         return
       },
     }
@@ -84,7 +84,7 @@ const SearchFellowship = (props: RoleBasedSearch) => {
     campusError ||
     streamError ||
     councilError ||
-    constituencyError ||
+    teamError ||
     bacentaError ||
     memberError
   throwToSentry('', error)
@@ -118,10 +118,10 @@ const SearchFellowship = (props: RoleBasedSearch) => {
             key: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(permitMe('Constituency'), currentUser.roles)) {
-        constituencySearch({
+      } else if (isAuthorised(permitMe('Team'), currentUser.roles)) {
+        teamSearch({
           variables: {
-            id: currentUser.constituency,
+            id: currentUser.team,
             key: searchString?.trim(),
           },
         })

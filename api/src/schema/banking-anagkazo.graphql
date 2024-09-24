@@ -16,11 +16,11 @@ extend type Member {
 extend type Mutation {
   MakeStreamTeller(streamId: ID!, tellerId: ID!): Member!
   RemoveStreamTeller(streamId: ID!, tellerId: ID!): Member!
-  ConfirmBanking(constituencyId: ID!): Constituency!
+  ConfirmBanking(teamId: ID!): Team!
 }
 
 extend type Stream {
-  constitiuencyBankingDefaultersThisWeek: [Constituency!]!
+  constitiuencyBankingDefaultersThisWeek: [Team!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -42,12 +42,12 @@ extend type Stream {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(constituencies:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(teams:Team)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
-      RETURN DISTINCT constituencies
+      RETURN DISTINCT teams
       """
     )
-  constituencyBankingDefaultersThisWeekCount: Int
+  teamBankingDefaultersThisWeekCount: Int
     @cypher(
       statement: """
       MATCH (this)
@@ -69,9 +69,9 @@ extend type Stream {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(constituencies:Constituency)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(teams:Team)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
-      RETURN COUNT(DISTINCT constituencies)
+      RETURN COUNT(DISTINCT teams)
       """
     )
 }
@@ -80,7 +80,7 @@ extend type AggregateServiceRecord {
   foreignCurrency: [String]
 }
 
-extend type Constituency {
+extend type Team {
   aggregateServiceRecordForWeek(week: Int!): AggregateServiceRecord!
     @cypher(
       statement: """

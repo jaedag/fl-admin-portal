@@ -19,9 +19,9 @@ export const HUB_REHEARSALS_PAYMENT = gql`
   }
 `
 
-export const CONSTITUENCY_SERVICE_PAYMENT = gql`
-  query constituencyServicePayment($id: ID!) {
-    constituencies(where: { id: $id }) {
+export const TEAM_SERVICE_PAYMENT = gql`
+  query teamServicePayment($id: ID!) {
+    teams(where: { id: $id }) {
       id
       name
     }

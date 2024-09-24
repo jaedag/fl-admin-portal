@@ -68,7 +68,7 @@ export const MEMBER_SEARCH = gql`
           pictureUrl
         }
       }
-      constituencySearch(key: $key, limit: $limit) {
+      teamSearch(key: $key, limit: $limit) {
         id
         name
         leader {

@@ -6,7 +6,7 @@ import HeadingSecondary from 'components/HeadingSecondary'
 import React from 'react'
 import { Container } from 'react-bootstrap'
 import {
-  CONSTITUENCY_BACENTAS_NO_ACTIVITY,
+  TEAM_BACENTAS_NO_ACTIVITY,
   COUNCIL_BACENTAS_NO_ACTIVITY,
   CAMPUS_BACENTAS_NO_ACTIVITY,
   STREAM_BACENTAS_NO_ACTIVITY,
@@ -19,10 +19,12 @@ import PullToRefresh from 'react-simple-pull-to-refresh'
 import { LONG_POLL_INTERVAL } from 'global-utils'
 
 const BacentasNoActiviity = () => {
-  const [constituencyBacentasNoActivity, { refetch: constituencyRefetch }] =
-    useLazyQuery(CONSTITUENCY_BACENTAS_NO_ACTIVITY, {
+  const [teamBacentasNoActivity, { refetch: teamRefetch }] = useLazyQuery(
+    TEAM_BACENTAS_NO_ACTIVITY,
+    {
       pollInterval: LONG_POLL_INTERVAL,
-    })
+    }
+  )
   const [councilBacentasNoActivity, { refetch: councilRefetch }] = useLazyQuery(
     COUNCIL_BACENTAS_NO_ACTIVITY,
     {
@@ -43,8 +45,8 @@ const BacentasNoActiviity = () => {
   )
 
   const data = useChurchLevel({
-    constituencyFunction: constituencyBacentasNoActivity,
-    constituencyRefetch,
+    teamFunction: teamBacentasNoActivity,
+    teamRefetch,
     councilFunction: councilBacentasNoActivity,
     councilRefetch,
     streamFunction: streamBacentasNoActivity,

@@ -56,12 +56,11 @@ const DefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
           {`${defaulter?.name} ${defaulter?.__typename}`}
           <br />
 
-          {defaulter?.__typename === 'Bacenta' &&
-            defaulter?.constituency?.name && (
-              <span className="text-secondary">
-                {`${defaulter?.constituency?.name} ${defaulter?.constituency?.__typename}`}
-              </span>
-            )}
+          {defaulter?.__typename === 'Bacenta' && defaulter?.team?.name && (
+            <span className="text-secondary">
+              {`${defaulter?.team?.name} ${defaulter?.team?.__typename}`}
+            </span>
+          )}
 
           {defaulter?.__typename === 'Stream' && defaulter?.campus && (
             <>
@@ -117,7 +116,7 @@ const DefaulterCard = ({ defaulter, link }: DefaulterCardProps) => {
             </Button>
           </a>
           {serviceDetails?.noServiceReason && (
-            <RoleView roles={permitLeaderAdmin('Constituency')}>
+            <RoleView roles={permitLeaderAdmin('Team')}>
               <Button
                 className="ms-3"
                 variant="warning"

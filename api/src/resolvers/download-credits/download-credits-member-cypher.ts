@@ -1,6 +1,6 @@
 export const councilDownloadMembers = `
-    MATCH (council:Council {id: $id})-[:HAS]->(constituency:Constituency)-[:HAS]->(bacenta:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
-    MATCH (constituency)<-[:LEADS]-(constituencyLeader:Member)
+    MATCH (council:Council {id: $id})-[:HAS]->(team:Team)-[:HAS]->(bacenta:Bacenta)<-[:BELONGS_TO]-(members:Active:Member)
+    MATCH (team)<-[:LEADS]-(teamLeader:Member)
     MATCH (bacenta)<-[:LEADS]-(bacentaLeader:Member)
 
     MATCH (members)-[:HAS_MARITAL_STATUS]->(maritalStatus:MaritalStatus)
@@ -39,14 +39,14 @@ export const councilDownloadMembers = `
                     .lastName,
                     fullName: bacentaLeader.firstName + ' ' + bacentaLeader.lastName
                 },
-                constituency: constituency{
+                team: team{
                     .id,
                     .name,
-                    leader: constituencyLeader {
+                    leader: teamLeader {
                         .id,
                         .firstName,
                         .lastName,
-                        fullName: constituencyLeader.firstName + ' ' + constituencyLeader.lastName
+                        fullName: teamLeader.firstName + ' ' + teamLeader.lastName
                     }
                 }
             }

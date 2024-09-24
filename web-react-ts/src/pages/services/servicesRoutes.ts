@@ -19,11 +19,11 @@ const BacentaService = lazy(
 const BacentaServiceDetails = lazy(
   () => import('pages/services/record-service/BacentaServiceDetails')
 )
-const ConstituencyService = lazy(
-  () => import('pages/services/record-service/ConstituencyService')
+const TeamService = lazy(
+  () => import('pages/services/record-service/TeamService')
 )
-const ConstituencyServiceDetails = lazy(
-  () => import('pages/services/record-service/ConstituencyServiceDetails')
+const TeamServiceDetails = lazy(
+  () => import('pages/services/record-service/TeamServiceDetails')
 )
 
 const BacentaServiceCancelled = lazy(
@@ -67,15 +67,13 @@ const MinistryReport = lazy(
 const CreativeArtsReport = lazy(
   () => import('pages/services/graphs/CreativeArtsGraphs')
 )
-const ConstituencyReport = lazy(
-  () => import('pages/services/graphs/ConstituencyGraphs')
-)
+const TeamReport = lazy(() => import('pages/services/graphs/TeamGraphs'))
 const CouncilReport = lazy(() => import('pages/services/graphs/CouncilGraphs'))
 const FellowshipReport = lazy(
   () => import('pages/services/graphs/FellowshipGraphs')
 )
 
-const ConstituencyJoint = lazy(() => import('pages/services/ConstituencyJoint'))
+const TeamJoint = lazy(() => import('pages/services/TeamJoint'))
 const Banked = lazy(() => import('pages/services/defaulters/Banked'))
 const BankingDefaulters = lazy(
   () => import('pages/services/defaulters/BankingDefaulters')
@@ -83,11 +81,8 @@ const BankingDefaulters = lazy(
 const CancelledServicesThisWeek = lazy(
   () => import('pages/services/defaulters/CancelledServiceThisWeek')
 )
-const CouncilByConstituency = lazy(
-  () =>
-    import(
-      'pages/services/defaulters/church-by-subchurch/CouncilByConstituency'
-    )
+const CouncilByTeam = lazy(
+  () => import('pages/services/defaulters/church-by-subchurch/CouncilByTeam')
 )
 const FormDefaulters = lazy(
   () => import('pages/services/defaulters/FormDefaulters')
@@ -95,14 +90,14 @@ const FormDefaulters = lazy(
 const ServicesThisWeek = lazy(
   () => import('pages/services/defaulters/ServicesThisWeek')
 )
-const ConstituencyJointNotBanked = lazy(
-  () => import('pages/services/defaulters/ConstituencyNotBankedThisWeek')
+const TeamJointNotBanked = lazy(
+  () => import('pages/services/defaulters/TeamNotBankedThisWeek')
 )
 const CouncilJointNotBanked = lazy(
   () => import('pages/services/defaulters/CouncilNotBankedThisWeek')
 )
-const ConstituencyJointBanked = lazy(
-  () => import('pages/services/defaulters/ConstituencyBankedThisWeek')
+const TeamJointBanked = lazy(
+  () => import('pages/services/defaulters/TeamBankedThisWeek')
 )
 const CouncilJointBanked = lazy(
   () => import('pages/services/defaulters/CouncilBankedThisWeek')
@@ -139,11 +134,11 @@ const CreativeArtsByMinistry = lazy(
 const MinistryByHubCouncil = lazy(
   () => import('pages/services/defaulters/creative-arts/MinistryByHubCouncil')
 )
-const ConstituencyBankingSlipView = lazy(
-  () => import('pages/services/banking/banking-slip/ConstituencyView')
+const TeamBankingSlipView = lazy(
+  () => import('pages/services/banking/banking-slip/TeamView')
 )
-const ConstituencyBankingSlipSubmission = lazy(
-  () => import('pages/services/banking/banking-slip/ConstituencySubmission')
+const TeamBankingSlipSubmission = lazy(
+  () => import('pages/services/banking/banking-slip/TeamSubmission')
 )
 const CouncilService = lazy(
   () => import('pages/services/record-service/CouncilService')
@@ -255,9 +250,9 @@ export const services: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/services/constituency',
-    element: ConstituencyJoint,
-    roles: permitLeaderAdmin('Constituency'),
+    path: '/services/team',
+    element: TeamJoint,
+    roles: permitLeaderAdmin('Team'),
     placeholder: true,
   },
   {
@@ -292,8 +287,8 @@ export const services: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/services/constituency/banking-slips',
-    element: ConstituencyBankingSlipView,
+    path: '/services/team/banking-slips',
+    element: TeamBankingSlipView,
     roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
@@ -310,8 +305,8 @@ export const services: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/constituency/banking-slip/submission',
-    element: ConstituencyBankingSlipSubmission,
+    path: '/team/banking-slip/submission',
+    element: TeamBankingSlipSubmission,
     roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
@@ -366,12 +361,9 @@ export const graphs: LazyRouteTypes[] = [
   },
 
   {
-    path: '/constituency/graphs',
-    element: ConstituencyReport,
-    roles: [
-      ...permitLeaderAdminArrivals('Constituency'),
-      ...permitTellerStream(),
-    ],
+    path: '/team/graphs',
+    element: TeamReport,
+    roles: [...permitLeaderAdminArrivals('Team'), ...permitTellerStream()],
     placeholder: true,
   },
 
@@ -486,17 +478,17 @@ export const graphs: LazyRouteTypes[] = [
     placeholder: false,
   },
 
-  //Constituency Services
+  //Team Services
   {
-    path: '/constituency/record-service',
-    element: ConstituencyService,
-    roles: permitLeaderAdmin('Constituency'),
+    path: '/team/record-service',
+    element: TeamService,
+    roles: permitLeaderAdmin('Team'),
     placeholder: false,
   },
   {
-    path: '/constituency/service-details',
-    element: ConstituencyServiceDetails,
-    roles: [...permitLeaderAdmin('Constituency'), ...permitTellerStream()],
+    path: '/team/service-details',
+    element: TeamServiceDetails,
+    roles: [...permitLeaderAdmin('Team'), ...permitTellerStream()],
     placeholder: false,
   },
 
@@ -558,30 +550,30 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/services/defaulters',
     element: Defaulters,
-    roles: [...permitLeaderAdmin('Constituency'), ...permitLeaderAdmin('Hub')],
+    roles: [...permitLeaderAdmin('Team'), ...permitLeaderAdmin('Hub')],
     placeholder: true,
   },
   {
     path: '/services/defaulters/dashboard',
     element: DefaultersDashboard,
-    roles: [...permitLeaderAdmin('Constituency'), ...permitLeaderAdmin('Hub')],
+    roles: [...permitLeaderAdmin('Team'), ...permitLeaderAdmin('Hub')],
     placeholder: true,
   },
   {
     path: '/services/form-defaulters',
     element: FormDefaulters,
-    roles: [...permitLeaderAdmin('Constituency'), ...permitLeaderAdmin('Hub')],
+    roles: [...permitLeaderAdmin('Team'), ...permitLeaderAdmin('Hub')],
     placeholder: true,
   },
   {
     path: '/services/banking-defaulters',
     element: BankingDefaulters,
-    roles: [...permitLeaderAdmin('Constituency'), ...permitLeaderAdmin('Hub')],
+    roles: [...permitLeaderAdmin('Team'), ...permitLeaderAdmin('Hub')],
     placeholder: true,
   },
   {
-    path: '/services/constituency-banking-defaulters',
-    element: ConstituencyJointNotBanked,
+    path: '/services/team-banking-defaulters',
+    element: TeamJointNotBanked,
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
@@ -592,8 +584,8 @@ export const graphs: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/services/constituency-banked',
-    element: ConstituencyJointBanked,
+    path: '/services/team-banked',
+    element: TeamJointBanked,
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
@@ -606,24 +598,24 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/services/banked',
     element: Banked,
-    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
+    roles: [...permitLeaderAdmin('Team'), ...permitLeader('Hub')],
     placeholder: true,
   },
   {
     path: '/services/filled-services',
     element: ServicesThisWeek,
-    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
+    roles: [...permitLeaderAdmin('Team'), ...permitLeader('Hub')],
     placeholder: true,
   },
   {
     path: '/services/cancelled-services',
     element: CancelledServicesThisWeek,
-    roles: [...permitLeaderAdmin('Constituency'), ...permitLeader('Hub')],
+    roles: [...permitLeaderAdmin('Team'), ...permitLeader('Hub')],
     placeholder: true,
   },
   {
-    path: '/services/council-by-constituency',
-    element: CouncilByConstituency,
+    path: '/services/council-by-team',
+    element: CouncilByTeam,
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },

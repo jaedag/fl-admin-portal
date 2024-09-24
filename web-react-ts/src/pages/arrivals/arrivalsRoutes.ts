@@ -26,9 +26,7 @@ const BusFormDetails = lazy(() => import('pages/arrivals/BusFormDetails'))
 const OnTheWaySubmission = lazy(
   () => import('pages/arrivals/pages-forms/FormAddVehicleRecord')
 )
-const ConstituencyDashboard = lazy(
-  () => import('./pages-dashboards/DashboardConstituency')
-)
+const TeamDashboard = lazy(() => import('./pages-dashboards/DashboardTeam'))
 const CouncilDashboard = lazy(
   () => import('./pages-dashboards/DashboardCouncil')
 )
@@ -48,9 +46,7 @@ const BacentasHaveArrived = lazy(
 )
 const CampusByStream = lazy(() => import('./pages-breakdowns/CampusByStream'))
 const StreamByCouncil = lazy(() => import('./pages-breakdowns/StreamByCouncil'))
-const CouncilByConstituency = lazy(
-  () => import('./pages-breakdowns/CouncilByConstituency')
-)
+const CouncilByTeam = lazy(() => import('./pages-breakdowns/CouncilByTeam'))
 
 const StateBacentasToCount = lazy(
   () => import('./pages-state-of-arrivals/StateBacentasToCount')
@@ -89,9 +85,9 @@ export const arrivals: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/arrivals/constituency',
-    roles: permitLeaderAdminArrivals('Constituency'),
-    element: ConstituencyDashboard,
+    path: '/arrivals/team',
+    roles: permitLeaderAdminArrivals('Team'),
+    element: TeamDashboard,
     placeholder: true,
   },
 
@@ -119,9 +115,9 @@ export const arrivals: LazyRouteTypes[] = [
 
   //Drilling Down
   {
-    path: '/arrivals/council-by-constituency',
+    path: '/arrivals/council-by-team',
     roles: permitLeaderAdminArrivals('Council'),
-    element: CouncilByConstituency,
+    element: CouncilByTeam,
     placeholder: true,
   },
   {
@@ -154,7 +150,7 @@ export const arrivals: LazyRouteTypes[] = [
   {
     path: '/arrivals/bacentas-no-activity',
     roles: [
-      ...permitLeaderAdminArrivals('Constituency'),
+      ...permitLeaderAdminArrivals('Team'),
       ...permitArrivalsHelpers('Stream'),
     ],
     element: StateBacentasNoActivity,
@@ -163,7 +159,7 @@ export const arrivals: LazyRouteTypes[] = [
   {
     path: '/arrivals/bacentas-mobilising',
     roles: [
-      ...permitLeaderAdminArrivals('Constituency'),
+      ...permitLeaderAdminArrivals('Team'),
       ...permitArrivalsHelpers('Stream'),
     ],
     element: BacentasMobilising,
@@ -171,7 +167,7 @@ export const arrivals: LazyRouteTypes[] = [
   },
   {
     path: '/arrivals/bacentas-on-the-way',
-    roles: [...permitLeaderAdminArrivals('Constituency')],
+    roles: [...permitLeaderAdminArrivals('Team')],
     element: BacentasOnTheWay,
     placeholder: true,
   },
@@ -194,7 +190,7 @@ export const arrivals: LazyRouteTypes[] = [
   {
     path: '/arrivals/bacentas-have-arrived',
     roles: [
-      ...permitLeaderAdminArrivals('Constituency'),
+      ...permitLeaderAdminArrivals('Team'),
       ...permitArrivalsHelpers('Stream'),
     ],
     element: BacentasHaveArrived,
@@ -202,7 +198,7 @@ export const arrivals: LazyRouteTypes[] = [
   },
   {
     path: '/arrivals/bacentas-below-8',
-    roles: permitLeaderAdminArrivals('Constituency'),
+    roles: permitLeaderAdminArrivals('Team'),
     element: BacentasBelow8,
     placeholder: false,
   },

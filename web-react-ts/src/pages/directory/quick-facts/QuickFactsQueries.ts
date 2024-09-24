@@ -54,9 +54,9 @@ export const BACENTA_AVG_WEEKDAY_STATS = gql`
   }
 `
 
-export const CONSTITUENCY_AVG_WEEKDAY_STATS = gql`
-  query constituencyAvgWeekdayStats($constituencyId: ID, $days: Int!) {
-    constituencies(where: { id: $constituencyId }) {
+export const TEAM_AVG_WEEKDAY_STATS = gql`
+  query teamAvgWeekdayStats($teamId: ID, $days: Int!) {
+    teams(where: { id: $teamId }) {
       id
       name
       avgBussingAttendance(days: $days)
@@ -72,8 +72,8 @@ export const CONSTITUENCY_AVG_WEEKDAY_STATS = gql`
       council {
         id
         name
-        avgConstituencyBussingAttendance(days: $days)
-        avgConstituencyWeekdayStats(days: $days) {
+        avgTeamBussingAttendance(days: $days)
+        avgTeamWeekdayStats(days: $days) {
           income
           attendance
         }

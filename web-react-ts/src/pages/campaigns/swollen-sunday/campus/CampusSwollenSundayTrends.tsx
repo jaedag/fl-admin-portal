@@ -84,8 +84,8 @@ const CampusSwollenSundayTrends = () => {
       number: church?.councilCount,
     },
     {
-      name: 'Constituencies',
-      number: church?.constituencyCount,
+      name: 'Teams',
+      number: church?.teamCount,
     },
     {
       name: 'Bacentas',

@@ -46,9 +46,9 @@ const DetailsStream = () => {
     { title: 'Target', number: stream?.target, link: '#' },
     { title: 'Pastors', number: stream?.pastorCount || '0', link: '#' },
     {
-      title: 'Constituencies',
-      number: stream?.constituencyCount,
-      link: `/stream/constituencies`,
+      title: 'Teams',
+      number: stream?.teamCount,
+      link: `/stream/teams`,
     },
     {
       title: 'Greens',

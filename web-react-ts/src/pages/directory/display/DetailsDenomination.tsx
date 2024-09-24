@@ -39,9 +39,9 @@ const DetailsDenomination = () => {
       link: `#`,
     },
     {
-      title: 'Constituencies',
-      number: denomination?.constituencyCount,
-      link: `/campus/constituencies`,
+      title: 'Teams',
+      number: denomination?.teamCount,
+      link: `/campus/teams`,
     },
     {
       title: 'Greens',

@@ -36,13 +36,13 @@ import { MemberContext } from 'contexts/MemberContext'
 import RoleView from 'auth/RoleView'
 import Select from 'components/formik/Select'
 import VerifyNotMe from 'auth/VerifyNotMe'
-import { GET_HUBCOUNCIL_CONSTITUENCIES } from './SontaListQueries'
+import { GET_HUBCOUNCIL_TEAMS } from './SontaListQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 export interface HubFormValues extends FormikInitialValues {
   name: string
   hubCouncil?: string
-  constituency?: string
+  team?: string
   meetingDay: string
   vacationStatus: 'Active' | 'Vacation'
   venueLatitude: string | number
@@ -66,7 +66,7 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
   const navigate = useNavigate()
 
   const [buttonLoading, setButtonLoading] = useState(false)
-  const { data, loading, error } = useQuery(GET_HUBCOUNCIL_CONSTITUENCIES, {
+  const { data, loading, error } = useQuery(GET_HUBCOUNCIL_TEAMS, {
     variables: { hubCouncilId: initialValues.hubCouncil },
   })
   const [CloseDownHub] = useMutation(MAKE_HUB_INACTIVE, {
@@ -78,14 +78,10 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
     ],
   })
 
-  const constituencyOptions = makeSelectOptions(
-    data?.hubCouncils[0].constituencies
-  )
+  const teamOptions = makeSelectOptions(data?.hubCouncils[0].teams)
 
   const validationSchema = Yup.object({
-    constituency: Yup.string().required(
-      'Please choose a constituency from the drop down'
-    ),
+    team: Yup.string().required('Please choose a team from the drop down'),
     name: Yup.string().required(`Hub Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
@@ -152,10 +148,10 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                         {newHub && (
                           <Col sm={12}>
                             <Select
-                              name="constituency"
-                              label="Select a Constituency"
-                              options={constituencyOptions}
-                              defaultOption="Select a Constituency"
+                              name="team"
+                              label="Select a Team"
+                              options={teamOptions}
+                              defaultOption="Select a Team"
                             />
                           </Col>
                         )}

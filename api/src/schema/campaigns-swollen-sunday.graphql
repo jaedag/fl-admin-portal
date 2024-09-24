@@ -100,7 +100,7 @@ extend type Council {
     )
 }
 
-extend type Constituency {
+extend type Team {
   swellBussingRecords(startDate: String!, endDate: String!): [SwellStats!]!
     @cypher(
       statement: """

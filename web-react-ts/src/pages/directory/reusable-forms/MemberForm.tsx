@@ -119,10 +119,7 @@ const MemberForm = ({
     if (!update) {
       return true
     }
-    if (
-      update &&
-      isAuthorised(permitAdmin('Constituency'), currentUser.roles)
-    ) {
+    if (update && isAuthorised(permitAdmin('Team'), currentUser.roles)) {
       return true
     }
 
@@ -235,7 +232,7 @@ const MemberForm = ({
                               Add Title
                             </Button>
                           </RoleView>
-                          <RoleView roles={permitLeaderAdmin('Constituency')}>
+                          <RoleView roles={permitLeaderAdmin('Team')}>
                             <Button
                               onClick={() => togglePopup()}
                               variant="danger"

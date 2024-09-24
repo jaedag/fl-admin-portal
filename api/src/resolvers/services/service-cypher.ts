@@ -1,6 +1,6 @@
 export const checkFormFilledThisWeek = `
 MATCH (church {id: $churchId})
-WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream 
+WHERE church:Bacenta OR church:Team OR church:Council OR church:Stream 
 OR church:Hub OR church:HubCouncil  OR church:Ministry
 
 OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
@@ -12,10 +12,10 @@ RETURN church.id AS id, church.name AS name, labels(church) AS labels, record IS
 
 export const getHigherChurches = `
 MATCH (church {id: $churchId})
-WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream
+WHERE church:Bacenta OR church:Team OR church:Council OR church:Stream
 OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 MATCH (church)<-[:HAS*1..7]-(higherChurch)
-WHERE higherChurch:Bacenta OR higherChurch:Constituency OR higherChurch:Council OR higherChurch:Stream OR higherChurch:Campus OR higherChurch:Oversight OR higherChurch:Denomination
+WHERE higherChurch:Bacenta OR higherChurch:Team OR higherChurch:Council OR higherChurch:Stream OR higherChurch:Campus OR higherChurch:Oversight OR higherChurch:Denomination
 OR higherChurch:Hub OR higherChurch:HubCouncil OR higherChurch:Ministry OR higherChurch:CreativeArts
 
 RETURN DISTINCT higherChurch
@@ -23,7 +23,7 @@ RETURN DISTINCT higherChurch
 
 export const getCurrency = `
 MATCH (church {id: $churchId})<-[:HAS|HAS_MINISTRY*0..5]-(campus:Campus)
-WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Campus
+WHERE church:Bacenta OR church:Team OR church:Council OR church:Stream OR church:Campus
 OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 
 RETURN DISTINCT labels(church) AS labels, campus.name, campus.currency AS currency, campus.conversionRateToDollar AS conversionRateToDollar
@@ -31,7 +31,7 @@ RETURN DISTINCT labels(church) AS labels, campus.name, campus.currency AS curren
 
 export const absorbAllTransactions = `
 MATCH (serviceRecord:ServiceRecord {id: $serviceRecordId})<-[:HAS_SERVICE]-(log:ServiceLog)<-[:CURRENT_HISTORY]-(church)
-WHERE church:Bacenta OR church:Constituency OR church:Council // OR church:Stream OR church:Campus
+WHERE church:Bacenta OR church:Team OR church:Council // OR church:Stream OR church:Campus
 MATCH (church)-[:HAS*0..3]->(bacentas:Bacenta)<-[r:GIVEN_AT]-(transaction:Transaction)
 DELETE r
 
@@ -68,7 +68,7 @@ export const recordService = `
         serviceRecord.familyPicture = $familyPicture
       WITH serviceRecord
 
-      MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
+      MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Team OR church:Council OR church:Stream
       MATCH (church)-[current:CURRENT_HISTORY]->(log:ServiceLog)
       MATCH (leader:Member {auth_id: $auth.jwt.sub})
       
@@ -112,7 +112,7 @@ export const recordSpecialService = `
         serviceRecord.description = $serviceDescription
       WITH serviceRecord
 
-      MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Constituency OR church:Council OR church:Stream
+      MATCH (church {id: $churchId}) WHERE church:Fellowship OR church:Bacenta OR church:Team OR church:Council OR church:Stream
       MATCH (church)-[current:CURRENT_HISTORY]->(log:ServiceLog)
       MATCH (leader:Member {auth_id: $auth.jwt.sub})
       
@@ -161,18 +161,18 @@ RETURN serviceRecord
 
 export const checkCurrentServiceLog = `
 MATCH (church {id:$churchId}) 
-WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream
+WHERE church:Bacenta OR church:Team OR church:Council OR church:Stream
 OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 MATCH (church)-[:CURRENT_HISTORY]->(log:ServiceLog)
 RETURN true AS exists
 `
 export const getServantAndChurch = `
 MATCH (church {id: $churchId}) 
-WHERE church:Bacenta OR church:Constituency OR church:Council OR church:Stream OR church:Hub OR church:HubCounci
+WHERE church:Bacenta OR church:Team OR church:Council OR church:Stream OR church:Hub OR church:HubCounci
 OR church:Ministry OR church:CreativeArts
 MATCH (church)<-[:LEADS]-(servant:Active:Member)
 UNWIND labels(church) AS churchType 
-WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Constituency', 'Council', 'Stream','Hub', 'HubCouncil', 'Ministry']
+WITH churchType, church, servant WHERE churchType IN ['Fellowship', 'Bacenta', 'Team', 'Council', 'Stream','Hub', 'HubCouncil', 'Ministry']
 
 RETURN church.id AS churchId, church.name AS churchName, servant.id AS servantId, servant.auth_id AS auth_id, servant.firstName AS firstName, servant.lastName AS lastName, churchType AS churchType
 `
@@ -194,12 +194,12 @@ export const aggregateServiceDataForBacenta = `
         aggregate.componentServiceIds = componentServiceIds,
         aggregate.numberOfServices = numberOfServices
    WITH bacenta AS lowerChurch
-   MATCH (lowerChurch)<-[:HAS]-(constituency:Constituency)
-   MATCH (constituency)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..4]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+   MATCH (lowerChurch)<-[:HAS]-(team:Team)
+   MATCH (team)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..4]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
-   WITH DISTINCT constituency, record
-   WITH constituency, collect(record.id) AS componentServiceIds,COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
-   MATCH (constituency)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   WITH DISTINCT team, record
+   WITH team, collect(record.id) AS componentServiceIds,COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
+   MATCH (team)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
     SET aggregate.month = date().month
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
@@ -208,7 +208,7 @@ export const aggregateServiceDataForBacenta = `
        aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds,
          aggregate.numberOfServices = numberOfServices
-   WITH constituency AS lowerChurch
+   WITH team AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(council:Council)
    MATCH (council)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
@@ -287,15 +287,15 @@ export const aggregateServiceDataForBacenta = `
    RETURN denomination,aggregate
 `
 
-export const aggregateServiceDataForConstituency = `
+export const aggregateServiceDataForTeam = `
    MATCH (bacenta:Bacenta {id: $churchId}) 
    WITH bacenta AS lowerChurch
-   MATCH (lowerChurch)<-[:HAS]-(constituency:Constituency)
-   MATCH (constituency)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..4]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+   MATCH (lowerChurch)<-[:HAS]-(team:Team)
+   MATCH (team)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..4]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
-   WITH DISTINCT constituency, record
-   WITH constituency, collect(record.id) AS componentServiceIds,COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
-   MATCH (constituency)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   WITH DISTINCT team, record
+   WITH team, collect(record.id) AS componentServiceIds,COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
+   MATCH (team)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateServiceRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
     SET aggregate.month = date().month
    MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
@@ -304,7 +304,7 @@ export const aggregateServiceDataForConstituency = `
        aggregate.dollarIncome = totalDollarIncome,
        aggregate.componentServiceIds = componentServiceIds,
        aggregate.numberOfServices = numberOfServices
-   WITH constituency AS lowerChurch
+   WITH team AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(council:Council)
    MATCH (council)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
@@ -384,8 +384,8 @@ export const aggregateServiceDataForConstituency = `
 `
 
 export const aggregateServiceDataForCouncil = `
-   MATCH (constituency:Constituency {id: $churchId}) 
-   WITH constituency AS lowerChurch
+   MATCH (team:Team {id: $churchId}) 
+   WITH team AS lowerChurch
    MATCH (lowerChurch)<-[:HAS]-(council:Council)
    MATCH (council)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService

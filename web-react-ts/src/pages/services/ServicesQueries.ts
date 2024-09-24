@@ -64,9 +64,9 @@ export const BANKING_SLIP_SUBMISSION = gql`
   }
 `
 
-export const CONSTITUENCY_BANKING_SLIP_QUERIES = gql`
-  query constituencyServices($constituencyId: ID!) {
-    constituencies(where: { id: $constituencyId }) {
+export const TEAM_BANKING_SLIP_QUERIES = gql`
+  query teamServices($teamId: ID!) {
+    teams(where: { id: $teamId }) {
       id
 
       name
@@ -222,12 +222,12 @@ export const BACENTA_SERVICE_RECORDS = gql`
   }
 `
 
-export const CONSTITUENCY_SERVICE_RECORDS = gql`
-  query ConstituencyServiceRecords($serviceId: ID!) {
+export const TEAM_SERVICE_RECORDS = gql`
+  query TeamServiceRecords($serviceId: ID!) {
     serviceRecords(where: { id: $serviceId }) {
       id
       serviceLog {
-        constituency {
+        team {
           id
           name
         }

@@ -36,7 +36,7 @@ export const SERVANT_BACENTA_LEADER = gql`
 
         vacationStatus
 
-        constituency {
+        team {
           id
           council {
             id
@@ -54,11 +54,11 @@ export const SERVANT_BACENTA_LEADER = gql`
   }
 `
 
-export const SERVANT_CONSTITUENCY_LEADER = gql`
-  query constituencyLeader($id: ID!) {
+export const SERVANT_TEAM_LEADER = gql`
+  query teamLeader($id: ID!) {
     members(where: { id: $id }) {
       id
-      leadsConstituency {
+      leadsTeam {
         id
         name
         stream_name
@@ -173,12 +173,12 @@ export const SERVANT_DENOMINATION_LEADER = gql`
   }
 `
 
-export const SERVANT_CONSTITUENCY_ADMIN = gql`
-  query constituencyAdmin($id: ID!) {
+export const SERVANT_TEAM_ADMIN = gql`
+  query teamAdmin($id: ID!) {
     members(where: { id: $id }) {
       id
 
-      isAdminForConstituency {
+      isAdminForTeam {
         id
         name
         stream_name
@@ -318,12 +318,12 @@ export const SERVANTS_DENOMINATION_ADMIN = gql`
   }
 `
 
-export const SERVANTS_CONSTITUENCY_ARRIVALS_ADMIN = gql`
-  query constituencyArrivalsAdmin($id: ID!) {
+export const SERVANTS_TEAM_ARRIVALS_ADMIN = gql`
+  query teamArrivalsAdmin($id: ID!) {
     members(where: { id: $id }) {
       id
 
-      isArrivalsAdminForConstituency {
+      isArrivalsAdminForTeam {
         id
         name
 

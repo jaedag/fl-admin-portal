@@ -50,9 +50,9 @@ const ProtectedRoute: (props: ProtectedRouteProps) => JSX.Element = (props) => {
     if (isAuthorised(permitMe('Bacenta'), currentUser.roles)) {
       //If the user does not have permission but is a Bacenta Leader
       church.setBacentaId(currentUser.bacenta)
-    } else if (isAuthorised(permitMe('Constituency'), currentUser.roles)) {
-      //If the user does not have permission but is a Constituency Leader
-      church.setConstituencyId(currentUser.constituency)
+    } else if (isAuthorised(permitMe('Team'), currentUser.roles)) {
+      //If the user does not have permission but is a Team Leader
+      church.setTeamId(currentUser.team)
     } else if (isAuthorised(permitMe('Council'), currentUser.roles)) {
       //If the user does not have permission but is a Council Leader
       church.setCouncilId(currentUser.council)

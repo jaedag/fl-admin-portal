@@ -13,7 +13,7 @@ import * as Yup from 'yup'
 import { useMutation } from '@apollo/client'
 import {
   MAKE_CAMPUS_ADMIN,
-  MAKE_CONSTITUENCY_ADMIN,
+  MAKE_TEAM_ADMIN,
   MAKE_COUNCIL_ADMIN,
   MAKE_OVERSIGHT_ADMIN,
   MAKE_STREAM_ADMIN,
@@ -94,7 +94,7 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
   let roles: Role[] = []
 
   switch (props.churchType) {
-    case 'Constituency':
+    case 'Team':
       needsAdmin = true
       roles = permitAdmin('Council')
       break
@@ -125,14 +125,14 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
 
   const { currentUser } = useContext(MemberContext)
   const { show, handleShow, handleClose } = useModal()
-  const { constituencyId, councilId, streamId, campusId, clickCard } =
+  const { teamId, councilId, streamId, campusId, clickCard } =
     useContext(ChurchContext)
 
   const htmlElement = document.querySelector('html')
   const currentTheme = htmlElement?.getAttribute('data-bs-theme') || 'dark'
 
   //Change Admin Initialised
-  const [MakeConstituencyAdmin] = useMutation(MAKE_CONSTITUENCY_ADMIN)
+  const [MakeTeamAdmin] = useMutation(MAKE_TEAM_ADMIN)
   const [MakeCouncilAdmin] = useMutation(MAKE_COUNCIL_ADMIN)
   const [MakeStreamAdmin] = useMutation(MAKE_STREAM_ADMIN)
   const [MakeCampusAdmin] = useMutation(MAKE_CAMPUS_ADMIN)
@@ -206,15 +206,15 @@ const DisplayChurchDetails = (props: DisplayChurchDetailsProps) => {
         alertMsg('Council Admin has been changed successfully')
       }
 
-      if (props.churchType === 'Constituency') {
-        await MakeConstituencyAdmin({
+      if (props.churchType === 'Team') {
+        await MakeTeamAdmin({
           variables: {
-            constituencyId: constituencyId,
+            teamId: teamId,
             newAdminId: values.adminSelect,
             oldAdminId: initialValues.adminSelect || 'no-old-admin',
           },
         })
-        alertMsg('Constituency Admin has been changed successfully')
+        alertMsg('Team Admin has been changed successfully')
       }
     } catch (e) {
       throwToSentry('', e)

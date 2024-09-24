@@ -27,8 +27,8 @@ const StreamCancelledServicesThisWeek = () => {
     useLazyQuery(DENOMINATION_STREAM_CANCELLED_SERVICES_LIST)
 
   const data = useChurchLevel({
-    constituencyFunction: campusCancelledServices,
-    constituencyRefetch: campusRefetch,
+    teamFunction: campusCancelledServices,
+    teamRefetch: campusRefetch,
     councilFunction: campusCancelledServices,
     councilRefetch: campusRefetch,
     streamFunction: campusCancelledServices,

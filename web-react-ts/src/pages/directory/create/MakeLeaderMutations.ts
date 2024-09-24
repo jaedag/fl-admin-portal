@@ -36,16 +36,13 @@ export const NEW_BACENTA_LEADER = gql`
   }
 `
 
-export const NEW_CONSTITUENCY_LEADER = gql`
-  mutation NewConstituencyLeader($constituencyId: ID!, $leaderId: ID!) {
-    MakeConstituencyLeader(
-      constituencyId: $constituencyId
-      leaderId: $leaderId
-    ) {
+export const NEW_TEAM_LEADER = gql`
+  mutation NewTeamLeader($teamId: ID!, $leaderId: ID!) {
+    MakeTeamLeader(teamId: $teamId, leaderId: $leaderId) {
       id
       firstName
       lastName
-      leadsConstituency {
+      leadsTeam {
         id
         leader {
           id

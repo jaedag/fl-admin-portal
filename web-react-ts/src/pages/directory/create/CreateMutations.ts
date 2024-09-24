@@ -41,7 +41,7 @@ export const CREATE_MEMBER_MUTATION = gql`
       bacenta {
         id
 
-        constituency {
+        team {
           id
           council {
             id
@@ -117,7 +117,7 @@ export const CREATE_FELLOWSHIP_MUTATION = gql`
 export const CREATE_BACENTA_MUTATION = gql`
   mutation CreateBacenta(
     $name: String!
-    $constituencyId: ID!
+    $teamId: ID!
     $leaderId: ID!
     $meetingDay: String!
     $venueLongitude: Float
@@ -125,7 +125,7 @@ export const CREATE_BACENTA_MUTATION = gql`
   ) {
     CreateBacenta(
       name: $name
-      constituencyId: $constituencyId
+      teamId: $teamId
       leaderId: $leaderId
       meetingDay: $meetingDay
       venueLongitude: $venueLongitude
@@ -134,7 +134,7 @@ export const CREATE_BACENTA_MUTATION = gql`
       id
       name
       stream_name
-      constituency {
+      team {
         id
         bacentas {
           id
@@ -151,19 +151,15 @@ export const CREATE_BACENTA_MUTATION = gql`
   }
 `
 
-export const CREATE_CONSTITUENCY_MUTATION = gql`
-  mutation CreateConstituency($name: String!, $leaderId: ID!, $councilId: ID!) {
-    CreateConstituency(
-      name: $name
-      leaderId: $leaderId
-      councilId: $councilId
-    ) {
+export const CREATE_TEAM_MUTATION = gql`
+  mutation CreateTeam($name: String!, $leaderId: ID!, $councilId: ID!) {
+    CreateTeam(name: $name, leaderId: $leaderId, councilId: $councilId) {
       id
       name
       stream_name
       council {
         id
-        constituencies {
+        teams {
           id
           name
         }
@@ -328,7 +324,7 @@ export const CREATE_HUB_MUTATION = gql`
     $name: String!
     $leaderId: ID!
     $hubCouncilId: ID!
-    $constituencyId: ID!
+    $teamId: ID!
     $meetingDay: String!
     $venueLongitude: Float
     $venueLatitude: Float
@@ -337,7 +333,7 @@ export const CREATE_HUB_MUTATION = gql`
       name: $name
       leaderId: $leaderId
       hubCouncilId: $hubCouncilId
-      constituencyId: $constituencyId
+      teamId: $teamId
       meetingDay: $meetingDay
       venueLongitude: $venueLongitude
       venueLatitude: $venueLatitude

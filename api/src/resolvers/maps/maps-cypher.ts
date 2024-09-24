@@ -1,6 +1,6 @@
 export const memberBacentaSearchByName = `
 MATCH (this:Member {id: $id})-[:LEADS|HAS|IS_ADMIN_FOR*1..5]->(bacenta:Active:Bacenta)<-[:LEADS]-(bacentaLeader:Member)
-MATCH (bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(council:Council)<-[:LEADS]-(councilLeader:Member)
+MATCH (bacenta)<-[:HAS]-(:Team)<-[:HAS]-(council:Council)<-[:LEADS]-(councilLeader:Member)
 WHERE toLower(bacenta.name) CONTAINS toLower($key) AND bacenta.location IS NOT NULL
 RETURN DISTINCT bacenta,
 bacentaLeader {
@@ -27,7 +27,7 @@ LIMIT toInteger($limit)
 `
 
 export const memberLoadCouncilUnvisitedMembers = `
-MATCH (this:Member {id: $id})-[:LEADS|IS_ADMIN_FOR]->(council:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)<-[:BELONGS_TO]-(member:Member)-[:LEADS|IS_ADMIN_FOR]->()
+MATCH (this:Member {id: $id})-[:LEADS|IS_ADMIN_FOR]->(council:Council)-[:HAS]->(:Team)-[:HAS]->(:Bacenta)<-[:BELONGS_TO]-(member:Member)-[:LEADS|IS_ADMIN_FOR]->()
 MATCH (cycle:CouncilCycle {half: toInteger(ceil(toFloat(date().month)/toFloat(6))) - 1, year: date().year})
 MATCH (author:Member {auth_id: $auth.jwt.sub})-[:CURRENT_HISTORY]->(log:ServiceLog)<-[:CURRENT_HISTORY]-(council)
 WHERE NOT EXISTS {
@@ -36,7 +36,7 @@ WHERE NOT EXISTS {
 }
 
 OPTIONAL MATCH (author)-[:LEADS]->(lowerChurch)<-[:BELONGS_TO]-(alreadyMember:Member)
-WHERE lowerChurch:Constituency OR lowerChurch:Bacenta
+WHERE lowerChurch:Team OR lowerChurch:Bacenta
 WITH member, author, collect(DISTINCT alreadyMember) AS alreadyMembers WHERE NOT member IN alreadyMembers
 WITH member, author WHERE member <> author
 AND member.location IS NOT NULL
@@ -106,7 +106,7 @@ RETURN DISTINCT outreachVenue LIMIT toInteger($limit)
 
 export const memberBacentaSearchByLocation = `
   MATCH (this:Member {id: $id})-[:LEADS|HAS|IS_ADMIN_FOR*1..5]->(bacenta:Bacenta)<-[:LEADS]-(bacentaLeader:Member)
-  MATCH (bacenta)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Constituency)<-[:HAS]-(council:Council)<-[:LEADS]-(councilLeader:Member)
+  MATCH (bacenta)<-[:HAS]-(:Bacenta)<-[:HAS]-(:Team)<-[:HAS]-(council:Council)<-[:LEADS]-(councilLeader:Member)
   WITH bacenta, bacentaLeader, council, councilLeader, point.distance(point({latitude: bacenta.location.latitude, longitude: bacenta.location.longitude}), point({latitude: $latitude, longitude: $longitude})) AS distance
   WHERE distance <= 5000
   RETURN DISTINCT bacenta,

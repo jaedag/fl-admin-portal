@@ -13,7 +13,7 @@ interface MemberForRoles extends MemberWithChurches {
 
 const roleTypes = [
   'Bacenta',
-  'Constituency',
+  'Team',
   'Council',
   'Stream',
   'Campus',
@@ -24,7 +24,7 @@ const roleTypes = [
 ]
 
 const adminTypes = [
-  'Constituency',
+  'Team',
   'Council',
   'Stream',
   'Campus',
@@ -45,7 +45,7 @@ const updateRank = (
       stream_name: church.stream_name,
       bacenta: church.bacenta,
       hub: church.hub,
-      constituency: church.constituency,
+      team: church.team,
       id: church.id,
       admin: true,
       link: '',
@@ -61,7 +61,7 @@ const updateRank = (
       stream_name: church.stream_name,
       bacenta: church.bacenta,
       hub: church.hub,
-      constituency: church.constituency,
+      team: church.team,
       id: church.id,
       link: '',
       __typename: church.__typename,

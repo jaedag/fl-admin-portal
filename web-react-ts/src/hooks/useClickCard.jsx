@@ -30,9 +30,7 @@ const useClickCard = () => {
     sessionStorage.getItem('councilId') ?? ''
   )
 
-  const [constituencyId, setConstituencyId] = useState(
-    sessionStorage.getItem('constituencyId') ?? ''
-  )
+  const [teamId, setTeamId] = useState(sessionStorage.getItem('teamId') ?? '')
   const [bacentaId, setBacentaId] = useState(
     sessionStorage.getItem('bacentaId') ?? ''
   )
@@ -107,51 +105,45 @@ const useClickCard = () => {
         break
     }
 
-    //Setting the Constituency for the different levels under Constituency
+    //Setting the Team for the different levels under Team
     switch (card.__typename) {
       case 'Fellowship':
-        if (card?.bacenta?.constituency?.id) {
-          setConstituencyId(card?.bacenta?.constituency?.id)
-          sessionStorage.setItem(
-            'constituencyId',
-            card?.bacenta?.constituency?.id
-          )
+        if (card?.bacenta?.team?.id) {
+          setTeamId(card?.bacenta?.team?.id)
+          sessionStorage.setItem('teamId', card?.bacenta?.team?.id)
         }
         break
       case 'Bacenta':
-        if (card?.constituency?.id) {
-          setConstituencyId(card?.constituency?.id)
-          sessionStorage.setItem('constituencyId', card?.constituency?.id)
+        if (card?.team?.id) {
+          setTeamId(card?.team?.id)
+          sessionStorage.setItem('teamId', card?.team?.id)
         }
         break
-      case 'Constituency':
+      case 'Team':
         if (card?.id) {
-          setConstituencyId(card?.id)
-          sessionStorage.setItem('constituencyId', card?.id)
+          setTeamId(card?.id)
+          sessionStorage.setItem('teamId', card?.id)
         }
         break
       default:
         break
     }
 
-    //Setting the Council for the different levels under Council eg. Constituency, Bacenta...
+    //Setting the Council for the different levels under Council eg. Team, Bacenta...
     switch (card.__typename) {
       case 'Fellowship':
-        if (card?.bacenta?.constituency?.council?.id) {
-          setCouncilId(card?.bacenta?.constituency?.council?.id)
-          sessionStorage.setItem(
-            'councilId',
-            card?.bacenta?.constituency?.council?.id
-          )
+        if (card?.bacenta?.team?.council?.id) {
+          setCouncilId(card?.bacenta?.team?.council?.id)
+          sessionStorage.setItem('councilId', card?.bacenta?.team?.council?.id)
         }
         break
       case 'Bacenta':
-        if (card?.constituency?.council?.id) {
-          setCouncilId(card?.constituency?.council?.id)
-          sessionStorage.setItem('councilId', card?.constituency?.council?.id)
+        if (card?.team?.council?.id) {
+          setCouncilId(card?.team?.council?.id)
+          sessionStorage.setItem('councilId', card?.team?.council?.id)
         }
         break
-      case 'Constituency':
+      case 'Team':
         if (card?.council?.id) {
           setCouncilId(card?.council?.id)
           sessionStorage.setItem('councilId', card?.council?.id)
@@ -176,24 +168,21 @@ const useClickCard = () => {
     //Setting the Stream for the different levels under Stream
     switch (card.__typename) {
       case 'Fellowship':
-        if (card?.bacenta?.constituency?.council?.stream?.id) {
-          setStreamId(card?.bacenta?.constituency?.council?.stream?.id)
+        if (card?.bacenta?.team?.council?.stream?.id) {
+          setStreamId(card?.bacenta?.team?.council?.stream?.id)
           sessionStorage.setItem(
             'streamId',
-            card?.bacenta?.constituency?.council?.stream?.id
+            card?.bacenta?.team?.council?.stream?.id
           )
         }
         break
       case 'Bacenta':
-        if (card?.constituency?.council?.stream?.id) {
-          setStreamId(card?.constituency?.council?.stream?.id)
-          sessionStorage.setItem(
-            'streamId',
-            card?.constituency?.council?.stream?.id
-          )
+        if (card?.team?.council?.stream?.id) {
+          setStreamId(card?.team?.council?.stream?.id)
+          sessionStorage.setItem('streamId', card?.team?.council?.stream?.id)
         }
         break
-      case 'Constituency':
+      case 'Team':
         if (card?.council?.stream?.id) {
           setStreamId(card?.council?.stream?.id)
           sessionStorage.setItem('streamId', card?.council?.stream?.id)
@@ -218,24 +207,24 @@ const useClickCard = () => {
     //Setting the Campus for the different levels under Campus
     switch (card.__typename) {
       case 'Fellowship':
-        if (card?.bacenta?.constituency?.council?.stream?.campus?.id) {
-          setCampusId(card?.bacenta?.constituency?.council?.stream?.campus?.id)
+        if (card?.bacenta?.team?.council?.stream?.campus?.id) {
+          setCampusId(card?.bacenta?.team?.council?.stream?.campus?.id)
           sessionStorage.setItem(
             'campusId',
-            card?.bacenta?.constituency?.council?.stream?.campus?.id
+            card?.bacenta?.team?.council?.stream?.campus?.id
           )
         }
         break
       case 'Bacenta':
-        if (card?.constituency?.council?.stream?.campus?.id) {
-          setCampusId(card?.constituency?.council?.stream?.campus?.id)
+        if (card?.team?.council?.stream?.campus?.id) {
+          setCampusId(card?.team?.council?.stream?.campus?.id)
           sessionStorage.setItem(
             'campusId',
-            card?.constituency?.council?.stream?.campus?.id
+            card?.team?.council?.stream?.campus?.id
           )
         }
         break
-      case 'Constituency':
+      case 'Team':
         if (card?.council?.stream?.campus?.id) {
           setCampusId(card?.council?.stream?.campus?.id)
           sessionStorage.setItem('campusId', card?.council?.stream?.campus?.id)
@@ -266,30 +255,26 @@ const useClickCard = () => {
     //Setting the Oversight for the different levels under Oversight
     switch (card.__typename) {
       case 'Fellowship':
-        if (
-          card?.bacenta?.constituency?.council?.stream?.campus?.oversight?.id
-        ) {
+        if (card?.bacenta?.team?.council?.stream?.campus?.oversight?.id) {
           setOversightId(
-            card?.bacenta?.constituency?.council?.stream?.campus?.oversight?.id
+            card?.bacenta?.team?.council?.stream?.campus?.oversight?.id
           )
           sessionStorage.setItem(
             'oversightId',
-            card?.bacenta?.constituency?.council?.stream?.campus?.oversight?.id
+            card?.bacenta?.team?.council?.stream?.campus?.oversight?.id
           )
         }
         break
       case 'Bacenta':
-        if (card?.constituency?.council?.stream?.campus?.oversight?.id) {
-          setOversightId(
-            card?.constituency?.council?.stream?.campus?.oversight?.id
-          )
+        if (card?.team?.council?.stream?.campus?.oversight?.id) {
+          setOversightId(card?.team?.council?.stream?.campus?.oversight?.id)
           sessionStorage.setItem(
             'oversightId',
-            card?.constituency?.council?.stream?.campus?.oversight?.id
+            card?.team?.council?.stream?.campus?.oversight?.id
           )
         }
         break
-      case 'Constituency':
+      case 'Team':
         if (card?.council?.stream?.campus?.oversight?.id) {
           setOversightId(card?.council?.stream?.campus?.oversight?.id)
           sessionStorage.setItem(
@@ -379,9 +364,9 @@ const useClickCard = () => {
         setBacentaId(card.id)
         sessionStorage.setItem('bacentaId', card.id)
         break
-      case 'Constituency':
-        setConstituencyId(card.id)
-        sessionStorage.setItem('constituencyId', card.id)
+      case 'Team':
+        setTeamId(card.id)
+        sessionStorage.setItem('teamId', card.id)
         break
       case 'Council':
         setCouncilId(card.id)
@@ -440,7 +425,7 @@ const useClickCard = () => {
         break
     }
 
-    if (card.link === '' || card.constituency === true) {
+    if (card.link === '' || card.team === true) {
       card.link = `/${card.__typename.toLowerCase()}/displaydetails`
     }
   }
@@ -453,7 +438,7 @@ const useClickCard = () => {
     campusId,
     streamId,
     councilId,
-    constituencyId,
+    teamId,
     bacentaId,
     fellowshipId,
     hubFellowshipId,
@@ -475,7 +460,7 @@ const useClickCard = () => {
     setChurch,
     setStreamId,
     setCouncilId,
-    setConstituencyId,
+    setTeamId,
     setHubFellowshipId,
     setHubId,
     setHubCouncilId,

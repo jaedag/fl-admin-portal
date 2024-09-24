@@ -4,7 +4,7 @@ import { ChurchContext } from 'contexts/ChurchContext'
 import BusIcon from 'assets/icons/BusIcon'
 import FellowshipIcon from 'assets/icons/FellowshipIcon'
 import BacentaIcon from 'assets/icons/BacentaIcon'
-import ConstituencyIcon from 'assets/icons/ConstituencyIcon'
+import TeamIcon from 'assets/icons/TeamIcon'
 import CouncilIcon from 'assets/icons/CouncilIcon'
 import StreamIcon from 'assets/icons/StreamIcon'
 import { Badge, Button, Card } from 'react-bootstrap'
@@ -87,7 +87,7 @@ export const Icons = ({
       <div className={`${picture && 'rounded-circle'} img-search`}>
         {member.__typename === 'Fellowship' && <FellowshipIcon />}
         {member.__typename === 'Bacenta' && <BacentaIcon />}
-        {member.__typename === 'Constituency' && <ConstituencyIcon />}
+        {member.__typename === 'Team' && <TeamIcon />}
         {member.__typename === 'Council' && <CouncilIcon />}
         {member.__typename === 'Stream' && <StreamIcon />}
         {member.__typename === 'Oversight' && <BsEyeFill />}

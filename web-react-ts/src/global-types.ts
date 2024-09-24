@@ -21,7 +21,7 @@ export type HTMLElement =
 // CHURCHES
 export type ChurchLevel =
   | 'Bacenta'
-  | 'Constituency'
+  | 'Team'
   | 'Council'
   | 'Stream'
   | 'Campus'
@@ -36,7 +36,7 @@ export type ChurchLevel =
 export type ChurchLevelLower =
   | 'fellowship'
   | 'bacenta'
-  | 'constituency'
+  | 'team'
   | 'council'
   | 'stream'
   | 'campus'
@@ -91,7 +91,7 @@ export interface CreditTransaction {
 
 export interface Bacenta extends Church {
   __typename: 'Bacenta'
-  constituency: Constituency
+  team: Team
   council: Council
   bankingCode: number
   services: ServiceRecord[]
@@ -141,8 +141,8 @@ export interface Stream extends Church {
   ministries?: Ministry[]
   councils?: Council[]
 }
-export interface Constituency extends Church {
-  __typename: 'Constituency'
+export interface Team extends Church {
+  __typename: 'Team'
   stream: Stream
   council: Council
 }
@@ -151,7 +151,7 @@ export interface Council extends Church {
   __typename: 'Council'
   stream: Stream
   hubCouncils?: HubCouncil[]
-  constituencies?: Constituency[]
+  teams?: Team[]
   hubCouncilsFromMinistry?: HubCouncil[]
 }
 
@@ -188,7 +188,7 @@ export interface Hub extends Church {
   activeHubFellowshipCount: number
   vacationHubFellowshipCount: number
   hubCouncil: HubCouncil
-  constituency: Constituency
+  team: Team
   creativeArts: Campus
   vacationStatus: VacationStatusOptions
   meetingDay: {
@@ -251,7 +251,7 @@ export interface MemberWithChurches extends Member {
   roles?: Role[]
   leadsFellowship: Church[]
   leadsBacenta: Church[]
-  leadsConstituency: Church[]
+  leadsTeam: Church[]
   leadsCouncil: Church[]
   leadsStream: Church[]
 
@@ -265,14 +265,14 @@ export interface MemberWithChurches extends Member {
   leadsCampus: Church[]
   leadsOversight: Church[]
   leadsDenomination: Church[]
-  isAdminForConstituency: Church[]
+  isAdminForTeam: Church[]
   isAdminForCouncil: Church[]
   isAdminForStream: Church[]
   isAdminForCampus: Church[]
   isAdminForOversight: Church[]
   isAdminForDenomination: Church[]
 
-  isArrivalsAdminForConstituency: Church[]
+  isArrivalsAdminForTeam: Church[]
   isArrivalsAdminForCouncil: Church[]
   isArrivalsAdminForStream: Church[]
   isArrivalsAdminForCampus: Church[]
@@ -328,7 +328,7 @@ export interface LazyRouteTypes {
 export type Role =
   | 'leaderFellowship'
   | 'leaderBacenta'
-  | 'leaderConstituency'
+  | 'leaderTeam'
   | 'leaderCouncil'
   | 'leaderStream'
   | 'leaderHub'
@@ -338,7 +338,7 @@ export type Role =
   | 'leaderCampus'
   | 'leaderOversight'
   | 'leaderDenomination'
-  | 'adminConstituency'
+  | 'adminTeam'
   | 'adminCouncil'
   | 'adminStream'
   | 'adminCampus'
@@ -349,7 +349,7 @@ export type Role =
   | 'arrivalsAdminCampus'
   | 'arrivalsAdminStream'
   | 'arrivalsAdminCouncil'
-  | 'arrivalsAdminConstituency'
+  | 'arrivalsAdminTeam'
   | 'arrivalsCounterStream'
   | 'arrivalsPayerCouncil'
   | 'tellerStream'
@@ -421,7 +421,7 @@ export type EquipmentChurch = {
   name: string
   equipmentRecord: EquipmentRecord
   fellowshipEquipmentFilledCount: number
-  constituencyEquipmentFilledCount: number
+  teamEquipmentFilledCount: number
 }
 
 export type EquipmentRecord = {
@@ -436,7 +436,7 @@ export interface HigherChurch extends Church {
   admin: MemberWithoutBioData
   fellowshipCount: number
   bacentaCount: number
-  constituencyCount: number
+  teamCount: number
   councilCount: number
   streamCount: number
   memberCount: number

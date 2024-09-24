@@ -25,8 +25,8 @@ const ProtectedRouteHome = ({
     isAuthorised(
       [
         'adminCouncil',
-        'adminConstituency',
-        'leaderConstituency',
+        'adminTeam',
+        'leaderTeam',
         'leaderBacenta',
         'leaderFellowship',
       ],

@@ -23,7 +23,7 @@ type SwellDate implements TimeGraphNode
 extend type Member {
   isArrivalsAdminForCouncil: [Council!]!
     @relationship(type: "DOES_ARRIVALS_FOR", direction: OUT)
-  isArrivalsAdminForConstituency: [Constituency!]!
+  isArrivalsAdminForTeam: [Team!]!
     @relationship(type: "DOES_ARRIVALS_FOR", direction: OUT)
   isArrivalsAdminForStream: [Stream!]!
     @relationship(type: "DOES_ARRIVALS_FOR", direction: OUT)
@@ -715,8 +715,8 @@ extend type Council {
     )
 }
 
-extend type Constituency {
-  #Arrivals in the Constituency
+extend type Team {
+  #Arrivals in the Team
   arrivalsAdmin: Member @relationship(type: "DOES_ARRIVALS_FOR", direction: IN)
   bacentasNoActivity(arrivalDate: String!): [Bacenta!]!
     @cypher(
@@ -1060,15 +1060,15 @@ type VehicleRecord {
 
 extend type Mutation {
   #Arrivals Roles
-  MakeConstituencyArrivalsAdmin(
+  MakeTeamArrivalsAdmin(
     arrivalsAdminId: ID!
     oldArrivalsAdminId: ID
-    constituencyId: ID!
+    teamId: ID!
   ): Member!
-  RemoveConstituencyArrivalsAdmin(
+  RemoveTeamArrivalsAdmin(
     arrivalsAdminId: ID!
     newArrivalsAdminId: ID!
-    constituencyId: ID!
+    teamId: ID!
   ): Member
   MakeCouncilArrivalsAdmin(
     arrivalsAdminId: ID!
@@ -1357,7 +1357,7 @@ type ArrivalsSheetData {
   comments: String
   arrivalTime: DateTime
   council: String
-  constituency: String
+  team: String
   society: String
   momoName: String
 }

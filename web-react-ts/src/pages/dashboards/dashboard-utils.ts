@@ -92,7 +92,7 @@ export const roles: {
   [key in ChurchLevel]: VerbTypes[]
 } = {
   Bacenta: ['leads'],
-  Constituency: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
+  Team: ['leads', 'isAdminFor', 'isArrivalsAdminFor'],
   Council: ['leads', 'isAdminFor', 'isArrivalsAdminFor', 'isArrivalsPayerFor'],
   Stream: [
     'leads',
@@ -381,46 +381,34 @@ export const getServantRoles = (servant: MemberWithChurches) => {
     })
   }
 
-  if (servant?.leadsConstituency?.length) {
-    roleTitles.push('leaderConstituency')
+  if (servant?.leadsTeam?.length) {
+    roleTitles.push('leaderTeam')
     userroles.push({
-      authRoles: 'leaderConstituency',
-      name: 'Constituency',
-      church: servant?.leadsConstituency,
-      number: servant?.leadsConstituency?.length,
-      link: authorisedLink(
-        servant,
-        permitMe('Constituency'),
-        '/constituency/displaydetails'
-      ),
+      authRoles: 'leaderTeam',
+      name: 'Team',
+      church: servant?.leadsTeam,
+      number: servant?.leadsTeam?.length,
+      link: authorisedLink(servant, permitMe('Team'), '/team/displaydetails'),
     })
   }
-  if (servant?.isAdminForConstituency?.length) {
-    roleTitles.push('adminConstituency')
+  if (servant?.isAdminForTeam?.length) {
+    roleTitles.push('adminTeam')
     userroles.push({
-      authRoles: 'adminConstituency',
-      name: 'Constituency Admin',
-      church: servant?.isAdminForConstituency,
-      number: servant?.isAdminForConstituency?.length,
-      link: authorisedLink(
-        servant,
-        permitMe('Constituency'),
-        '/constituency/displaydetails'
-      ),
+      authRoles: 'adminTeam',
+      name: 'Team Admin',
+      church: servant?.isAdminForTeam,
+      number: servant?.isAdminForTeam?.length,
+      link: authorisedLink(servant, permitMe('Team'), '/team/displaydetails'),
     })
   }
-  if (servant?.isArrivalsAdminForConstituency?.length) {
-    roleTitles.push('arrivalsAdminConstituency')
+  if (servant?.isArrivalsAdminForTeam?.length) {
+    roleTitles.push('arrivalsAdminTeam')
     userroles.push({
-      authRoles: 'arrivalsAdminConstituency',
-      name: 'Constituency Arrivals Admin',
-      church: servant?.isArrivalsAdminForConstituency,
-      number: servant?.isArrivalsAdminForConstituency?.length,
-      link: authorisedLink(
-        servant,
-        permitMe('Constituency'),
-        `/constituency/displaydetails`
-      ),
+      authRoles: 'arrivalsAdminTeam',
+      name: 'Team Arrivals Admin',
+      church: servant?.isArrivalsAdminForTeam,
+      number: servant?.isArrivalsAdminForTeam?.length,
+      link: authorisedLink(servant, permitMe('Team'), `/team/displaydetails`),
     })
   }
   if (servant?.leadsCouncil?.length) {

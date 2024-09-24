@@ -397,7 +397,7 @@ export const UPDATE_COUNCIL_MUTATION = gql`
     UpdateCouncilDetails(councilId: $councilId, name: $name) {
       id
       name
-      constituencies {
+      teams {
         id
         name
         council {
@@ -443,20 +443,20 @@ export const UPDATE_COUNCIL_MUTATION = gql`
   }
 `
 
-export const UPDATE_CONSTITUENCY_MUTATION = gql`
-  mutation UpdateConstituency($constituencyId: ID!, $name: String!) {
-    UpdateConstituencyDetails(constituencyId: $constituencyId, name: $name) {
+export const UPDATE_TEAM_MUTATION = gql`
+  mutation UpdateTeam($teamId: ID!, $name: String!) {
+    UpdateTeamDetails(teamId: $teamId, name: $name) {
       id
       name
       bacentas {
         id
         name
-        constituency {
+        team {
           id
           name
           council {
             id
-            constituencies {
+            teams {
               id
             }
           }
@@ -514,7 +514,7 @@ export const UPDATE_BACENTA_MUTATION = gql`
       sprinterTopUp
       urvanTopUp
 
-      constituency {
+      team {
         id
         name
         bacentas {
@@ -797,30 +797,27 @@ export const MOVE_COUNCIL_TO_STREAM = gql`
   }
 `
 
-export const MOVE_CONSTITUENCY_TO_COUNCIL = gql`
-  mutation MoveConstituencyToCouncil(
-    $constituencyId: ID!
+export const MOVE_TEAM_TO_COUNCIL = gql`
+  mutation MoveTeamToCouncil(
+    $teamId: ID!
     $newCouncilId: ID!
     $oldCouncilId: ID!
     $historyRecord: String!
   ) {
-    MoveConstituencyToCouncil(
-      constituencyId: $constituencyId
-      councilId: $newCouncilId
-    ) {
+    MoveTeamToCouncil(teamId: $teamId, councilId: $newCouncilId) {
       id
       name
       council {
         id
         name
-        constituencies {
+        teams {
           id
           name
         }
       }
     }
-    LogConstituencyHistory(
-      constituencyId: $constituencyId
+    LogTeamHistory(
+      teamId: $teamId
       historyRecord: $historyRecord
       oldCouncilId: $oldCouncilId
       newCouncilId: $newCouncilId
@@ -845,20 +842,17 @@ export const MOVE_CONSTITUENCY_TO_COUNCIL = gql`
   }
 `
 
-export const MOVE_BACENTA_TO_CONSTITUENCY = gql`
-  mutation MoveBacentaToConstituency(
+export const MOVE_BACENTA_TO_TEAM = gql`
+  mutation MoveBacentaToTeam(
     $bacentaId: ID!
-    $newConstituencyId: ID!
-    $oldConstituencyId: ID!
+    $newTeamId: ID!
+    $oldTeamId: ID!
     $historyRecord: String!
   ) {
-    MoveBacentaToConstituency(
-      bacentaId: $bacentaId
-      constituencyId: $newConstituencyId
-    ) {
+    MoveBacentaToTeam(bacentaId: $bacentaId, teamId: $newTeamId) {
       id
       name
-      constituency {
+      team {
         id
         name
         bacentas {
@@ -870,8 +864,8 @@ export const MOVE_BACENTA_TO_CONSTITUENCY = gql`
     LogBacentaHistory(
       bacentaId: $bacentaId
       historyRecord: $historyRecord
-      oldConstituencyId: $oldConstituencyId
-      newConstituencyId: $newConstituencyId
+      oldTeamId: $oldTeamId
+      newTeamId: $newTeamId
     ) {
       id
       name
@@ -1215,17 +1209,17 @@ export const MOVE_HUB_TO_HUBCOUNCIL = gql`
   }
 `
 
-export const MOVE_HUB_TO_CONSTITUENCY = gql`
-  mutation MoveHubToConstituency(
+export const MOVE_HUB_TO_TEAM = gql`
+  mutation MoveHubToTeam(
     $hubId: ID!
-    $newConstituencyId: ID!
-    $oldConstituencyId: ID!
+    $newTeamId: ID!
+    $oldTeamId: ID!
     $historyRecord: String!
   ) {
-    MoveHubToConstituency(hubId: $hubId, constituencyId: $newConstituencyId) {
+    MoveHubToTeam(hubId: $hubId, teamId: $newTeamId) {
       id
       name
-      constituency {
+      team {
         id
         name
         hubs {
@@ -1234,15 +1228,15 @@ export const MOVE_HUB_TO_CONSTITUENCY = gql`
         }
       }
     }
-    LogHubHistoryWithConstituency(
+    LogHubHistoryWithTeam(
       hubId: $hubId
       historyRecord: $historyRecord
-      oldConstituencyId: $oldConstituencyId
-      newConstituencyId: $newConstituencyId
+      oldTeamId: $oldTeamId
+      newTeamId: $newTeamId
     ) {
       id
       name
-      constituency {
+      team {
         id
         name
         hubs {

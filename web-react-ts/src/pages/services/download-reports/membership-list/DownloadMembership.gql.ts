@@ -52,7 +52,7 @@ export const DISPLAY_COUNCIL_MEMBERSHIP = gql`
             lastName
             fullName
           }
-          constituency {
+          team {
             id
             name
             leader {

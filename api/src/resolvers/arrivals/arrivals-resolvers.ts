@@ -64,28 +64,20 @@ const arrivalEndTimeCalculator = (arrivalEndTime: string) => {
 }
 
 export const arrivalsMutation = {
-  MakeConstituencyArrivalsAdmin: async (
-    object: any,
-    args: any,
-    context: Context
-  ) =>
+  MakeTeamArrivalsAdmin: async (object: any, args: any, context: Context) =>
     MakeServant(
       context,
       args,
       [...permitAdmin('Stream')],
-      'Constituency',
+      'Team',
       'ArrivalsAdmin'
     ),
-  RemoveConstituencyArrivalsAdmin: async (
-    object: any,
-    args: any,
-    context: Context
-  ) =>
+  RemoveTeamArrivalsAdmin: async (object: any, args: any, context: Context) =>
     RemoveServant(
       context,
       args,
       [...permitAdmin('Stream')],
-      'Constituency',
+      'Team',
       'ArrivalsAdmin'
     ),
   MakeCouncilArrivalsAdmin: async (object: any, args: any, context: Context) =>

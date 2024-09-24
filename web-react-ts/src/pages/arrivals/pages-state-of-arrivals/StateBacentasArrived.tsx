@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router'
 import PullToRefresh from 'react-simple-pull-to-refresh'
 import { ArrivalsUseChurchType } from '../arrivals-types'
 import {
-  CONSTITUENCY_BACENTAS_ARRIVED,
+  TEAM_BACENTAS_ARRIVED,
   COUNCIL_BACENTAS_ARRIVED,
   CAMPUSES_BACENTAS_ARRIVED,
   STREAM_BACENTAS_ARRIVED,
@@ -23,10 +23,12 @@ import NoData from '../CompNoData'
 const BacentasHaveArrived = () => {
   const navigate = useNavigate()
   const { clickCard } = useContext(ChurchContext)
-  const [constituencyBacentasArrived, { refetch: constituencyRefetch }] =
-    useLazyQuery(CONSTITUENCY_BACENTAS_ARRIVED, {
+  const [teamBacentasArrived, { refetch: teamRefetch }] = useLazyQuery(
+    TEAM_BACENTAS_ARRIVED,
+    {
       pollInterval: LONG_POLL_INTERVAL,
-    })
+    }
+  )
   const [councilBacentasArrived, { refetch: councilRefetch }] = useLazyQuery(
     COUNCIL_BACENTAS_ARRIVED,
     {
@@ -44,8 +46,8 @@ const BacentasHaveArrived = () => {
   )
 
   const data = useChurchLevel({
-    constituencyFunction: constituencyBacentasArrived,
-    constituencyRefetch,
+    teamFunction: teamBacentasArrived,
+    teamRefetch,
     councilFunction: councilBacentasArrived,
     councilRefetch,
     streamFunction: streamBacentasArrived,
@@ -63,7 +65,7 @@ const BacentasHaveArrived = () => {
             Bacentas That Have Arrived
           </HeadingPrimary>
           <HeadingSecondary loading={!church?.name}>
-            {church?.name} Constituency
+            {church?.name} Team
           </HeadingSecondary>
 
           {church && !church?.bacentasHaveArrived.length && (

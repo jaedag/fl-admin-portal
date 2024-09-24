@@ -62,7 +62,7 @@ const Services = () => {
               />
             )}
 
-          {['Stream', 'Constituency', 'Council'].includes(churchType) && (
+          {['Stream', 'Team', 'Council'].includes(churchType) && (
             <MenuButton
               iconComponent={<Book />}
               title={`${churchType === 'Stream' ? 'Weekend' : 'Joint'} Service`}
@@ -92,9 +92,7 @@ const Services = () => {
               onClick={() => navigate(`/stream/record-special-service`)}
             />
           )} */}
-          {['Stream', 'Council', 'Constituency', 'Bacenta'].includes(
-            churchType
-          ) &&
+          {['Stream', 'Council', 'Team', 'Bacenta'].includes(churchType) &&
             church?.bankAccount !== 'manual' && (
               <MenuButton
                 iconComponent={<FileEarmarkArrowUpFill />}
@@ -110,7 +108,7 @@ const Services = () => {
               />
             )}
 
-          {['Stream', 'Council', 'Constituency', 'Bacenta', 'Hub'].includes(
+          {['Stream', 'Council', 'Team', 'Bacenta', 'Hub'].includes(
             churchType
           ) &&
             church?.bankAccount !== 'manual' && (
@@ -153,7 +151,7 @@ const Services = () => {
           {church.__typename !== 'Bacenta' ? (
             <RoleView
               roles={[
-                ...permitLeaderAdmin('Constituency'),
+                ...permitLeaderAdmin('Team'),
                 ...permitLeaderAdmin('Hub'),
               ]}
             >

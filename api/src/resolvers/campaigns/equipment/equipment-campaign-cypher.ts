@@ -27,12 +27,12 @@ RETURN record
 
 export const checkExistingEquipmentRecord = `
 MATCH (church {id:$id}) 
-WHERE church:Fellowship OR church:Constituency
+WHERE church:Fellowship OR church:Team
 OPTIONAL MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)-[:HAS_EQUIPMENT_DATE]->(:TimeGraph {date:date($date)})  
 RETURN church.id AS id, church.name AS name, labels(church) AS labels, record AS alreadyFilled
 `
-export const createConstituencyEquipmentRecord = `
-MATCH (con:Constituency {id:$id})
+export const createTeamEquipmentRecord = `
+MATCH (con:Team {id:$id})
 MATCH (con)-[:CURRENT_HISTORY]->(log:ServiceLog)
 MATCH (member:Member {auth_id: $auth.jwt.sub})
 CREATE (record:EquipmentRecord)
@@ -49,7 +49,7 @@ RETURN record
 `
 
 export const getEquipmentCampaign = `
-MATCH (church {id:$id}) WHERE church:Fellowship OR church:Constituency
+MATCH (church {id:$id}) WHERE church:Fellowship OR church:Team
 MATCH (church)<-[:HAS*1..5]-(campus:Campus)
 MATCH (date:EquipmentDate)
 WITH DISTINCT max(date.date) as latestEquipmentDate, campus
@@ -65,7 +65,7 @@ export const CampusFellowshipEquipment = `
 MATCH (this:Campus {id:$id})
 MATCH (n:EquipmentDate)
 WITH max(n.date) as latestEquipmentDate, this
-MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
+MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Team)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
 MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
 WITH DISTINCT record
 RETURN {
@@ -74,23 +74,23 @@ bluetoothSpeakers: toInteger(sum(record.bluetoothSpeakers))
 } as fellowshipEquipment
 `
 
-export const CampusConstituencyEquipment = `
+export const CampusTeamEquipment = `
 MATCH (this:Campus {id:$id})
 MATCH (n:EquipmentDate)
 WITH max(n.date) as latestEquipmentDate, this
-MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
+MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Team)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
 MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
 WITH DISTINCT record
 RETURN {
 pulpits: toInteger(sum(record.pulpits))
-} as constituencyEquipment
+} as teamEquipment
 `
 
 export const StreamFellowshipEquipment = `
 MATCH (this:Stream {id:$id})
 MATCH (n:EquipmentDate)
 WITH max(n.date) as latestEquipmentDate, this
-MATCH (this)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
+MATCH (this)-[:HAS]->(:Council)-[:HAS]->(:Team)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
 MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
 WITH DISTINCT record
 RETURN {
@@ -99,22 +99,22 @@ bluetoothSpeakers: toInteger(sum(record.bluetoothSpeakers))
 } as fellowshipEquipment
 `
 
-export const StreamConstituencyEquipment = `
+export const StreamTeamEquipment = `
 MATCH (this:Stream {id:$id})
 MATCH (n:EquipmentDate)
 WITH max(n.date) as latestEquipmentDate, this
-MATCH (this)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
+MATCH (this)-[:HAS]->(:Council)-[:HAS]->(:Team)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
 MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
 WITH DISTINCT record
 RETURN {
 pulpits: toInteger(sum(record.pulpits))
-} as constituencyEquipment
+} as teamEquipment
 `
 export const CouncilFellowshipEquipment = `
 MATCH (this:Council {id:$id})
 MATCH (n:EquipmentDate)
 WITH max(n.date) as latestEquipmentDate, this
-MATCH (this)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
+MATCH (this)-[:HAS]->(:Team)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
 MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
 WITH DISTINCT record
 RETURN {
@@ -123,20 +123,20 @@ bluetoothSpeakers: toInteger(sum(record.bluetoothSpeakers))
 } as fellowshipEquipment
 `
 
-export const CouncilConstituencyEquipment = `
+export const CouncilTeamEquipment = `
 MATCH (this:Council {id:$id})
 MATCH (n:EquipmentDate)
 WITH max(n.date) as latestEquipmentDate, this
-MATCH (this)-[:HAS]->(:Constituency)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
+MATCH (this)-[:HAS]->(:Team)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
 MATCH (record)-[:HAS_EQUIPMENT_DATE]->(date:TimeGraph {date:date(latestEquipmentDate)})
 WITH DISTINCT record
 RETURN {
 pulpits: toInteger(sum(record.pulpits))
-} as constituencyEquipment
+} as teamEquipment
 `
 
-export const ConstituencyFellowshipEquipment = `
-MATCH (this:Constituency {id:$id})
+export const TeamFellowshipEquipment = `
+MATCH (this:Team {id:$id})
 MATCH (n:EquipmentDate)
 WITH max(n.date) as latestEquipmentDate, this
 MATCH (this)-[:HAS]->(:Bacenta)-[:HAS]-(:Fellowship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
@@ -148,8 +148,8 @@ bluetoothSpeakers: toInteger(sum(record.bluetoothSpeakers))
 } as fellowshipEquipment
 `
 
-export const ConstituencyConstituencyEquipment = `
-MATCH (this:Constituency {id:$id})
+export const TeamTeamEquipment = `
+MATCH (this:Team {id:$id})
 MATCH (n:EquipmentDate)
 WITH max(n.date) as latestEquipmentDate, this
 MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_EQUIPMENT_RECORD]->(record:EquipmentRecord)
@@ -158,17 +158,17 @@ WITH DISTINCT record
 RETURN {
     id: record.id,
     pulpits: record.pulpits
-} as constituencyEquipment
+} as teamEquipment
 `
 
-export const getConstituencyOverseersEmailsAndNumbers = `
+export const getTeamOverseersEmailsAndNumbers = `
 MATCH (this:Campus {id:$id})
-MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(constituencies:Constituency)<-[:LEADS]-(leader:Member)
+MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(teams:Team)<-[:LEADS]-(leader:Member)
 RETURN DISTINCT (leader.firstName +' '+ leader.lastName) as leader, leader.email, leader.phoneNumber
 `
 export const getFellowshipLeadersEmailsAndNumbers = `
 MATCH (this:Campus {id:$id})
-MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship:Fellowship)
+MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Team)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship:Fellowship)
 MATCH (fellowship)<-[:LEADS]-(leader:Member)
 RETURN DISTINCT (leader.firstName +' '+ leader.lastName) as leader, leader.email, leader.phoneNumber
 `

@@ -30,9 +30,7 @@ const UpdateCouncil = () => {
     leaderId: council?.leader?.id || '',
     leaderEmail: council?.leader?.email || '',
     stream: council?.stream,
-    constituencies: council?.constituencies?.length
-      ? council.constituencies
-      : [''],
+    teams: council?.teams?.length ? council.teams : [''],
     hubCouncils: council?.hubCouncils,
   }
 

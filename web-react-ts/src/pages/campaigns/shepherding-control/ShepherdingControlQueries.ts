@@ -57,13 +57,13 @@ export const COUNCIL_STAT_FOR_YEAR_TILL_DATE = gql`
   }
 `
 
-export const CONSTITUENCY_STAT_FOR_YEAR_TILL_DATE = gql`
-  query constituencyStatForYearTillDate(
-    $constituencyId: ID
+export const TEAM_STAT_FOR_YEAR_TILL_DATE = gql`
+  query teamStatForYearTillDate(
+    $teamId: ID
     $startDate: String!
     $endDate: String!
   ) {
-    constituencies(where: { id: $constituencyId }) {
+    teams(where: { id: $teamId }) {
       id
       name
       statsForYearTillDate(startDate: $startDate, endDate: $endDate) {

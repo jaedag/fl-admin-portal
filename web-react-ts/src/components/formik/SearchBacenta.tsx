@@ -12,7 +12,7 @@ import {
   COUNCIL_BACENTA_SEARCH,
   CAMPUS_BACENTA_SEARCH,
   STREAM_BACENTA_SEARCH,
-  CONSTITUENCY_BACENTA_SEARCH,
+  TEAM_BACENTA_SEARCH,
   MEMBER_BACENTA_SEARCH,
 } from './SearchBacentaQueries'
 import TextError from './TextError/TextError'
@@ -50,15 +50,12 @@ const SearchBacenta = (props: RoleBasedSearch) => {
     }
   )
 
-  const [constituencySearch, { error: constituencyError }] = useLazyQuery(
-    CONSTITUENCY_BACENTA_SEARCH,
-    {
-      onCompleted: (data) => {
-        setSuggestions(data.constituencies[0].bacentaSearch)
-        return
-      },
-    }
-  )
+  const [teamSearch, { error: teamError }] = useLazyQuery(TEAM_BACENTA_SEARCH, {
+    onCompleted: (data) => {
+      setSuggestions(data.teams[0].bacentaSearch)
+      return
+    },
+  })
 
   const [memberSearch, { error: memberError }] = useLazyQuery(
     MEMBER_BACENTA_SEARCH,
@@ -71,11 +68,7 @@ const SearchBacenta = (props: RoleBasedSearch) => {
   )
 
   const error =
-    memberError ||
-    campusError ||
-    streamError ||
-    councilError ||
-    constituencyError
+    memberError || campusError || streamError || councilError || teamError
   throwToSentry('', error)
 
   const whichSearch = (searchString: string) => {
@@ -107,10 +100,10 @@ const SearchBacenta = (props: RoleBasedSearch) => {
             key: searchString?.trim(),
           },
         })
-      } else if (isAuthorised(permitMe('Constituency'), currentUser.roles)) {
-        constituencySearch({
+      } else if (isAuthorised(permitMe('Team'), currentUser.roles)) {
+        teamSearch({
           variables: {
-            id: currentUser.constituency,
+            id: currentUser.team,
             key: searchString?.trim(),
           },
         })

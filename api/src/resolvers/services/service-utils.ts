@@ -10,7 +10,7 @@ import {
 import {
   aggregateServiceDataForBacenta,
   aggregateServiceDataForCampus,
-  aggregateServiceDataForConstituency,
+  aggregateServiceDataForTeam,
   aggregateServiceDataForCouncil,
   aggregateServiceDataForDenomination,
   aggregateServiceDataForOversight,
@@ -30,12 +30,12 @@ export const getServiceHigherChurches = (records: any) => {
       }
     }
 
-    if (record?.get('higherChurch').labels.includes('Constituency')) {
-      higherChurches.constituency = {
-        typename: 'Constituency',
+    if (record?.get('higherChurch').labels.includes('Team')) {
+      higherChurches.team = {
+        typename: 'Team',
         labels: record?.get('higherChurch').labels,
         properties: record.get('higherChurch').properties,
-        cypher: aggregateServiceDataForConstituency,
+        cypher: aggregateServiceDataForTeam,
       }
     }
 

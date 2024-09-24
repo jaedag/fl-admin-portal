@@ -139,7 +139,7 @@ extend type Council {
     )
 }
 
-extend type Constituency {
+extend type Team {
   multiplicationRecords(limit: Int): [MultiplicationRecord!]!
     @cypher(
       statement: """

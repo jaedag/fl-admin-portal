@@ -18,7 +18,7 @@ const churchCampaigns = async (context: Context, church: ChurchLevel) => {
       ]
       break
     case 'Council':
-    case 'Constituency':
+    case 'Team':
       campaignsList = [
         'Equipment',
         'Anti-Brutish',
@@ -77,11 +77,11 @@ const campaignsResolvers = {
     equipmentRecord: (obj: any, args: any, context: Context) =>
       getEquipmentDetails(obj, args, context, 'Council'),
   },
-  Constituency: {
+  Team: {
     campaigns: async (obj: any, args: any, context: Context) =>
-      churchCampaigns(context, 'Constituency'),
+      churchCampaigns(context, 'Team'),
     equipmentRecord: (obj: any, args: any, context: Context) =>
-      getEquipmentDetails(obj, args, context, 'Constituency'),
+      getEquipmentDetails(obj, args, context, 'Team'),
   },
   Bacenta: {
     campaigns: async (obj: any, args: any, context: Context) =>

@@ -47,7 +47,7 @@ export const setPriorityLevel = (churchType: ChurchLevel) => {
       priority = 5
       break
     case 'HubCouncil':
-    case 'Constituency':
+    case 'Team':
       priority = 6
       break
     case 'Hub':

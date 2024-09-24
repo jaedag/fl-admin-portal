@@ -21,11 +21,11 @@ import SubmitButton from 'components/formik/SubmitButton'
 import { permitAdmin } from 'permission-utils'
 import Input from 'components/formik/Input'
 import SearchMember from 'components/formik/SearchMember'
-import SearchConstituency from 'components/formik/SearchConstituency'
+import SearchTeam from 'components/formik/SearchTeam'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { Constituency, HubCouncil } from 'global-types'
+import { Team, HubCouncil } from 'global-types'
 import {
-  MOVE_CONSTITUENCY_TO_COUNCIL,
+  MOVE_TEAM_TO_COUNCIL,
   MOVE_HUBCOUNCIL_TO_COUNCIL,
 } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
@@ -36,8 +36,8 @@ import SearchHubCouncil from 'components/formik/SearchHubCouncil'
 
 export interface CouncilFormValues extends FormikInitialValues {
   stream?: Stream
-  constituencies?: Constituency[]
-  constituency?: Constituency
+  teams?: Team[]
+  team?: Team
   hubCouncil?: HubCouncil
   hubCouncils?: HubCouncil[]
 }
@@ -59,7 +59,7 @@ const CouncilForm = ({
   newCouncil,
 }: CouncilFormProps) => {
   const { clickCard, councilId } = useContext(ChurchContext)
-  const [constituencyModal, setConstituencyModal] = useState(false)
+  const [teamModal, setTeamModal] = useState(false)
   const [hubCouncilModal, setHubCouncilModal] = useState(false)
   const [closeDown, setCloseDown] = useState(false)
 
@@ -70,14 +70,9 @@ const CouncilForm = ({
       { query: DISPLAY_STREAM, variables: { id: initialValues?.stream?.id } },
     ],
   })
-  const [MoveConstituencyToCouncil] = useMutation(
-    MOVE_CONSTITUENCY_TO_COUNCIL,
-    {
-      refetchQueries: [
-        { query: DISPLAY_COUNCIL, variables: { id: councilId } },
-      ],
-    }
-  )
+  const [MoveTeamToCouncil] = useMutation(MOVE_TEAM_TO_COUNCIL, {
+    refetchQueries: [{ query: DISPLAY_COUNCIL, variables: { id: councilId } }],
+  })
   const [MoveHubCouncilToCouncil] = useMutation(MOVE_HUBCOUNCIL_TO_COUNCIL, {
     refetchQueries: [{ query: DISPLAY_COUNCIL, variables: { id: councilId } }],
   })
@@ -96,9 +91,7 @@ const CouncilForm = ({
       <ButtonGroup className="mt-3">
         {!newCouncil && (
           <>
-            <Button onClick={() => setConstituencyModal(true)}>
-              Add Constituency
-            </Button>
+            <Button onClick={() => setTeamModal(true)}>Add Team</Button>
             <Button variant="warning" onClick={() => setHubCouncilModal(true)}>
               Add Hub Council
             </Button>
@@ -144,21 +137,19 @@ const CouncilForm = ({
                       </RoleView>
                     </Row>
                     <div className="d-grid gap-2">
-                      {initialValues.constituencies?.length && (
-                        <p className="fw-bold fs-5">Constituencies</p>
+                      {initialValues.teams?.length && (
+                        <p className="fw-bold fs-5">Teams</p>
                       )}
 
-                      {initialValues.constituencies?.map(
-                        (constituency, index) => {
-                          if (!constituency && !index)
-                            return <NoDataComponent text="No Constituencies" />
-                          return (
-                            <Button variant="secondary" className="text-start">
-                              {constituency.name} Constituency
-                            </Button>
-                          )
-                        }
-                      )}
+                      {initialValues.teams?.map((team, index) => {
+                        if (!team && !index)
+                          return <NoDataComponent text="No Teams" />
+                        return (
+                          <Button variant="secondary" className="text-start">
+                            {team.name} Team
+                          </Button>
+                        )
+                      })}
                     </div>
 
                     <div className="d-grid gap-2 mt-3">
@@ -185,44 +176,40 @@ const CouncilForm = ({
               </div>
             </Form>
 
-            <Modal
-              show={constituencyModal}
-              onHide={() => setConstituencyModal(false)}
-              centered
-            >
-              <Modal.Header closeButton>Add A Constituency</Modal.Header>
+            <Modal show={teamModal} onHide={() => setTeamModal(false)} centered>
+              <Modal.Header closeButton>Add A Team</Modal.Header>
               <Modal.Body>
-                <p>Choose a constituency to move to this council</p>
-                <SearchConstituency
-                  name={`constituency`}
-                  placeholder="Constituency Name"
+                <p>Choose a team to move to this council</p>
+                <SearchTeam
+                  name={`team`}
+                  placeholder="Team Name"
                   initialValue=""
                   setFieldValue={formik.setFieldValue}
-                  aria-describedby="Constituency Name"
+                  aria-describedby="Team Name"
                 />
               </Modal.Body>
               <Modal.Footer>
                 <Button
                   variant="success"
                   type="submit"
-                  disabled={buttonLoading || !formik.values.constituency}
+                  disabled={buttonLoading || !formik.values.team}
                   onClick={async () => {
                     try {
                       setButtonLoading(true)
-                      const res = await MoveConstituencyToCouncil({
+                      const res = await MoveTeamToCouncil({
                         variables: {
-                          constituencyId: formik.values.constituency?.id,
-                          historyRecord: `${formik.values.constituency?.name} Constituency has been moved to ${formik.values.name} Council from ${formik.values.constituency?.council.name} Council`,
+                          teamId: formik.values.team?.id,
+                          historyRecord: `${formik.values.team?.name} Team has been moved to ${formik.values.name} Council from ${formik.values.team?.council.name} Council`,
                           newCouncilId: councilId,
-                          oldCouncilId: formik.values.constituency?.council.id,
+                          oldCouncilId: formik.values.team?.council.id,
                         },
                       })
 
-                      clickCard(res.data.MoveConstituencyToCouncil)
-                      setConstituencyModal(false)
+                      clickCard(res.data.MoveTeamToCouncil)
+                      setTeamModal(false)
                     } catch (error) {
                       throwToSentry(
-                        `There was an error moving this constituency to this council`,
+                        `There was an error moving this team to this council`,
                         error
                       )
                     } finally {
@@ -232,10 +219,7 @@ const CouncilForm = ({
                 >
                   <BtnSubmitText loading={buttonLoading} />
                 </Button>
-                <Button
-                  variant="primary"
-                  onClick={() => setConstituencyModal(false)}
-                >
+                <Button variant="primary" onClick={() => setTeamModal(false)}>
                   Close
                 </Button>
               </Modal.Footer>

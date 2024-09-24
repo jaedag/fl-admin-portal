@@ -20,8 +20,8 @@ const StreamHistory = lazy(
 const CouncilHistory = lazy(
   () => import('pages/directory/display/church-history/CouncilHistory')
 )
-const ConstituencyHistory = lazy(
-  () => import('pages/directory/display/church-history/ConstituencyHistory')
+const TeamHistory = lazy(
+  () => import('pages/directory/display/church-history/TeamHistory')
 )
 const FellowshipHistory = lazy(
   () => import('pages/directory/display/church-history/FellowshipHistory')
@@ -75,9 +75,7 @@ const SearchPageMobile = lazy(() => import('pages/directory/mobile/SearchPage'))
 const CouncilMembers = lazy(
   () => import('pages/directory/grids/CouncilMembers')
 )
-const ConstituencyMembers = lazy(
-  () => import('pages/directory/grids/ConstituencyMembers')
-)
+const TeamMembers = lazy(() => import('pages/directory/grids/TeamMembers'))
 const BacentaMembers = lazy(
   () => import('pages/directory/grids/BacentaMembers')
 )
@@ -96,9 +94,7 @@ const CreativeArtsMembers = lazy(
 const DetailsBacenta = lazy(
   () => import('pages/directory/display/DetailsBacenta')
 )
-const DetailsConstituency = lazy(
-  () => import('pages/directory/display/DetailsConstituency')
-)
+const DetailsTeam = lazy(() => import('pages/directory/display/DetailsTeam'))
 const DetailsCouncil = lazy(
   () => import('pages/directory/display/DetailsCouncil')
 )
@@ -121,9 +117,7 @@ const DisplayAllOversights = lazy(
 const DisplayAllBacentas = lazy(
   () => import('pages/directory/display/AllBacentas')
 )
-const DisplayAllConstituencies = lazy(
-  () => import('pages/directory/display/AllConstituencies')
-)
+const DisplayAllTeams = lazy(() => import('pages/directory/display/AllTeams'))
 
 const DisplayAllHubs = lazy(() => import('pages/directory/display/AllHubs'))
 const DisplayAllHubCouncils = lazy(
@@ -136,8 +130,8 @@ const DisplayAllStreamMinistries = lazy(
 const DisplayAllCouncilHubs = lazy(
   () => import('pages/directory/display/AllCouncilHubCouncils')
 )
-const DisplayAllConstituencyHubs = lazy(
-  () => import('pages/directory/display/AllConstituencyHubs')
+const DisplayAllTeamHubs = lazy(
+  () => import('pages/directory/display/AllTeamHubs')
 )
 const DisplayAllMinistries = lazy(
   () => import('pages/directory/display/AllMinistries')
@@ -152,9 +146,7 @@ const DisplayAllMinistryHubs = lazy(
 const DisplayAllCampusCreativeArts = lazy(
   () => import('pages/directory/display/AllCampusCreativeArts')
 )
-const CreateConstituency = lazy(
-  () => import('pages/directory/create/CreateConstituency')
-)
+const CreateTeam = lazy(() => import('pages/directory/create/CreateTeam'))
 const CreateBacenta = lazy(() => import('pages/directory/create/CreateBacenta'))
 const CreateHub = lazy(() => import('pages/directory/create/CreateHub'))
 const CreateHubCouncil = lazy(
@@ -170,9 +162,7 @@ const MakeHubFellowship = lazy(
   () => import('pages/directory/reusable-forms/MakeHubFellowship')
 )
 const UpdateBacenta = lazy(() => import('pages/directory/update/UpdateBacenta'))
-const UpdateConstituency = lazy(
-  () => import('pages/directory/update/UpdateConstituency')
-)
+const UpdateTeam = lazy(() => import('pages/directory/update/UpdateTeam'))
 const DetailsCampus = lazy(
   () => import('pages/directory/display/DetailsCampus')
 )
@@ -192,8 +182,8 @@ const DisplayAllCampuses = lazy(
   () => import('pages/directory/display/AllCampuses')
 )
 const CreateCouncil = lazy(() => import('pages/directory/create/CreateCouncil'))
-const AllCampusConstituencies = lazy(
-  () => import('pages/directory/display/AllCampusConstituencies')
+const AllCampusTeams = lazy(
+  () => import('pages/directory/display/AllCampusTeams')
 )
 const UpdateCouncil = lazy(() => import('pages/directory/update/UpdateCouncil'))
 const CreateStream = lazy(() => import('pages/directory/create/CreateStream'))
@@ -231,19 +221,17 @@ const ServantMembers = lazy(
 const UpdateBacentaBussing = lazy(
   () => import('pages/directory/update/UpdateBusPaymentDetails')
 )
-const AllStreamConstituencies = lazy(
-  () => import('pages/directory/display/AllStreamConstituencies')
+const AllStreamTeams = lazy(
+  () => import('pages/directory/display/AllStreamTeams')
 )
 
 const BacentaAvgWeekdayQuickFacts = lazy(
   () =>
     import('pages/directory/quick-facts/this-month/BacentaAvgWeekdayQuickFacts')
 )
-const ConstituencyAvgWeekdayQuickFacts = lazy(
+const TeamAvgWeekdayQuickFacts = lazy(
   () =>
-    import(
-      'pages/directory/quick-facts/this-month/ConstituencyAvgWeekdayQuickFacts'
-    )
+    import('pages/directory/quick-facts/this-month/TeamAvgWeekdayQuickFacts')
 )
 const StreamAvgWeekdayQuickFacts = lazy(
   () =>
@@ -282,9 +270,9 @@ export const quickFacts: LazyRouteTypes[] = [
     roles: permitMe('Bacenta'),
   },
   {
-    path: '/quick-facts/this-month/constituency',
-    element: ConstituencyAvgWeekdayQuickFacts,
-    roles: permitMe('Constituency'),
+    path: '/quick-facts/this-month/team',
+    element: TeamAvgWeekdayQuickFacts,
+    roles: permitMe('Team'),
   },
   {
     path: '/quick-facts/this-month/stream',
@@ -325,9 +313,9 @@ export const memberGrids: LazyRouteTypes[] = [
     roles: permitMe('Council'),
   },
   {
-    path: '/constituency/members',
-    element: ConstituencyMembers,
-    roles: permitMe('Constituency'),
+    path: '/team/members',
+    element: TeamMembers,
+    roles: permitMe('Team'),
   },
 
   {
@@ -339,7 +327,7 @@ export const memberGrids: LazyRouteTypes[] = [
   {
     path: '/hub/members',
     element: HubMembers,
-    roles: [...permitMe('Hub'), ...permitMe('Constituency')],
+    roles: [...permitMe('Hub'), ...permitMe('Team')],
   },
   {
     path: '/hubcouncil/members',
@@ -399,8 +387,8 @@ export const directory: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/constituency/history',
-    element: ConstituencyHistory,
+    path: '/team/history',
+    element: TeamHistory,
     roles: ['all'],
     placeholder: true,
   },
@@ -504,9 +492,9 @@ export const directory: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/constituency/displaydetails',
-    element: DetailsConstituency,
-    roles: [...permitMe('Constituency'), ...permitMe('HubCouncil')],
+    path: '/team/displaydetails',
+    element: DetailsTeam,
+    roles: [...permitMe('Team'), ...permitMe('HubCouncil')],
     placeholder: true,
   },
 
@@ -541,14 +529,14 @@ export const directory: LazyRouteTypes[] = [
     placeholder: false,
   },
   {
-    path: '/campus/constituencies',
-    element: AllCampusConstituencies,
+    path: '/campus/teams',
+    element: AllCampusTeams,
     roles: permitMe('Campus'),
     placeholder: false,
   },
   {
-    path: '/stream/constituencies',
-    element: AllStreamConstituencies,
+    path: '/stream/teams',
+    element: AllStreamTeams,
     roles: permitMe('Stream'),
     placeholder: false,
   },
@@ -582,13 +570,13 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/bacenta/displayall',
     element: DisplayAllBacentas,
-    roles: [...permitMe('Constituency'), ...permitMe('Hub')],
+    roles: [...permitMe('Team'), ...permitMe('Hub')],
     placeholder: false,
   },
   {
     path: '/hub/displayall',
     element: DisplayAllHubs,
-    roles: [...permitMe('Constituency'), ...permitMe('Hub')],
+    roles: [...permitMe('Team'), ...permitMe('Hub')],
     placeholder: false,
   },
   {
@@ -598,9 +586,9 @@ export const directory: LazyRouteTypes[] = [
     placeholder: false,
   },
   {
-    path: '/constituency/hubs',
-    element: DisplayAllConstituencyHubs,
-    roles: [...permitMe('Constituency'), ...permitMe('Hub')],
+    path: '/team/hubs',
+    element: DisplayAllTeamHubs,
+    roles: [...permitMe('Team'), ...permitMe('Hub')],
     placeholder: false,
   },
   {
@@ -641,8 +629,8 @@ export const directory: LazyRouteTypes[] = [
     placeholder: false,
   },
   {
-    path: '/constituency/displayall',
-    element: DisplayAllConstituencies,
+    path: '/team/displayall',
+    element: DisplayAllTeams,
     roles: [...permitMe('Council'), ...permitMe('Ministry')],
     placeholder: false,
   },
@@ -705,8 +693,8 @@ export const directory: LazyRouteTypes[] = [
     placeholder: false,
   },
   {
-    path: '/constituency/addconstituency',
-    element: CreateConstituency,
+    path: '/team/addteam',
+    element: CreateTeam,
     roles: permitAdmin('Council'),
     placeholder: false,
   },
@@ -745,7 +733,7 @@ export const directory: LazyRouteTypes[] = [
   {
     path: '/bacenta/editbacenta',
     element: UpdateBacenta,
-    roles: permitMe('Constituency'),
+    roles: permitMe('Team'),
     placeholder: false,
   },
   {
@@ -755,8 +743,8 @@ export const directory: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/constituency/editconstituency',
-    element: UpdateConstituency,
+    path: '/team/editteam',
+    element: UpdateTeam,
     roles: permitAdmin('Council'),
     placeholder: false,
   },

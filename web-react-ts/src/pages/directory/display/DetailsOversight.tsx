@@ -40,9 +40,9 @@ const DetailsOversight = () => {
       link: `#`,
     },
     {
-      title: 'Constituencies',
-      number: oversight?.constituencyCount,
-      link: `/campus/constituencies`,
+      title: 'Teams',
+      number: oversight?.teamCount,
+      link: `/campus/teams`,
     },
     {
       title: 'Greens',
