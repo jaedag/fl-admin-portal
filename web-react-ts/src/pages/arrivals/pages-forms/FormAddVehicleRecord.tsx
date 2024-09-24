@@ -16,7 +16,7 @@ import { ServiceContext } from 'contexts/ServiceContext'
 import { throwToSentry } from 'global-utils'
 import Input from 'components/formik/Input'
 import Select from 'components/formik/Select'
-import { VEHICLE_OPTIONS, VEHICLE_OPTIONS_WITH_CAR } from '../arrivals-utils'
+import { VEHICLE_OPTIONS_WITH_CAR } from '../arrivals-utils'
 import ImageUpload from 'components/formik/ImageUpload'
 import { BacentaWithArrivals } from '../arrivals-types'
 import { MemberContext } from 'contexts/MemberContext'
@@ -48,7 +48,6 @@ const FormAddVehicleRecord = () => {
     picture: '',
   }
 
-  const swell = data?.timeGraphs[0].swell
   const [RecordVehicleFromBacenta] = useMutation(RECORD_BUSSING_FROM_BACENTA)
   const validationSchema = Yup.object({
     leaderDeclaration: Yup.number()
@@ -128,11 +127,7 @@ const FormAddVehicleRecord = () => {
                   <Select
                     name="vehicle"
                     label="Type of Vehicle"
-                    options={
-                      bacenta?.bussing[0].attendance >= 8 && swell
-                        ? VEHICLE_OPTIONS_WITH_CAR
-                        : VEHICLE_OPTIONS
-                    }
+                    options={VEHICLE_OPTIONS_WITH_CAR}
                     defaultOption="Select a vehicle type"
                   />
 
