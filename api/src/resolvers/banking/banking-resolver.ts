@@ -55,15 +55,15 @@ export const checkIfLastServiceBanked = async (
     throwToSentry('There was a problem checking the lastService', error)
   )
   const lastServiceRecord: any = rearrangeCypherObject(lastServiceResponse[0])
-  const imclNotFilled: boolean =
-    lastServiceResponse[1].records[0]?.get('imclNotFilled')
+  // const imclNotFilled: boolean =
+  //   lastServiceResponse[1].records[0]?.get('imclNotFilled')
 
   if (!('lastService' in lastServiceRecord)) return true
 
   const lastService = lastServiceRecord.lastService.properties
-  const currentService = lastServiceRecord.record.properties
+  // const currentService = lastServiceRecord.record.properties
   const date = lastServiceRecord.lastDate.properties
-  const { church } = lastServiceRecord
+  // const { church } = lastServiceRecord
 
   if (
     !(
@@ -79,17 +79,17 @@ export const checkIfLastServiceBanked = async (
     )
   }
 
-  if (!currentService.markedAttendance && church.labels.includes('Bacenta')) {
-    throw new Error(
-      'Please tick the present members on the Poimen App before you will be allowed to bank your offering'
-    )
-  }
+  // if (!currentService.markedAttendance && church.labels.includes('Bacenta')) {
+  //   throw new Error(
+  //     'Please tick the present members on the Poimen App before you will be allowed to bank your offering'
+  //   )
+  // }
 
-  if (imclNotFilled) {
-    throw new Error(
-      'Please fill the IMCL form on the Poimen App before you will be allowed to bank your offering'
-    )
-  }
+  // if (imclNotFilled) {
+  //   throw new Error(
+  //     'Please fill the IMCL form on the Poimen App before you will be allowed to bank your offering'
+  //   )
+  // }
 
   return true
 }
