@@ -1,3 +1,17 @@
+#### 7.18.50 (2024-09-24)
+
+##### Bug Fixes
+
+*  remove personalContr calc from arrivals ([4d359537](https://github.com/firstlovecenter/fl-admin-portal/commit/4d35953747828443237252c94723649f32b90d22))
+*  remove bussingCost and personalContribution from bacenta form ([1b2f90a3](https://github.com/firstlovecenter/fl-admin-portal/commit/1b2f90a33e5e3135d6e3e12b3683e5c67b2e2835))
+*  car option is available on all days not just swells ([b6ee21e0](https://github.com/firstlovecenter/fl-admin-portal/commit/b6ee21e0da53df6772a511b06bb79751b5d815b8))
+
+##### Refactors
+
+*  change word constituency to word team ([156ae928](https://github.com/firstlovecenter/fl-admin-portal/commit/156ae928a2affdd93b53e89970819c8241bddfef))
+*  remove graduation status from bacenta ([8f023c56](https://github.com/firstlovecenter/fl-admin-portal/commit/8f023c569d7ad77e94c314d3e0fdd1e5272df672))
+*  comment out unused code in treasury-resolvers.ts and banking-resolver.ts ([34dab8bf](https://github.com/firstlovecenter/fl-admin-portal/commit/34dab8bf2ab6f554e14a36788295632d74803a33))
+
 #### 7.18.49 (2024-09-18)
 
 ##### Documentation Changes
