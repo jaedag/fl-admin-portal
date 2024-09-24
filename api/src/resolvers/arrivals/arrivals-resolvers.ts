@@ -285,8 +285,6 @@ export const arrivalsMutation = {
       bacentaId: string
       bussingRecordId: string
       leaderDeclaration: number
-      vehicleCost: number
-      personalContribution: number
       vehicle: string
       picture: string
     },
@@ -330,8 +328,6 @@ export const arrivalsMutation = {
       id: vehicleRecord.id,
       leaderDeclaration: vehicleRecord.leaderDeclaration,
       attendance: vehicleRecord.attendance,
-      vehicleCost: vehicleRecord.vehicleCost,
-      personalContribution: vehicleRecord.personalContribution,
       vehicle: vehicleRecord.vehicle,
       picture: vehicleRecord.picture,
       outbound: vehicleRecord.outbound,
@@ -348,8 +344,6 @@ export const arrivalsMutation = {
                     date,
                   },
                   week: response.week,
-                  vehicleCost: vehicleRecord.vehicleCost,
-                  personalContribution: vehicleRecord.personalContribution,
                   vehicle: vehicleRecord.vehicle,
                   picture: vehicleRecord.picture,
                   outbound: vehicleRecord.outbound,
@@ -369,8 +363,6 @@ export const arrivalsMutation = {
       bussingRecordId: string
       leaderDeclaration: number
       attendance: number
-      vehicleCost: number
-      personalContribution: number
       vehicle: 'Urvan' | 'Sprinter' | 'Car'
       picture: string
     },
@@ -452,8 +444,6 @@ export const arrivalsMutation = {
       id: vehicleRecord.id,
       leaderDeclaration: vehicleRecord.leaderDeclaration,
       attendance: vehicleRecord.attendance,
-      vehicleCost: vehicleRecord.vehicleCost,
-      personalContribution: vehicleRecord.personalContribution,
       vehicle: vehicleRecord.vehicle,
       picture: vehicleRecord.picture,
       outbound: vehicleRecord.outbound,
@@ -471,8 +461,6 @@ export const arrivalsMutation = {
                     date,
                   },
                   week: response.week,
-                  vehicleCost: vehicleRecord.vehicleCost,
-                  personalContribution: vehicleRecord.personalContribution,
                   vehicle: vehicleRecord.vehicle,
                   picture: vehicleRecord.picture,
                   outbound: vehicleRecord.outbound,
@@ -500,7 +488,6 @@ export const arrivalsMutation = {
       vehicle: 'Sprinter' | 'Urvan' | 'Car'
       vehicleCost: number
       outbound: boolean
-      personalContribution: number
       bacentaSprinterTopUp: number
       bacentaUrvanTopUp: number
       arrivalTime: string
@@ -520,7 +507,7 @@ export const arrivalsMutation = {
       const sprinterTopUp = data.bacentaSprinterTopUp * outbound
       const urvanTopUp = data.bacentaUrvanTopUp * outbound
 
-      const amountToPay = data.vehicleCost - data.personalContribution
+      const amountToPay = data.vehicleCost
 
       if (data.vehicle === 'Sprinter') {
         if (sprinterTopUp === 0) return 0

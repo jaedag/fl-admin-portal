@@ -1005,7 +1005,6 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
       """
     )
   numberOfBusses: Int #Legacy Property for before we started collecting Spinter/Urvan details
-  personalContribution: Float
   numberOfSprinters: Int
   numberOfUrvans: Int
   numberOfCars: Int
@@ -1038,7 +1037,6 @@ type VehicleRecord {
   attendance: Int
   picture: String!
   vehicle: String!
-  personalContribution: Float!
 
   momoNumber: String
   momoName: String
@@ -1226,8 +1224,6 @@ extend type Mutation {
     bacentaId: ID!
     bussingRecordId: ID!
     leaderDeclaration: Int!
-    vehicleCost: Float!
-    personalContribution: Float!
     vehicle: String!
     picture: String!
   ): VehicleRecord!

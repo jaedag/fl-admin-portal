@@ -179,8 +179,6 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
     $bacentaId: ID!
     $bussingRecordId: ID!
     $leaderDeclaration: Int!
-    $vehicleCost: Float!
-    $personalContribution: Float!
     $vehicle: String!
     $picture: String!
   ) {
@@ -188,16 +186,12 @@ export const RECORD_BUSSING_FROM_BACENTA = gql`
       bacentaId: $bacentaId
       bussingRecordId: $bussingRecordId
       leaderDeclaration: $leaderDeclaration
-      vehicleCost: $vehicleCost
-      personalContribution: $personalContribution
       vehicle: $vehicle
       picture: $picture
     ) {
       id
       leaderDeclaration
       attendance
-      vehicleCost
-      personalContribution
       vehicleTopUp
       bussingRecord {
         serviceLog {

@@ -40,7 +40,6 @@ record.vehicle AS vehicle,
 record.vehicleCost AS vehicleCost,
 record.outbound AS outbound,
 record.arrivalTime  AS arrivalTime,
-record.personalContribution AS personalContribution,
 leader.phoneNumber AS leaderPhoneNumber,
 leader.firstName AS leaderFirstName,
 
@@ -181,11 +180,9 @@ MATCH (vehicleRecord:VehicleRecord {id: $vehicleRecordId})
 export const aggregateVehicleBussingRecordData = `
 MATCH (vehicle:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)
 MATCH (bussing)-[:INCLUDES_RECORD]->(allVehicles:VehicleRecord)
-WITH bussing, SUM(allVehicles.attendance) AS attendance, SUM(allVehicles.leaderDeclaration) AS leaderDeclaration, SUM(allVehicles.personalContribution) AS personalContribution, SUM(allVehicles.vehicleCost) AS vehicleCost, SUM(allVehicles.vehicleTopUp) AS vehicleTopUp
+WITH bussing, SUM(allVehicles.attendance) AS attendance, SUM(allVehicles.leaderDeclaration) AS leaderDeclaration, SUM(allVehicles.vehicleTopUp) AS vehicleTopUp
 SET bussing.attendance = attendance,
 bussing.leaderDeclaration = leaderDeclaration,
-bussing.personalContribution = personalContribution,
-bussing.bussingCost = vehicleCost,
 bussing.bussingTopUp = vehicleTopUp
 
 WITH bussing
@@ -215,8 +212,6 @@ MERGE (bussingRecord)-[:INCLUDES_RECORD]->(vehicleRecord)
 
 SET vehicleRecord.leaderDeclaration = $leaderDeclaration,
 vehicleRecord.createdAt = datetime(),
-vehicleRecord.vehicleCost = $vehicleCostWithOutbound,
-vehicleRecord.personalContribution = $personalContribution,
 vehicleRecord.vehicle = $vehicle,
 vehicleRecord.picture =  $picture,
 vehicleRecord.outbound = $outbound,
@@ -229,10 +224,8 @@ MERGE (vehicleRecord)-[:LOGGED_BY]->(leader)
 
 WITH vehicleRecord, bussingRecord
 MATCH (bussingRecord)-[:INCLUDES_RECORD]->(vehicleRecords)
-WITH vehicleRecord, bussingRecord, sum(vehicleRecords.leaderDeclaration) as summedLeaderDeclaration, toFloat(SUM(vehicleRecords.personalContribution)) as summedPersonalContribution, toFloat(SUM(vehicleRecords.vehicleCost)) as summedVehicleCost
-SET bussingRecord.leaderDeclaration = summedLeaderDeclaration,
-bussingRecord.personalContribution = summedPersonalContribution,
-bussingRecord.bussingCost = summedVehicleCost
+WITH vehicleRecord, bussingRecord, sum(vehicleRecords.leaderDeclaration) as summedLeaderDeclaration 
+SET bussingRecord.leaderDeclaration = summedLeaderDeclaration
 
 RETURN vehicleRecord, bussingRecord, date().week AS week
 `
@@ -250,15 +243,13 @@ export const aggregateBussingDataOnHigherChurches = `
    MATCH (date:TimeGraph {date: date()})
    MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
    WITH DISTINCT constituency, aggregate, record
-   WITH constituency, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp,
+   WITH constituency, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp,
    SUM(record.numberOfSprinters) AS numberOfSprinters,
    SUM(record.numberOfUrvans) AS numberOfUrvans,
    SUM(record.numberOfCars) AS numberOfCars
   
 
    SET aggregate.leaderDeclaration = leaderDeclaration,
-    aggregate.bussingCost = bussingCost,
-    aggregate.personalContribution = personalContribution,
     aggregate.attendance = attendance,
     aggregate.bussingTopUp = bussingTopUp,
     aggregate.componentBussingIds = componentBussingIds,
@@ -276,15 +267,13 @@ export const aggregateBussingDataOnHigherChurches = `
    MATCH (council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
    MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
    WITH DISTINCT council, aggregate, record
-   WITH council, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp,
+   WITH council, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp,
    SUM(record.numberOfSprinters) AS numberOfSprinters,
    SUM(record.numberOfUrvans) AS numberOfUrvans,
    SUM(record.numberOfCars) AS numberOfCars
   
 
    SET aggregate.leaderDeclaration = leaderDeclaration,
-    aggregate.bussingCost = bussingCost,
-    aggregate.personalContribution = personalContribution,
     aggregate.attendance = attendance,
     aggregate.bussingTopUp = bussingTopUp,
     aggregate.componentBussingIds = componentBussingIds,
@@ -302,15 +291,13 @@ WITH council AS lowerChurch
    MATCH (stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
    MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
    WITH DISTINCT stream, aggregate, record
-    WITH stream, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp,
+    WITH stream, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp,
     SUM(record.numberOfSprinters) AS numberOfSprinters,
     SUM(record.numberOfUrvans) AS numberOfUrvans,
     SUM(record.numberOfCars) AS numberOfCars
   
 
    SET aggregate.leaderDeclaration = leaderDeclaration,
-    aggregate.bussingCost = bussingCost,
-    aggregate.personalContribution = personalContribution,
     aggregate.attendance = attendance,
     aggregate.bussingTopUp = bussingTopUp,
     aggregate.componentBussingIds = componentBussingIds,
@@ -328,15 +315,13 @@ WITH council AS lowerChurch
    MATCH (gathering)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
    MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
    WITH DISTINCT gathering, aggregate, record
-    WITH gathering, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp,
+    WITH gathering, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp,
    SUM(record.numberOfSprinters) AS numberOfSprinters,
    SUM(record.numberOfUrvans) AS numberOfUrvans,
    SUM(record.numberOfCars) AS numberOfCars
   
 
    SET aggregate.leaderDeclaration = leaderDeclaration,
-    aggregate.bussingCost = bussingCost,
-    aggregate.personalContribution = personalContribution,
     aggregate.attendance = attendance,
     aggregate.bussingTopUp = bussingTopUp,
     aggregate.componentBussingIds = componentBussingIds,
@@ -354,15 +339,13 @@ WITH council AS lowerChurch
    MATCH (oversight)-[:HAS]->(:Campus)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
    MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
    WITH DISTINCT oversight, aggregate, record
-    WITH oversight, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp,
+    WITH oversight, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp,
    SUM(record.numberOfSprinters) AS numberOfSprinters,
    SUM(record.numberOfUrvans) AS numberOfUrvans,
    SUM(record.numberOfCars) AS numberOfCars
   
 
    SET aggregate.leaderDeclaration = leaderDeclaration,
-    aggregate.bussingCost = bussingCost,
-    aggregate.personalContribution = personalContribution,
     aggregate.attendance = attendance,
     aggregate.bussingTopUp = bussingTopUp,
     aggregate.componentBussingIds = componentBussingIds,
@@ -380,15 +363,13 @@ WITH council AS lowerChurch
    MATCH (denomination)-[:HAS]->(:Oversight)-[:HAS]->(:Campus)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(:Constituency)-[:HAS]->(bacentas:Bacenta)
    MATCH (bacentas)-[:CURRENT_HISTORY]->(:ServiceLog)-[:HAS_BUSSING]->(record:BussingRecord)-[:BUSSED_ON]->(date:TimeGraph) WHERE date.date.week = date().week AND date.date.year = date().year
    WITH DISTINCT denomination, aggregate, record
-   WITH denomination, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.bussingCost) AS bussingCost, SUM(record.personalContribution) AS personalContribution, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp,
+   WITH denomination, aggregate, collect(record.id) AS componentBussingIds, SUM(record.leaderDeclaration) AS leaderDeclaration, SUM(record.attendance) AS attendance, SUM(record.bussingTopUp) AS bussingTopUp,
    SUM(record.numberOfSprinters) AS numberOfSprinters,
    SUM(record.numberOfUrvans) AS numberOfUrvans,
    SUM(record.numberOfCars) AS numberOfCars
   
 
    SET aggregate.leaderDeclaration = leaderDeclaration,
-    aggregate.bussingCost = bussingCost,
-    aggregate.personalContribution = personalContribution,
     aggregate.attendance = attendance,
     aggregate.bussingTopUp = bussingTopUp,
     aggregate.componentBussingIds = componentBussingIds,

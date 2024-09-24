@@ -15,11 +15,9 @@ type AggregateBussingRecord @auth(rules: [{ isAuthenticated: true }]) {
   year: Int!
   attendance: Int
   leaderDeclaration: Int!
-  personalContribution: Float!
   numberOfSprinters: Int!
   numberOfUrvans: Int!
   numberOfCars: Int!
-  bussingCost: Float!
   bussingTopUp: Float
 }
 
