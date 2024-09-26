@@ -44,7 +44,7 @@ const DetailsGovernorship = () => {
         details={details}
         loading={loading}
         name={data?.governorships[0]?.name}
-        leaderTitle={'Governorship Leader'}
+        leaderTitle={'Governor'}
         leader={data?.governorships[0]?.leader}
         churchId={governorshipId}
         admin={data?.governorships[0]?.admin}
