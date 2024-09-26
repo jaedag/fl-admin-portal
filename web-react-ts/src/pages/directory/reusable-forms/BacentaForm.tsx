@@ -8,7 +8,7 @@ import {
   throwToSentry,
 } from 'global-utils'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { Team } from 'global-types'
+import { Governorship } from 'global-types'
 import { permitAdminArrivals } from 'permission-utils'
 import { useContext, useState } from 'react'
 import { ChurchContext } from 'contexts/ChurchContext'
@@ -27,14 +27,14 @@ import {
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
 import SubmitButton from 'components/formik/SubmitButton'
-import { DISPLAY_TEAM } from 'pages/directory/display/ReadQueries'
+import { DISPLAY_GOVERNORSHIP } from 'pages/directory/display/ReadQueries'
 import Select from 'components/formik/Select'
 import Input from 'components/formik/Input'
 import SearchMember from 'components/formik/SearchMember'
 import BtnSubmitText from 'components/formik/BtnSubmitText'
 
 export interface BacentaFormValues extends FormikInitialValues {
-  team?: Team
+  governorship?: Governorship
   meetingDay: string
   vacationStatus: string
   venueLatitude: string | number
@@ -66,8 +66,8 @@ const BacentaForm = ({
   const [CloseDownBacenta] = useMutation(MAKE_BACENTA_INACTIVE, {
     refetchQueries: [
       {
-        query: DISPLAY_TEAM,
-        variables: { id: initialValues.team?.id },
+        query: DISPLAY_GOVERNORSHIP,
+        variables: { id: initialValues.governorship?.id },
       },
     ],
   })
@@ -148,7 +148,7 @@ const BacentaForm = ({
                       </Col>
                     </Row>
                     <Row className="d-flex align-items-center mb-3">
-                      <RoleView roles={permitAdminArrivals('Team')}>
+                      <RoleView roles={permitAdminArrivals('Governorship')}>
                         <Col>
                           <SearchMember
                             name="leaderId"
@@ -260,11 +260,11 @@ const BacentaForm = ({
                       setButtonLoading(false)
                       clickCard(res.data.CloseDownBacenta)
                       setCloseDown(false)
-                      navigate(`/team/displayall`)
+                      navigate(`/governorship/displayall`)
                     } catch (error) {
                       setButtonLoading(false)
                       throwToSentry(
-                        `There was an error closing down this team`,
+                        `There was an error closing down this governorship`,
                         error
                       )
                     }

@@ -33,7 +33,9 @@ const CouncilTrends = () => {
           <div className="d-grid gap-2 mt-4 text-center px-2">
             <TrendsButton
               church={councils}
-              onClick={() => navigate(`/campaigns/equipment/council/team`)}
+              onClick={() =>
+                navigate(`/campaigns/equipment/council/governorship`)
+              }
             />
           </div>
         </Container>

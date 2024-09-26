@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client'
 
 // No Activity Queries
-export const TEAM_BACENTAS_NO_ACTIVITY = gql`
-  query teamBacentasNoActivity($id: ID!, $arrivalDate: String!) {
-    teams(where: { id: $id }, options: { limit: 1 }) {
+export const GOVERNORSHIP_BACENTAS_NO_ACTIVITY = gql`
+  query governorshipBacentasNoActivity($id: ID!, $arrivalDate: String!) {
+    governorships(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
@@ -97,9 +97,9 @@ export const CAMPUS_BACENTAS_NO_ACTIVITY = gql`
   }
 `
 
-export const TEAM_BACENTAS_MOBILISING = gql`
-  query teamBacentasMobilising($id: ID!, $arrivalDate: String!) {
-    teams(where: { id: $id }, options: { limit: 1 }) {
+export const GOVERNORSHIP_BACENTAS_MOBILISING = gql`
+  query governorshipBacentasMobilising($id: ID!, $arrivalDate: String!) {
+    governorships(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
@@ -205,9 +205,9 @@ export const CAMPUS_BACENTAS_MOBILISING = gql`
   }
 `
 
-export const TEAM_BACENTAS_ON_THE_WAY = gql`
-  query teamBacentasOnTheWay($id: ID!, $arrivalDate: String!) {
-    teams(where: { id: $id }, options: { limit: 1 }) {
+export const GOVERNORSHIP_BACENTAS_ON_THE_WAY = gql`
+  query governorshipBacentasOnTheWay($id: ID!, $arrivalDate: String!) {
+    governorships(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
@@ -312,9 +312,9 @@ export const CAMPUS_BACENTAS_ON_THE_WAY = gql`
   }
 `
 
-export const TEAM_BACENTAS_TO_COUNT = gql`
-  query teamBacentasToCount($id: ID!, $arrivalDate: String!) {
-    teams(where: { id: $id }, options: { limit: 1 }) {
+export const GOVERNORSHIP_BACENTAS_TO_COUNT = gql`
+  query governorshipBacentasToCount($id: ID!, $arrivalDate: String!) {
+    governorships(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
@@ -460,9 +460,9 @@ export const CAMPUS_BACENTAS_TO_COUNT = gql`
   }
 `
 
-export const TEAM_BACENTAS_ARRIVED = gql`
-  query teamBacentasArrived($id: ID!, $arrivalDate: String!) {
-    teams(where: { id: $id }, options: { limit: 1 }) {
+export const GOVERNORSHIP_BACENTAS_ARRIVED = gql`
+  query governorshipBacentasArrived($id: ID!, $arrivalDate: String!) {
+    governorships(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 
@@ -572,9 +572,9 @@ export const CAMPUSES_BACENTAS_ARRIVED = gql`
   }
 `
 
-export const TEAM_BACENTAS_BELOW_8 = gql`
-  query teamBacentasBelow8($id: ID!, $arrivalDate: String!) {
-    teams(where: { id: $id }, options: { limit: 1 }) {
+export const GOVERNORSHIP_BACENTAS_BELOW_8 = gql`
+  query governorshipBacentasBelow8($id: ID!, $arrivalDate: String!) {
+    governorships(where: { id: $id }, options: { limit: 1 }) {
       id
       name
 

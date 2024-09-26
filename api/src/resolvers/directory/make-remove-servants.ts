@@ -313,7 +313,7 @@ export const RemoveServant = async (
     (role: Auth0RoleObject) => role.name
   )
   const rolesToCompare: string[] = roles
-  // If the person is only a team Admin, delete auth0 profile
+  // If the person is only a governorship Admin, delete auth0 profile
   if (
     rolesToCompare.includes(`${servantLower}${churchType}`) &&
     roles.length === 1

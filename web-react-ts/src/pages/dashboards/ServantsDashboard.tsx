@@ -26,7 +26,7 @@ const ServantsDashboard = () => {
   const { clickCard } = useContext(ChurchContext)
   const navigate = useNavigate()
   let servantId = currentUser.id
-  if (isAuthorised(permitMe('Team'), currentUser.roles)) {
+  if (isAuthorised(permitMe('Governorship'), currentUser.roles)) {
     servantId = memberId
   }
 

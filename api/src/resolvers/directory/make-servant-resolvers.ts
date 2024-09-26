@@ -72,10 +72,20 @@ const MakeServantResolvers = {
     MakeServant(context, args, permitAdmin('Stream'), 'Council', 'Admin'),
   RemoveCouncilAdmin: async (object: any, args: Member, context: Context) =>
     RemoveServant(context, args, permitAdmin('Stream'), 'Council', 'Admin'),
-  MakeTeamAdmin: async (object: any, args: Member, context: Context) =>
-    MakeServant(context, args, permitAdmin('Council'), 'Team', 'Admin'),
-  RemoveTeamAdmin: async (object: any, args: Member, context: Context) =>
-    RemoveServant(context, args, permitAdmin('Council'), 'Team', 'Admin'),
+  MakeGovernorshipAdmin: async (object: any, args: Member, context: Context) =>
+    MakeServant(context, args, permitAdmin('Council'), 'Governorship', 'Admin'),
+  RemoveGovernorshipAdmin: async (
+    object: any,
+    args: Member,
+    context: Context
+  ) =>
+    RemoveServant(
+      context,
+      args,
+      permitAdmin('Council'),
+      'Governorship',
+      'Admin'
+    ),
   MakeCreativeArtsAdmin: async (object: any, args: Member, context: Context) =>
     MakeServant(context, args, permitAdmin('Campus'), 'CreativeArts', 'Admin'),
   RemoveCreativeArtsAdmin: async (
@@ -134,10 +144,26 @@ const MakeServantResolvers = {
       'Bacenta',
       'Leader'
     ),
-  MakeTeamLeader: async (object: any, args: Member, context: Context) =>
-    MakeServant(context, args, permitAdmin('Council'), 'Team', 'Leader'),
-  RemoveTeamLeader: async (object: any, args: Member, context: Context) =>
-    RemoveServant(context, args, permitAdmin('Council'), 'Team', 'Leader'),
+  MakeGovernorshipLeader: async (object: any, args: Member, context: Context) =>
+    MakeServant(
+      context,
+      args,
+      permitAdmin('Council'),
+      'Governorship',
+      'Leader'
+    ),
+  RemoveGovernorshipLeader: async (
+    object: any,
+    args: Member,
+    context: Context
+  ) =>
+    RemoveServant(
+      context,
+      args,
+      permitAdmin('Council'),
+      'Governorship',
+      'Leader'
+    ),
   MakeCouncilLeader: async (object: any, args: Member, context: Context) =>
     MakeServant(context, args, permitAdmin('Stream'), 'Council', 'Leader'),
   RemoveCouncilLeader: async (object: any, args: Member, context: Context) =>

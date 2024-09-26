@@ -80,8 +80,8 @@ const StreamSwollenSundayTrends = () => {
       onClick: () => navigate('/campaigns/council/swollen-sunday/councils'),
     },
     {
-      name: 'Teams',
-      number: church?.teamCount,
+      name: 'Governorships',
+      number: church?.governorshipCount,
     },
     {
       name: 'Bacentas',

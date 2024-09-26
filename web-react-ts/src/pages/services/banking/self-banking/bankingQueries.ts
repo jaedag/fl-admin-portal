@@ -19,9 +19,9 @@ export const HUB_REHEARSALS_PAYMENT = gql`
   }
 `
 
-export const TEAM_SERVICE_PAYMENT = gql`
-  query teamServicePayment($id: ID!) {
-    teams(where: { id: $id }) {
+export const GOVERNORSHIP_SERVICE_PAYMENT = gql`
+  query governorshipServicePayment($id: ID!) {
+    governorships(where: { id: $id }) {
       id
       name
     }

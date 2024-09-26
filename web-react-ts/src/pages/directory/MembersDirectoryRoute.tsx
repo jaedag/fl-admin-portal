@@ -14,8 +14,8 @@ const StreamMembers = React.lazy(
 const CouncilMembers = React.lazy(
   () => import('pages/directory/grids/CouncilMembers')
 )
-const TeamMembers = React.lazy(
-  () => import('pages/directory/grids/TeamMembers')
+const GovernorshipMembers = React.lazy(
+  () => import('pages/directory/grids/GovernorshipMembers')
 )
 const BacentaMembers = React.lazy(
   () => import('pages/directory/grids/BacentaMembers')
@@ -43,10 +43,10 @@ const MembersDirectoryRoute = ({
   } else if (isAuthorised(permitMe('Council'), currentUser.roles)) {
     //if the user does not have permission but is a Bishop's Admin
     return <CouncilMembers />
-  } else if (isAuthorised(permitMe('Team'), currentUser.roles)) {
+  } else if (isAuthorised(permitMe('Governorship'), currentUser.roles)) {
     //If the user does not have permission but is a CO or CO Admin
-    church.setTeamId(currentUser.team)
-    return <TeamMembers />
+    church.setGovernorshipId(currentUser.governorship)
+    return <GovernorshipMembers />
   } else if (isAuthorised(permitMe('Bacenta'), currentUser.roles)) {
     //If the user does not have permission but is a Bacenta Leader
     church.setBacentaId(currentUser.bacenta)

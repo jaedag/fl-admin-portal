@@ -8,7 +8,7 @@ export const MEMBER_HUB_SEARCH = gql`
         id
         name
 
-        team {
+        governorship {
           id
           name
         }

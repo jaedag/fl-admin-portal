@@ -9,8 +9,16 @@ extend type Mutation {
   RemoveStreamAdmin(adminId: ID!, newAdminId: ID, streamId: ID!): Member
   MakeCouncilAdmin(adminId: ID!, oldAdminId: ID, councilId: ID!): Member!
   RemoveCouncilAdmin(adminId: ID!, newAdminId: ID!, councilId: ID!): Member
-  MakeTeamAdmin(adminId: ID!, oldAdminId: ID, teamId: ID!): Member!
-  RemoveTeamAdmin(adminId: ID!, newAdminId: ID!, teamId: ID!): Member
+  MakeGovernorshipAdmin(
+    adminId: ID!
+    oldAdminId: ID
+    governorshipId: ID!
+  ): Member!
+  RemoveGovernorshipAdmin(
+    adminId: ID!
+    newAdminId: ID!
+    governorshipId: ID!
+  ): Member
 
   #Pastoral Roles
   MakeFellowshipLeader(
@@ -25,8 +33,16 @@ extend type Mutation {
   ): Member
   MakeBacentaLeader(leaderId: ID!, bacentaId: ID!, oldLeaderId: ID): Member!
   RemoveBacentaLeader(leaderId: ID!, newLeaderId: ID!, bacentaId: ID!): Member
-  MakeTeamLeader(leaderId: ID!, teamId: ID!, oldLeaderId: ID): Member!
-  RemoveTeamLeader(leaderId: ID!, newLeaderId: ID!, teamId: ID!): Member
+  MakeGovernorshipLeader(
+    leaderId: ID!
+    governorshipId: ID!
+    oldLeaderId: ID
+  ): Member!
+  RemoveGovernorshipLeader(
+    leaderId: ID!
+    newLeaderId: ID!
+    governorshipId: ID!
+  ): Member
   MakeCouncilLeader(leaderId: ID!, councilId: ID!, oldLeaderId: ID): Member!
   RemoveCouncilLeader(leaderId: ID!, newLeaderId: ID!, councilId: ID!): Member
   MakeStreamLeader(leaderId: ID!, streamId: ID!, oldLeaderId: ID): Member!
@@ -90,12 +106,12 @@ extend type Mutation {
 
       WITH log,bacenta
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      MATCH (bacenta)<-[:HAS]-(team:Team)
+      MATCH (bacenta)<-[:HAS]-(governorship:Governorship)
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (bacenta)-[:HAS_HISTORY]->(log)
-      MERGE (team)-[:HAS_HISTORY]->(log)
+      MERGE (governorship)-[:HAS_HISTORY]->(log)
 
       SET bacenta:Vacation
       REMOVE bacenta:Active
@@ -264,12 +280,12 @@ extend type Mutation {
 
       WITH log,bacenta
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
-      MATCH (bacenta)<-[:HAS]-(team:Team)
+      MATCH (bacenta)<-[:HAS]-(governorship:Governorship)
       MERGE (date:TimeGraph {date:date()})
       MERGE (log)-[:LOGGED_BY]->(admin)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (bacenta)-[:HAS_HISTORY]->(log)
-      MERGE (team)-[:HAS_HISTORY]->(log)
+      MERGE (governorship)-[:HAS_HISTORY]->(log)
 
       SET bacenta:Active:Bacenta
       REMOVE bacenta:Vacation
@@ -450,27 +466,31 @@ extend type Mutation {
       """
     )
 
-  CreateTeam(name: String!, leaderId: ID!, councilId: ID!): Team
+  CreateGovernorship(
+    name: String!
+    leaderId: ID!
+    councilId: ID!
+  ): Governorship
     @auth(rules: [{ roles: ["adminCampus", "adminStream", "adminCouncil"] }])
     @cypher(
       statement: """
-       CREATE (team:Team {name: $name})
-         	SET	team.id = apoc.create.uuid()
-      WITH team
+       CREATE (governorship:Governorship {name: $name})
+         	SET	governorship.id = apoc.create.uuid()
+      WITH governorship
        CREATE (log:HistoryLog)
         SET
         log.id =  apoc.create.uuid(),
         log.timeStamp = datetime(),
-        log.historyRecord = $name +' Team History Begins',
+        log.historyRecord = $name +' Governorship History Begins',
         log.priority = 6
-      WITH log, team
+      WITH log, governorship
       MATCH (leader:Active:Member {id: $leaderId}) WHERE leader.email IS NOT NULL
       MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
       MATCH (council:Council {id: $councilId})
 
 
-      MERGE (council)-[:HAS]->(team)
-      MERGE (leader)-[:LEADS]->(team)
+      MERGE (council)-[:HAS]->(governorship)
+      MERGE (leader)-[:LEADS]->(governorship)
 
       MERGE (date:TimeGraph {date: date()})
       MERGE (log)-[:LOGGED_BY]->(currentUser)
@@ -478,13 +498,13 @@ extend type Mutation {
       MERGE (council)-[:HAS_HISTORY]->(log)
       MERGE (leader)-[:HAS_HISTORY]->(log)
 
-      RETURN team
+      RETURN governorship
       """
     )
 
   CreateBacenta(
     name: String!
-    teamId: ID!
+    governorshipId: ID!
     leaderId: ID!
     meetingDay: String!
     venueLongitude: Float
@@ -506,7 +526,7 @@ extend type Mutation {
 
       WITH bacenta
        MATCH (leader:Active:Member {id:$leaderId}) WHERE leader.email IS NOT NULL
-       MATCH (team:Team {id:$teamId})
+       MATCH (governorship:Governorship {id:$governorshipId})
        MATCH (currentUser:Active:Member {auth_id:$auth.jwt.sub})
        MATCH (meetingDay:ServiceDay {day: $meetingDay})
 
@@ -517,7 +537,7 @@ extend type Mutation {
        log.historyRecord = bacenta.name +' Bacenta History Begins',
        log.priority = 7
 
-       MERGE (team)-[:HAS]->(bacenta)
+       MERGE (governorship)-[:HAS]->(bacenta)
        MERGE (leader)-[:LEADS]->(bacenta)
        MERGE (bacenta)-[:MEETS_ON]->(meetingDay)
 
@@ -540,7 +560,14 @@ extend type Mutation {
   ): Fellowship!
     @auth(
       rules: [
-        { roles: ["adminCampus", "adminStream", "adminCouncil", "adminTeam"] }
+        {
+          roles: [
+            "adminCampus"
+            "adminStream"
+            "adminCouncil"
+            "adminGovernorship"
+          ]
+        }
       ]
     )
     @cypher(
@@ -671,13 +698,13 @@ extend type Mutation {
             "adminCampus"
             "adminStream"
             "adminCouncil"
-            "adminTeam"
+            "adminGovernorship"
             "leaderDenomination"
             "leaderOversight"
             "leaderCampus"
             "leaderStream"
             "leaderCouncil"
-            "leaderTeam"
+            "leaderGovernorship"
             "leaderBacenta"
             "leaderFellowship"
             "leaderCreativeArts"
@@ -848,14 +875,14 @@ extend type Mutation {
       """
     )
 
-  UpdateTeamDetails(teamId: ID!, name: String!): Team
+  UpdateGovernorshipDetails(governorshipId: ID!, name: String!): Governorship
     @auth(rules: [{ roles: ["adminCampus", "adminStream", "adminCouncil"] }])
     @cypher(
       statement: """
-           MATCH (team:Team {id: $teamId})
-           	SET team.name = $name
+           MATCH (governorship:Governorship {id: $governorshipId})
+           	SET governorship.name = $name
 
-      RETURN team
+      RETURN governorship
       """
     )
   UpdateBacentaDetails(
@@ -874,8 +901,8 @@ extend type Mutation {
             "adminCampus"
             "adminStream"
             "adminCouncil"
-            "adminTeam"
-            "arrivalsAdminTeam"
+            "adminGovernorship"
+            "arrivalsAdminGovernorship"
           ]
         }
       ]
@@ -915,7 +942,7 @@ extend type Mutation {
             "adminCampus"
             "adminStream"
             "adminCouncil"
-            "adminTeam"
+            "adminGovernorship"
             "leaderFellowship"
           ]
         }
@@ -948,8 +975,12 @@ extend type Mutation {
   # In the context of church data we never delete, we only render inactive
   MakeMemberInactive(id: ID!, reason: String!): Member
   CloseDownFellowship(fellowshipId: ID!, leaderId: ID!): Bacenta!
-  CloseDownBacenta(bacentaId: ID!, leaderId: ID!): Team!
-  CloseDownTeam(teamId: ID!, leaderId: ID!, adminId: ID!): Council!
+  CloseDownBacenta(bacentaId: ID!, leaderId: ID!): Governorship!
+  CloseDownGovernorship(
+    governorshipId: ID!
+    leaderId: ID!
+    adminId: ID!
+  ): Council!
   CloseDownCouncil(councilId: ID!, leaderId: ID!, adminId: ID!): Stream!
   CloseDownStream(streamId: ID!, leaderId: ID!, adminId: ID!): Campus!
   CloseDownCampus(campusId: ID!, leaderId: ID!, adminId: ID!): Oversight!
@@ -1014,27 +1045,27 @@ extend type Mutation {
       """
     )
 
-  MoveTeamToCouncil(teamId: ID!, councilId: ID!): Team!
+  MoveGovernorshipToCouncil(governorshipId: ID!, councilId: ID!): Governorship!
     @cypher(
       statement: """
-      MATCH (team:Team {id: $teamId})
+      MATCH (governorship:Governorship {id: $governorshipId})
       MATCH (council:Council {id: $councilId})
-      OPTIONAL MATCH (team)<-[r:HAS]-(:Council)
+      OPTIONAL MATCH (governorship)<-[r:HAS]-(:Council)
       DELETE r
 
-      MERGE (council)-[:HAS]->(team)
-      RETURN team
+      MERGE (council)-[:HAS]->(governorship)
+      RETURN governorship
       """
     )
-  MoveBacentaToTeam(bacentaId: ID!, teamId: ID!): Bacenta!
+  MoveBacentaToGovernorship(bacentaId: ID!, governorshipId: ID!): Bacenta!
     @cypher(
       statement: """
       MATCH (bacenta:Bacenta {id: $bacentaId})
-      MATCH (team:Team {id: $teamId})
-      OPTIONAL MATCH (bacenta)<-[r:HAS]-(:Team)
+      MATCH (governorship:Governorship {id: $governorshipId})
+      OPTIONAL MATCH (bacenta)<-[r:HAS]-(:Governorship)
       DELETE r
 
-      MERGE (team)-[:HAS]->(bacenta)
+      MERGE (governorship)-[:HAS]->(bacenta)
       RETURN bacenta
       """
     )
@@ -1125,15 +1156,15 @@ extend type Mutation {
       RETURN hub
       """
     )
-  MoveHubToTeam(hubId: ID!, teamId: ID!): Hub!
+  MoveHubToGovernorship(hubId: ID!, governorshipId: ID!): Hub!
     @cypher(
       statement: """
       MATCH (hub:Hub {id: $hubId})
-      MATCH (team:Team {id: $teamId})
-      OPTIONAL MATCH (hub)<-[r:HAS_MINISTRY]-(:Team)
+      MATCH (governorship:Governorship {id: $governorshipId})
+      OPTIONAL MATCH (hub)<-[r:HAS_MINISTRY]-(:Governorship)
       DELETE r
 
-      MERGE (team)-[:HAS_MINISTRY]->(hub)
+      MERGE (governorship)-[:HAS_MINISTRY]->(hub)
       RETURN hub
       """
     )

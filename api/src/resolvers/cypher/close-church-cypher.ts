@@ -5,7 +5,7 @@ RETURN fellowship.name AS name, COUNT(member) AS memberCount
 `
 
 export const getLastServiceRecord = `
-MATCH (church {id: $churchId}) WHERE church:Bacenta OR church:Team OR church:Council OR church:Stream OR church:Campus
+MATCH (church {id: $churchId}) WHERE church:Bacenta OR church:Governorship OR church:Council OR church:Stream OR church:Campus
 MATCH (church)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(otherRecords:ServiceRecord)-[:SERVICE_HELD_ON]->(otherDate:TimeGraph)
 WHERE NOT (otherRecords:NoService) AND duration.between(otherDate.date, date()).weeks < 52
 
@@ -20,17 +20,17 @@ OPTIONAL MATCH (bacenta)<-[:BELONGS_TO]-(member:Active:Member)
 RETURN bacenta.name AS name, COUNT(member) AS memberCount
 `
 
-export const checkTeamHasNoMembers = `
-MATCH (team:Team {id:$teamId})
-OPTIONAL MATCH (team)-[:HAS]->(bacentas:Bacenta)
-OPTIONAL MATCH (team)-[:HAS_MINISTRY]->(hub:Hub)
-RETURN team.name AS name,  COUNT(bacentas) AS bacentaCount,  COUNT(hub) AS hubCount
+export const checkGovernorshipHasNoMembers = `
+MATCH (governorship:Governorship {id:$governorshipId})
+OPTIONAL MATCH (governorship)-[:HAS]->(bacentas:Bacenta)
+OPTIONAL MATCH (governorship)-[:HAS_MINISTRY]->(hub:Hub)
+RETURN governorship.name AS name,  COUNT(bacentas) AS bacentaCount,  COUNT(hub) AS hubCount
 `
 export const checkCouncilHasNoMembers = `
 MATCH (council:Council {id:$councilId})
-OPTIONAL MATCH (council)-[:HAS]->(teams:Team)<-[:LEADS]-(member:Active:Member)
+OPTIONAL MATCH (council)-[:HAS]->(governorships:Governorship)<-[:LEADS]-(member:Active:Member)
 OPTIONAL MATCH (council)-[:HAS_MINISTRY]->(hubCouncils:HubCouncil)<-[:LEADS]-(leader:Active:Member)
-RETURN council.name AS name, COUNT(member) AS memberCount, COUNT(teams) AS teamCount, COUNT(leader) AS hubCouncilLeaderCount, COUNT(hubCouncils) AS hubCouncilCount
+RETURN council.name AS name, COUNT(member) AS memberCount, COUNT(governorships) AS governorshipCount, COUNT(leader) AS hubCouncilLeaderCount, COUNT(hubCouncils) AS hubCouncilCount
 `
 
 export const checkStreamHasNoMembers = `
@@ -80,47 +80,47 @@ RETURN bacenta {
 `
 
 export const closeDownBacenta = `
-MATCH (bacenta:Bacenta {id:$bacentaId})<-[:HAS]-(team:Team)
+MATCH (bacenta:Bacenta {id:$bacentaId})<-[:HAS]-(governorship:Governorship)
 
-WITH bacenta, team
+WITH bacenta, governorship
 CREATE (log:HistoryLog {id:apoc.create.uuid()})
   SET log.timeStamp = datetime(),
-  log.historyRecord = bacenta.name + ' Bacenta was closed down under ' + team.name +' Team with all its fellowships'
+  log.historyRecord = bacenta.name + ' Bacenta was closed down under ' + governorship.name +' Governorship with all its fellowships'
 
-WITH bacenta, team, log
-MATCH (team)-[:HAS]->(bacentas:Bacenta)   
+WITH bacenta, governorship, log
+MATCH (governorship)-[:HAS]->(bacentas:Bacenta)   
 MATCH (admin:Member {auth_id: $auth.jwt.sub})
 OPTIONAL MATCH (bacenta)-[:HAS]->(fellowships:Fellowship)
-UNWIND labels(team) AS stream
+UNWIND labels(governorship) AS stream
 
 
 MERGE (date:TimeGraph {date:date()})
 MERGE (log)-[:LOGGED_BY]->(admin)
 MERGE (log)-[:RECORDED_ON]->(date)
 MERGE (bacenta)-[:HAS_HISTORY]->(log)
-MERGE (team)-[:HAS_HISTORY]->(log)
+MERGE (governorship)-[:HAS_HISTORY]->(log)
 
 SET bacenta:ClosedBacenta, fellowships:ClosedFellowship
 REMOVE bacenta:Bacenta,  fellowships:Fellowship:Active
 
-RETURN team {
+RETURN governorship {
   .id, .name, 
   bacentas:[bacentas {.id, .name}]
     }
 `
 
-export const closeDownTeam = `
-MATCH (team:Team {id:$teamId})<-[:HAS]-(council:Council)
-WITH team, council
+export const closeDownGovernorship = `
+MATCH (governorship:Governorship {id:$governorshipId})<-[:HAS]-(council:Council)
+WITH governorship, council
 
 CREATE (log:HistoryLog {id:apoc.create.uuid()})
   SET log.timeStamp = datetime(),
-  log.historyRecord = team.name + ' Team was closed down under ' + council.name +' Council'
+  log.historyRecord = governorship.name + ' Governorship was closed down under ' + council.name +' Council'
 
-WITH team, council, log
+WITH governorship, council, log
 MATCH (admin:Member {auth_id: $auth.jwt.sub})
-MATCH (council)-[:HAS]->(teams)
-OPTIONAL MATCH (team)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+MATCH (council)-[:HAS]->(governorships)
+OPTIONAL MATCH (governorship)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
 
 
 
@@ -129,12 +129,12 @@ MERGE (log)-[:LOGGED_BY]->(admin)
 MERGE (log)-[:RECORDED_ON]->(date)
 MERGE (council)-[:HAS_HISTORY]->(log)
 
-SET team:ClosedTeam, bacentas:ClosedBacenta, fellowships:ClosedFellowship
-REMOVE team:Team,bacentas:Bacenta,fellowships:Fellowship
+SET governorship:ClosedGovernorship, bacentas:ClosedBacenta, fellowships:ClosedFellowship
+REMOVE governorship:Governorship,bacentas:Bacenta,fellowships:Fellowship
 
 RETURN council {
   .id, .name,
-  teams: [teams {.id, .name}]
+  governorships: [governorships {.id, .name}]
 }
 `
 
@@ -149,15 +149,15 @@ CREATE (log:HistoryLog {id:apoc.create.uuid()})
 WITH council, stream, log
 MATCH (admin:Member {auth_id: $auth.jwt.sub})
 MATCH (stream)-[:HAS]->(councils)
-OPTIONAL MATCH (council)-[:HAS]->(teams)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+OPTIONAL MATCH (council)-[:HAS]->(governorships)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
 
 MERGE (date:TimeGraph {date:date()})
 MERGE (log)-[:LOGGED_BY]->(admin)
 MERGE (log)-[:RECORDED_ON]->(date)
 MERGE (stream)-[:HAS_HISTORY]->(log)
 
-SET council:ClosedCouncil, teams:ClosedTeam, bacentas:ClosedBacenta, fellowships:ClosedFellowship
-REMOVE council:Council, teams:Team,bacentas:Bacenta,fellowships:Fellowship
+SET council:ClosedCouncil, governorships:ClosedGovernorship, bacentas:ClosedBacenta, fellowships:ClosedFellowship
+REMOVE council:Council, governorships:Governorship,bacentas:Bacenta,fellowships:Fellowship
 
 RETURN stream {
   .id, .name,
@@ -175,15 +175,15 @@ CREATE (log:HistoryLog {id:apoc.create.uuid()})
 WITH stream, campus, log
 MATCH (admin:Member {auth_id: $auth.jwt.sub})
 MATCH (campus)-[:HAS]->(streams)
-OPTIONAL MATCH (stream)-[:HAS]->(councils)-[:HAS]->(teams)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+OPTIONAL MATCH (stream)-[:HAS]->(councils)-[:HAS]->(governorships)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
 
 MERGE (date:TimeGraph {date:date()})
 MERGE (log)-[:LOGGED_BY]->(admin)
 MERGE (log)-[:RECORDED_ON]->(date)
 MERGE (campus)-[:HAS_HISTORY]->(log)
 
-SET  stream:ClosedStream, councils:ClosedCouncil, teams:ClosedTeam, bacentas:ClosedBacenta, fellowships:ClosedFellowship
-REMOVE  stream:Stream, councils:Council, teams:Team, bacentas:Bacenta,fellowships:Fellowship
+SET  stream:ClosedStream, councils:ClosedCouncil, governorships:ClosedGovernorship, bacentas:ClosedBacenta, fellowships:ClosedFellowship
+REMOVE  stream:Stream, councils:Council, governorships:Governorship, bacentas:Bacenta,fellowships:Fellowship
 
 RETURN campus {
   .id, .name,
@@ -201,15 +201,15 @@ CREATE (log:HistoryLog {id:apoc.create.uuid()})
 WITH campus, oversight, log
 MATCH (admin:Member {auth_id: $auth.jwt.sub})
 MATCH (oversight)-[:HAS]->(campuses)
-OPTIONAL MATCH (campus)-[:HAS]->(streams)-[:HAS]->(councils)-[:HAS]->(teams)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+OPTIONAL MATCH (campus)-[:HAS]->(streams)-[:HAS]->(councils)-[:HAS]->(governorships)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
 
 MERGE (date:TimeGraph {date:date()})
 MERGE (log)-[:LOGGED_BY]->(admin)
 MERGE (log)-[:RECORDED_ON]->(date)
 MERGE (oversight)-[:HAS_HISTORY]->(log)
 
-SET  campus:ClosedCampus, streams:ClosedStream, councils:ClosedCouncil, teams:ClosedTeam, bacentas:ClosedBacenta, fellowships:ClosedFellowship
-REMOVE campus:Campus, streams:Stream, councils:Council, teams:Team, bacentas:Bacenta, fellowships:Fellowship
+SET  campus:ClosedCampus, streams:ClosedStream, councils:ClosedCouncil, governorships:ClosedGovernorship, bacentas:ClosedBacenta, fellowships:ClosedFellowship
+REMOVE campus:Campus, streams:Stream, councils:Council, governorships:Governorship, bacentas:Bacenta, fellowships:Fellowship
 
 RETURN oversight {
   .id, .name,
@@ -228,15 +228,15 @@ CREATE (log:HistoryLog {id:apoc.create.uuid()})
 WITH oversight, denomination, log
 MATCH (admin:Member {auth_id: $auth.jwt.sub})
 MATCH (denomination)-[:HAS]->(oversights)
-OPTIONAL MATCH (oversight)-[:HAS]->(campuses)-[:HAS]->(streams)-[:HAS]->(councils)-[:HAS]->(teams)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
+OPTIONAL MATCH (oversight)-[:HAS]->(campuses)-[:HAS]->(streams)-[:HAS]->(councils)-[:HAS]->(governorships)-[:HAS]->(bacentas)-[:HAS]->(fellowships)
 
 MERGE (date:TimeGraph {date:date()})
 MERGE (log)-[:LOGGED_BY]->(admin)
 MERGE (log)-[:RECORDED_ON]->(date)
 MERGE (denomination)-[:HAS_HISTORY]->(log)
 
-SET  oversight:ClosedOversight, campuses:ClosedCampus streams:ClosedStream, councils:ClosedCouncil, teams:ClosedTeam, bacentas:ClosedBacenta, fellowships:ClosedFellowship
-REMOVE oversight:Oversight, campus:Campus, streams:Stream, councils:Council, teams:Team, bacentas:Bacenta,fellowships:Fellowship
+SET  oversight:ClosedOversight, campuses:ClosedCampus streams:ClosedStream, councils:ClosedCouncil, governorships:ClosedGovernorship, bacentas:ClosedBacenta, fellowships:ClosedFellowship
+REMOVE oversight:Oversight, campus:Campus, streams:Stream, councils:Council, governorships:Governorship, bacentas:Bacenta,fellowships:Fellowship
 
 RETURN denomination {
   .id, .name,

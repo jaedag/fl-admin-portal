@@ -67,9 +67,9 @@ export const COUNCIL_HISTORY = gql`
     }
   }
 `
-export const TEAM_HISTORY = gql`
-  query TeamsHistory($id: ID!) {
-    teams(where: { id: $id }) {
+export const GOVERNORSHIP_HISTORY = gql`
+  query GovernorshipsHistory($id: ID!) {
+    governorships(where: { id: $id }) {
       id
       name
       history(limit: 100) {

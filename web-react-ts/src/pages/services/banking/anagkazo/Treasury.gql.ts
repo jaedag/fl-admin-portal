@@ -48,8 +48,8 @@ export const REMOVE_STREAM_TELLER = gql`
 `
 
 export const CONFIRM_BANKING = gql`
-  mutation ConfirmBanking($teamId: ID!) {
-    ConfirmBanking(teamId: $teamId) {
+  mutation ConfirmBanking($governorshipId: ID!) {
+    ConfirmBanking(governorshipId: $governorshipId) {
       id
     }
   }

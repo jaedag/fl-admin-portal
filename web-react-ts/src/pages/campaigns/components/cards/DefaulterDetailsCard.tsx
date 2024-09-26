@@ -13,9 +13,9 @@ type Admin = {
 }
 
 export type EquipmentDefaulters = {
-  teamCount: number
-  teamEquipmentFilledCount: number
-  teamEquipmentNotFilledCount: number
+  governorshipCount: number
+  governorshipEquipmentFilledCount: number
+  governorshipEquipmentNotFilledCount: number
   fellowshipCount: number
   fellowshipEquipmentFilledCount: number
   fellowshipEquipmentNotFilledCount: number
@@ -42,16 +42,18 @@ function DefaulterDetailsCard(props: DefaulterDetailsCardProps) {
       <Card.Body
         onClick={() => {
           clickCard(church)
-          props.route === 'team/fellowship'
-            ? navigate('/campaigns/team/equipment/defaulters')
+          props.route === 'governorship/fellowship'
+            ? navigate('/campaigns/governorship/equipment/defaulters')
             : navigate(`/campaigns/${props.route}/equipment/defaulters`)
         }}
       >
         <div className="fw-bold">
           Fellowship Count: {church?.fellowshipCount}
         </div>
-        {props.route === 'team/fellowship' ? null : (
-          <div className="fw-bold">Team Count: {church?.teamCount}</div>
+        {props.route === 'governorship/fellowship' ? null : (
+          <div className="fw-bold">
+            Governorship Count: {church?.governorshipCount}
+          </div>
         )}
 
         <div
@@ -66,25 +68,27 @@ function DefaulterDetailsCard(props: DefaulterDetailsCardProps) {
         >
           Fellowship Filled Count: {church?.fellowshipEquipmentFilledCount}
         </div>
-        {props.route === 'team/fellowship' ? (
+        {props.route === 'governorship/fellowship' ? (
           <div
             className={church.equipmentRecord.pulpits === null ? 'bad' : 'good'}
           >
-            Team Filled:{' '}
+            Governorship Filled:{' '}
             {church.equipmentRecord.pulpits === null ? 'No' : 'Yes'}
           </div>
         ) : (
           <div
             className={
-              church?.teamEquipmentFilledCount !== 0 &&
-              church?.teamCount === church?.teamEquipmentFilledCount
+              church?.governorshipEquipmentFilledCount !== 0 &&
+              church?.governorshipCount ===
+                church?.governorshipEquipmentFilledCount
                 ? 'good'
-                : church?.teamEquipmentFilledCount > 0
+                : church?.governorshipEquipmentFilledCount > 0
                 ? 'text-warning'
                 : 'bad'
             }
           >
-            Team Filled Count: {church?.teamEquipmentFilledCount}
+            Governorship Filled Count:{' '}
+            {church?.governorshipEquipmentFilledCount}
           </div>
         )}
         <div
@@ -95,13 +99,14 @@ function DefaulterDetailsCard(props: DefaulterDetailsCardProps) {
           Fellowship Not Filled Count:{' '}
           {church?.fellowshipEquipmentNotFilledCount}
         </div>
-        {props.route === 'team/fellowship' ? null : (
+        {props.route === 'governorship/fellowship' ? null : (
           <div
             className={
-              church?.teamEquipmentNotFilledCount === 0 ? 'good' : 'bad'
+              church?.governorshipEquipmentNotFilledCount === 0 ? 'good' : 'bad'
             }
           >
-            Team Not Filled Count: {church?.teamEquipmentNotFilledCount}
+            Governorship Not Filled Count:{' '}
+            {church?.governorshipEquipmentNotFilledCount}
           </div>
         )}
       </Card.Body>

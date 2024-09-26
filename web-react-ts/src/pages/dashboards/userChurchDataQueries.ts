@@ -36,7 +36,7 @@ export const SERVANT_BACENTA_LEADER = gql`
 
         vacationStatus
 
-        team {
+        governorship {
           id
           council {
             id
@@ -54,11 +54,11 @@ export const SERVANT_BACENTA_LEADER = gql`
   }
 `
 
-export const SERVANT_TEAM_LEADER = gql`
-  query teamLeader($id: ID!) {
+export const SERVANT_GOVERNORSHIP_LEADER = gql`
+  query governorshipLeader($id: ID!) {
     members(where: { id: $id }) {
       id
-      leadsTeam {
+      leadsGovernorship {
         id
         name
         stream_name
@@ -173,12 +173,12 @@ export const SERVANT_DENOMINATION_LEADER = gql`
   }
 `
 
-export const SERVANT_TEAM_ADMIN = gql`
-  query teamAdmin($id: ID!) {
+export const SERVANT_GOVERNORSHIP_ADMIN = gql`
+  query governorshipAdmin($id: ID!) {
     members(where: { id: $id }) {
       id
 
-      isAdminForTeam {
+      isAdminForGovernorship {
         id
         name
         stream_name
@@ -318,12 +318,12 @@ export const SERVANTS_DENOMINATION_ADMIN = gql`
   }
 `
 
-export const SERVANTS_TEAM_ARRIVALS_ADMIN = gql`
-  query teamArrivalsAdmin($id: ID!) {
+export const SERVANTS_GOVERNORSHIP_ARRIVALS_ADMIN = gql`
+  query governorshipArrivalsAdmin($id: ID!) {
     members(where: { id: $id }) {
       id
 
-      isArrivalsAdminForTeam {
+      isArrivalsAdminForGovernorship {
         id
         name
 

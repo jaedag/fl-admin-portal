@@ -38,9 +38,9 @@ const DetailsCampus = () => {
       link: `#`,
     },
     {
-      title: 'Teams',
-      number: gathering?.teamCount,
-      link: `/campus/teams`,
+      title: 'Governorships',
+      number: gathering?.governorshipCount,
+      link: `/campus/governorships`,
     },
     {
       title: 'Greens',

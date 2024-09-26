@@ -41,7 +41,11 @@ const DetailsBacenta = () => {
   const bacenta = data?.bacentas[0]
   const history = historyData?.bacentas[0]
 
-  let breadcrumb = [bacenta?.team.council, bacenta?.team, bacenta]
+  let breadcrumb = [
+    bacenta?.governorship.council,
+    bacenta?.governorship,
+    bacenta,
+  ]
 
   const details: DetailsArray = [
     {
@@ -120,7 +124,7 @@ const DetailsBacenta = () => {
         churchId={bacentaId}
         churchType="Bacenta"
         editlink="/bacenta/editbacenta"
-        editPermitted={permitAdminArrivals('Team')}
+        editPermitted={permitAdminArrivals('Governorship')}
         history={history?.history.length !== 0 ? history?.history : []}
         breadcrumb={breadcrumb && breadcrumb}
         buttons={[]}

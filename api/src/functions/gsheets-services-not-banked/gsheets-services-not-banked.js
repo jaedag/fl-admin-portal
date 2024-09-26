@@ -10,7 +10,7 @@ WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
-      MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)-[:HAS_HISTORY]-(church) WHERE church:Bacenta OR church:Team OR church:Council
+      MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)-[:HAS_HISTORY]-(church) WHERE church:Bacenta OR church:Governorship OR church:Council
       MATCH (church)<-[:LEADS]-(leader:Member)
 RETURN DISTINCT toString(date.date.week) AS week, toString(date.date) AS date, pastor.firstName, pastor.lastName,church.name AS churchName, leader.firstName, 
 leader.lastName, labels(church), toString(record.attendance) AS attendance, record.income AS NotBanked ORDER BY pastor.firstName,

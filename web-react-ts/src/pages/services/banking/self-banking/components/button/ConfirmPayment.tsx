@@ -22,7 +22,7 @@ type ButtonConfirmPaymentProps = {
           id?: string
           serviceRecordId?: string
           bacentaId?: string
-          teamId?: string
+          governorshipId?: string
           councilId?: string
 
           hubId?: string
@@ -42,7 +42,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
   const navigate = useNavigate()
   const {
     bacentaId,
-    teamId,
+    governorshipId,
     councilId,
     hubId,
     hubCouncilId,
@@ -63,7 +63,7 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
         try {
           const res = await refetch({
             bacentaId,
-            teamId,
+            governorshipId,
             councilId,
             hubId,
             hubCouncilId,
@@ -85,8 +85,8 @@ const ButtonConfirmPayment = (props: ButtonConfirmPaymentProps) => {
               (serviceFromList: ConfirmPaymentServiceType) =>
                 serviceFromList?.id === service?.id
             )
-          } else if (res.data?.teams) {
-            serviceRecord = res.data?.teams[0].services.find(
+          } else if (res.data?.governorships) {
+            serviceRecord = res.data?.governorships[0].services.find(
               (serviceFromList: ConfirmPaymentServiceType) =>
                 serviceFromList?.id === service?.id
             )

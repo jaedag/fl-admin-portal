@@ -33,7 +33,7 @@ const SearchBadgeIcon = ({
     return <BiBuildingHouse {...rest} />
   }
 
-  if (category === 'Team') {
+  if (category === 'Governorship') {
     return <GiCampingTent {...rest} />
   }
 

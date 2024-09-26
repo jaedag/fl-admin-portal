@@ -45,8 +45,8 @@ const DownloadCouncilMembership = () => {
   const today = new Date().toISOString().slice(0, 10).toString()
   const headers = [
     { label: 'Council', key: 'council' },
-    { label: 'Team', key: 'team' },
-    { label: 'Team Leader', key: 'teamLeader' },
+    { label: 'Governorship', key: 'governorship' },
+    { label: 'Governorship Leader', key: 'governorshipLeader' },
     { label: 'Bacenta', key: 'bacenta' },
     { label: 'Bacenta Leader', key: 'bacentaLeader' },
     { label: 'First Name', key: 'firstName' },
@@ -69,8 +69,8 @@ const DownloadCouncilMembership = () => {
   const council: Council = data?.councils[0]
   const membersData = council?.downloadMembership.map((member: Member) => ({
     council: council.name,
-    team: member.bacenta.team.name,
-    teamLeader: member.bacenta.team.leader.fullName,
+    governorship: member.bacenta.governorship.name,
+    governorshipLeader: member.bacenta.governorship.leader.fullName,
     bacenta: member.bacenta.name,
     bacentaLeader: member.bacenta.leader.fullName,
     firstName: member.firstName,
@@ -124,8 +124,8 @@ const DownloadCouncilMembership = () => {
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Council</th>
-                      <th scope="col">Team</th>
-                      <th scope="col">Team Leader</th>
+                      <th scope="col">Governorship</th>
+                      <th scope="col">Governorship Leader</th>
                       <th scope="col">Bacenta</th>
                       <th scope="col">Bacenta Leader</th>
                       <th scope="col">First Name</th>
@@ -144,8 +144,8 @@ const DownloadCouncilMembership = () => {
                       <tr key={index}>
                         <th scope="row">{index}</th>
                         <td>{data?.council}</td>
-                        <td>{data?.team}</td>
-                        <td>{data?.teamLeader}</td>
+                        <td>{data?.governorship}</td>
+                        <td>{data?.governorshipLeader}</td>
                         <td>{data?.bacenta}</td>
                         <td>{data?.bacentaLeader}</td>
                         <td>{data?.firstName}</td>

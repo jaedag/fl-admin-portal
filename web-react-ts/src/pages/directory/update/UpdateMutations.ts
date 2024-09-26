@@ -397,7 +397,7 @@ export const UPDATE_COUNCIL_MUTATION = gql`
     UpdateCouncilDetails(councilId: $councilId, name: $name) {
       id
       name
-      teams {
+      governorships {
         id
         name
         council {
@@ -443,20 +443,20 @@ export const UPDATE_COUNCIL_MUTATION = gql`
   }
 `
 
-export const UPDATE_TEAM_MUTATION = gql`
-  mutation UpdateTeam($teamId: ID!, $name: String!) {
-    UpdateTeamDetails(teamId: $teamId, name: $name) {
+export const UPDATE_GOVERNORSHIP_MUTATION = gql`
+  mutation UpdateGovernorship($governorshipId: ID!, $name: String!) {
+    UpdateGovernorshipDetails(governorshipId: $governorshipId, name: $name) {
       id
       name
       bacentas {
         id
         name
-        team {
+        governorship {
           id
           name
           council {
             id
-            teams {
+            governorships {
               id
             }
           }
@@ -514,7 +514,7 @@ export const UPDATE_BACENTA_MUTATION = gql`
       sprinterTopUp
       urvanTopUp
 
-      team {
+      governorship {
         id
         name
         bacentas {
@@ -797,27 +797,30 @@ export const MOVE_COUNCIL_TO_STREAM = gql`
   }
 `
 
-export const MOVE_TEAM_TO_COUNCIL = gql`
-  mutation MoveTeamToCouncil(
-    $teamId: ID!
+export const MOVE_GOVERNORSHIP_TO_COUNCIL = gql`
+  mutation MoveGovernorshipToCouncil(
+    $governorshipId: ID!
     $newCouncilId: ID!
     $oldCouncilId: ID!
     $historyRecord: String!
   ) {
-    MoveTeamToCouncil(teamId: $teamId, councilId: $newCouncilId) {
+    MoveGovernorshipToCouncil(
+      governorshipId: $governorshipId
+      councilId: $newCouncilId
+    ) {
       id
       name
       council {
         id
         name
-        teams {
+        governorships {
           id
           name
         }
       }
     }
-    LogTeamHistory(
-      teamId: $teamId
+    LogGovernorshipHistory(
+      governorshipId: $governorshipId
       historyRecord: $historyRecord
       oldCouncilId: $oldCouncilId
       newCouncilId: $newCouncilId
@@ -842,17 +845,20 @@ export const MOVE_TEAM_TO_COUNCIL = gql`
   }
 `
 
-export const MOVE_BACENTA_TO_TEAM = gql`
-  mutation MoveBacentaToTeam(
+export const MOVE_BACENTA_TO_GOVERNORSHIP = gql`
+  mutation MoveBacentaToGovernorship(
     $bacentaId: ID!
-    $newTeamId: ID!
-    $oldTeamId: ID!
+    $newGovernorshipId: ID!
+    $oldGovernorshipId: ID!
     $historyRecord: String!
   ) {
-    MoveBacentaToTeam(bacentaId: $bacentaId, teamId: $newTeamId) {
+    MoveBacentaToGovernorship(
+      bacentaId: $bacentaId
+      governorshipId: $newGovernorshipId
+    ) {
       id
       name
-      team {
+      governorship {
         id
         name
         bacentas {
@@ -864,8 +870,8 @@ export const MOVE_BACENTA_TO_TEAM = gql`
     LogBacentaHistory(
       bacentaId: $bacentaId
       historyRecord: $historyRecord
-      oldTeamId: $oldTeamId
-      newTeamId: $newTeamId
+      oldGovernorshipId: $oldGovernorshipId
+      newGovernorshipId: $newGovernorshipId
     ) {
       id
       name
@@ -1209,17 +1215,17 @@ export const MOVE_HUB_TO_HUBCOUNCIL = gql`
   }
 `
 
-export const MOVE_HUB_TO_TEAM = gql`
-  mutation MoveHubToTeam(
+export const MOVE_HUB_TO_GOVERNORSHIP = gql`
+  mutation MoveHubToGovernorship(
     $hubId: ID!
-    $newTeamId: ID!
-    $oldTeamId: ID!
+    $newGovernorshipId: ID!
+    $oldGovernorshipId: ID!
     $historyRecord: String!
   ) {
-    MoveHubToTeam(hubId: $hubId, teamId: $newTeamId) {
+    MoveHubToGovernorship(hubId: $hubId, governorshipId: $newGovernorshipId) {
       id
       name
-      team {
+      governorship {
         id
         name
         hubs {
@@ -1228,15 +1234,15 @@ export const MOVE_HUB_TO_TEAM = gql`
         }
       }
     }
-    LogHubHistoryWithTeam(
+    LogHubHistoryWithGovernorship(
       hubId: $hubId
       historyRecord: $historyRecord
-      oldTeamId: $oldTeamId
-      newTeamId: $newTeamId
+      oldGovernorshipId: $oldGovernorshipId
+      newGovernorshipId: $newGovernorshipId
     ) {
       id
       name
-      team {
+      governorship {
         id
         name
         hubs {

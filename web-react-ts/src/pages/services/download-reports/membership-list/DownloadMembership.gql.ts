@@ -52,7 +52,7 @@ export const DISPLAY_COUNCIL_MEMBERSHIP = gql`
             lastName
             fullName
           }
-          team {
+          governorship {
             id
             name
             leader {

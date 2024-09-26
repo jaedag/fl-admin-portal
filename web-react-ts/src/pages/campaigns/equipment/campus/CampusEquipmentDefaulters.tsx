@@ -5,7 +5,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { CAMPUS_EQUIPMENT_DEFAULTERS_NUMBER_BY_TEAM_AND_FELLOWSHIP } from 'pages/campaigns/CampaignQueries'
+import { CAMPUS_EQUIPMENT_DEFAULTERS_NUMBER_BY_GOVERNORSHIP_AND_FELLOWSHIP } from 'pages/campaigns/CampaignQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -21,7 +21,7 @@ const CampusEquipmentDefaulters = () => {
   const { campusId, clickCard } = useContext(ChurchContext)
 
   const { data, loading, error } = useQuery(
-    CAMPUS_EQUIPMENT_DEFAULTERS_NUMBER_BY_TEAM_AND_FELLOWSHIP,
+    CAMPUS_EQUIPMENT_DEFAULTERS_NUMBER_BY_GOVERNORSHIP_AND_FELLOWSHIP,
     {
       variables: {
         campusId: campusId,
@@ -39,7 +39,7 @@ const CampusEquipmentDefaulters = () => {
             <HeadingSecondary>Equipment Campaign</HeadingSecondary>
           </div>
           <h6 className="mt-4">
-            Fellowships and Teams that haven't filled their form
+            Fellowships and Governorships that haven't filled their form
           </h6>
           <DefaultersMenuButton
             name="Streams"
@@ -82,16 +82,19 @@ const CampusEquipmentDefaulters = () => {
           </div>
           <div className=" gap-2 mt-4">
             <h6>
-              Teams : <span className="text-primary">{campus?.teamCount}</span>
+              Governorships :{' '}
+              <span className="text-primary">{campus?.governorshipCount}</span>
             </h6>
             <Row className="mt-3">
               <Col>
                 <DefaultersMenuButton
                   name="Have not filled"
                   onClick={() =>
-                    navigate('/campaigns/campus/equipment/have-not-filled/team')
+                    navigate(
+                      '/campaigns/campus/equipment/have-not-filled/governorship'
+                    )
                   }
-                  number={campus?.teamEquipmentNotFilledCount}
+                  number={campus?.governorshipEquipmentNotFilledCount}
                   color="text-danger"
                 />
               </Col>
@@ -99,7 +102,7 @@ const CampusEquipmentDefaulters = () => {
                 <DefaultersMenuButton
                   name="Filled"
                   onClick={() => {}}
-                  number={campus?.teamEquipmentFilledCount}
+                  number={campus?.governorshipEquipmentFilledCount}
                   color="text-success"
                 />
               </Col>

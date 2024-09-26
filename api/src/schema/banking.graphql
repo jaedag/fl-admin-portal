@@ -78,7 +78,7 @@ extend type ServiceRecord {
     )
 }
 
-extend type Team {
+extend type Governorship {
   servicesNotBanked: [ServiceRecord!]!
     @cypher(
       statement: """
@@ -94,7 +94,7 @@ extend type Team {
 }
 
 extend type Council {
-  teamBankedThisWeek: [Team!]!
+  governorshipBankedThisWeek: [Governorship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -112,15 +112,15 @@ extend type Council {
         WHERE record.bankingSlip IS NOT NULL
           OR record.transactionStatus = 'success'
           OR record.tellerConfirmationTime IS NOT NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(this)
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamBankedThisWeekCount: Int
+  governorshipBankedThisWeekCount: Int
     @cypher(
       statement: """
        MATCH (this)
@@ -138,15 +138,15 @@ extend type Council {
         WHERE record.bankingSlip IS NOT NULL
           OR record.transactionStatus = 'success'
           OR record.tellerConfirmationTime IS NOT NULL
-        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-        WITH DISTINCT teams, this
-         MATCH (teams)<-[:HAS]-(this)
+        WITH DISTINCT governorships, this
+         MATCH (governorships)<-[:HAS]-(this)
 
-      RETURN COUNT(DISTINCT teams) as count
+      RETURN COUNT(DISTINCT governorships) as count
       """
     )
-  teamBankingDefaultersThisWeek: [Team!]!
+  governorshipBankingDefaultersThisWeek: [Governorship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -165,15 +165,15 @@ extend type Council {
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(this)
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamBankingDefaultersThisWeekCount: Int
+  governorshipBankingDefaultersThisWeekCount: Int
     @cypher(
       statement: """
       MATCH (this)
@@ -192,12 +192,12 @@ extend type Council {
            AND record.bankingSlip IS NULL
            AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
            AND record.tellerConfirmationTime IS NULL
-        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-        WITH DISTINCT teams, this
-        MATCH (teams)<-[:HAS]-(this)
+        WITH DISTINCT governorships, this
+        MATCH (governorships)<-[:HAS]-(this)
 
-        WITH COUNT(DISTINCT teams) as count
+        WITH COUNT(DISTINCT governorships) as count
        RETURN
        CASE
        WHEN count < 1 THEN null
@@ -206,11 +206,11 @@ extend type Council {
       """
     )
 
-  teamBankingDefaulters: [Team!]!
+  governorshipBankingDefaulters: [Governorship!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(teams) WHERE teams:Team OR teams:ClosedTeam
-      MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams)
+      MATCH (this)-[:HAS]->(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
+      MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships)
 
       WHERE record.noServiceReason IS NULL
         AND record.bankingSlip IS NULL
@@ -218,21 +218,21 @@ extend type Council {
         AND record.tellerConfirmationTime IS NULL
 
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamBankingDefaultersThisWeekCount: Int
+  governorshipBankingDefaultersThisWeekCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(teams) WHERE teams:Team OR teams:ClosedTeam
-      MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams)
+      MATCH (this)-[:HAS]->(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
+      MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships)
 
        WHERE record.noServiceReason IS NULL
          AND record.bankingSlip IS NULL
          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
          AND record.tellerConfirmationTime IS NULL
 
-        WITH COUNT(DISTINCT teams) as count
+        WITH COUNT(DISTINCT governorships) as count
       RETURN
       CASE
       WHEN count < 1 THEN null
@@ -255,7 +255,7 @@ extend type Council {
 }
 
 extend type Stream {
-  teamBankedThisWeek: [Team!]!
+  governorshipBankedThisWeek: [Governorship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -273,15 +273,15 @@ extend type Stream {
         WHERE record.bankingSlip IS NOT NULL
           OR record.transactionStatus = 'success'
           OR record.tellerConfirmationTime IS NOT NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamBankedThisWeekCount: Int
+  governorshipBankedThisWeekCount: Int
     @cypher(
       statement: """
        MATCH (this)
@@ -299,12 +299,12 @@ extend type Stream {
         WHERE record.bankingSlip IS NOT NULL
           OR record.transactionStatus = 'success'
           OR record.tellerConfirmationTime IS NOT NULL
-        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-        WITH DISTINCT teams, this
-        MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(this)
+        WITH DISTINCT governorships, this
+        MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
-      WITH COUNT(DISTINCT teams) as count
+      WITH COUNT(DISTINCT governorships) as count
        RETURN
        CASE
        WHEN count < 1 THEN null
@@ -312,7 +312,7 @@ extend type Stream {
        END AS result
       """
     )
-  teamBankingDefaultersThisWeek: [Team!]!
+  governorshipBankingDefaultersThisWeek: [Governorship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -331,15 +331,15 @@ extend type Stream {
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamBankingDefaultersThisWeekCount: Int
+  governorshipBankingDefaultersThisWeekCount: Int
     @cypher(
       statement: """
       MATCH (this)
@@ -358,12 +358,12 @@ extend type Stream {
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
-       WITH COUNT(DISTINCT teams) as count
+       WITH COUNT(DISTINCT governorships) as count
       RETURN
       CASE
       WHEN count < 1 THEN null
@@ -372,11 +372,11 @@ extend type Stream {
       """
     )
 
-  teamBankingDefaulters: [Team!]!
+  governorshipBankingDefaulters: [Governorship!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Council)-[:HAS]->(teams) WHERE teams:Team OR teams:ClosedTeam
-      MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams)
+      MATCH (this)-[:HAS]->(:Council)-[:HAS]->(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
+      MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships)
 
       WHERE record.noServiceReason IS NULL
         AND record.bankingSlip IS NULL
@@ -384,21 +384,21 @@ extend type Stream {
         AND record.tellerConfirmationTime IS NULL
 
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamBankingDefaultersThisWeekCount: Int
+  governorshipBankingDefaultersThisWeekCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Council)-[:HAS]->(teams) WHERE teams:Team OR teams:ClosedTeam
-      MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams)
+      MATCH (this)-[:HAS]->(:Council)-[:HAS]->(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
+      MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships)
 
       WHERE record.noServiceReason IS NULL
         AND record.bankingSlip IS NULL
         AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
         AND record.tellerConfirmationTime IS NULL
 
-        WITH COUNT(DISTINCT teams) as count
+        WITH COUNT(DISTINCT governorships) as count
       RETURN
       CASE
       WHEN count < 1 THEN null
@@ -574,7 +574,7 @@ extend type Stream {
 }
 
 extend type Campus {
-  teamBankedThisWeek: [Team!]!
+  governorshipBankedThisWeek: [Governorship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -592,15 +592,15 @@ extend type Campus {
         WHERE record.bankingSlip IS NOT NULL
           OR record.transactionStatus = 'success'
           OR record.tellerConfirmationTime IS NOT NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamBankedThisWeekCount: Int
+  governorshipBankedThisWeekCount: Int
     @cypher(
       statement: """
        MATCH (this)
@@ -618,12 +618,12 @@ extend type Campus {
         WHERE record.bankingSlip IS NOT NULL
           OR record.transactionStatus = 'success'
           OR record.tellerConfirmationTime IS NOT NULL
-        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-        WITH DISTINCT teams, this
-        MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+        WITH DISTINCT governorships, this
+        MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
-      WITH COUNT(DISTINCT teams) as count
+      WITH COUNT(DISTINCT governorships) as count
        RETURN
        CASE
        WHEN count < 1 THEN null
@@ -631,7 +631,7 @@ extend type Campus {
        END AS result
       """
     )
-  teamBankingDefaultersThisWeek: [Team!]!
+  governorshipBankingDefaultersThisWeek: [Governorship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -650,15 +650,15 @@ extend type Campus {
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamBankingDefaultersThisWeekCount: Int
+  governorshipBankingDefaultersThisWeekCount: Int
     @cypher(
       statement: """
        MATCH (this)
@@ -677,12 +677,12 @@ extend type Campus {
            AND record.bankingSlip IS NULL
            AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
            AND record.tellerConfirmationTime IS NULL
-        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-        WITH DISTINCT teams, this
-        MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+        WITH DISTINCT governorships, this
+        MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
-      WITH COUNT(DISTINCT teams) as count
+      WITH COUNT(DISTINCT governorships) as count
        RETURN
        CASE
        WHEN count < 1 THEN null
@@ -691,12 +691,12 @@ extend type Campus {
       """
     )
 
-  teamBankingDefaulters: [Team!]!
+  governorshipBankingDefaulters: [Governorship!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(teams)
-      WHERE teams:Team OR teams:ClosedTeam
-      MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams)
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(governorships)
+      WHERE governorships:Governorship OR governorships:ClosedGovernorship
+      MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships)
 
       WHERE record.noServiceReason IS NULL
         AND record.bankingSlip IS NULL
@@ -704,22 +704,22 @@ extend type Campus {
         AND record.tellerConfirmationTime IS NULL
 
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamBankingDefaultersCount: Int
+  governorshipBankingDefaultersCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(teams)
-      WHERE teams:Team OR teams:ClosedTeam
-       MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams)
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(governorships)
+      WHERE governorships:Governorship OR governorships:ClosedGovernorship
+       MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships)
 
        WHERE record.noServiceReason IS NULL
          AND record.bankingSlip IS NULL
          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
          AND record.tellerConfirmationTime IS NULL
 
-      WITH COUNT(DISTINCT teams) as count
+      WITH COUNT(DISTINCT governorships) as count
       RETURN
       CASE
       WHEN count < 1 THEN null
@@ -881,7 +881,7 @@ extend type Campus {
 }
 
 extend type Oversight {
-  teamBankedThisWeek: [Team!]!
+  governorshipBankedThisWeek: [Governorship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -899,15 +899,15 @@ extend type Oversight {
         WHERE record.bankingSlip IS NOT NULL
           OR record.transactionStatus = 'success'
           OR record.tellerConfirmationTime IS NOT NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamBankedThisWeekCount: Int
+  governorshipBankedThisWeekCount: Int
     @cypher(
       statement: """
        MATCH (this)
@@ -925,12 +925,12 @@ extend type Oversight {
         WHERE record.bankingSlip IS NOT NULL
           OR record.transactionStatus = 'success'
           OR record.tellerConfirmationTime IS NOT NULL
-        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-        WITH DISTINCT teams, this
-        MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
+        WITH DISTINCT governorships, this
+        MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
 
-      WITH COUNT(DISTINCT teams) as count
+      WITH COUNT(DISTINCT governorships) as count
        RETURN
        CASE
        WHEN count < 1 THEN null
@@ -938,7 +938,7 @@ extend type Oversight {
        END AS result
       """
     )
-  teamBankingDefaultersThisWeek: [Team!]!
+  governorshipBankingDefaultersThisWeek: [Governorship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -957,15 +957,15 @@ extend type Oversight {
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamBankingDefaultersThisWeekCount: Int
+  governorshipBankingDefaultersThisWeekCount: Int
     @cypher(
       statement: """
       MATCH (this)
@@ -984,12 +984,12 @@ extend type Oversight {
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(:Campus)<-[:HAS]-(this)
 
-      WITH COUNT(DISTINCT teams) as count
+      WITH COUNT(DISTINCT governorships) as count
       RETURN
       CASE
       WHEN count < 1 THEN null
@@ -998,12 +998,12 @@ extend type Oversight {
       """
     )
 
-  teamBankingDefaulters: [Team!]!
+  governorshipBankingDefaulters: [Governorship!]!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Campus)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(teams)
-      WHERE teams:Team OR teams:ClosedTeam
-      MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams)
+      MATCH (this)-[:HAS]->(:Campus)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(governorships)
+      WHERE governorships:Governorship OR governorships:ClosedGovernorship
+      MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships)
 
       WHERE record.noServiceReason IS NULL
         AND record.bankingSlip IS NULL
@@ -1011,22 +1011,22 @@ extend type Oversight {
         AND record.tellerConfirmationTime IS NULL
 
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamBankingDefaultersCount: Int
+  governorshipBankingDefaultersCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Campus)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(teams)
-      WHERE teams:Team OR teams:ClosedTeam
-       MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams)
+      MATCH (this)-[:HAS]->(:Campus)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(governorships)
+      WHERE governorships:Governorship OR governorships:ClosedGovernorship
+       MATCH (record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships)
 
        WHERE record.noServiceReason IS NULL
          AND record.bankingSlip IS NULL
          AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
          AND record.tellerConfirmationTime IS NULL
 
-      WITH COUNT(DISTINCT teams) as count
+      WITH COUNT(DISTINCT governorships) as count
       RETURN
       CASE
       WHEN count < 1 THEN null

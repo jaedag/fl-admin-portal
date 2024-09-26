@@ -39,9 +39,9 @@ const DetailsDenomination = () => {
       link: `#`,
     },
     {
-      title: 'Teams',
-      number: denomination?.teamCount,
-      link: `/campus/teams`,
+      title: 'Governorships',
+      number: denomination?.governorshipCount,
+      link: `/campus/governorships`,
     },
     {
       title: 'Greens',

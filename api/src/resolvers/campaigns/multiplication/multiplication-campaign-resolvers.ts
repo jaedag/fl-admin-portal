@@ -35,7 +35,7 @@ const multiplicationCampaignMutations = {
     args: RecordMultiplicationEventArgs,
     context: Context
   ) => {
-    isAuth(permitLeaderAdmin('Team'), context.auth.roles)
+    isAuth(permitLeaderAdmin('Governorship'), context.auth.roles)
     const session = context.executionContext.session()
 
     if (checkIfArrayHasRepeatingValues(args.treasurers)) {

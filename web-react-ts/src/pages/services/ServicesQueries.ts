@@ -64,9 +64,9 @@ export const BANKING_SLIP_SUBMISSION = gql`
   }
 `
 
-export const TEAM_BANKING_SLIP_QUERIES = gql`
-  query teamServices($teamId: ID!) {
-    teams(where: { id: $teamId }) {
+export const GOVERNORSHIP_BANKING_SLIP_QUERIES = gql`
+  query governorshipServices($governorshipId: ID!) {
+    governorships(where: { id: $governorshipId }) {
       id
 
       name
@@ -222,12 +222,12 @@ export const BACENTA_SERVICE_RECORDS = gql`
   }
 `
 
-export const TEAM_SERVICE_RECORDS = gql`
-  query TeamServiceRecords($serviceId: ID!) {
+export const GOVERNORSHIP_SERVICE_RECORDS = gql`
+  query GovernorshipServiceRecords($serviceId: ID!) {
     serviceRecords(where: { id: $serviceId }) {
       id
       serviceLog {
-        team {
+        governorship {
           id
           name
         }

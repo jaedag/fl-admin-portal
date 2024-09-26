@@ -11,7 +11,7 @@ export type RearragedCypherResponse = {
 export type ChurchLevel =
   | 'Fellowship'
   | 'Bacenta'
-  | 'Team'
+  | 'Governorship'
   | 'Council'
   | 'Stream'
   | 'Campus'
@@ -27,7 +27,7 @@ export type ChurchLevelWithClosed = 'ClosedFellowship' | 'ClosedBacenta'
 export type Role =
   | 'leaderFellowship'
   | 'leaderBacenta'
-  | 'leaderTeam'
+  | 'leaderGovernorship'
   | 'leaderCouncil'
   | 'leaderStream'
   | 'leaderHub'
@@ -37,7 +37,7 @@ export type Role =
   | 'leaderCampus'
   | 'leaderOversight'
   | 'leaderDenomination'
-  | 'adminTeam'
+  | 'adminGovernorship'
   | 'adminCouncil'
   | 'adminStream'
   | 'adminCampus'
@@ -48,7 +48,7 @@ export type Role =
   | 'arrivalsAdminCampus'
   | 'arrivalsAdminStream'
   | 'arrivalsAdminCouncil'
-  | 'arrivalsAdminTeam'
+  | 'arrivalsAdminGovernorship'
   | 'arrivalsCounterStream'
   | 'arrivalsPayerCouncil'
   | 'tellerStream'
@@ -182,7 +182,7 @@ interface SontaHigherChurchesForAgggregation extends ChurchesForAggregateion {
 
 export type HigherChurches = {
   bacenta?: HigherChurchesForAgggregation
-  team?: HigherChurchesForAgggregation
+  governorship?: HigherChurchesForAgggregation
   council?: HigherChurchesForAgggregation
   stream?: HigherChurchesForAgggregation
   campus?: HigherChurchesForAgggregation

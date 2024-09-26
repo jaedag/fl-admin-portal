@@ -148,8 +148,8 @@ const serviceMutation = {
 
       if (higherChurches?.bacenta) {
         aggregateCypher = higherChurches.bacenta?.cypher
-      } else if (higherChurches?.team) {
-        aggregateCypher = higherChurches.team.cypher
+      } else if (higherChurches?.governorship) {
+        aggregateCypher = higherChurches.governorship.cypher
       } else if (higherChurches?.council) {
         aggregateCypher = higherChurches.council.cypher
       } else if (higherChurches?.stream) {
@@ -257,8 +257,8 @@ const serviceMutation = {
 
       if (higherChurches?.bacenta) {
         aggregateCypher = higherChurches.bacenta?.cypher
-      } else if (higherChurches?.team) {
-        aggregateCypher = higherChurches.team.cypher
+      } else if (higherChurches?.governorship) {
+        aggregateCypher = higherChurches.governorship.cypher
       } else if (higherChurches?.council) {
         aggregateCypher = higherChurches.council.cypher
       } else if (higherChurches?.stream) {

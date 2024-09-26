@@ -34,7 +34,7 @@ const SelfBankingList = ({
       | Partial<{
           serviceRecordId?: string
           fellowshipId?: string
-          teamId?: string
+          governorshipId?: string
           councilId?: string
         }>
       | undefined

@@ -6,7 +6,7 @@ import { getWeekNumber } from 'jd-date-utils'
 import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
-  TEAM_SERVICES_LIST,
+  GOVERNORSHIP_SERVICES_LIST,
   COUNCIL_SERVICES_LIST,
   STREAM_SERVICES_LIST,
   CAMPUS_SERVICES_LIST,
@@ -25,8 +25,8 @@ import {
 import useSontaLevel from 'hooks/useSontaLevel'
 
 const ServicesThisWeek = () => {
-  const [teamServicesThisWeek, { refetch: teamRefetch }] =
-    useLazyQuery(TEAM_SERVICES_LIST)
+  const [governorshipServicesThisWeek, { refetch: governorshipRefetch }] =
+    useLazyQuery(GOVERNORSHIP_SERVICES_LIST)
   const [councilServicesThisWeek, { refetch: councilRefetch }] = useLazyQuery(
     COUNCIL_SERVICES_LIST
   )
@@ -45,8 +45,8 @@ const ServicesThisWeek = () => {
     useLazyQuery(HUB_SERVICES_LIST)
 
   const data = useSontaLevel({
-    teamFunction: teamServicesThisWeek,
-    teamRefetch,
+    governorshipFunction: governorshipServicesThisWeek,
+    governorshipRefetch,
     councilFunction: councilServicesThisWeek,
     councilRefetch,
     streamFunction: streamServicesThisWeek,

@@ -34,7 +34,7 @@ const StreamByCouncil = () => {
                 church={council}
                 onClick={() => {
                   clickCard(council)
-                  navigate(`/campaigns/equipment/council/team`)
+                  navigate(`/campaigns/equipment/council/governorship`)
                 }}
               />
             ))}

@@ -11,9 +11,9 @@ export const GET_BISHOPS = gql`
   }
 `
 
-export const GET_TEAM_BACENTAS = gql`
-  query getTeamBacentas($id: ID!) {
-    teams(where: { id: $id }) {
+export const GET_GOVERNORSHIP_BACENTAS = gql`
+  query getGovernorshipBacentas($id: ID!) {
+    governorships(where: { id: $id }) {
       id
       name
 
@@ -50,9 +50,9 @@ export const GET_TEAM_BACENTAS = gql`
   }
 `
 
-export const GET_TEAM_ICBACENTAS = gql`
-  query getTeamIcBacentas($id: ID!) {
-    teams(where: { id: $id }) {
+export const GET_GOVERNORSHIP_ICBACENTAS = gql`
+  query getGovernorshipIcBacentas($id: ID!) {
+    governorships(where: { id: $id }) {
       id
       name
 
@@ -88,8 +88,8 @@ export const GET_TEAM_ICBACENTAS = gql`
   }
 `
 
-export const GET_COUNCIL_TEAMS = gql`
-  query getCouncilTeams($id: ID!) {
+export const GET_COUNCIL_GOVERNORSHIPS = gql`
+  query getCouncilGovernorships($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
@@ -106,7 +106,7 @@ export const GET_COUNCIL_TEAMS = gql`
         lastName
         stream_name
       }
-      teams {
+      governorships {
         name
         id
         stream_name
@@ -135,8 +135,8 @@ export const GET_COUNCIL_TEAMS = gql`
     }
   }
 `
-export const GET_CAMPUS_TEAMS = gql`
-  query getGatheringTeams($id: ID!) {
+export const GET_CAMPUS_GOVERNORSHIPS = gql`
+  query getGatheringGovernorships($id: ID!) {
     campuses(where: { id: $id }) {
       id
       name
@@ -157,7 +157,7 @@ export const GET_CAMPUS_TEAMS = gql`
         stream_name
         fullName
       }
-      teams {
+      governorships {
         name
         id
         stream_name
@@ -207,8 +207,8 @@ export const GET_STREAM_COUNCILS = gql`
         stream_name
         memberCount
         target
-        teamCount
-        teams {
+        governorshipCount
+        governorships {
           id
         }
         leader {
@@ -365,8 +365,8 @@ export const GET_OVERSIGHT_CAMPUSES = gql`
   }
 `
 
-export const GET_STREAM_TEAMS = gql`
-  query getStreamTeams($id: ID!) {
+export const GET_STREAM_GOVERNORSHIPS = gql`
+  query getStreamGovernorships($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
@@ -384,7 +384,7 @@ export const GET_STREAM_TEAMS = gql`
         fullName
         stream_name
       }
-      teams {
+      governorships {
         name
         id
         stream_name
@@ -409,7 +409,7 @@ export const GET_COUNCILS = gql`
     councils {
       id
       name
-      teams {
+      governorships {
         id
       }
     }
@@ -530,7 +530,7 @@ export const GET_HUB_HUBFELLOWSHIPS = gql`
             lastName
             fullName
           }
-          team {
+          governorship {
             id
           }
         }
@@ -855,9 +855,9 @@ export const GET_COUNCIL_HUBCOUNCILS = gql`
   }
 `
 
-export const GET_TEAM_HUBS = gql`
-  query getTeamHubs($id: ID!) {
-    teams(where: { id: $id }) {
+export const GET_GOVERNORSHIP_HUBS = gql`
+  query getGovernorshipHubs($id: ID!) {
+    governorships(where: { id: $id }) {
       id
       name
 

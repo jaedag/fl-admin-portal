@@ -19,11 +19,11 @@ const BacentaService = lazy(
 const BacentaServiceDetails = lazy(
   () => import('pages/services/record-service/BacentaServiceDetails')
 )
-const TeamService = lazy(
-  () => import('pages/services/record-service/TeamService')
+const GovernorshipService = lazy(
+  () => import('pages/services/record-service/GovernorshipService')
 )
-const TeamServiceDetails = lazy(
-  () => import('pages/services/record-service/TeamServiceDetails')
+const GovernorshipServiceDetails = lazy(
+  () => import('pages/services/record-service/GovernorshipServiceDetails')
 )
 
 const BacentaServiceCancelled = lazy(
@@ -67,13 +67,15 @@ const MinistryReport = lazy(
 const CreativeArtsReport = lazy(
   () => import('pages/services/graphs/CreativeArtsGraphs')
 )
-const TeamReport = lazy(() => import('pages/services/graphs/TeamGraphs'))
+const GovernorshipReport = lazy(
+  () => import('pages/services/graphs/GovernorshipGraphs')
+)
 const CouncilReport = lazy(() => import('pages/services/graphs/CouncilGraphs'))
 const FellowshipReport = lazy(
   () => import('pages/services/graphs/FellowshipGraphs')
 )
 
-const TeamJoint = lazy(() => import('pages/services/TeamJoint'))
+const GovernorshipJoint = lazy(() => import('pages/services/GovernorshipJoint'))
 const Banked = lazy(() => import('pages/services/defaulters/Banked'))
 const BankingDefaulters = lazy(
   () => import('pages/services/defaulters/BankingDefaulters')
@@ -81,8 +83,11 @@ const BankingDefaulters = lazy(
 const CancelledServicesThisWeek = lazy(
   () => import('pages/services/defaulters/CancelledServiceThisWeek')
 )
-const CouncilByTeam = lazy(
-  () => import('pages/services/defaulters/church-by-subchurch/CouncilByTeam')
+const CouncilByGovernorship = lazy(
+  () =>
+    import(
+      'pages/services/defaulters/church-by-subchurch/CouncilByGovernorship'
+    )
 )
 const FormDefaulters = lazy(
   () => import('pages/services/defaulters/FormDefaulters')
@@ -90,14 +95,14 @@ const FormDefaulters = lazy(
 const ServicesThisWeek = lazy(
   () => import('pages/services/defaulters/ServicesThisWeek')
 )
-const TeamJointNotBanked = lazy(
-  () => import('pages/services/defaulters/TeamNotBankedThisWeek')
+const GovernorshipJointNotBanked = lazy(
+  () => import('pages/services/defaulters/GovernorshipNotBankedThisWeek')
 )
 const CouncilJointNotBanked = lazy(
   () => import('pages/services/defaulters/CouncilNotBankedThisWeek')
 )
-const TeamJointBanked = lazy(
-  () => import('pages/services/defaulters/TeamBankedThisWeek')
+const GovernorshipJointBanked = lazy(
+  () => import('pages/services/defaulters/GovernorshipBankedThisWeek')
 )
 const CouncilJointBanked = lazy(
   () => import('pages/services/defaulters/CouncilBankedThisWeek')
@@ -134,11 +139,11 @@ const CreativeArtsByMinistry = lazy(
 const MinistryByHubCouncil = lazy(
   () => import('pages/services/defaulters/creative-arts/MinistryByHubCouncil')
 )
-const TeamBankingSlipView = lazy(
-  () => import('pages/services/banking/banking-slip/TeamView')
+const GovernorshipBankingSlipView = lazy(
+  () => import('pages/services/banking/banking-slip/GovernorshipView')
 )
-const TeamBankingSlipSubmission = lazy(
-  () => import('pages/services/banking/banking-slip/TeamSubmission')
+const GovernorshipBankingSlipSubmission = lazy(
+  () => import('pages/services/banking/banking-slip/GovernorshipSubmission')
 )
 const CouncilService = lazy(
   () => import('pages/services/record-service/CouncilService')
@@ -250,9 +255,9 @@ export const services: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/services/team',
-    element: TeamJoint,
-    roles: permitLeaderAdmin('Team'),
+    path: '/services/governorship',
+    element: GovernorshipJoint,
+    roles: permitLeaderAdmin('Governorship'),
     placeholder: true,
   },
   {
@@ -287,8 +292,8 @@ export const services: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/services/team/banking-slips',
-    element: TeamBankingSlipView,
+    path: '/services/governorship/banking-slips',
+    element: GovernorshipBankingSlipView,
     roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
@@ -305,8 +310,8 @@ export const services: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/team/banking-slip/submission',
-    element: TeamBankingSlipSubmission,
+    path: '/governorship/banking-slip/submission',
+    element: GovernorshipBankingSlipSubmission,
     roles: permitLeaderAdmin('Campus'),
     placeholder: true,
   },
@@ -361,9 +366,12 @@ export const graphs: LazyRouteTypes[] = [
   },
 
   {
-    path: '/team/graphs',
-    element: TeamReport,
-    roles: [...permitLeaderAdminArrivals('Team'), ...permitTellerStream()],
+    path: '/governorship/graphs',
+    element: GovernorshipReport,
+    roles: [
+      ...permitLeaderAdminArrivals('Governorship'),
+      ...permitTellerStream(),
+    ],
     placeholder: true,
   },
 
@@ -478,17 +486,17 @@ export const graphs: LazyRouteTypes[] = [
     placeholder: false,
   },
 
-  //Team Services
+  //Governorship Services
   {
-    path: '/team/record-service',
-    element: TeamService,
-    roles: permitLeaderAdmin('Team'),
+    path: '/governorship/record-service',
+    element: GovernorshipService,
+    roles: permitLeaderAdmin('Governorship'),
     placeholder: false,
   },
   {
-    path: '/team/service-details',
-    element: TeamServiceDetails,
-    roles: [...permitLeaderAdmin('Team'), ...permitTellerStream()],
+    path: '/governorship/service-details',
+    element: GovernorshipServiceDetails,
+    roles: [...permitLeaderAdmin('Governorship'), ...permitTellerStream()],
     placeholder: false,
   },
 
@@ -550,30 +558,30 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/services/defaulters',
     element: Defaulters,
-    roles: [...permitLeaderAdmin('Team'), ...permitLeaderAdmin('Hub')],
+    roles: [...permitLeaderAdmin('Governorship'), ...permitLeaderAdmin('Hub')],
     placeholder: true,
   },
   {
     path: '/services/defaulters/dashboard',
     element: DefaultersDashboard,
-    roles: [...permitLeaderAdmin('Team'), ...permitLeaderAdmin('Hub')],
+    roles: [...permitLeaderAdmin('Governorship'), ...permitLeaderAdmin('Hub')],
     placeholder: true,
   },
   {
     path: '/services/form-defaulters',
     element: FormDefaulters,
-    roles: [...permitLeaderAdmin('Team'), ...permitLeaderAdmin('Hub')],
+    roles: [...permitLeaderAdmin('Governorship'), ...permitLeaderAdmin('Hub')],
     placeholder: true,
   },
   {
     path: '/services/banking-defaulters',
     element: BankingDefaulters,
-    roles: [...permitLeaderAdmin('Team'), ...permitLeaderAdmin('Hub')],
+    roles: [...permitLeaderAdmin('Governorship'), ...permitLeaderAdmin('Hub')],
     placeholder: true,
   },
   {
-    path: '/services/team-banking-defaulters',
-    element: TeamJointNotBanked,
+    path: '/services/governorship-banking-defaulters',
+    element: GovernorshipJointNotBanked,
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
@@ -584,8 +592,8 @@ export const graphs: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/services/team-banked',
-    element: TeamJointBanked,
+    path: '/services/governorship-banked',
+    element: GovernorshipJointBanked,
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },
@@ -598,24 +606,24 @@ export const graphs: LazyRouteTypes[] = [
   {
     path: '/services/banked',
     element: Banked,
-    roles: [...permitLeaderAdmin('Team'), ...permitLeader('Hub')],
+    roles: [...permitLeaderAdmin('Governorship'), ...permitLeader('Hub')],
     placeholder: true,
   },
   {
     path: '/services/filled-services',
     element: ServicesThisWeek,
-    roles: [...permitLeaderAdmin('Team'), ...permitLeader('Hub')],
+    roles: [...permitLeaderAdmin('Governorship'), ...permitLeader('Hub')],
     placeholder: true,
   },
   {
     path: '/services/cancelled-services',
     element: CancelledServicesThisWeek,
-    roles: [...permitLeaderAdmin('Team'), ...permitLeader('Hub')],
+    roles: [...permitLeaderAdmin('Governorship'), ...permitLeader('Hub')],
     placeholder: true,
   },
   {
-    path: '/services/council-by-team',
-    element: CouncilByTeam,
+    path: '/services/council-by-governorship',
+    element: CouncilByGovernorship,
     roles: permitLeaderAdmin('Council'),
     placeholder: true,
   },

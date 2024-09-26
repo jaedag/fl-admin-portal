@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
-export const TEAM_DEFAULTERS = gql`
-  query teamDefaulters($id: ID!) {
-    teams(where: { id: $id }) {
+export const GOVERNORSHIP_DEFAULTERS = gql`
+  query governorshipDefaulters($id: ID!) {
+    governorships(where: { id: $id }) {
       id
       name
 
@@ -16,9 +16,9 @@ export const TEAM_DEFAULTERS = gql`
   }
 `
 
-export const TEAM_SERVICES_LIST = gql`
-  query teamServicesThisWeek($id: ID!) {
-    teams(where: { id: $id }) {
+export const GOVERNORSHIP_SERVICES_LIST = gql`
+  query governorshipServicesThisWeek($id: ID!) {
+    governorships(where: { id: $id }) {
       id
       name
 
@@ -47,9 +47,9 @@ export const TEAM_SERVICES_LIST = gql`
   }
 `
 
-export const TEAM_CANCELLED_SERVICES_LIST = gql`
-  query teamCancelledServicesThisWeek($id: ID!) {
-    teams(where: { id: $id }) {
+export const GOVERNORSHIP_CANCELLED_SERVICES_LIST = gql`
+  query governorshipCancelledServicesThisWeek($id: ID!) {
+    governorships(where: { id: $id }) {
       id
       name
 
@@ -76,9 +76,9 @@ export const TEAM_CANCELLED_SERVICES_LIST = gql`
   }
 `
 
-export const TEAM_FORM_DEFAULTERS_LIST = gql`
-  query teamFormDefaulters($id: ID!) {
-    teams(where: { id: $id }) {
+export const GOVERNORSHIP_FORM_DEFAULTERS_LIST = gql`
+  query governorshipFormDefaulters($id: ID!) {
+    governorships(where: { id: $id }) {
       id
       name
 
@@ -101,9 +101,9 @@ export const TEAM_FORM_DEFAULTERS_LIST = gql`
   }
 `
 
-export const TEAM_BANKING_DEFAULTERS_LIST = gql`
-  query teamBankingDefaulters($id: ID!) {
-    teams(where: { id: $id }) {
+export const GOVERNORSHIP_BANKING_DEFAULTERS_LIST = gql`
+  query governorshipBankingDefaulters($id: ID!) {
+    governorships(where: { id: $id }) {
       id
       name
 
@@ -131,9 +131,9 @@ export const TEAM_BANKING_DEFAULTERS_LIST = gql`
   }
 `
 
-export const TEAM_BANKED_LIST = gql`
-  query teamBanked($id: ID!) {
-    teams(where: { id: $id }) {
+export const GOVERNORSHIP_BANKED_LIST = gql`
+  query governorshipBanked($id: ID!) {
+    governorships(where: { id: $id }) {
       id
       name
 
@@ -166,15 +166,15 @@ export const COUNCIL_DEFAULTERS = gql`
     councils(where: { id: $id }) {
       id
       name
-      teamCount
+      governorshipCount
       activeBacentaCount
       formDefaultersThisWeekCount
       bankingDefaultersThisWeekCount
       bankedThisWeekCount
       servicesThisWeekCount
       cancelledServicesThisWeekCount
-      teamBankedThisWeekCount
-      teamBankingDefaultersThisWeekCount
+      governorshipBankedThisWeekCount
+      governorshipBankingDefaultersThisWeekCount
     }
   }
 `
@@ -199,7 +199,7 @@ export const COUNCIL_SERVICES_LIST = gql`
         meetingDay {
           day
         }
-        team {
+        governorship {
           id
           name
         }
@@ -231,7 +231,7 @@ export const COUNCIL_CANCELLED_SERVICES_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        team {
+        governorship {
           id
           name
         }
@@ -264,7 +264,7 @@ export const COUNCIL_FORM_DEFAULTERS_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        team {
+        governorship {
           id
           name
         }
@@ -293,7 +293,7 @@ export const COUNCIL_BANKING_DEFAULTERS_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        team {
+        governorship {
           id
           name
         }
@@ -327,7 +327,7 @@ export const COUNCIL_BANKED_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        team {
+        governorship {
           id
           name
         }
@@ -344,12 +344,12 @@ export const COUNCIL_BANKED_LIST = gql`
   }
 `
 
-export const COUNCIL_BY_TEAM = gql`
-  query councilByTeam($id: ID!) {
+export const COUNCIL_BY_GOVERNORSHIP = gql`
+  query councilByGovernorship($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
-      teams {
+      governorships {
         id
         name
         leader {
@@ -394,8 +394,8 @@ export const STREAM_DEFAULTERS = gql`
       bankedThisWeekCount
       servicesThisWeekCount
       cancelledServicesThisWeekCount
-      teamBankedThisWeekCount
-      teamBankingDefaultersThisWeekCount
+      governorshipBankedThisWeekCount
+      governorshipBankingDefaultersThisWeekCount
       councilBankedThisWeekCount
       councilBankingDefaultersThisWeekCount
     }
@@ -542,7 +542,7 @@ export const STREAM_BANKING_DEFAULTERS_LIST = gql`
   }
 `
 
-export const TEAM_BANKING_DEFUALTERS_THIS_WEEK = gql`
+export const GOVERNORSHIP_BANKING_DEFUALTERS_THIS_WEEK = gql`
   query constitiuencyBankingDefaultersThisWeek($id: ID!) {
     streams(where: { id: $id }) {
       id
@@ -653,8 +653,8 @@ export const CAMPUS_DEFAULTERS = gql`
       bankedThisWeekCount
       servicesThisWeekCount
       cancelledServicesThisWeekCount
-      teamBankedThisWeekCount
-      teamBankingDefaultersThisWeekCount
+      governorshipBankedThisWeekCount
+      governorshipBankingDefaultersThisWeekCount
       councilBankedThisWeekCount
       councilBankingDefaultersThisWeekCount
 
@@ -688,7 +688,7 @@ export const CAMPUS_SERVICES_LIST = gql`
         meetingDay {
           day
         }
-        team {
+        governorship {
           id
           name
         }
@@ -720,7 +720,7 @@ export const CAMPUS_CANCELLED_SERVICES_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        team {
+        governorship {
           id
           name
         }
@@ -753,7 +753,7 @@ export const CAMPUS_FORM_DEFAULTERS_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        team {
+        governorship {
           id
           name
         }
@@ -782,7 +782,7 @@ export const CAMPUS_BANKING_DEFAULTERS_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        team {
+        governorship {
           id
           name
         }
@@ -816,7 +816,7 @@ export const CAMPUS_BANKED_LIST = gql`
           phoneNumber
           whatsappNumber
         }
-        team {
+        governorship {
           id
           name
         }
@@ -866,13 +866,13 @@ export const CAMPUS_BY_STREAM = gql`
   }
 `
 
-export const CAMPUS_SERVICES_TEAM_JOINT_DEFAULTERS_LIST = gql`
-  query gatheringTeamJointServicesThisWeek($id: ID!) {
+export const CAMPUS_SERVICES_GOVERNORSHIP_JOINT_DEFAULTERS_LIST = gql`
+  query gatheringGovernorshipJointServicesThisWeek($id: ID!) {
     campuses(where: { id: $id }) {
       id
       name
 
-      teamBankingDefaultersThisWeek {
+      governorshipBankingDefaultersThisWeek {
         id
         name
         leader {
@@ -903,13 +903,13 @@ export const CAMPUS_SERVICES_TEAM_JOINT_DEFAULTERS_LIST = gql`
   }
 `
 
-export const CAMPUS_SERVICES_TEAM_JOINT_BANKED_LIST = gql`
-  query gatheringTeamJointServicesBankedThisWeek($id: ID!) {
+export const CAMPUS_SERVICES_GOVERNORSHIP_JOINT_BANKED_LIST = gql`
+  query gatheringGovernorshipJointServicesBankedThisWeek($id: ID!) {
     campuses(where: { id: $id }) {
       id
       name
 
-      teamBankedThisWeek {
+      governorshipBankedThisWeek {
         id
         name
         leader {
@@ -940,13 +940,13 @@ export const CAMPUS_SERVICES_TEAM_JOINT_BANKED_LIST = gql`
   }
 `
 
-export const STREAM_TEAM_JOINT_DEFAULTERS_LIST = gql`
-  query streamTeamJointServicesDefaultersThisWeek($id: ID!) {
+export const STREAM_GOVERNORSHIP_JOINT_DEFAULTERS_LIST = gql`
+  query streamGovernorshipJointServicesDefaultersThisWeek($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
 
-      teamBankingDefaultersThisWeek {
+      governorshipBankingDefaultersThisWeek {
         id
         name
         leader {
@@ -977,13 +977,13 @@ export const STREAM_TEAM_JOINT_DEFAULTERS_LIST = gql`
   }
 `
 
-export const STREAM_TEAM_JOINT_BANKED_LIST = gql`
-  query streamTeamJointServicesBankedThisWeek($id: ID!) {
+export const STREAM_GOVERNORSHIP_JOINT_BANKED_LIST = gql`
+  query streamGovernorshipJointServicesBankedThisWeek($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
 
-      teamBankedThisWeek {
+      governorshipBankedThisWeek {
         id
         name
         leader {
@@ -1014,13 +1014,13 @@ export const STREAM_TEAM_JOINT_BANKED_LIST = gql`
   }
 `
 
-export const COUNCIL_TEAM_JOINT_DEFAULTERS_LIST = gql`
-  query councilTeamJointServicesDefaultersThisWeek($id: ID!) {
+export const COUNCIL_GOVERNORSHIP_JOINT_DEFAULTERS_LIST = gql`
+  query councilGovernorshipJointServicesDefaultersThisWeek($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
 
-      teamBankingDefaultersThisWeek {
+      governorshipBankingDefaultersThisWeek {
         id
         name
         leader {
@@ -1051,13 +1051,13 @@ export const COUNCIL_TEAM_JOINT_DEFAULTERS_LIST = gql`
   }
 `
 
-export const COUNCIL_TEAM_JOINT_BANKED_LIST = gql`
-  query councilTeamJointServicesBankedThisWeek($id: ID!) {
+export const COUNCIL_GOVERNORSHIP_JOINT_BANKED_LIST = gql`
+  query councilGovernorshipJointServicesBankedThisWeek($id: ID!) {
     councils(where: { id: $id }) {
       id
       name
 
-      teamBankedThisWeek {
+      governorshipBankedThisWeek {
         id
         name
         leader {

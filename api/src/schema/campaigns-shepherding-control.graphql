@@ -135,7 +135,7 @@ extend type Council {
     )
 }
 
-extend type Team {
+extend type Governorship {
   statsForYearTillDate(
     startDate: String!
     endDate: String!

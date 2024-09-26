@@ -45,7 +45,7 @@ export const DISPLAY_MEMBER_LEADERSHIP = gql`
         name
         stream_name
       }
-      leadsTeam {
+      leadsGovernorship {
         id
         name
         stream_name
@@ -108,7 +108,7 @@ export const DISPLAY_MEMBER_ADMIN = gql`
         name
         stream_name
       }
-      isAdminForTeam {
+      isAdminForGovernorship {
         id
         name
         stream_name
@@ -215,7 +215,7 @@ export const DISPLAY_FELLOWSHIP = gql`
       bacenta {
         id
         name
-        team {
+        governorship {
           id
           name
         }
@@ -312,7 +312,7 @@ export const DISPLAY_BACENTA = gql`
       momoNumber
       stream_name
 
-      team {
+      governorship {
         id
         name
         stream_name
@@ -335,9 +335,9 @@ export const DISPLAY_BACENTA = gql`
   }
 `
 
-export const DISPLAY_TEAM = gql`
-  query displayTeam($id: ID!) {
-    teams(where: { id: $id }, options: { limit: 1 }) {
+export const DISPLAY_GOVERNORSHIP = gql`
+  query displayGovernorship($id: ID!) {
+    governorships(where: { id: $id }, options: { limit: 1 }) {
       id
       name
       target
@@ -411,7 +411,7 @@ export const DISPLAY_COUNCIL = gql`
         name
       }
       stream_name
-      teamCount
+      governorshipCount
       bacentaCount
       hubCouncilCount
       hubCount
@@ -425,7 +425,7 @@ export const DISPLAY_COUNCIL = gql`
         id
         name
       }
-      teams(options: { limit: 5 }) {
+      governorships(options: { limit: 5 }) {
         id
         name
       }
@@ -476,7 +476,7 @@ export const DISPLAY_STREAM = gql`
       bankAccount
       target
       councilCount
-      teamCount
+      governorshipCount
       bacentaCount
       hubFellowshipCount
       memberCount
@@ -547,7 +547,7 @@ export const DISPLAY_CAMPUS = gql`
       target
       streamCount
       councilCount
-      teamCount
+      governorshipCount
       bacentaCount
       memberCount
       pastorCount
@@ -610,7 +610,7 @@ export const DISPLAY_OVERSIGHT = gql`
       campusCount
       streamCount
       councilCount
-      teamCount
+      governorshipCount
       bacentaCount
       memberCount
       pastorCount
@@ -721,7 +721,7 @@ export const DISPLAY_DENOMINATION = gql`
       campusCount
       streamCount
       councilCount
-      teamCount
+      governorshipCount
       bacentaCount
       memberCount
       pastorCount
@@ -896,7 +896,7 @@ export const DISPLAY_HUB = gql`
         longitude
         latitude
       }
-      team {
+      governorship {
         id
         name
       }
@@ -1001,7 +1001,7 @@ export const DISPLAY_HUBFELLOWSHIP = gql`
       bacenta {
         id
         name
-        team {
+        governorship {
           id
           name
         }

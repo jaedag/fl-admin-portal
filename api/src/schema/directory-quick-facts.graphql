@@ -3,7 +3,7 @@ extend type ServiceRecord {
     @cypher(
       statement: """
       MATCH (this)<-[:HAS_SERVICE]-(:ServiceLog:HistoryLog)<-[:HAS_HISTORY]-(church)
-      WHERE church:Fellowship OR church:Bacenta OR church:Team OR church:Council OR church:Stream OR church:Campus
+      WHERE church:Fellowship OR church:Bacenta OR church:Governorship OR church:Council OR church:Stream OR church:Campus
       RETURN church.name
       """
     )
@@ -162,7 +162,7 @@ extend type Bacenta {
     )
 }
 
-extend type Team {
+extend type Governorship {
   avgWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
@@ -234,7 +234,7 @@ extend type Council {
   avgFellowshipWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
-      MATCH (this)-[:HAS]->(:Team)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
+      MATCH (this)-[:HAS]->(:Governorship)-[:HAS]->(:Bacenta)-[:HAS]->(fellowship)
           WHERE fellowship:Fellowship OR fellowship:ClosedFellowship
       MATCH (fellowship)-[:HAS_HISTORY]-(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)
       MATCH (record) WHERE NOT (record:NoService)
@@ -257,7 +257,7 @@ extend type Council {
       WITH date(today) - duration({days: $days}) AS startDate, this
       WITH  range(date(startDate).week, date().week) as weeks, this
 
-      MATCH (this)-[:HAS]->(:Team)-[:HAS]->(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
+      MATCH (this)-[:HAS]->(:Governorship)-[:HAS]->(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
       MATCH (agg)
       WHERE agg.week IN weeks and agg.year = date().year
       WITH sum(agg.attendance) AS attendance, sum(agg.income) as income, bacenta, agg.week as weeknumber
@@ -268,7 +268,7 @@ extend type Council {
       """
     )
 
-  avgTeamWeekdayStats(days: Int!): Stats!
+  avgGovernorshipWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
       MATCH (this)
@@ -276,10 +276,10 @@ extend type Council {
       WITH date(today) - duration({days: $days}) AS startDate, this
       WITH  range(date(startDate).week, date().week) as weeks, this
 
-      MATCH (this)-[:HAS]->(team:Team)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
+      MATCH (this)-[:HAS]->(governorship:Governorship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
       MATCH (agg)
       WHERE agg.week IN weeks and agg.year = date().year
-      WITH sum(agg.attendance) AS attendance, sum(agg.income) as income, team, agg.week as weeknumber
+      WITH sum(agg.attendance) AS attendance, sum(agg.income) as income, governorship, agg.week as weeknumber
       RETURN  {
         attendance: round(avg(attendance)),
         income: round(avg(income), 2)
@@ -314,7 +314,7 @@ extend type Council {
       WITH date(today) - duration({days: $days}) AS startDate, this
       WITH  range(date(startDate).week, date().week) as weeks, this
 
-      MATCH (this)-[:HAS]->(:Team)-[:HAS]->(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
+      MATCH (this)-[:HAS]->(:Governorship)-[:HAS]->(bacenta:Bacenta)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
       MATCH (agg)
       WHERE agg.week IN weeks and agg.year = date().year
       WITH sum(agg.attendance) AS attendance, bacenta, agg.week as weeknumber
@@ -322,7 +322,7 @@ extend type Council {
       """
     )
 
-  avgTeamBussingAttendance(days: Int!): Float
+  avgGovernorshipBussingAttendance(days: Int!): Float
     @cypher(
       statement: """
       MATCH (this)
@@ -330,10 +330,10 @@ extend type Council {
       WITH date(today) - duration({days: $days}) AS startDate, this
       WITH  range(date(startDate).week, date().week) as weeks, this
 
-      MATCH (this)-[:HAS]->(team:Team)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
+      MATCH (this)-[:HAS]->(governorship:Governorship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
       MATCH (agg)
       WHERE agg.week IN weeks and agg.year = date().year
-      WITH sum(agg.attendance) AS attendance, team, agg.week as weeknumber
+      WITH sum(agg.attendance) AS attendance, governorship, agg.week as weeknumber
       RETURN round(avg(attendance)) AS average
       """
     )
@@ -459,7 +459,7 @@ extend type Stream {
 }
 
 extend type Campus {
-  avgTeamBussingAttendance(days: Int!): Float
+  avgGovernorshipBussingAttendance(days: Int!): Float
     @cypher(
       statement: """
       MATCH (this)
@@ -467,15 +467,15 @@ extend type Campus {
       WITH date(today) - duration({days: $days}) AS startDate, this
       WITH  range(date(startDate).week, date().week) as weeks, this
 
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(team:Team)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(governorship:Governorship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(agg:AggregateBussingRecord)
       MATCH (agg)
       WHERE agg.week IN weeks and agg.year = date().year
-      WITH sum(agg.attendance) AS attendance, team, agg.week as weeknumber
+      WITH sum(agg.attendance) AS attendance, governorship, agg.week as weeknumber
       RETURN round(avg(attendance)) AS average
       """
     )
 
-  avgTeamWeekdayStats(days: Int!): Stats!
+  avgGovernorshipWeekdayStats(days: Int!): Stats!
     @cypher(
       statement: """
       MATCH (this)
@@ -483,10 +483,10 @@ extend type Campus {
       WITH date(today) - duration({days: $days}) AS startDate, this
       WITH  range(date(startDate).week, date().week) as weeks, this
 
-      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(team:Team)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
+      MATCH (this)-[:HAS]->(:Stream)-[:HAS]->(:Council)-[:HAS]->(governorship:Governorship)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
       MATCH (agg)
       WHERE agg.week IN weeks and agg.year = date().year
-      WITH sum(agg.attendance) AS attendance, sum(agg.income) as income, team, agg.week as weeknumber
+      WITH sum(agg.attendance) AS attendance, sum(agg.income) as income, governorship, agg.week as weeknumber
       RETURN  {
         attendance: round(avg(attendance)),
         income: round(avg(income), 2)

@@ -36,13 +36,16 @@ export const NEW_BACENTA_LEADER = gql`
   }
 `
 
-export const NEW_TEAM_LEADER = gql`
-  mutation NewTeamLeader($teamId: ID!, $leaderId: ID!) {
-    MakeTeamLeader(teamId: $teamId, leaderId: $leaderId) {
+export const NEW_GOVERNORSHIP_LEADER = gql`
+  mutation NewGovernorshipLeader($governorshipId: ID!, $leaderId: ID!) {
+    MakeGovernorshipLeader(
+      governorshipId: $governorshipId
+      leaderId: $leaderId
+    ) {
       id
       firstName
       lastName
-      leadsTeam {
+      leadsGovernorship {
         id
         leader {
           id

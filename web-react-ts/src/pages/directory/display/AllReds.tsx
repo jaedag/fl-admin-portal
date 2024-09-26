@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
-import { GET_TEAM_ICBACENTAS } from '../../../queries/ListQueries'
+import { GET_GOVERNORSHIP_ICBACENTAS } from '../../../queries/ListQueries'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import RoleView from '../../../auth/RoleView'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
@@ -12,13 +12,14 @@ import 'components/AllChurchesSummary.css'
 import ChurchSearch from 'components/ChurchSearch'
 
 const DisplayAllReds = () => {
-  const { teamId, setTeamId, clickCard } = useContext(ChurchContext)
+  const { governorshipId, setGovernorshipId, clickCard } =
+    useContext(ChurchContext)
 
-  const { data, loading, error } = useQuery(GET_TEAM_ICBACENTAS, {
-    variables: { id: teamId },
+  const { data, loading, error } = useQuery(GET_GOVERNORSHIP_ICBACENTAS, {
+    variables: { id: governorshipId },
   })
 
-  const team = data?.teams[0]
+  const governorship = data?.governorships[0]
 
   return (
     <ApolloWrapper loading={loading} data={data} error={error}>
@@ -26,34 +27,34 @@ const DisplayAllReds = () => {
         <Row className="mb-2">
           <Col>
             <Link
-              to={`/team/displaydetails`}
+              to={`/governorship/displaydetails`}
               onClick={() => {
-                setTeamId(teamId)
+                setGovernorshipId(governorshipId)
               }}
             >
               {' '}
-              <h2 className="text-white">{`${team?.name} Team`}</h2>
+              <h2 className="text-white">{`${governorship?.name} Governorship`}</h2>
             </Link>
             <Link
               to="/member/displaydetails"
               onClick={() => {
-                clickCard(team?.leader)
+                clickCard(governorship?.leader)
               }}
             >
               <h6 className="text-white d-block text-small">
                 <span className="text-muted">CO:</span>
-                {team?.leader && ` ${team?.leader.fullName}`}
+                {governorship?.leader && ` ${governorship?.leader.fullName}`}
               </h6>
             </Link>
-            {team?.admin ? (
+            {governorship?.admin ? (
               <Link
                 className="pb-4"
                 to="/member/displaydetails"
                 onClick={() => {
-                  clickCard(team?.admin)
+                  clickCard(governorship?.admin)
                 }}
               >
-                {`Admin: ${team?.admin?.fullName}`}
+                {`Admin: ${governorship?.admin?.fullName}`}
               </Link>
             ) : null}
           </Col>
@@ -69,14 +70,14 @@ const DisplayAllReds = () => {
           </RoleView>
         </Row>
         <AllChurchesSummary
-          church={team}
-          memberCount={team?.memberCount}
-          numberOfChurchesBelow={team?.icBacentas?.length}
+          church={governorship}
+          memberCount={governorship?.memberCount}
+          numberOfChurchesBelow={governorship?.icBacentas?.length}
           churchType="IC Bacenta"
-          route="team"
+          route="governorship"
         />
 
-        <ChurchSearch data={team?.icBacentas} churchType="Bacenta" />
+        <ChurchSearch data={governorship?.icBacentas} churchType="Bacenta" />
       </Container>
     </ApolloWrapper>
   )

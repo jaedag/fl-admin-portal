@@ -9,7 +9,7 @@ export const COUNCIL_SWOLLEN_SUNDAY_GRAPHS = gql`
     councils(where: { id: $councilId }) {
       id
       name
-      teamCount
+      governorshipCount
       bacentaCount
       fellowshipCount
       leader {
@@ -32,7 +32,7 @@ export const COUNCIL_SWOLLEN_DETAILS = gql`
     councils(where: { id: $councilId }) {
       id
       name
-      teamCount
+      governorshipCount
       bacentaCount
       fellowshipCount
       leader {
@@ -56,7 +56,7 @@ export const STREAM_SWOLLEN_SUNDAY_GRAPHS = gql`
       name
       bacentaCount
       fellowshipCount
-      teamCount
+      governorshipCount
       councilCount
       leader {
         id
@@ -80,7 +80,7 @@ export const STREAM_SWOLLEN_DETAILS = gql`
       name
       bacentaCount
       fellowshipCount
-      teamCount
+      governorshipCount
       councilCount
       leader {
         id
@@ -101,13 +101,13 @@ export const CAMPUS = gql`
   }
 `
 
-export const TEAM_SWOLLEN_SUNDAY_GRAPHS = gql`
-  query teamSwollenSundayGraphs(
-    $teamId: ID!
+export const GOVERNORSHIP_SWOLLEN_SUNDAY_GRAPHS = gql`
+  query governorshipSwollenSundayGraphs(
+    $governorshipId: ID!
     $startDate: String!
     $endDate: String!
   ) {
-    teams(where: { id: $teamId }) {
+    governorships(where: { id: $governorshipId }) {
       id
       name
       bacentaCount
@@ -127,9 +127,9 @@ export const TEAM_SWOLLEN_SUNDAY_GRAPHS = gql`
   }
 `
 
-export const TEAM_SWOLLEN_DETAILS = gql`
-  query teamSwollenDetails($teamId: ID!) {
-    teams(where: { id: $teamId }) {
+export const GOVERNORSHIP_SWOLLEN_DETAILS = gql`
+  query governorshipSwollenDetails($governorshipId: ID!) {
+    governorships(where: { id: $governorshipId }) {
       id
       name
       bacentaCount
@@ -155,7 +155,7 @@ export const CAMPUS_SWOLLEN_SUNDAY_GRAPHS = gql`
       name
       bacentaCount
       fellowshipCount
-      teamCount
+      governorshipCount
       councilCount
       streamCount
       leader {
@@ -180,7 +180,7 @@ export const CAMPUS_SWOLLEN_DETAILS = gql`
       name
       bacentaCount
       fellowshipCount
-      teamCount
+      governorshipCount
       councilCount
       streamCount
       leader {
@@ -248,7 +248,7 @@ export const STREAM_SWOLLEN_TARGET_TEMPLATE = gql`
           firstName
           lastName
         }
-        team {
+        governorship {
           id
           name
           council {
@@ -273,7 +273,7 @@ export const COUNCIL_SWOLLEN_TARGET_TEMPLATE = gql`
           firstName
           lastName
         }
-        team {
+        governorship {
           name
         }
       }
@@ -319,12 +319,12 @@ export const COUNCIL_LIST = gql`
   }
 `
 
-export const TEAM_LIST = gql`
-  query teamList($councilId: ID!) {
+export const GOVERNORSHIP_LIST = gql`
+  query governorshipList($councilId: ID!) {
     councils(where: { id: $councilId }) {
       id
       name
-      teams {
+      governorships {
         id
         name
       }
@@ -333,8 +333,8 @@ export const TEAM_LIST = gql`
 `
 
 export const BACENTA_LIST = gql`
-  query bacentaList($teamId: ID!) {
-    teams(where: { id: $teamId }) {
+  query bacentaList($governorshipId: ID!) {
+    governorships(where: { id: $governorshipId }) {
       id
       name
       bacentas {

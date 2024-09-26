@@ -295,10 +295,10 @@ export const plural = (church: ChurchLevel | string) => {
       return 'campuses'
     case 'Campus':
       return 'Campuses'
-    case 'Team':
-      return 'Teams'
-    case 'team':
-      return 'teams'
+    case 'Governorship':
+      return 'Governorships'
+    case 'governorship':
+      return 'governorships'
     case 'senior high school':
       return 'senior high schools'
     case 'Senior High School':
@@ -406,7 +406,7 @@ interface MemberWithChurchCount extends Member {
   leadsFellowshipCount: number
   leadsBacentaCount: number
   leadsAdminsCouncilCount: number
-  leadsAdminsTeamCount: number
+  leadsAdminsGovernorshipCount: number
   leadsAdminsCampusCount: number
   leadsAdminsOversightCount: number
 
@@ -463,19 +463,19 @@ export const getChurchCount = (servant: MemberWithChurchCount) => {
     }
   }
 
-  if (servant?.leadsAdminsTeamCount) {
+  if (servant?.leadsAdminsGovernorshipCount) {
     if (churchesCount) {
       churchesCount += ','
 
-      if (servant.leadsAdminsTeamCount === 1) {
-        churchesCount = `${churchesCount} ${servant.leadsAdminsTeamCount} Team`
+      if (servant.leadsAdminsGovernorshipCount === 1) {
+        churchesCount = `${churchesCount} ${servant.leadsAdminsGovernorshipCount} Governorship`
       } else {
-        churchesCount = `${churchesCount} ${servant.leadsAdminsTeamCount} Teams`
+        churchesCount = `${churchesCount} ${servant.leadsAdminsGovernorshipCount} Governorships`
       }
-    } else if (servant.leadsAdminsTeamCount === 1) {
-      churchesCount = `${servant.leadsAdminsTeamCount} Team`
+    } else if (servant.leadsAdminsGovernorshipCount === 1) {
+      churchesCount = `${servant.leadsAdminsGovernorshipCount} Governorship`
     } else {
-      churchesCount = `${servant.leadsAdminsTeamCount} Teams`
+      churchesCount = `${servant.leadsAdminsGovernorshipCount} Governorships`
     }
   }
 
@@ -564,10 +564,10 @@ export const getChurchCount = (servant: MemberWithChurchCount) => {
 
 export const getSubChurchLevel = (churchType: ChurchLevel) => {
   switch (churchType) {
-    case 'Team':
+    case 'Governorship':
       return 'Bacenta'
     case 'Council':
-      return 'Team'
+      return 'Governorship'
     case 'Stream':
       return 'Council'
     case 'Campus':

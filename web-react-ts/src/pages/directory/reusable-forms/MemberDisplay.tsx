@@ -196,7 +196,7 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
           <RoleView
             roles={[
               ...permitSheepSeeker(),
-              ...permitAdmin('Team'),
+              ...permitAdmin('Governorship'),
               ...permitAdmin('Ministry'),
               ...permitLeader('Bacenta'),
             ]}

@@ -321,8 +321,8 @@ extend type Mutation {
     historyRecord: String!
     newLeaderId: ID
     oldLeaderId: ID
-    newTeamId: ID
-    oldTeamId: ID
+    newGovernorshipId: ID
+    oldGovernorshipId: ID
   ): Bacenta
     @cypher(
       statement: """
@@ -357,45 +357,45 @@ extend type Mutation {
        WITH log,bacenta
        CALL {
          WITH log
-         WITH log WHERE $oldTeamId IS NOT NULL
-         MATCH (oldteam:Team {id: $oldTeamId})
-         MERGE (oldteam)-[:OLD_HISTORY]->(log)
+         WITH log WHERE $oldGovernorshipId IS NOT NULL
+         MATCH (oldgovernorship:Governorship {id: $oldGovernorshipId})
+         MERGE (oldgovernorship)-[:OLD_HISTORY]->(log)
          RETURN COUNT(log)
        }
 
        WITH log,bacenta
        CALL {
          WITH log
-         WITH log WHERE $newTeamId IS NOT NULL
-         MATCH (newteam:Team {id: $newTeamId})
-         MERGE (newteam)-[:HAS_HISTORY]->(log)
+         WITH log WHERE $newGovernorshipId IS NOT NULL
+         MATCH (newgovernorship:Governorship {id: $newGovernorshipId})
+         MERGE (newgovernorship)-[:HAS_HISTORY]->(log)
          RETURN COUNT(log)
        }
 
        RETURN bacenta
       """
     )
-  LogTeamHistory(
-    teamId: ID!
+  LogGovernorshipHistory(
+    governorshipId: ID!
     historyRecord: String!
     newLeaderId: ID
     oldLeaderId: ID
     newCouncilId: ID
     oldCouncilId: ID
-  ): Team
+  ): Governorship
     @cypher(
       statement: """
-      MATCH (team:Team {id: $teamId})
+      MATCH (governorship:Governorship {id: $governorshipId})
       MATCH (admin:Active:Member {auth_id: $auth.jwt.sub})
       CREATE (log:HistoryLog {id: apoc.create.uuid()})
         SET log.historyRecord = $historyRecord,
           log.timeStamp = datetime()
       MERGE (date:TimeGraph {date: date()})
-      MERGE (team)-[r:HAS_HISTORY]->(log)
+      MERGE (governorship)-[r:HAS_HISTORY]->(log)
       MERGE (log)-[:RECORDED_ON]->(date)
       MERGE (log)-[:LOGGED_BY]->(admin)
 
-      WITH log,team
+      WITH log,governorship
       CALL{
         WITH log
         WITH log WHERE $newLeaderId IS NOT NULL
@@ -410,7 +410,7 @@ extend type Mutation {
       RETURN COUNT(log)
       }
 
-      WITH log,team
+      WITH log,governorship
       CALL {
         WITH log
         WITH log WHERE $oldLeaderId IS NOT NULL
@@ -420,7 +420,7 @@ extend type Mutation {
       }
 
 
-      WITH log,team
+      WITH log,governorship
       CALL {
         WITH log
         WITH log WHERE $oldCouncilId IS NOT NULL
@@ -429,7 +429,7 @@ extend type Mutation {
         RETURN COUNT(log)
       }
 
-      WITH log,team
+      WITH log,governorship
       CALL {
         WITH log
         WITH log WHERE $newCouncilId IS NOT NULL
@@ -438,7 +438,7 @@ extend type Mutation {
         RETURN COUNT(log)
       }
 
-      RETURN team
+      RETURN governorship
       """
     )
 
@@ -903,13 +903,13 @@ extend type Mutation {
       RETURN hub
       """
     )
-  LogHubHistoryWithTeam(
+  LogHubHistoryWithGovernorship(
     hubId: ID!
     historyRecord: String!
     newLeaderId: ID
     oldLeaderId: ID
-    newTeamId: ID
-    oldTeamId: ID
+    newGovernorshipId: ID
+    oldGovernorshipId: ID
   ): Hub!
     @cypher(
       statement: """
@@ -950,18 +950,18 @@ extend type Mutation {
         WITH log, hub
         CALL {
           WITH log
-          WITH log WHERE $oldTeamId IS NOT NULL
-          MATCH (team:Team {id: $oldTeamId})
-          MERGE (team)-[:OLD_HISTORY]->(log)
+          WITH log WHERE $oldGovernorshipId IS NOT NULL
+          MATCH (governorship:Governorship {id: $oldGovernorshipId})
+          MERGE (governorship)-[:OLD_HISTORY]->(log)
           RETURN COUNT(log)
         }
 
         WITH log, hub
         CALL {
           WITH log
-          WITH log WHERE $newTeamId IS NOT NULL
-          MATCH (team:Team {id: $newTeamId})
-          MERGE (team)-[:HAS_HISTORY]->(log)
+          WITH log WHERE $newGovernorshipId IS NOT NULL
+          MATCH (governorship:Governorship {id: $newGovernorshipId})
+          MERGE (governorship)-[:HAS_HISTORY]->(log)
           RETURN COUNT(log)
         }
 

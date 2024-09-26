@@ -5,7 +5,7 @@ import { MemberContext } from 'contexts/MemberContext'
 import { useNavigate } from 'react-router'
 import { ChurchContext } from 'contexts/ChurchContext'
 import { useQuery } from '@apollo/client'
-import { COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_TEAM_AND_FELLOWSHIP } from 'pages/campaigns/CampaignQueries'
+import { COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_GOVERNORSHIP_AND_FELLOWSHIP } from 'pages/campaigns/CampaignQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 import { HeadingPrimary } from 'components/HeadingPrimary/HeadingPrimary'
 import HeadingSecondary from 'components/HeadingSecondary'
@@ -20,7 +20,7 @@ const CouncilEquipmentDefaulters = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
 
   const { data, loading, error, refetch } = useQuery(
-    COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_TEAM_AND_FELLOWSHIP,
+    COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_GOVERNORSHIP_AND_FELLOWSHIP,
     {
       variables: {
         councilId: councilId,
@@ -39,15 +39,15 @@ const CouncilEquipmentDefaulters = () => {
               <HeadingSecondary>Equipment Campaign</HeadingSecondary>
             </div>
             <h6 className="mt-4">
-              Fellowships and Teams that haven't filled their form
+              Fellowships and Governorships that haven't filled their form
             </h6>
             <DefaultersMenuButton
-              name="Teams"
+              name="Governorships"
               onClick={() => {
                 clickCard(council)
-                navigate('/campaigns/council/team/equipment/defaulters')
+                navigate('/campaigns/council/governorship/equipment/defaulters')
               }}
-              number={council?.teamCount}
+              number={council?.governorshipCount}
               color="text-danger"
             />
             <div className=" gap-2 mt-4">
@@ -80,8 +80,10 @@ const CouncilEquipmentDefaulters = () => {
             </div>
             <div className=" gap-2 mt-4">
               <h6>
-                Teams :{' '}
-                <span className="text-primary">{council?.teamCount}</span>
+                Governorships :{' '}
+                <span className="text-primary">
+                  {council?.governorshipCount}
+                </span>
               </h6>
               <Row className="mt-3">
                 <Col>
@@ -89,10 +91,10 @@ const CouncilEquipmentDefaulters = () => {
                     name="Have not filled"
                     onClick={() => {
                       navigate(
-                        `/campaigns/council/equipment/have-not-filled/team`
+                        `/campaigns/council/equipment/have-not-filled/governorship`
                       )
                     }}
-                    number={council?.teamEquipmentNotFilledCount}
+                    number={council?.governorshipEquipmentNotFilledCount}
                     color="text-danger"
                   />
                 </Col>
@@ -100,7 +102,7 @@ const CouncilEquipmentDefaulters = () => {
                   <DefaultersMenuButton
                     name="Filled"
                     onClick={() => {}}
-                    number={council?.teamEquipmentFilledCount}
+                    number={council?.governorshipEquipmentFilledCount}
                     color="text-success"
                   />
                 </Col>

@@ -326,8 +326,8 @@ export const DISPLAY_FELLOWSHIP_SERVICE = gql`
   }
 `
 export const DISPLAY_AGGREGATE_SERVICE_RECORD = gql`
-  query aggregateServiceRecordForWeek($week: Int!, $teamId: ID!) {
-    teams(where: { id: $teamId }) {
+  query aggregateServiceRecordForWeek($week: Int!, $governorshipId: ID!) {
+    governorships(where: { id: $governorshipId }) {
       id
       name
       aggregateServiceRecordForWeek(week: $week) {
@@ -585,8 +585,11 @@ export const DISPLAY_MINISTRY_REHEARSAL = gql`
   }
 `
 
-export const DISPLAY_TEAM_SERVICE = gql`
-  query teamDisplayServiceRecords($serviceId: ID!, $teamId: ID!) {
+export const DISPLAY_GOVERNORSHIP_SERVICE = gql`
+  query governorshipDisplayServiceRecords(
+    $serviceId: ID!
+    $governorshipId: ID!
+  ) {
     serviceRecords(where: { id: $serviceId }) {
       id
       createdAt
@@ -636,7 +639,7 @@ export const DISPLAY_TEAM_SERVICE = gql`
         fullName
       }
     }
-    teams(where: { id: $teamId }) {
+    governorships(where: { id: $governorshipId }) {
       id
       name
       stream_name

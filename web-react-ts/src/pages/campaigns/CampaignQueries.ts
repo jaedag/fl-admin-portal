@@ -23,7 +23,7 @@ export const CAMPUS_TRENDS = gql`
         pulpits
       }
       fellowshipEquipmentFilledCount
-      teamEquipmentFilledCount
+      governorshipEquipmentFilledCount
     }
   }
 `
@@ -42,7 +42,7 @@ export const CAMPUS_BY_STREAM = gql`
           pulpits
         }
         fellowshipEquipmentFilledCount
-        teamEquipmentFilledCount
+        governorshipEquipmentFilledCount
       }
     }
   }
@@ -73,13 +73,15 @@ export const EQUIPMENT_END_DATE = gql`
   }
 `
 
-export const CAMPUS_EQUIPMENT_DEFAULTERS_NUMBER_BY_TEAM_AND_FELLOWSHIP = gql`
-  query campusEquipmentDefaultersNumberByTeamAndFellowship($campusId: ID) {
+export const CAMPUS_EQUIPMENT_DEFAULTERS_NUMBER_BY_GOVERNORSHIP_AND_FELLOWSHIP = gql`
+  query campusEquipmentDefaultersNumberByGovernorshipAndFellowship(
+    $campusId: ID
+  ) {
     campuses(where: { id: $campusId }) {
       id
-      teamCount
-      teamEquipmentFilledCount
-      teamEquipmentNotFilledCount
+      governorshipCount
+      governorshipEquipmentFilledCount
+      governorshipEquipmentNotFilledCount
       fellowshipCount
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
@@ -96,10 +98,10 @@ export const CAMPUS_BY_STREAM_EQUIPMENT_DEFAULTERS = gql`
       streams {
         id
         name
-        teamCount
+        governorshipCount
         fellowshipCount
-        teamEquipmentFilledCount
-        teamEquipmentNotFilledCount
+        governorshipEquipmentFilledCount
+        governorshipEquipmentNotFilledCount
         fellowshipEquipmentFilledCount
         fellowshipEquipmentNotFilledCount
         admin {
@@ -114,11 +116,11 @@ export const CAMPUS_BY_STREAM_EQUIPMENT_DEFAULTERS = gql`
   }
 `
 
-export const CAMPUS_EQUIPMENT_DEFAULTERS_LIST_BY_TEAM = gql`
-  query equipmentCampusDefaultersByTeam($campusId: ID) {
+export const CAMPUS_EQUIPMENT_DEFAULTERS_LIST_BY_GOVERNORSHIP = gql`
+  query equipmentCampusDefaultersByGovernorship($campusId: ID) {
     campuses(where: { id: $campusId }) {
       id
-      teamEquipmentNotFilled {
+      governorshipEquipmentNotFilled {
         id
         name
         leader {
@@ -174,7 +176,7 @@ export const STREAM_TRENDS = gql`
         pulpits
       }
       fellowshipEquipmentFilledCount
-      teamEquipmentFilledCount
+      governorshipEquipmentFilledCount
     }
   }
 `
@@ -193,7 +195,7 @@ export const STREAM_BY_COUNCIL = gql`
           pulpits
         }
         fellowshipEquipmentFilledCount
-        teamEquipmentFilledCount
+        governorshipEquipmentFilledCount
       }
     }
   }
@@ -206,10 +208,10 @@ export const STREAM_BY_COUNCIL_EQUIPMENT_DEFAULTERS = gql`
       councils {
         id
         name
-        teamCount
+        governorshipCount
         fellowshipCount
-        teamEquipmentFilledCount
-        teamEquipmentNotFilledCount
+        governorshipEquipmentFilledCount
+        governorshipEquipmentNotFilledCount
         fellowshipEquipmentFilledCount
         fellowshipEquipmentNotFilledCount
         admin {
@@ -224,13 +226,15 @@ export const STREAM_BY_COUNCIL_EQUIPMENT_DEFAULTERS = gql`
   }
 `
 
-export const STREAM_EQUIPMENT_DEFAULTERS_NUMBER_BY_TEAM_AND_FELLOWSHIP = gql`
-  query streamEquipmentDefaultersNumberByTeamAndFellowship($streamId: ID) {
+export const STREAM_EQUIPMENT_DEFAULTERS_NUMBER_BY_GOVERNORSHIP_AND_FELLOWSHIP = gql`
+  query streamEquipmentDefaultersNumberByGovernorshipAndFellowship(
+    $streamId: ID
+  ) {
     streams(where: { id: $streamId }) {
       id
-      teamCount
-      teamEquipmentFilledCount
-      teamEquipmentNotFilledCount
+      governorshipCount
+      governorshipEquipmentFilledCount
+      governorshipEquipmentNotFilledCount
       fellowshipCount
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
@@ -239,11 +243,11 @@ export const STREAM_EQUIPMENT_DEFAULTERS_NUMBER_BY_TEAM_AND_FELLOWSHIP = gql`
   }
 `
 
-export const STREAM_EQUIPMENT_DEFAULTERS_LIST_BY_TEAM = gql`
-  query equipmentStreamDefaultersByTeam($streamId: ID) {
+export const STREAM_EQUIPMENT_DEFAULTERS_LIST_BY_GOVERNORSHIP = gql`
+  query equipmentStreamDefaultersByGovernorship($streamId: ID) {
     streams(where: { id: $streamId }) {
       id
-      teamEquipmentNotFilled {
+      governorshipEquipmentNotFilled {
         id
         name
         leader {
@@ -299,17 +303,17 @@ export const COUNCIL_TRENDS = gql`
         pulpits
       }
       fellowshipEquipmentFilledCount
-      teamEquipmentFilledCount
+      governorshipEquipmentFilledCount
     }
   }
 `
 
-export const COUNCIL_BY_TEAM = gql`
-  query equipmentCouncilByTeam($councilId: ID) {
+export const COUNCIL_BY_GOVERNORSHIP = gql`
+  query equipmentCouncilByGovernorship($councilId: ID) {
     councils(where: { id: $councilId }) {
       id
       name
-      teams {
+      governorships {
         id
         name
         equipmentRecord {
@@ -324,13 +328,15 @@ export const COUNCIL_BY_TEAM = gql`
   }
 `
 
-export const COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_TEAM_AND_FELLOWSHIP = gql`
-  query councilEquipmentDefaultersNumberByTeamAndFellowship($councilId: ID) {
+export const COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_GOVERNORSHIP_AND_FELLOWSHIP = gql`
+  query councilEquipmentDefaultersNumberByGovernorshipAndFellowship(
+    $councilId: ID
+  ) {
     councils(where: { id: $councilId }) {
       id
-      teamCount
-      teamEquipmentFilledCount
-      teamEquipmentNotFilledCount
+      governorshipCount
+      governorshipEquipmentFilledCount
+      governorshipEquipmentNotFilledCount
       fellowshipCount
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
@@ -356,12 +362,12 @@ export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
     }
   }
 `
-export const COUNCIL_BY_TEAM_EQUIPMENT_DEFAULTERS = gql`
-  query equipmentCouncilByTeamDefaulters($councilId: ID) {
+export const COUNCIL_BY_GOVERNORSHIP_EQUIPMENT_DEFAULTERS = gql`
+  query equipmentCouncilByGovernorshipDefaulters($councilId: ID) {
     councils(where: { id: $councilId }) {
       id
       name
-      teams {
+      governorships {
         id
         name
         fellowshipCount
@@ -383,11 +389,11 @@ export const COUNCIL_BY_TEAM_EQUIPMENT_DEFAULTERS = gql`
   }
 `
 
-export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_TEAM = gql`
-  query equipmentTeamDefaultersByTeam($councilId: ID) {
+export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_GOVERNORSHIP = gql`
+  query equipmentGovernorshipDefaultersByGovernorship($councilId: ID) {
     councils(where: { id: $councilId }) {
       id
-      teamEquipmentNotFilled {
+      governorshipEquipmentNotFilled {
         id
         name
         leader {
@@ -402,10 +408,10 @@ export const COUNCIL_EQUIPMENT_DEFAULTERS_LIST_BY_TEAM = gql`
   }
 `
 
-//Teams and Mutations
-export const TEAM_CAMPAIGN_LIST = gql`
-  query teamCampaigns($teamId: ID) {
-    teams(where: { id: $teamId }) {
+//Governorships and Mutations
+export const GOVERNORSHIP_CAMPAIGN_LIST = gql`
+  query governorshipCampaigns($governorshipId: ID) {
+    governorships(where: { id: $governorshipId }) {
       id
       name
       campaigns
@@ -413,9 +419,9 @@ export const TEAM_CAMPAIGN_LIST = gql`
   }
 `
 
-export const TEAM_TRENDS = gql`
-  query teamsTrends($teamId: ID) {
-    teams(where: { id: $teamId }) {
+export const GOVERNORSHIP_TRENDS = gql`
+  query governorshipsTrends($governorshipId: ID) {
+    governorships(where: { id: $governorshipId }) {
       id
       name
       equipmentRecord {
@@ -429,9 +435,13 @@ export const TEAM_TRENDS = gql`
   }
 `
 
-export const CREATE_TEAM_EQUIPMENT_RECORD = gql`
-  mutation CreateTeamEquipmentRecord($id: ID!, $pulpits: Int!, $date: Date!) {
-    CreateTeamEquipmentRecord(id: $id, pulpits: $pulpits, date: $date) {
+export const CREATE_GOVERNORSHIP_EQUIPMENT_RECORD = gql`
+  mutation CreateGovernorshipEquipmentRecord(
+    $id: ID!
+    $pulpits: Int!
+    $date: Date!
+  ) {
+    CreateGovernorshipEquipmentRecord(id: $id, pulpits: $pulpits, date: $date) {
       id
       equipmentRecord {
         id
@@ -441,9 +451,9 @@ export const CREATE_TEAM_EQUIPMENT_RECORD = gql`
   }
 `
 
-export const TEAM_LATEST_EQUIPMENT_RECORD = gql`
-  query LatestEquipmentRecord($teamId: ID) {
-    teams(where: { id: $teamId }) {
+export const GOVERNORSHIP_LATEST_EQUIPMENT_RECORD = gql`
+  query LatestEquipmentRecord($governorshipId: ID) {
+    governorships(where: { id: $governorshipId }) {
       id
       equipmentRecord {
         id
@@ -453,9 +463,9 @@ export const TEAM_LATEST_EQUIPMENT_RECORD = gql`
   }
 `
 
-export const TEAM_BY_BACENTA = gql`
-  query equipmentTeamByBacenta($teamId: ID) {
-    teams(where: { id: $teamId }) {
+export const GOVERNORSHIP_BY_BACENTA = gql`
+  query equipmentGovernorshipByBacenta($governorshipId: ID) {
+    governorships(where: { id: $governorshipId }) {
       id
       name
       bacentas {
@@ -471,9 +481,9 @@ export const TEAM_BY_BACENTA = gql`
   }
 `
 
-export const TEAM_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
-  query equipmentTeamDefaultersNumberByFellowship($teamId: ID) {
-    teams(where: { id: $teamId }) {
+export const GOVERNORSHIP_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
+  query equipmentGovernorshipDefaultersNumberByFellowship($governorshipId: ID) {
+    governorships(where: { id: $governorshipId }) {
       id
       name
       fellowshipEquipmentFilledCount
@@ -483,9 +493,9 @@ export const TEAM_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
   }
 `
 
-export const TEAM_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
-  query equipmentTeamDefaultersListByFellowship($teamId: ID) {
-    teams(where: { id: $teamId }) {
+export const GOVERNORSHIP_EQUIPMENT_DEFAULTERS_LIST_BY_FELLOWSHIP = gql`
+  query equipmentGovernorshipDefaultersListByFellowship($governorshipId: ID) {
+    governorships(where: { id: $governorshipId }) {
       id
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
@@ -609,9 +619,9 @@ export const FELLOWSHIP_LATEST_EQUIPMENT_RECORD = gql`
 `
 
 // use bacenta by fellowship instrad and drill down
-export const FELLOWSHIP_RECORDS_PER_TEAM = gql`
-  query Teams($teamId: ID) {
-    teams(where: { id: $teamId }) {
+export const FELLOWSHIP_RECORDS_PER_GOVERNORSHIP = gql`
+  query Governorships($governorshipId: ID) {
+    governorships(where: { id: $governorshipId }) {
       id
       bacentas {
         id

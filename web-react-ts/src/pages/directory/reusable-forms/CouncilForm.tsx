@@ -21,11 +21,11 @@ import SubmitButton from 'components/formik/SubmitButton'
 import { permitAdmin } from 'permission-utils'
 import Input from 'components/formik/Input'
 import SearchMember from 'components/formik/SearchMember'
-import SearchTeam from 'components/formik/SearchTeam'
+import SearchGovernorship from 'components/formik/SearchGovernorship'
 import { FormikInitialValues } from 'components/formik/formik-types'
-import { Team, HubCouncil } from 'global-types'
+import { Governorship, HubCouncil } from 'global-types'
 import {
-  MOVE_TEAM_TO_COUNCIL,
+  MOVE_GOVERNORSHIP_TO_COUNCIL,
   MOVE_HUBCOUNCIL_TO_COUNCIL,
 } from '../update/UpdateMutations'
 import NoDataComponent from 'pages/arrivals/CompNoData'
@@ -36,8 +36,8 @@ import SearchHubCouncil from 'components/formik/SearchHubCouncil'
 
 export interface CouncilFormValues extends FormikInitialValues {
   stream?: Stream
-  teams?: Team[]
-  team?: Team
+  governorships?: Governorship[]
+  governorship?: Governorship
   hubCouncil?: HubCouncil
   hubCouncils?: HubCouncil[]
 }
@@ -59,7 +59,7 @@ const CouncilForm = ({
   newCouncil,
 }: CouncilFormProps) => {
   const { clickCard, councilId } = useContext(ChurchContext)
-  const [teamModal, setTeamModal] = useState(false)
+  const [governorshipModal, setGovernorshipModal] = useState(false)
   const [hubCouncilModal, setHubCouncilModal] = useState(false)
   const [closeDown, setCloseDown] = useState(false)
 
@@ -70,9 +70,14 @@ const CouncilForm = ({
       { query: DISPLAY_STREAM, variables: { id: initialValues?.stream?.id } },
     ],
   })
-  const [MoveTeamToCouncil] = useMutation(MOVE_TEAM_TO_COUNCIL, {
-    refetchQueries: [{ query: DISPLAY_COUNCIL, variables: { id: councilId } }],
-  })
+  const [MoveGovernorshipToCouncil] = useMutation(
+    MOVE_GOVERNORSHIP_TO_COUNCIL,
+    {
+      refetchQueries: [
+        { query: DISPLAY_COUNCIL, variables: { id: councilId } },
+      ],
+    }
+  )
   const [MoveHubCouncilToCouncil] = useMutation(MOVE_HUBCOUNCIL_TO_COUNCIL, {
     refetchQueries: [{ query: DISPLAY_COUNCIL, variables: { id: councilId } }],
   })
@@ -91,7 +96,9 @@ const CouncilForm = ({
       <ButtonGroup className="mt-3">
         {!newCouncil && (
           <>
-            <Button onClick={() => setTeamModal(true)}>Add Team</Button>
+            <Button onClick={() => setGovernorshipModal(true)}>
+              Add Governorship
+            </Button>
             <Button variant="warning" onClick={() => setHubCouncilModal(true)}>
               Add Hub Council
             </Button>
@@ -137,19 +144,21 @@ const CouncilForm = ({
                       </RoleView>
                     </Row>
                     <div className="d-grid gap-2">
-                      {initialValues.teams?.length && (
-                        <p className="fw-bold fs-5">Teams</p>
+                      {initialValues.governorships?.length && (
+                        <p className="fw-bold fs-5">Governorships</p>
                       )}
 
-                      {initialValues.teams?.map((team, index) => {
-                        if (!team && !index)
-                          return <NoDataComponent text="No Teams" />
-                        return (
-                          <Button variant="secondary" className="text-start">
-                            {team.name} Team
-                          </Button>
-                        )
-                      })}
+                      {initialValues.governorships?.map(
+                        (governorship, index) => {
+                          if (!governorship && !index)
+                            return <NoDataComponent text="No Governorships" />
+                          return (
+                            <Button variant="secondary" className="text-start">
+                              {governorship.name} Governorship
+                            </Button>
+                          )
+                        }
+                      )}
                     </div>
 
                     <div className="d-grid gap-2 mt-3">
@@ -176,40 +185,44 @@ const CouncilForm = ({
               </div>
             </Form>
 
-            <Modal show={teamModal} onHide={() => setTeamModal(false)} centered>
-              <Modal.Header closeButton>Add A Team</Modal.Header>
+            <Modal
+              show={governorshipModal}
+              onHide={() => setGovernorshipModal(false)}
+              centered
+            >
+              <Modal.Header closeButton>Add A Governorship</Modal.Header>
               <Modal.Body>
-                <p>Choose a team to move to this council</p>
-                <SearchTeam
-                  name={`team`}
-                  placeholder="Team Name"
+                <p>Choose a governorship to move to this council</p>
+                <SearchGovernorship
+                  name={`governorship`}
+                  placeholder="Governorship Name"
                   initialValue=""
                   setFieldValue={formik.setFieldValue}
-                  aria-describedby="Team Name"
+                  aria-describedby="Governorship Name"
                 />
               </Modal.Body>
               <Modal.Footer>
                 <Button
                   variant="success"
                   type="submit"
-                  disabled={buttonLoading || !formik.values.team}
+                  disabled={buttonLoading || !formik.values.governorship}
                   onClick={async () => {
                     try {
                       setButtonLoading(true)
-                      const res = await MoveTeamToCouncil({
+                      const res = await MoveGovernorshipToCouncil({
                         variables: {
-                          teamId: formik.values.team?.id,
-                          historyRecord: `${formik.values.team?.name} Team has been moved to ${formik.values.name} Council from ${formik.values.team?.council.name} Council`,
+                          governorshipId: formik.values.governorship?.id,
+                          historyRecord: `${formik.values.governorship?.name} Governorship has been moved to ${formik.values.name} Council from ${formik.values.governorship?.council.name} Council`,
                           newCouncilId: councilId,
-                          oldCouncilId: formik.values.team?.council.id,
+                          oldCouncilId: formik.values.governorship?.council.id,
                         },
                       })
 
-                      clickCard(res.data.MoveTeamToCouncil)
-                      setTeamModal(false)
+                      clickCard(res.data.MoveGovernorshipToCouncil)
+                      setGovernorshipModal(false)
                     } catch (error) {
                       throwToSentry(
-                        `There was an error moving this team to this council`,
+                        `There was an error moving this governorship to this council`,
                         error
                       )
                     } finally {
@@ -219,7 +232,10 @@ const CouncilForm = ({
                 >
                   <BtnSubmitText loading={buttonLoading} />
                 </Button>
-                <Button variant="primary" onClick={() => setTeamModal(false)}>
+                <Button
+                  variant="primary"
+                  onClick={() => setGovernorshipModal(false)}
+                >
                   Close
                 </Button>
               </Modal.Footer>

@@ -96,26 +96,27 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
     @relationship(type: "LEADS", direction: OUT)
   leadsMinistry: [Ministry!]! @relationship(type: "LEADS", direction: OUT)
   leadsHub: [Hub!]! @relationship(type: "LEADS", direction: OUT)
-  leadsTeam: [Team!]! @relationship(type: "LEADS", direction: OUT)
-  leadsTeamCount: Int
+  leadsGovernorship: [Governorship!]!
+    @relationship(type: "LEADS", direction: OUT)
+  leadsGovernorshipCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS]->(team:Team)
-      RETURN COUNT(DISTINCT team)
+      MATCH (this)-[:LEADS]->(governorship:Governorship)
+      RETURN COUNT(DISTINCT governorship)
       """
     )
-  isAdminForTeamCount: Int
+  isAdminForGovernorshipCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:IS_ADMIN_FOR]->(team:Team)
-      RETURN COUNT(DISTINCT team)
+      MATCH (this)-[:IS_ADMIN_FOR]->(governorship:Governorship)
+      RETURN COUNT(DISTINCT governorship)
       """
     )
-  leadsAdminsTeamCount: Int
+  leadsAdminsGovernorshipCount: Int
     @cypher(
       statement: """
-      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(team:Team)
-      RETURN COUNT(DISTINCT team)
+      MATCH (this)-[:LEADS|IS_ADMIN_FOR]->(governorship:Governorship)
+      RETURN COUNT(DISTINCT governorship)
       """
     )
   leadsCouncil: [Council!]! @relationship(type: "LEADS", direction: OUT)
@@ -234,7 +235,8 @@ type Member @auth(rules: [{ isAuthenticated: true }]) {
     @relationship(type: "IS_ADMIN_FOR", direction: OUT)
   isAdminForCouncil: [Council!]!
     @relationship(type: "IS_ADMIN_FOR", direction: OUT)
-  isAdminForTeam: [Team!]! @relationship(type: "IS_ADMIN_FOR", direction: OUT)
+  isAdminForGovernorship: [Governorship!]!
+    @relationship(type: "IS_ADMIN_FOR", direction: OUT)
 
   #OTHER WORKS
   was_treasurer_for: [ServiceRecord!]!
@@ -310,7 +312,8 @@ type HistoryLog @auth(rules: [{ isAuthenticated: true }]) {
   leaders: [Member!]! @relationship(type: "HAS_HISTORY", direction: IN)
   fellowship: [Fellowship!]! @relationship(type: "HAS_HISTORY", direction: IN)
   bacenta: [Bacenta!]! @relationship(type: "HAS_HISTORY", direction: IN)
-  team: [Team!]! @relationship(type: "HAS_HISTORY", direction: IN)
+  governorship: [Governorship!]!
+    @relationship(type: "HAS_HISTORY", direction: IN)
   ministry: [Ministry!]! @relationship(type: "HAS_HISTORY", direction: IN)
   hub: Hub! @relationship(type: "HAS_HISTORY", direction: IN)
   creativeArt: [CreativeArts!]!
@@ -347,8 +350,10 @@ type Denomination implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*4]->(councils:Council) RETURN councils"
     )
-  teams: [Team!]!
-    @cypher(statement: "MATCH (this)-[:HAS*5]->(teams:Team) RETURN teams")
+  governorships: [Governorship!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*5]->(governorships:Governorship) RETURN governorships"
+    )
   bacentas: [Bacenta!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*6]->(bacentas:Bacenta) RETURN bacentas"
@@ -387,8 +392,10 @@ type Denomination implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*4]->(council:Council) RETURN COUNT(council)"
     )
-  teamCount: Int
-    @cypher(statement: "MATCH (this)-[:HAS*5]->(team:Team) RETURN COUNT(team)")
+  governorshipCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*5]->(governorship:Governorship) RETURN COUNT(governorship)"
+    )
   bacentaCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*6]->(bacentas:Bacenta) RETURN COUNT(DISTINCT bacentas)"
@@ -447,8 +454,10 @@ type Oversight implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(councils:Council) RETURN councils"
     )
-  teams: [Team!]!
-    @cypher(statement: "MATCH (this)-[:HAS*4]->(teams:Team) RETURN teams")
+  governorships: [Governorship!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*4]->(governorships:Governorship) RETURN governorships"
+    )
   bacentas: [Bacenta!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*5]->(bacentas:Bacenta) RETURN bacentas"
@@ -487,8 +496,10 @@ type Oversight implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(council:Council) RETURN COUNT(council)"
     )
-  teamCount: Int
-    @cypher(statement: "MATCH (this)-[:HAS*4]->(team:Team) RETURN COUNT(team)")
+  governorshipCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*4]->(governorship:Governorship) RETURN COUNT(governorship)"
+    )
   bacentaCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*5]->(bacentas:Bacenta) RETURN COUNT(DISTINCT bacentas)"
@@ -551,8 +562,10 @@ type Campus implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*2]->(councils:Council) RETURN councils"
     )
-  teams: [Team!]!
-    @cypher(statement: "MATCH (this)-[:HAS*3]->(teams:Team) RETURN teams")
+  governorships: [Governorship!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]->(governorships:Governorship) RETURN governorships"
+    )
   bacentas(limit: Int): [Bacenta!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*4]->(bacentas:Bacenta) RETURN bacentas"
@@ -587,8 +600,10 @@ type Campus implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*2]->(council:Council) RETURN COUNT(council)"
     )
-  teamCount: Int
-    @cypher(statement: "MATCH (this)-[:HAS*3]->(team:Team) RETURN COUNT(team)")
+  governorshipCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*3]->(governorship:Governorship) RETURN COUNT(governorship)"
+    )
   bacentaCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*4]->(bacentas:Bacenta)  RETURN COUNT(DISTINCT bacentas)"
@@ -660,8 +675,10 @@ type Stream implements Church {
       RETURN DISTINCT toLower(this.name)
       """
     )
-  teams: [Team!]!
-    @cypher(statement: "MATCH (this)-[:HAS*2]->(teams:Team) RETURN teams")
+  governorships: [Governorship!]!
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]->(governorships:Governorship) RETURN governorships"
+    )
   bacentas(limit: Int): [Bacenta!]!
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(bacentas:Bacenta)  RETURN bacentas"
@@ -694,8 +711,10 @@ type Stream implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS]->(council:Council) RETURN COUNT(council)"
     )
-  teamCount: Int
-    @cypher(statement: "MATCH (this)-[:HAS*2]->(team:Team) RETURN COUNT(team)")
+  governorshipCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS*2]->(governorship:Governorship) RETURN COUNT(governorship)"
+    )
   bacentaCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*3]->(bacentas:Bacenta)  RETURN COUNT(DISTINCT bacentas)"
@@ -759,7 +778,7 @@ type Council implements Church {
     @cypher(
       statement: "MATCH (this)-[:HAS*1..2]->(bacentas:Bacenta) RETURN bacentas"
     )
-  teams: [Team!]! @relationship(type: "HAS", direction: OUT)
+  governorships: [Governorship!]! @relationship(type: "HAS", direction: OUT)
   members: [Member!]!
     @cypher(
       statement: """
@@ -781,8 +800,10 @@ type Council implements Church {
       RETURN COUNT(DISTINCT pastors)
       """
     )
-  teamCount: Int
-    @cypher(statement: "MATCH (this)-[:HAS]->(team:Team) RETURN COUNT(team)")
+  governorshipCount: Int
+    @cypher(
+      statement: "MATCH (this)-[:HAS]->(governorship:Governorship) RETURN COUNT(governorship)"
+    )
   bacentaCount: Int
     @cypher(
       statement: "MATCH (this)-[:HAS*2]->(bacentas:Bacenta)  RETURN COUNT(DISTINCT bacentas)"
@@ -830,7 +851,7 @@ type Council implements Church {
     )
 }
 
-type Team implements Church {
+type Governorship implements Church {
   id: ID @id
   name: String!
   stream_name: String
@@ -965,7 +986,7 @@ type Bacenta implements Church {
     )
   leader: Member @relationship(type: "LEADS", direction: IN)
 
-  team: Team @relationship(type: "HAS", direction: IN)
+  governorship: Governorship @relationship(type: "HAS", direction: IN)
   history(limit: Int! = 3): [HistoryLog!]!
     @cypher(
       statement: "MATCH (this)-[:HAS_HISTORY|OLD_HISTORY]->(log:HistoryLog) RETURN log ORDER BY log.timeStamp DESC LIMIT $limit"

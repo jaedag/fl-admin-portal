@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
-export const TEAM_ARRIVALS_DASHBOARD = gql`
-  query teamArrivalsDashboard($id: ID!, $arrivalDate: String!) {
-    teams(where: { id: $id }, options: { limit: 1 }) {
+export const GOVERNORSHIP_ARRIVALS_DASHBOARD = gql`
+  query governorshipArrivalsDashboard($id: ID!, $arrivalDate: String!) {
+    governorships(where: { id: $id }, options: { limit: 1 }) {
       id
       name
       council {
@@ -64,7 +64,7 @@ export const COUNCIL_ARRIVALS_DASHBOARD = gql`
         fullName
         pictureUrl
       }
-      teamCount
+      governorshipCount
       bacentasNoActivityCount(arrivalDate: $arrivalDate)
       bacentasMobilisingCount(arrivalDate: $arrivalDate)
       bacentasOnTheWayCount(arrivalDate: $arrivalDate)
@@ -167,9 +167,9 @@ export const CAMPUS_ARRIVALS_DASHBOARD = gql`
   }
 `
 
-export const CONFIRM_TEAM_ARRIVALS = gql`
-  query confirmTeamArrivals($id: ID!, $arrivalDate: String!) {
-    teams(where: { id: $id }, options: { limit: 1 }) {
+export const CONFIRM_GOVERNORSHIP_ARRIVALS = gql`
+  query confirmGovernorshipArrivals($id: ID!, $arrivalDate: String!) {
+    governorships(where: { id: $id }, options: { limit: 1 }) {
       id
       name
       stream_name
@@ -343,18 +343,18 @@ export const BACENTA_ARRIVALS = gql`
   }
 `
 
-export const TEAM_LEADER_ARRIVALS = gql`
-  query teamLeaderArrivals($id: ID!) {
+export const GOVERNORSHIP_LEADER_ARRIVALS = gql`
+  query governorshipLeaderArrivals($id: ID!) {
     members(where: { id: $id }, options: { limit: 1 }) {
       id
       firstName
       lastName
       fullName
-      leadsTeam {
+      leadsGovernorship {
         id
         name
       }
-      isAdminForTeam {
+      isAdminForGovernorship {
         id
         name
       }
@@ -566,7 +566,7 @@ export const DISPLAY_VEHICLE_PAYMENT_RECORDS = gql`
         fullName
         pictureUrl
       }
-      team {
+      governorship {
         id
         name
         council {
@@ -615,7 +615,7 @@ export const DISPLAY_ARRIVALS_PAYMENT_DATA = gql`
         momoName
         comments
         council
-        team
+        governorship
         society
         date
         arrivalTime

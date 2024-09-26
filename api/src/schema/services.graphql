@@ -23,7 +23,7 @@ extend type Stream {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN DISTINCT bacentas
       """
@@ -46,7 +46,7 @@ extend type Stream {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -70,7 +70,7 @@ extend type Stream {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN DISTINCT bacentas
       """
@@ -94,7 +94,7 @@ extend type Stream {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -118,7 +118,7 @@ extend type Stream {
        MATCH (bacentas)-[:MEETS_ON]->(day:ServiceDay)
 
        WITH collect(DISTINCT bacentas) as services, this
-       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
        WITH defaulters, this
@@ -146,7 +146,7 @@ extend type Stream {
        MATCH (bacentas)-[:MEETS_ON]->(day:ServiceDay)
 
        WITH collect(DISTINCT bacentas) as services, this
-       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
        WITH defaulters, this
@@ -177,7 +177,7 @@ extend type Stream {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN DISTINCT bacentas
       """
@@ -204,7 +204,7 @@ extend type Stream {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -229,7 +229,7 @@ extend type Stream {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN DISTINCT bacentas
       """
@@ -254,12 +254,12 @@ extend type Stream {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
     )
-  teamServicesThisWeek: [Team!]!
+  governorshipServicesThisWeek: [Governorship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -274,15 +274,15 @@ extend type Stream {
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
        WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(council:Council)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(council:Council)<-[:HAS]-(this)
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamServicesThisWeekCount: Int
+  governorshipServicesThisWeekCount: Int
     @cypher(
       statement: """
       MATCH (this)
@@ -297,12 +297,12 @@ extend type Stream {
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
        WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(council:Council)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(council:Council)<-[:HAS]-(this)
 
-      RETURN COUNT(DISTINCT teams)
+      RETURN COUNT(DISTINCT governorships)
       """
     )
   councilServicesThisWeek: [Council!]!
@@ -371,9 +371,9 @@ extend type Council {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(this)
 
-      RETURN bacentas ORDER BY team.name
+      RETURN bacentas ORDER BY governorship.name
       """
     )
   servicesThisWeekCount: Int
@@ -394,7 +394,7 @@ extend type Council {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -417,9 +417,9 @@ extend type Council {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(this)
 
-      RETURN bacentas ORDER BY team.name
+      RETURN bacentas ORDER BY governorship.name
       """
     )
   cancelledServicesThisWeekCount: Int
@@ -440,7 +440,7 @@ extend type Council {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -464,14 +464,14 @@ extend type Council {
        MATCH (bacentas)-[:MEETS_ON]->(day:ServiceDay)
 
        WITH collect(DISTINCT bacentas) as services, this
-       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(team:Team)<-[:HAS]-(this)
+       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
-       WITH defaulters, this, team
+       WITH defaulters, this, governorship
        MATCH (defaulters)-[:MEETS_ON]->(day:ServiceDay)
         WHERE day.dayNumber < date().dayOfWeek OR (day.dayNumber = date().dayOfWeek AND  time() > time('20:30'))
-        WITH DISTINCT defaulters, team
-       RETURN defaulters ORDER BY team.name
+        WITH DISTINCT defaulters, governorship
+       RETURN defaulters ORDER BY governorship.name
       """
     )
   formDefaultersThisWeekCount: Int
@@ -493,7 +493,7 @@ extend type Council {
        MATCH (bacentas)-[:MEETS_ON]->(day:ServiceDay)
 
        WITH collect(DISTINCT bacentas) as services, this
-       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(team:Team)<-[:HAS]-(this)
+       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
        WITH defaulters, this
@@ -524,9 +524,9 @@ extend type Council {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(this)
 
-      RETURN bacentas ORDER BY team.name
+      RETURN bacentas ORDER BY governorship.name
       """
     )
   bankingDefaultersThisWeekCount: Int
@@ -551,7 +551,7 @@ extend type Council {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -576,9 +576,9 @@ extend type Council {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(this)
 
-      RETURN bacentas ORDER BY team.name
+      RETURN bacentas ORDER BY governorship.name
       """
     )
   bankedThisWeekCount: Int
@@ -601,12 +601,12 @@ extend type Council {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
     )
-  teamServicesThisWeek: [Team!]!
+  governorshipServicesThisWeek: [Governorship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -621,15 +621,15 @@ extend type Council {
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
        WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(this)
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamServicesThisWeekCount: Int
+  governorshipServicesThisWeekCount: Int
     @cypher(
       statement: """
       MATCH (this)
@@ -644,17 +644,17 @@ extend type Council {
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
        WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-      MATCH (teams)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+      MATCH (governorships)<-[:HAS]-(this)
 
-      RETURN COUNT(DISTINCT teams)
+      RETURN COUNT(DISTINCT governorships)
       """
     )
 }
 
-extend type Team {
+extend type Governorship {
   servicesThisWeek: [Bacenta!]!
     @cypher(
       statement: """
@@ -960,7 +960,7 @@ type ServiceRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
     @cypher(
       statement: """
       MATCH (this)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)
-      WHERE church:Bacenta OR church:Team OR church:Council OR church:Stream
+      WHERE church:Bacenta OR church:Governorship OR church:Council OR church:Stream
       MATCH (church)<-[:HAS*1..4]-(stream:Stream)
       RETURN stream.name
       """
@@ -1006,7 +1006,8 @@ type ServiceLog @auth(rules: [{ isAuthenticated: true }]) {
   leaders: [Member!]! @relationship(type: "HAS_HISTORY", direction: IN)
   fellowship: [Bacenta!]! @relationship(type: "HAS_HISTORY", direction: IN)
   bacenta: [Bacenta!]! @relationship(type: "HAS_HISTORY", direction: IN)
-  team: [Team!]! @relationship(type: "HAS_HISTORY", direction: IN)
+  governorship: [Governorship!]!
+    @relationship(type: "HAS_HISTORY", direction: IN)
   council: [Council!]! @relationship(type: "HAS_HISTORY", direction: IN)
   stream: [Stream!]! @relationship(type: "HAS_HISTORY", direction: IN)
   ministry: [Ministry!]! @relationship(type: "HAS_HISTORY", direction: IN)
@@ -1049,7 +1050,14 @@ extend type Mutation {
   UndoCancelledService(serviceRecordId: ID!): Bacenta!
     @auth(
       rules: [
-        { roles: ["adminCampus", "adminStream", "adminCouncil", "adminTeam"] }
+        {
+          roles: [
+            "adminCampus"
+            "adminStream"
+            "adminCouncil"
+            "adminGovernorship"
+          ]
+        }
       ]
     )
     @cypher(
@@ -1273,7 +1281,7 @@ extend type Campus {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN DISTINCT bacentas
       """
@@ -1296,7 +1304,7 @@ extend type Campus {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -1319,7 +1327,7 @@ extend type Campus {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN DISTINCT bacentas
       """
@@ -1342,7 +1350,7 @@ extend type Campus {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -1366,7 +1374,7 @@ extend type Campus {
        MATCH (bacentas)-[:MEETS_ON]->(day:ServiceDay)
 
        WITH collect(DISTINCT bacentas) as services, this
-       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
        WITH defaulters, this
@@ -1394,7 +1402,7 @@ extend type Campus {
        MATCH (bacentas)-[:MEETS_ON]->(day:ServiceDay)
 
        WITH collect(DISTINCT bacentas) as services, this
-       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       MATCH (defaulters:Active:Bacenta)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
        WHERE NOT defaulters IN services
 
        WITH defaulters, this
@@ -1425,7 +1433,7 @@ extend type Campus {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN DISTINCT bacentas
       """
@@ -1452,7 +1460,7 @@ extend type Campus {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
@@ -1477,7 +1485,7 @@ extend type Campus {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN DISTINCT bacentas
       """
@@ -1502,12 +1510,12 @@ extend type Campus {
        MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
 
        WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(team:Team)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       MATCH (bacentas)<-[:HAS]-(governorship:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT bacentas)
       """
     )
-  teamServicesThisWeek: [Team!]!
+  governorshipServicesThisWeek: [Governorship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -1522,15 +1530,15 @@ extend type Campus {
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
        WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
-      RETURN DISTINCT teams
+      RETURN DISTINCT governorships
       """
     )
-  teamServicesThisWeekCount: Int
+  governorshipServicesThisWeekCount: Int
     @cypher(
       statement: """
       MATCH (this)
@@ -1545,12 +1553,12 @@ extend type Campus {
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
        WITH DISTINCT this, record WHERE record.attendance IS NOT NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(teams) WHERE teams:Team OR teams:ClosedTeam
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT teams, this
-       MATCH (teams)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(:Stream)<-[:HAS]-(this)
 
-      RETURN COUNT(DISTINCT teams)
+      RETURN COUNT(DISTINCT governorships)
       """
     )
   councilServicesThisWeek: [Council!]!

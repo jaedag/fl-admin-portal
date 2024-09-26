@@ -18,7 +18,7 @@ const CouncilSwollenSundayTarget = () => {
 
   const swollenTargetTemplate = bacentas?.map((bacenta: any) => {
     return {
-      team: bacenta?.team?.name,
+      governorship: bacenta?.governorship?.name,
       bacenta: bacenta?.name,
       code: bacenta?.code,
       leader: `${bacenta?.leader?.firstName} ${bacenta?.leader?.lastName}`,

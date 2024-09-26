@@ -18,7 +18,7 @@ type AggregateBussingRecord @auth(rules: [{ isAuthenticated: true }]) {
   numberOfSprinters: Int!
   numberOfUrvans: Int!
   numberOfCars: Int!
-bussingTopUp: Float
+  bussingTopUp: Float
 }
 
 extend type Bacenta {
@@ -40,7 +40,7 @@ extend type Bacenta {
     )
 }
 
-extend type Team {
+extend type Governorship {
   aggregateServiceRecords(limit: Int! = 4): [AggregateServiceRecord!]!
     @cypher(
       statement: """

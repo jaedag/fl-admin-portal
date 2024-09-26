@@ -48,9 +48,9 @@ export const COUNCIL_BACENTA_SEARCH = gql`
   }
 `
 
-export const TEAM_BACENTA_SEARCH = gql`
-  query teamBacentaSearch($id: ID!, $key: String!) {
-    teams(where: { id: $id }) {
+export const GOVERNORSHIP_BACENTA_SEARCH = gql`
+  query governorshipBacentaSearch($id: ID!, $key: String!) {
+    governorships(where: { id: $id }) {
       id
       bacentaSearch(key: $key, limit: 5) {
         id
@@ -66,7 +66,7 @@ export const MEMBER_BACENTA_SEARCH = gql`
       bacentaSearch(key: $key) {
         id
         name
-        team {
+        governorship {
           id
           name
         }

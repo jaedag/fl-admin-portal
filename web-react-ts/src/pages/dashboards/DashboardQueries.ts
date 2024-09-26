@@ -50,7 +50,7 @@ export const SERVANT_CHURCH_LIST = gql`
         name
         vacationStatus
       }
-      leadsTeam {
+      leadsGovernorship {
         id
         name
       }
@@ -79,7 +79,7 @@ export const SERVANT_CHURCH_LIST = gql`
         id
         name
       }
-      isAdminForTeam {
+      isAdminForGovernorship {
         id
         name
       }
@@ -110,7 +110,7 @@ export const SERVANT_CHURCH_LIST = gql`
         name
       }
 
-      isArrivalsAdminForTeam {
+      isArrivalsAdminForGovernorship {
         id
         name
       }
@@ -194,7 +194,7 @@ export const SERVANT_CHURCHES_COUNT = gql`
       basontaMembershipCount
       leadsFellowshipCount
       leadsBacentaCount
-      leadsAdminsTeamCount
+      leadsAdminsGovernorshipCount
       leadsAdminsCouncilCount
       leadsAdminsCampusCount
       leadsHubCount

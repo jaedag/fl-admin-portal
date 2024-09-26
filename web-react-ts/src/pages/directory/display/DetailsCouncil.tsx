@@ -29,9 +29,9 @@ const DetailsCouncil = () => {
       width: 12,
     },
     {
-      title: 'Teams',
-      number: council?.teamCount || 0,
-      link: `/${`Team`.toLowerCase()}/displayall`,
+      title: 'Governorships',
+      number: council?.governorshipCount || 0,
+      link: `/${`Governorship`.toLowerCase()}/displayall`,
     },
     { title: 'Target', number: council?.target, link: '#' },
     { title: 'Pastors', number: council?.pastorCount, link: '#' },
@@ -71,12 +71,12 @@ const DetailsCouncil = () => {
         leader={council?.leader}
         admin={council?.admin}
         churchType={council?.__typename}
-        subChurch="Team"
+        subChurch="Governorship"
         details={details}
         editlink="/council/editcouncil"
         editPermitted={permitAdmin('Stream')}
         history={council?.history.length !== 0 && council?.history}
-        buttons={council ? council.teams : []}
+        buttons={council ? council.governorships : []}
         breadcrumb={breadcrumb && breadcrumb}
       />
     </ApolloWrapper>

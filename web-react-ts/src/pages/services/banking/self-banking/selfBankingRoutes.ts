@@ -5,12 +5,12 @@ import { lazy } from 'react'
 const ConfirmPayment = lazy(() => import('./ConfirmPayment'))
 const StreamSelfBanking = lazy(() => import('./StreamSelfBanking'))
 const CouncilSelfBanking = lazy(() => import('./CouncilSelfBanking'))
-const TeamSelfBanking = lazy(() => import('./TeamSelfBanking'))
+const GovernorshipSelfBanking = lazy(() => import('./GovernorshipSelfBanking'))
 const BacentaSelfBanking = lazy(() => import('./BacentaSelfBanking'))
 const HubSelfBanking = lazy(() => import('./HubSelfBanking'))
 const PayStreamOffering = lazy(() => import('./PayStreamOffering'))
 const PayCouncilOffering = lazy(() => import('./PayCouncilOffering'))
-const PayTeamOffering = lazy(() => import('./PayTeamOffering'))
+const PayGovernorshipOffering = lazy(() => import('./PayGovernorshipOffering'))
 const PayBacentaOffering = lazy(() => import('./PayBacentaOffering'))
 const PayHubOffering = lazy(() => import('./PayHubOffering'))
 const ReceiptPage = lazy(() => import('./ReceiptPage'))
@@ -24,9 +24,9 @@ export const banking: LazyRouteTypes[] = [
     placeholder: true,
   },
   {
-    path: '/services/team/self-banking',
-    element: TeamSelfBanking,
-    roles: ['leaderTeam', 'adminTeam'],
+    path: '/services/governorship/self-banking',
+    element: GovernorshipSelfBanking,
+    roles: ['leaderGovernorship', 'adminGovernorship'],
     placeholder: true,
   },
   {
@@ -52,9 +52,9 @@ export const banking: LazyRouteTypes[] = [
     roles: ['leaderHub'],
   },
   {
-    path: '/services/team/self-banking/pay',
-    element: PayTeamOffering,
-    roles: ['leaderTeam', 'adminTeam'],
+    path: '/services/governorship/self-banking/pay',
+    element: PayGovernorshipOffering,
+    roles: ['leaderGovernorship', 'adminGovernorship'],
   },
   {
     path: '/services/council/self-banking/pay',
@@ -69,12 +69,12 @@ export const banking: LazyRouteTypes[] = [
   {
     path: '/self-banking/confirm-payment',
     element: ConfirmPayment,
-    roles: [...permitMe('Team'), 'leaderBacenta'],
+    roles: [...permitMe('Governorship'), 'leaderBacenta'],
   },
   {
     path: '/self-banking/receipt',
     element: ReceiptPage,
-    roles: [...permitMe('Team'), 'leaderBacenta'],
+    roles: [...permitMe('Governorship'), 'leaderBacenta'],
   },
 
   {

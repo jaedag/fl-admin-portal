@@ -4,12 +4,15 @@ import React, { useContext } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { TelephoneFill, Whatsapp } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router'
-import { TeamWithDefaulters, CouncilWithDefaulters } from './defaulters-types'
+import {
+  GovernorshipWithDefaulters,
+  CouncilWithDefaulters,
+} from './defaulters-types'
 import './Defaulters.css'
 import { MemberContext } from 'contexts/MemberContext'
 
 type DefaulterCardProps = {
-  defaulter: TeamWithDefaulters | CouncilWithDefaulters
+  defaulter: GovernorshipWithDefaulters | CouncilWithDefaulters
   link?: string
 }
 

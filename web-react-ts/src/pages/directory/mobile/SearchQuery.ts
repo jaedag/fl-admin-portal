@@ -68,7 +68,7 @@ export const MEMBER_SEARCH = gql`
           pictureUrl
         }
       }
-      teamSearch(key: $key, limit: $limit) {
+      governorshipSearch(key: $key, limit: $limit) {
         id
         name
         leader {

@@ -13,12 +13,12 @@ export const GET_MINISTRY_HUBCOUNCILS = gql`
   }
 `
 
-export const GET_HUBCOUNCIL_TEAMS = gql`
-  query getHubCouncilTeams($hubCouncilId: ID!) {
+export const GET_HUBCOUNCIL_GOVERNORSHIPS = gql`
+  query getHubCouncilGovernorships($hubCouncilId: ID!) {
     hubCouncils(where: { id: $hubCouncilId }) {
       id
       name
-      teams {
+      governorships {
         id
         name
       }

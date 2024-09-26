@@ -36,7 +36,7 @@ const DetailsHub = () => {
     hub,
   ]
 
-  const churchCrumb = [hub?.team, hub]
+  const churchCrumb = [hub?.governorship, hub]
 
   const details: DetailsArray = [
     {
@@ -67,7 +67,7 @@ const DetailsHub = () => {
     <ApolloWrapper loading={hubLoading} error={hubError} data={hubData}>
       <>
         <Container className="green">
-          {hub?.team && <Breadcrumb breadcrumb={churchCrumb} />}
+          {hub?.governorship && <Breadcrumb breadcrumb={churchCrumb} />}
         </Container>
         <DisplaySontaDetails
           details={details}

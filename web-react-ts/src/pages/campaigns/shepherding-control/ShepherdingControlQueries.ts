@@ -57,13 +57,13 @@ export const COUNCIL_STAT_FOR_YEAR_TILL_DATE = gql`
   }
 `
 
-export const TEAM_STAT_FOR_YEAR_TILL_DATE = gql`
-  query teamStatForYearTillDate(
-    $teamId: ID
+export const GOVERNORSHIP_STAT_FOR_YEAR_TILL_DATE = gql`
+  query governorshipStatForYearTillDate(
+    $governorshipId: ID
     $startDate: String!
     $endDate: String!
   ) {
-    teams(where: { id: $teamId }) {
+    governorships(where: { id: $governorshipId }) {
       id
       name
       statsForYearTillDate(startDate: $startDate, endDate: $endDate) {

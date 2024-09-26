@@ -13,7 +13,7 @@ export const GET_LOGGED_IN_USER = gql`
 
       bacenta {
         id
-        team {
+        governorship {
           id
           council {
             id

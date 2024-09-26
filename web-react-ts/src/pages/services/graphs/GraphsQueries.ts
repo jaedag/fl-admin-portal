@@ -81,9 +81,9 @@ export const BACENTA_GRAPHS = gql`
   }
 `
 
-export const TEAM_GRAPHS = gql`
-  query teamGraphs($id: ID!) {
-    teams(where: { id: $id }) {
+export const GOVERNORSHIP_GRAPHS = gql`
+  query governorshipGraphs($id: ID!) {
+    governorships(where: { id: $id }) {
       id
       name
       leader {

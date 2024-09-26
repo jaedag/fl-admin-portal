@@ -1,36 +1,36 @@
 const anagkazo = {
   confirmBanking: `
-      MATCH (team:Team {id:$teamId})
-      WITH date() as today, team
-      WITH  today.weekDay as theDay, today, team
-      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, team
-      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, team
+      MATCH (governorship:Governorship {id:$governorshipId})
+      WITH date() as today, governorship
+      WITH  today.weekDay as theDay, today, governorship
+      WITH date(today) - duration({days: (theDay - 2)}) AS startDate, governorship
+      WITH [day in range(0, 5) | startDate + duration({days: day})] AS dates, governorship
 
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-       WITH DISTINCT record, team
+       WITH DISTINCT record, governorship
         WHERE record.noServiceReason IS NULL
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
 
 
-    WITH team, record
-    MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(:Bacenta)<-[:HAS]-(team)
+    WITH governorship, record
+    MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(:Bacenta)<-[:HAS]-(governorship)
     SET record.tellerConfirmationTime = datetime()
 
-    WITH team, record
+    WITH governorship, record
     
     MATCH  (teller:Active:Member {auth_id: $auth.jwt.sub})
     MERGE (teller)-[:CONFIRMED_BANKING_FOR]->(record)
-    RETURN team
+    RETURN governorship
     `,
 
   formDefaultersCount: `
-      MATCH (this:Team {id: $teamId})
+      MATCH (this:Governorship {id: $governorshipId})
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
@@ -52,7 +52,7 @@ const anagkazo = {
        RETURN COUNT(DISTINCT defaulters) as defaulters, collect(defaulters.name) AS defaultersNames
       `,
   membershipAttendanceDefaultersCount: `
-      MATCH (this:Team {id: $teamId})
+      MATCH (this:Governorship {id: $governorshipId})
       WITH date() as today, this
       WITH  today.weekDay as theDay, today, this
       WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this
@@ -73,7 +73,7 @@ const anagkazo = {
        RETURN COUNT(DISTINCT defaulters) as defaulters, collect(defaulters.name) AS defaultersNames
       `,
   imclDefaultersCount: `
-    MATCH (this:Team {id: $teamId})-[:HAS]->(defaulters:Bacenta)
+    MATCH (this:Governorship {id: $governorshipId})-[:HAS]->(defaulters:Bacenta)
     MATCH (defaulters)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph)
     WHERE date.date.week = date().week
     AND record.markedAttendance = false
@@ -82,7 +82,7 @@ const anagkazo = {
     RETURN COUNT(DISTINCT defaulters) as defaulters, imclNotFilled, collect(defaulters.name) AS defaultersNames
        `,
   bankingDefaulersCount: `
-    MATCH (this:Team {id: $teamId})
+    MATCH (this:Governorship {id: $governorshipId})
     WITH date() as today, this
     WITH  today.weekDay as theDay, today, this
     WITH date(today) - duration({days: (theDay - 2)}) AS startDate, this

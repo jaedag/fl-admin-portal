@@ -13,8 +13,8 @@ import { HigherChurchWithDefaulters } from 'pages/services/defaulters/defaulters
 import { useContext, useEffect, useState } from 'react'
 
 type useChurchLevelProps = {
-  teamFunction?: LazyQueryExecFunction<any, OperationVariables>
-  teamRefetch?: () => Promise<ApolloQueryResult<any>>
+  governorshipFunction?: LazyQueryExecFunction<any, OperationVariables>
+  governorshipRefetch?: () => Promise<ApolloQueryResult<any>>
   councilFunction: LazyQueryExecFunction<any, OperationVariables>
   councilRefetch: () => Promise<ApolloQueryResult<any>>
   streamFunction: LazyQueryExecFunction<any, OperationVariables>
@@ -46,8 +46,8 @@ const useChurchLevel = (props: useChurchLevelProps) => {
 
   const chooseRefetch = () => {
     switch (churchLevel) {
-      case 'Team':
-        return props.teamRefetch || props.councilRefetch
+      case 'Governorship':
+        return props.governorshipRefetch || props.councilRefetch
       case 'Council':
         return props.councilRefetch
       case 'Stream':
@@ -65,17 +65,17 @@ const useChurchLevel = (props: useChurchLevelProps) => {
   useEffect(() => {
     const whichQuery = async () => {
       switch (churchLevel) {
-        case 'Team':
+        case 'Governorship':
           {
-            if (!props.teamFunction) break
-            const res = await props.teamFunction({
+            if (!props.governorshipFunction) break
+            const res = await props.governorshipFunction({
               variables: {
                 id: currentChurch?.id,
                 arrivalDate: arrivalDate,
               },
             })
 
-            setChurch(res.data?.teams[0])
+            setChurch(res.data?.governorships[0])
             setLoading(res.loading)
             setError(res.error)
           }

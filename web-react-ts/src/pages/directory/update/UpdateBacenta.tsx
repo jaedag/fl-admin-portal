@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@apollo/client'
 import { alertMsg, repackDecimals, throwToSentry } from '../../../global-utils'
-import { GET_TEAM_BACENTAS } from '../../../queries/ListQueries'
+import { GET_GOVERNORSHIP_BACENTAS } from '../../../queries/ListQueries'
 import { UPDATE_BACENTA_MUTATION } from './UpdateMutations'
 import { ChurchContext } from '../../../contexts/ChurchContext'
 import { DISPLAY_BACENTA } from '../display/ReadQueries'
@@ -27,7 +27,7 @@ const UpdateBacenta = () => {
       bacenta?.leader?.firstName + ' ' + bacenta?.leader?.lastName ?? '',
     leaderId: bacenta?.leader?.id || '',
     leaderEmail: bacenta?.leader?.email ?? '',
-    team: bacenta?.team,
+    governorship: bacenta?.governorship,
     vacationStatus: bacenta?.vacationStatus,
     meetingDay: bacenta.meetingDay.day,
     venueLatitude: repackDecimals(bacenta?.location?.latitude) ?? '',
@@ -44,8 +44,8 @@ const UpdateBacenta = () => {
   const [UpdateBacenta] = useMutation(UPDATE_BACENTA_MUTATION, {
     refetchQueries: [
       {
-        query: GET_TEAM_BACENTAS,
-        variables: { id: initialValues?.team?.id },
+        query: GET_GOVERNORSHIP_BACENTAS,
+        variables: { id: initialValues?.governorship?.id },
       },
     ],
   })
@@ -67,7 +67,7 @@ const UpdateBacenta = () => {
           name: values.name,
           leaderId: values.leaderId,
           meetingDay: values.meetingDay,
-          teamId: values.team,
+          governorshipId: values.governorship,
           venueLongitude: values.venueLongitude,
           venueLatitude: values.venueLatitude,
         },
@@ -80,8 +80,8 @@ const UpdateBacenta = () => {
             bacentaId: bacentaId,
             newLeaderId: '',
             oldLeaderId: '',
-            oldTeamId: '',
-            newTeamId: '',
+            oldGovernorshipId: '',
+            newGovernorshipId: '',
             historyRecord: `Bacenta name has been changed from ${initialValues.name} to ${values.name}`,
           },
         })

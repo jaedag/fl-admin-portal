@@ -13,7 +13,7 @@ export const initiateDownloadCreditsTransaction = `
 
   WITH user, transaction
   MATCH (church {id: $churchId})
-  WHERE church:Bacenta OR church:Team OR church:Council OR church:Stream OR church:Campus OR church:Oversight OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
+  WHERE church:Bacenta OR church:Governorship OR church:Council OR church:Stream OR church:Campus OR church:Oversight OR church:Hub OR church:HubCouncil OR church:Ministry OR church:CreativeArts
 
   MERGE (church)-[:PURCHASED_CREDITS]->(transaction)
 

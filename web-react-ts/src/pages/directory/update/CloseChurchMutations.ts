@@ -14,12 +14,16 @@ export const MAKE_BACENTA_INACTIVE = gql`
   }
 `
 
-export const MAKE_TEAM_INACTIVE = gql`
-  mutation CloseDownTeam($id: ID!, $adminId: ID!, $leaderId: ID!) {
-    CloseDownTeam(teamId: $id, leaderId: $leaderId, adminId: $adminId) {
+export const MAKE_GOVERNORSHIP_INACTIVE = gql`
+  mutation CloseDownGovernorship($id: ID!, $adminId: ID!, $leaderId: ID!) {
+    CloseDownGovernorship(
+      governorshipId: $id
+      leaderId: $leaderId
+      adminId: $adminId
+    ) {
       id
       name
-      teams {
+      governorships {
         id
         name
       }

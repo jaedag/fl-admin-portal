@@ -137,7 +137,7 @@ const ErrorPage = ({ error }: ErrorScreenProps) => {
               <p className="fw-bold pb-2">
                 Click the <span className="text-danger">Show Details</span>{' '}
                 Button and take a screenshot to provide more details to the
-                support team
+                support governorship
               </p>
               <Button variant="danger" onClick={handleShow}>
                 Show Details

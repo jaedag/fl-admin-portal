@@ -36,13 +36,13 @@ import { MemberContext } from 'contexts/MemberContext'
 import RoleView from 'auth/RoleView'
 import Select from 'components/formik/Select'
 import VerifyNotMe from 'auth/VerifyNotMe'
-import { GET_HUBCOUNCIL_TEAMS } from './SontaListQueries'
+import { GET_HUBCOUNCIL_GOVERNORSHIPS } from './SontaListQueries'
 import ApolloWrapper from 'components/base-component/ApolloWrapper'
 
 export interface HubFormValues extends FormikInitialValues {
   name: string
   hubCouncil?: string
-  team?: string
+  governorship?: string
   meetingDay: string
   vacationStatus: 'Active' | 'Vacation'
   venueLatitude: string | number
@@ -66,7 +66,7 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
   const navigate = useNavigate()
 
   const [buttonLoading, setButtonLoading] = useState(false)
-  const { data, loading, error } = useQuery(GET_HUBCOUNCIL_TEAMS, {
+  const { data, loading, error } = useQuery(GET_HUBCOUNCIL_GOVERNORSHIPS, {
     variables: { hubCouncilId: initialValues.hubCouncil },
   })
   const [CloseDownHub] = useMutation(MAKE_HUB_INACTIVE, {
@@ -78,10 +78,14 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
     ],
   })
 
-  const teamOptions = makeSelectOptions(data?.hubCouncils[0].teams)
+  const governorshipOptions = makeSelectOptions(
+    data?.hubCouncils[0].governorships
+  )
 
   const validationSchema = Yup.object({
-    team: Yup.string().required('Please choose a team from the drop down'),
+    governorship: Yup.string().required(
+      'Please choose a governorship from the drop down'
+    ),
     name: Yup.string().required(`Hub Name is a required field`),
     leaderId: Yup.string().required(
       'Please choose a leader from the drop down'
@@ -148,10 +152,10 @@ const HubForm = ({ initialValues, onSubmit, title, newHub }: HubFormProps) => {
                         {newHub && (
                           <Col sm={12}>
                             <Select
-                              name="team"
-                              label="Select a Team"
-                              options={teamOptions}
-                              defaultOption="Select a Team"
+                              name="governorship"
+                              label="Select a Governorship"
+                              options={governorshipOptions}
+                              defaultOption="Select a Governorship"
                             />
                           </Col>
                         )}

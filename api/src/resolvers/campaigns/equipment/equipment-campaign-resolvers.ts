@@ -5,9 +5,9 @@ import { Context } from '../../utils/neo4j-types'
 import { sendBulkEmail, sendBulkSMS } from '../../utils/notify'
 import {
   checkExistingEquipmentRecord,
-  createTeamEquipmentRecord,
+  createGovernorshipEquipmentRecord,
   createFellowshipEquipmentRecord,
-  getTeamOverseersEmailsAndNumbers,
+  getGovernorshipOverseersEmailsAndNumbers,
   getEquipmentCampaign,
   getEquipmentCampaignDate,
   getFellowshipLeadersEmailsAndNumbers,
@@ -33,8 +33,8 @@ const sendEmailsandSMS = async (
   const fellowshipPhoneNumbers: string[] = []
   const fellowshipEmailAdresses: string[] = []
 
-  const teamLeadersResponse = await session.run(
-    getTeamOverseersEmailsAndNumbers,
+  const governorshipLeadersResponse = await session.run(
+    getGovernorshipOverseersEmailsAndNumbers,
     args
   )
 
@@ -43,7 +43,7 @@ const sendEmailsandSMS = async (
     args
   )
 
-  teamLeadersResponse.records.forEach((record: Record) => {
+  governorshipLeadersResponse.records.forEach((record: Record) => {
     overseersPhoneNumbers.push(record._fields[2])
     overseersEmailAdresses.push(record._fields[1])
   })
@@ -69,13 +69,13 @@ const sendEmailsandSMS = async (
     ),
     sendBulkSMS(
       overseersPhoneNumbers,
-      texts.equipment.notify_team_overseers_sms
+      texts.equipment.notify_governorship_overseers_sms
     ),
     sendBulkEmail(
       overseersEmailAdresses,
       'Equipment Campaign Data Collection Ongoing!',
       undefined,
-      `<p>Hi ${texts.equipment.overseer_text},</p> ${texts.equipment.notify_team_overseers_email} <b>${formattedDeadline}</b> ${texts.equipment.notify_email_p1} ${texts.equipment.overseer_text}  ${texts.equipment.notify_email_p2}${texts.html.subscription}`
+      `<p>Hi ${texts.equipment.overseer_text},</p> ${texts.equipment.notify_governorship_overseers_email} <b>${formattedDeadline}</b> ${texts.equipment.notify_email_p1} ${texts.equipment.overseer_text}  ${texts.equipment.notify_email_p2}${texts.html.subscription}`
     ),
     sendBulkEmail(
       fellowshipEmailAdresses,
@@ -132,12 +132,12 @@ export const equipmentCampaignMutations = {
       return throwToSentry('Setting equipment deadline failed ', error)
     }
   },
-  CreateTeamEquipmentRecord: async (
+  CreateGovernorshipEquipmentRecord: async (
     object: never,
     args: { id: string; pulpits: number; date: Date },
     context: Context
   ) => {
-    isAuth(permitLeaderAdmin('Team'), context.auth.roles)
+    isAuth(permitLeaderAdmin('Governorship'), context.auth.roles)
 
     const session = context.executionContext.session()
 
@@ -171,19 +171,21 @@ export const equipmentCampaignMutations = {
       )
 
       if (equipmentRecordExists.alreadyFilled) {
-        throw new Error('You have already filled your team equipment form!')
+        throw new Error(
+          'You have already filled your governorship equipment form!'
+        )
       }
 
-      const teamRecord = rearrangeCypherObject(
+      const governorshipRecord = rearrangeCypherObject(
         await session
-          .run(createTeamEquipmentRecord, {
+          .run(createGovernorshipEquipmentRecord, {
             ...args,
             auth: context.auth,
             date,
           })
           .catch((error: any) => {
             return throwToSentry(
-              'There was an error creating the team record',
+              'There was an error creating the governorship record',
               error
             )
           })
@@ -192,12 +194,15 @@ export const equipmentCampaignMutations = {
       return {
         id: args.id,
         equipmentRecord: {
-          id: teamRecord.record.properties.id,
-          pulpits: teamRecord.record.properties.pulpits,
+          id: governorshipRecord.record.properties.id,
+          pulpits: governorshipRecord.record.properties.pulpits,
         },
       }
     } catch (error) {
-      return throwToSentry('Creating Team Equipment Record failed ', error)
+      return throwToSentry(
+        'Creating Governorship Equipment Record failed ',
+        error
+      )
     }
   },
   CreateFellowshipEquipmentRecord: async (
@@ -289,18 +294,18 @@ export const getEquipmentDetails = async (
     { ...obj, ...args }
   )
 
-  const teamEquipmentResponse = await session?.run(
-    campaignsCypher[`${church}TeamEquipment`],
+  const governorshipEquipmentResponse = await session?.run(
+    campaignsCypher[`${church}GovernorshipEquipment`],
     { ...obj, ...args }
   )
 
   let id
   let pulpits
-  if (typeof teamEquipmentResponse.records[0] !== 'undefined') {
+  if (typeof governorshipEquipmentResponse.records[0] !== 'undefined') {
     // eslint-disable-next-line no-underscore-dangle
-    id = teamEquipmentResponse.records[0]._fields[0].id
+    id = governorshipEquipmentResponse.records[0]._fields[0].id
     // eslint-disable-next-line no-underscore-dangle
-    pulpits = teamEquipmentResponse.records[0]._fields[0].pulpits.low
+    pulpits = governorshipEquipmentResponse.records[0]._fields[0].pulpits.low
   } else {
     id = obj?.id
   }
@@ -313,7 +318,7 @@ export const getEquipmentDetails = async (
     fellowshipEquipmentResponse.records[0]._fields[0].offeringBags.low
 
   switch (church) {
-    case 'Team':
+    case 'Governorship':
       return { id, pulpits, bluetoothSpeakers, offeringBags }
 
     default:

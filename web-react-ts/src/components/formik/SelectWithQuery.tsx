@@ -27,8 +27,8 @@ function SelectWithQuery(props: FormikSelectWithApollo) {
   const { isAuthenticated } = useAuth0()
 
   let options
-  if (data?.teams?.length) {
-    options = makeSelectOptions(data.teams[0].bacentas)
+  if (data?.governorships?.length) {
+    options = makeSelectOptions(data.governorships[0].bacentas)
   } else {
     options = data ? makeSelectOptions(data[dataset ? `${dataset}` : '']) : []
   }
