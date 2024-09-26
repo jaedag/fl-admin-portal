@@ -1,3 +1,11 @@
+#### 7.18.51 (2024-09-26)
+
+##### Refactors
+
+*  change the word team to governorship ([74ba5a53](https://github.com/firstlovecenter/fl-admin-portal/commit/74ba5a5316d7389f083c34664be2458c843f4187))
+*  remove unused secrets.build call ([2de1a689](https://github.com/firstlovecenter/fl-admin-portal/commit/2de1a6899b7a1a428f7b5237203ea0ef392e0d5e))
+*  remove unused secrets.build call ([166b0699](https://github.com/firstlovecenter/fl-admin-portal/commit/166b0699d07a1435c8356b7534bfedd2f394fa65))
+
 #### 7.18.50 (2024-09-24)
 
 ##### Bug Fixes
