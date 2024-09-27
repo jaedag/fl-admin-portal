@@ -1,3 +1,10 @@
+#### 7.18.52 (2024-09-27)
+
+##### Refactors
+
+*  update to display the correct timing for Thursdays which is 6am to 10am ([e396ffaf](https://github.com/firstlovecenter/fl-admin-portal/commit/e396ffafed244394945249c2c2a13325dd74d6d4))
+*  update leader title in DetailsGovernorship component ([5467c5ec](https://github.com/firstlovecenter/fl-admin-portal/commit/5467c5ec0d1f686ba05bb70394b8b0b247c44607))
+
 #### 7.18.51 (2024-09-26)
 
 ##### Refactors
