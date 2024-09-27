@@ -8,11 +8,11 @@ export const isAccountOpen = () => {
     return true
   }
 
-  // For Thursday (4), return true only before 6am
-  if (currentDay === 4 && currentHour < 6) {
+  // For Thursday (4), return true only before 10am
+  if (currentDay === 4 && currentHour < 10) {
     return true
   }
 
-  // For Thursday after 6am, all of Friday (5), and Saturday (6), return false
+  // For Thursday after 10am, all of Friday (5), and Saturday (6), return false
   return false
 }

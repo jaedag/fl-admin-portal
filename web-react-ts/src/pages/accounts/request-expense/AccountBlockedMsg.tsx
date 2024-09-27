@@ -18,7 +18,7 @@ const AccountBlockedMsg = () => {
       </div>
       <Card>
         <Card.Body>
-          <p className="fs-5">Sunday 6am - Thursday 16am</p>
+          <p className="fs-5">Sunday 6am - Thursday 10am</p>
         </Card.Body>
       </Card>
       <p className="mt-2 text-end fw-bold fs-3">Thank You!</p>
