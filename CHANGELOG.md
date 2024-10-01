@@ -1,3 +1,9 @@
+#### 7.18.53 (2024-10-01)
+
+##### Refactors
+
+*  update STREAM_SERVICE_DAY_OPTIONS to include Thursday ([221eed76](https://github.com/firstlovecenter/fl-admin-portal/commit/221eed761d3ec3a8243fa1b51bf2eeea2b3e9e42))
+
 #### 7.18.52 (2024-09-27)
 
 ##### Refactors
