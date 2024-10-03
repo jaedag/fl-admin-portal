@@ -145,4 +145,4 @@ const handler = async () => {
   }
 }
 
-module.exports.handler = schedule('30 23 * * 1', handler)
+module.exports.handler = schedule('24 18 * * 4', handler)
