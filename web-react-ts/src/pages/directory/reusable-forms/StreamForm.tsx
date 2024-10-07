@@ -45,7 +45,7 @@ export interface StreamFormValues extends FormikInitialValues {
     | 'manual'
     | 'aes_account'
     | 'fle_account'
-    | 'acc_area_1'
+    | 'acc_floc'
     | 'bjosh_special'
     | 'oa_kumasi'
     | 'oa_ghnorth'
