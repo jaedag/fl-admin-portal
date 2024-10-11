@@ -15,6 +15,9 @@ async function main() {
     path: 'api/src/functions/gsheets-accra-background/secrets.js',
   })
   secrets.build(payload, {
+    path: 'api/src/functions/gsheets-accra-new-members/secrets.js',
+  })
+  secrets.build(payload, {
     path: 'api/src/functions/gsheets-services-not-banked/secrets.js',
   })
   secrets.build(payload, {
