@@ -4,7 +4,7 @@ const { default: axios } = require('axios')
 const { getWeekNumber } = require('@jaedag/admin-portal-types')
 const { SECRETS } = require('./gsecrets.js')
 const { writeToGsheet, clearGSheet } = require('./utils/writeToGSheet.js')
-const { newMembersList } = require('./query-exec/councilList.js')
+const { newMembersList } = require('./query-exec/newMembersList.js')
 const { notifyBaseURL } = require('./utils/constants.js')
 
 const handler = async () => {

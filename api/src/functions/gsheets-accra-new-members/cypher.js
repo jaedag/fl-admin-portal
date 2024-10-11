@@ -7,7 +7,7 @@ MATCH (bacenta)<-[:BELONGS_TO]-(member:Member) WHERE member.registrationDate >= 
 RETURN  DISTINCT  stream.name AS Stream, council.name AS Council, bishop.firstName + ' '+ bishop.lastName AS Bishop, governor.firstName + " " + governor.lastName AS Governor,
 governorship.name AS Governorship,
 bacentaLeader.firstName + " " + bacentaLeader.lastName AS BacentaLeader,
-member.firstName AS MemberFirstName, member.lastName AS MemberLastName, member.phoneNumber AS MemberPhoneNumber, member.whatsappNumber AS MemberWhatsappNumber, date(member.registrationDate) AS RegistrationDate
+member.firstName AS MemberFirstName, member.lastName AS MemberLastName, member.phoneNumber AS MemberPhoneNumber, member.whatsappNumber AS MemberWhatsappNumber, toString(date(member.registrationDate)) AS RegistrationDate
 `
 
 export const membersDidntComeToChurchQuery = ``
