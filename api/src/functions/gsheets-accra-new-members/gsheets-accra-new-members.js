@@ -30,7 +30,7 @@ const handler = async () => {
   await clearGSheet(accraSheet)
 
   await Promise.all([
-    writeToGsheet(newMembersListData, accraSheet, 'A2:L'),
+    writeToGsheet(newMembersListData, accraSheet, 'A1:L'),
   ]).catch((error) => {
     throw new Error(
       `Error writing to google sheet\n${error.message}\n${error.stack}`
@@ -47,11 +47,14 @@ const handler = async () => {
         'x-secret-key': SECRETS.FLC_NOTIFY_KEY,
       },
       data: {
-        recipient: ['233594760323', '233592219407', '233541805641'],
+        recipient: [
+          '233594760323', // Me John-Dag
+          '233541805641', // Becks
+        ],
         sender: 'FLC Admin',
         message: `WEEK ${
           getWeekNumber() - 1
-        } UPDATE\n\nNew Members List has been updated on the sheet for date ${
+        } UPDATE\n\nNew Members List has been updated on the sheet https://rebrand.ly/members-lw for date ${
           new Date()
             .toLocaleString('en-GB', {
               year: 'numeric',
