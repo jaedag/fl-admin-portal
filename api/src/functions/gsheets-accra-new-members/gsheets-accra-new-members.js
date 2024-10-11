@@ -76,4 +76,4 @@ const handler = async () => {
   }
 }
 
-module.exports.handler = schedule('00 20 * * 1', handler)
+module.exports.handler = schedule('00 20 * * 0', handler)
