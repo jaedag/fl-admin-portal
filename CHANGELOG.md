@@ -1,3 +1,36 @@
+#### 7.18.56 (2024-10-31)
+
+##### Documentation Changes
+
+*  update CHANGELOG.md ([3f9fee4b](https://github.com/firstlovecenter/fl-admin-portal/commit/3f9fee4b88a6bf7154ea0b98f84e222f8763ec76))
+*  update CHANGELOG.md ([2d6edb45](https://github.com/firstlovecenter/fl-admin-portal/commit/2d6edb458246e7ff2c47b6295c88577faf97b355))
+
+##### New Features
+
+*  implement function to write the new members list for the past week ([170377eb](https://github.com/firstlovecenter/fl-admin-portal/commit/170377eb9a2200de1b49ef85f8c652d1ae8ac0ab))
+
+##### Bug Fixes
+
+*  reverse update gsheets-accra-background.js ([178cbc70](https://github.com/firstlovecenter/fl-admin-portal/commit/178cbc70aaee800d8b9420d87306776c099ebef5))
+*  update gsheets-accra-background.js ([e36eff59](https://github.com/firstlovecenter/fl-admin-portal/commit/e36eff5985a9227f61fca104f5d8b5934d8bcb35))
+
+##### Other Changes
+
+*  update import statement for newMembersList query ([a21f37e9](https://github.com/firstlovecenter/fl-admin-portal/commit/a21f37e9a01318b6cd2f4b1bf96d8de9b90b36ba))
+
+##### Refactors
+
+*  update easy-debugging-scripts.cypher and ExpenseForm.tsx to comment out unused code ([dd89c236](https://github.com/firstlovecenter/fl-admin-portal/commit/dd89c2368410cee59f7c4700d28238a2105ebec5))
+*  update helpdesk link in texts.json ([1567e1ef](https://github.com/firstlovecenter/fl-admin-portal/commit/1567e1ef07348d3f8c672c33a338f878024c42f3))
+*  update gsheets-accra-new-members.js to correct the scheduled day for running the handler ([2f3e4011](https://github.com/firstlovecenter/fl-admin-portal/commit/2f3e4011f837f3ea4fe24e582975a4a8bcb15550))
+*  add new recipient to gsheets-accra-new-members.js ([b6383572](https://github.com/firstlovecenter/fl-admin-portal/commit/b638357299b709d8bd1631690c807e231b2abfb7))
+*  update secrets.js paths in encrypt-secrets.js ([2a312e2b](https://github.com/firstlovecenter/fl-admin-portal/commit/2a312e2be9d638e9f8b46d121a4be17a12b32938))
+*  update gsheets-accra-new-members.js to correct the scheduled day for running the handler ([43765494](https://github.com/firstlovecenter/fl-admin-portal/commit/43765494a9c24b84b636b7c4b8c6a971edd626a3))
+*  update gsheets-accra-new-members.js to write new members list to correct cell range ([c4fecee6](https://github.com/firstlovecenter/fl-admin-portal/commit/c4fecee61c7185178888f8fdd660f4fba4984eb0))
+*  update arrivals-cypher.ts to include "Car" vehicles ([667bb748](https://github.com/firstlovecenter/fl-admin-portal/commit/667bb7485e4d120964ef0effa2707cf68d2e2038))
+*  add additional recipient to gsheets-accra-background.js ([c0226650](https://github.com/firstlovecenter/fl-admin-portal/commit/c0226650bc739a1b1e280186e3e55eaaf8c9be47))
+*  update STREAM_SERVICE_DAY_OPTIONS to include Thursday ([4d4e67b4](https://github.com/firstlovecenter/fl-admin-portal/commit/4d4e67b48f9876c459e6d9f9af2c3d4b1239e9ff))
+
 #### 7.18.55 (2024-10-07)
 
 #### 7.18.54 (2024-10-07)
