@@ -1,13 +1,5 @@
-MATCH (record:VehicleRecord {id: $vehicleRecordId})<-[:INCLUDES_RECORD]-(bussing:BussingRecord)<-[:HAS_BUSSING]-(:ServiceLog)<-[:HAS_HISTORY]-(bacenta:Bacenta)<-[:HAS]-(:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(stream:Stream)
-MATCH (bacenta)<-[:LEADS]-(leader:Member)
-RETURN record, leader
-// OPTIONAL MATCH (bussing)-[:INCLUDES_RECORD]->(records:VehicleRecord) WHERE records.arrivalTime IS NOT NULL
-// RETURN stream.arrivalEndTime AS arrivalEndTime, 
-// bacenta.id AS bacentaId, 
-// COUNT(DISTINCT records) AS numberOfVehicles, 
-// SUM(records.attendance) AS totalAttendance, T
-// leader.phoneNumber AS leaderPhoneNumber,
-// leader.firstName AS leaderFirstName, 
-// bacenta.name AS bacentaName
-
-
+// Find all pivotal nodes in network
+MATCH (a:Character), (b:Character)
+MATCH p=allShortestPaths((a)-[:INTERACTS*]-(b)) WITH collect(p) AS paths, a, b
+MATCH (c:Character) WHERE all(x IN paths WHERE c IN nodes(x)) AND NOT c IN [a,b]
+RETURN a.name, b.name, c.name AS PivotalNode SKIP 490 LIMIT 10
