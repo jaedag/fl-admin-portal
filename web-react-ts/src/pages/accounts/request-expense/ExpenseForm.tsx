@@ -17,13 +17,13 @@ import RadioButtons from 'components/formik/RadioButtons'
 import Textarea from 'components/formik/Textarea'
 import { EXPENSE_REQUEST } from './expenseGQL'
 import { CouncilForAccounts } from '../accounts-types'
-// import { isAccountOpen } from '../accounts-utils'
-// import AccountBlockedMsg from './AccountBlockedMsg'
-// import { MemberContext } from 'contexts/MemberContext'
+import { isAccountOpen } from '../accounts-utils'
+import AccountBlockedMsg from './AccountBlockedMsg'
+import { MemberContext } from 'contexts/MemberContext'
 
 const ExpenseForm = () => {
   const { councilId, clickCard } = useContext(ChurchContext)
-  // const { currentUser } = useContext(MemberContext)
+  const { currentUser } = useContext(MemberContext)
   const { show, handleClose, handleShow } = useModal()
   const navigate = useNavigate()
 
@@ -79,9 +79,9 @@ const ExpenseForm = () => {
     }
   }
 
-  // if (!isAccountOpen() && !currentUser.roles.includes('fishers')) {
-  //   return <AccountBlockedMsg />
-  // }
+  if (!isAccountOpen() && !currentUser.roles.includes('fishers')) {
+    return <AccountBlockedMsg />
+  }
 
   return (
     <ApolloWrapper data={data} loading={loading} error={error}>
