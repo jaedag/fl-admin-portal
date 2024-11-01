@@ -25,7 +25,6 @@ import EditButton from 'components/buttons/EditButton'
 import RoleView from 'auth/RoleView'
 import ViewAll from 'components/buttons/ViewAll'
 import CloudinaryImage from 'components/CloudinaryImage'
-import { Member } from 'global-types'
 import { permitAdmin, permitLeader, permitSheepSeeker } from 'permission-utils'
 import { BarLoader } from 'react-spinners'
 import { FaPhone, FaSave, FaStickyNote } from 'react-icons/fa'
@@ -38,6 +37,7 @@ import { Form, Formik, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import Textarea from 'components/formik/Textarea'
 import { UPDATE_MEMBER_STICKY_NOTE } from '../update/UpdateMutations'
+import { Member } from 'gql/graphql'
 
 const generateVCard = async (member: Member, roles: string) => {
   let base64Image = ''
@@ -57,7 +57,7 @@ const generateVCard = async (member: Member, roles: string) => {
   };${member.middleName?.trim() !== '' ? member.middleName + ';' : ''}${
     !!member.currentTitle ? member.currentTitle + ';' : ''
   }\nFN:${member.nameWithTitle}\nORG:FLC ${
-    member?.bacenta?.council.name
+    member?.bacenta?.council?.name
   } Council;${
     member.email
       ? '\nEMAIL;type=INTERNET;type=HOME;type=pref:' + member.email
@@ -136,11 +136,11 @@ const MemberDisplay = ({ memberId }: { memberId: string }) => {
   const errorToThrow: any = error
   throwToSentry(errorToThrow)
 
-  const member: Member = bioData?.members[0]
+  const member = bioData?.members[0]
   const memberChurch = churchData?.members[0]
   const memberLeader = leaderData?.members[0]
   const memberAdmin = adminData?.members[0]
-  const memberBirthday = getMemberDob(member)
+  const memberBirthday = getMemberDob(member as unknown as Member)
   const roles = returnStringMemberRoles(memberLeader, memberAdmin)
 
   const [UpdateMemberStickyNote, { loading: noteLoading }] = useMutation(

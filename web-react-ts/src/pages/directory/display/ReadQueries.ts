@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client'
+import { graphql } from 'gql'
 
-export const DISPLAY_MEMBER_BIO = gql`
+export const DISPLAY_MEMBER_BIO = graphql(`
   query displayMemberBio($id: ID!) {
     members(where: { id: $id }) {
       id
@@ -34,8 +34,8 @@ export const DISPLAY_MEMBER_BIO = gql`
       }
     }
   }
-`
-export const DISPLAY_MEMBER_LEADERSHIP = gql`
+`)
+export const DISPLAY_MEMBER_LEADERSHIP = graphql(`
   query displayMemberLeadership($id: ID!) {
     members(where: { id: $id }) {
       id
@@ -83,9 +83,9 @@ export const DISPLAY_MEMBER_LEADERSHIP = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_MEMBER_ADMIN = gql`
+export const DISPLAY_MEMBER_ADMIN = graphql(`
   query displayMemberAdmin($id: ID!) {
     members(where: { id: $id }) {
       id
@@ -124,9 +124,9 @@ export const DISPLAY_MEMBER_ADMIN = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_MEMBER_CHURCH = gql`
+export const DISPLAY_MEMBER_CHURCH = graphql(`
   query displayMemberChurch($id: ID!) {
     members(where: { id: $id }) {
       id
@@ -175,9 +175,9 @@ export const DISPLAY_MEMBER_CHURCH = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_FELLOWSHIP = gql`
+export const DISPLAY_FELLOWSHIP = graphql(`
   query displayFellowship($id: ID!) {
     fellowships(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -231,9 +231,9 @@ export const DISPLAY_FELLOWSHIP = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_FELLOWSHIP_HISTORY = gql`
+export const DISPLAY_FELLOWSHIP_HISTORY = graphql(`
   query displayFellowshipHistory($id: ID!) {
     fellowships(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -259,9 +259,9 @@ export const DISPLAY_FELLOWSHIP_HISTORY = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_BACENTA_HISTORY = gql`
+export const DISPLAY_BACENTA_HISTORY = graphql(`
   query displayBacentaHistory($id: ID!) {
     bacentas(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -287,9 +287,9 @@ export const DISPLAY_BACENTA_HISTORY = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_BACENTA = gql`
+export const DISPLAY_BACENTA = graphql(`
   query displayBacenta($id: ID!) {
     bacentas(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -333,9 +333,9 @@ export const DISPLAY_BACENTA = gql`
       memberCount
     }
   }
-`
+`)
 
-export const DISPLAY_GOVERNORSHIP = gql`
+export const DISPLAY_GOVERNORSHIP = graphql(`
   query displayGovernorship($id: ID!) {
     governorships(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -398,9 +398,9 @@ export const DISPLAY_GOVERNORSHIP = gql`
       memberCount
     }
   }
-`
+`)
 
-export const DISPLAY_COUNCIL = gql`
+export const DISPLAY_COUNCIL = graphql(`
   query displayCouncil($id: ID!) {
     councils(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -465,9 +465,9 @@ export const DISPLAY_COUNCIL = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_STREAM = gql`
+export const DISPLAY_STREAM = graphql(`
   query displayStream($id: ID!) {
     streams(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -534,9 +534,9 @@ export const DISPLAY_STREAM = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_CAMPUS = gql`
+export const DISPLAY_CAMPUS = graphql(`
   query displayCampus($id: ID!) {
     campuses(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -600,9 +600,9 @@ export const DISPLAY_CAMPUS = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_OVERSIGHT = gql`
+export const DISPLAY_OVERSIGHT = graphql(`
   query displayOversight($id: ID!) {
     oversights(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -659,9 +659,9 @@ export const DISPLAY_OVERSIGHT = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_CREATIVEARTS = gql`
+export const DISPLAY_CREATIVEARTS = graphql(`
   query DisplayCreativeArts($id: ID!) {
     creativeArts(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -711,9 +711,9 @@ export const DISPLAY_CREATIVEARTS = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_DENOMINATION = gql`
+export const DISPLAY_DENOMINATION = graphql(`
   query displayDenomination($id: ID!) {
     denominations(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -762,9 +762,9 @@ export const DISPLAY_DENOMINATION = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_MINISTRY = gql`
+export const DISPLAY_MINISTRY = graphql(`
   query displayMinistry($id: ID!) {
     ministries(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -825,9 +825,9 @@ export const DISPLAY_MINISTRY = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_HUBCOUNCIL = gql`
+export const DISPLAY_HUBCOUNCIL = graphql(`
   query DisplayHubCouncil($id: ID!) {
     hubCouncils(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -881,9 +881,9 @@ export const DISPLAY_HUBCOUNCIL = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_HUB = gql`
+export const DISPLAY_HUB = graphql(`
   query DisplayHub($id: ID!) {
     hubs(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -950,9 +950,9 @@ export const DISPLAY_HUB = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_HUB_HISTORY = gql`
+export const DISPLAY_HUB_HISTORY = graphql(`
   query displayHubHistory($id: ID!) {
     hubs(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -978,9 +978,9 @@ export const DISPLAY_HUB_HISTORY = gql`
       }
     }
   }
-`
+`)
 
-export const DISPLAY_HUBFELLOWSHIP = gql`
+export const DISPLAY_HUBFELLOWSHIP = graphql(`
   query displayHubFellowship($id: ID!) {
     hubFellowships(where: { id: $id }, options: { limit: 1 }) {
       id
@@ -1017,4 +1017,4 @@ export const DISPLAY_HUBFELLOWSHIP = gql`
       }
     }
   }
-`
+`)

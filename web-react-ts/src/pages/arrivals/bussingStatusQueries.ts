@@ -386,7 +386,7 @@ export const COUNCIL_VEHICLES_TO_BE_PAID = gql`
           whatsappNumber
         }
         bussingThisWeek(limit: 1, bussingDate: $arrivalDate) {
-          vehicleRecords(where: { arrivalTime_NOT: null, vehicleTopUp_GT: 0 }) {
+          vehiclesToBePaid {
             id
             attendance
             vehicle

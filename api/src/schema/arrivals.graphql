@@ -1026,6 +1026,14 @@ type BussingRecord implements Record @auth(rules: [{ isAuthenticated: true }]) {
 
   vehicleRecords: [VehicleRecord!]!
     @relationship(type: "INCLUDES_RECORD", direction: OUT)
+  vehiclesToBePaid: [VehicleRecord!]!
+    @cypher(
+      statement: """
+      MATCH (this)-[:INCLUDES_RECORD]->(record:VehicleRecord)
+      WHERE record.arrivalTime IS NOT NULL AND record.vehicleTopUp > 0
+      RETURN record
+      """
+    )
   serviceLog: ServiceLog! @relationship(type: "HAS_BUSSING", direction: IN)
 }
 

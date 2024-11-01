@@ -1,4 +1,5 @@
 import { LazyExoticComponent } from 'react'
+import { Member as MemberfromGQL } from 'gql/graphql'
 
 export type JSXChildren = {
   children: JSX.Element
@@ -213,72 +214,8 @@ export interface MemberWithoutBioData {
   whatsappNumber: string
 }
 
-export interface Member {
-  __typename: 'Member'
-  id: string
-  // eslint-disable-next-line camelcase
-  auth_id: string
-  stickyNote?: string
-  firstName: string
-  middleName?: string
-  lastName: string
-  fullName: string
-  visitationArea?: string
-  location?: string
-  nameWithTitle: string
-  currentTitle: TitleOptions
-  titleConnection?: any
-  email: string
-  pictureUrl: string
-  phoneNumber: string
-  whatsappNumber: string
-  dob: { date: string }
-  maritalStatus: { status: 'Married' | 'Single' }
-  gender: { gender: 'Male' | 'Female' }
-  occupation: { occupation: string }
-  bacenta: Bacenta
-  fellowship: {
-    id: string
-    name: string
-  }
-  basonta: {
-    id: string
-    name: string
-  }
-}
-
-export interface MemberWithChurches extends Member {
-  roles?: Role[]
-  leadsFellowship: Church[]
-  leadsBacenta: Church[]
-  leadsGovernorship: Church[]
-  leadsCouncil: Church[]
-  leadsStream: Church[]
-
-  leadsHub: Church[]
-  leadsHubCouncil: Church[]
-  leadsMinistry: Church[]
-  leadsCreativeArts: Church[]
-  isAdminForMinistry: Church[]
-  isAdminForCreativeArts: Church[]
-
-  leadsCampus: Church[]
-  leadsOversight: Church[]
-  leadsDenomination: Church[]
-  isAdminForGovernorship: Church[]
-  isAdminForCouncil: Church[]
-  isAdminForStream: Church[]
-  isAdminForCampus: Church[]
-  isAdminForOversight: Church[]
-  isAdminForDenomination: Church[]
-
-  isArrivalsAdminForGovernorship: Church[]
-  isArrivalsAdminForCouncil: Church[]
-  isArrivalsAdminForStream: Church[]
-  isArrivalsAdminForCampus: Church[]
-  isArrivalsAdminForOversight: Church[]
-  isSheepSeekerForStream: Church[]
-}
+export type Member = MemberfromGQL
+export type MemberWithChurches = MemberfromGQL
 
 export interface Servant {
   id: string

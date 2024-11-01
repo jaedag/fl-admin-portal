@@ -82,7 +82,6 @@ export const CAMPUS_EQUIPMENT_DEFAULTERS_NUMBER_BY_GOVERNORSHIP_AND_FELLOWSHIP =
       governorshipCount
       governorshipEquipmentFilledCount
       governorshipEquipmentNotFilledCount
-      fellowshipCount
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
       streamCount
@@ -99,7 +98,6 @@ export const CAMPUS_BY_STREAM_EQUIPMENT_DEFAULTERS = gql`
         id
         name
         governorshipCount
-        fellowshipCount
         governorshipEquipmentFilledCount
         governorshipEquipmentNotFilledCount
         fellowshipEquipmentFilledCount
@@ -209,7 +207,6 @@ export const STREAM_BY_COUNCIL_EQUIPMENT_DEFAULTERS = gql`
         id
         name
         governorshipCount
-        fellowshipCount
         governorshipEquipmentFilledCount
         governorshipEquipmentNotFilledCount
         fellowshipEquipmentFilledCount
@@ -235,7 +232,6 @@ export const STREAM_EQUIPMENT_DEFAULTERS_NUMBER_BY_GOVERNORSHIP_AND_FELLOWSHIP =
       governorshipCount
       governorshipEquipmentFilledCount
       governorshipEquipmentNotFilledCount
-      fellowshipCount
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
       councilCount
@@ -337,7 +333,6 @@ export const COUNCIL_EQUIPMENT_DEFAULTERS_NUMBER_BY_GOVERNORSHIP_AND_FELLOWSHIP 
       governorshipCount
       governorshipEquipmentFilledCount
       governorshipEquipmentNotFilledCount
-      fellowshipCount
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
     }
@@ -370,7 +365,6 @@ export const COUNCIL_BY_GOVERNORSHIP_EQUIPMENT_DEFAULTERS = gql`
       governorships {
         id
         name
-        fellowshipCount
         fellowshipEquipmentFilledCount
         fellowshipEquipmentNotFilledCount
         equipmentRecord {
@@ -488,7 +482,6 @@ export const GOVERNORSHIP_EQUIPMENT_DEFAULTERS_NUMBER_BY_FELLOWSHIP = gql`
       name
       fellowshipEquipmentFilledCount
       fellowshipEquipmentNotFilledCount
-      fellowshipCount
     }
   }
 `
@@ -545,26 +538,6 @@ export const BACENTA_BY_FELLOWSHIP = gql`
       id
       name
       fellowshipEquipmentFilledCount
-      fellowships {
-        id
-        name
-        equipmentRecord {
-          id
-          bluetoothSpeakers
-          offeringBags
-        }
-      }
-    }
-  }
-`
-
-//Fellowships Queries and Mutations
-export const FELLOWSHIP_CAMPAIGN_LIST = gql`
-  query fellowshipCampaigns($fellowshipId: ID) {
-    fellowships(where: { id: $fellowshipId }) {
-      id
-      name
-      campaigns
     }
   }
 `
@@ -625,15 +598,6 @@ export const FELLOWSHIP_RECORDS_PER_GOVERNORSHIP = gql`
       id
       bacentas {
         id
-        fellowships {
-          id
-          name
-          equipmentRecord {
-            id
-            bluetoothSpeakers
-            offeringBags
-          }
-        }
       }
     }
   }
