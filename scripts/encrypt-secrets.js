@@ -12,7 +12,10 @@ async function main() {
     path: 'api/src/functions/code-of-the-day/secrets.js',
   })
   secrets.build(payload, {
-    path: 'api/src/functions/graph-aggregate-corrector/secrets.js',
+    path: 'api/src/functions/service-graph-aggregator/secrets.js',
+  })
+  secrets.build(payload, {
+    path: 'api/src/functions/bacenta-graph-aggregator/secrets.js',
   })
   secrets.build(payload, {
     path: 'api/src/functions/gsheets-accra-background/secrets.js',
