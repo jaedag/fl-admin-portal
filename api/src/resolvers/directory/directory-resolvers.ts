@@ -328,7 +328,7 @@ const directoryMutation = {
   },
 
   CloseDownBacenta: async (object: any, args: any, context: Context) => {
-    isAuth(permitAdminArrivals('Stream'), context.auth.roles)
+    isAuth(permitAdminArrivals('Governorship'), context.auth.roles)
 
     const session = context.executionContext.session()
 

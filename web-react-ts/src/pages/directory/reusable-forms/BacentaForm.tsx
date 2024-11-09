@@ -109,7 +109,7 @@ const BacentaForm = ({
         )}
       </ButtonGroup>
 
-      <RoleView roles={permitAdminArrivals('Stream')}>
+      <RoleView roles={permitAdminArrivals('Governorship')}>
         <Button
           variant="warning"
           className="mt-1"
