@@ -1,3 +1,10 @@
+#### 7.18.57 (2024-11-09)
+
+##### Refactors
+
+*  update role permissions for closing down Bacenta to use 'Governorship' ([df0400b0](https://github.com/firstlovecenter/fl-admin-portal/commit/df0400b07294058a23ba4fbbc94bac6fdbd470de))
+*  update accounts-utils to use UTC methods and uncomment code in ExpenseForm ([7f17fe85](https://github.com/firstlovecenter/fl-admin-portal/commit/7f17fe850f445456826c06bdd9823f020e37cbbc))
+
 #### 7.18.56 (2024-10-31)
 
 ##### Documentation Changes
