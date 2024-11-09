@@ -18,7 +18,6 @@ import {
 } from '../permissions'
 import { MakeServant, RemoveServant } from '../directory/make-remove-servants'
 import {
-  aggregateBussingDataOnHigherChurches,
   aggregateVehicleBussingRecordData,
   checkArrivalTimeFromVehicle,
   checkArrivalTimes,
@@ -377,12 +376,10 @@ export const arrivalsMutation = {
 
     const {
       arrivalEndTime,
-      bacentaId,
       numberOfVehicles,
       totalAttendance,
     }: {
       arrivalEndTime: string
-      bacentaId: string
       numberOfVehicles: neonumber
       totalAttendance: neonumber
       leaderPhoneNumber: string
@@ -427,14 +424,6 @@ export const arrivalsMutation = {
       .run(aggregateVehicleBussingRecordData, adjustedArgs)
       .catch((error: any) =>
         throwToSentry('Error Running aggregateVehicleBussingRecordData', error)
-      )
-    await session
-      .run(aggregateBussingDataOnHigherChurches, { bacentaId })
-      .catch((error: any) =>
-        throwToSentry(
-          'Error Running aggregateLeaderBussingDataOnHigherChurches',
-          error
-        )
       )
 
     const vehicleRecord = response.vehicleRecord.properties

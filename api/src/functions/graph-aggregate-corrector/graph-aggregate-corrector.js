@@ -8,7 +8,13 @@ const {
   aggregateStreamOnCampus,
   aggregateCampusOnOversight,
   aggregateOversightOnDenomination,
+  aggregateBussingOnCouncil,
+  aggregateBussingOnStream,
+  aggregateBussingOnCampus,
+  aggregateBussingOnOversight,
+  aggregateBussingOnDenomination,
 } = require('./query-exec/aggregateAllChurches.js')
+const { aggregateBussingOnGovernorshipQuery } = require('./bacenta-cypher.js')
 
 const SECRETS = loadSecrets()
 
@@ -23,6 +29,12 @@ const executeQuery = async (neoDriver) => {
       aggregateStreamOnCampus(neoDriver),
       aggregateCampusOnOversight(neoDriver),
       aggregateOversightOnDenomination(neoDriver),
+      aggregateBussingOnGovernorshipQuery(neoDriver),
+      aggregateBussingOnCouncil(neoDriver),
+      aggregateBussingOnStream(neoDriver),
+      aggregateBussingOnCampus(neoDriver),
+      aggregateBussingOnOversight(neoDriver),
+      aggregateBussingOnDenomination(neoDriver),
     ])
     console.log('All Aggregations Complete!')
   } catch (error) {
