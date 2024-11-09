@@ -1,71 +1,31 @@
 const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
-const { default: axios } = require('axios')
 const { loadSecrets } = require('./secrets.js')
+const {
+  aggregateBacentaOnGovernorship,
+  aggregateGovernorshipOnCouncil,
+  aggregateCouncilOnStream,
+  aggregateStreamOnCampus,
+  aggregateCampusOnOversight,
+  aggregateOversightOnDenomination,
+} = require('./query-exec/aggregateBacentaOnGovernorship.js')
 
 const SECRETS = loadSecrets()
-
-const setCodeOfTheDay = `
- MATCH (arr:ArrivalsCodeOfTheDay)
-  SET arr.code = $code
- RETURN arr.code
-`
 
 const executeQuery = async (neoDriver) => {
   const session = neoDriver.session()
 
-  const codeOfTheDay = [
-    {
-      date: '2024-09-01',
-      code: 'Abundance',
-    },
-    {
-      date: '2024-09-08',
-      code: 'Increase',
-    },
-    {
-      date: '2024-09-15',
-      code: 'Growth',
-    },
-    {
-      date: '2024-09-22',
-      code: 'Enlarge',
-    },
-    {
-      date: '2024-09-29',
-      code: 'Flourish',
-    },
-  ]
-
   try {
-    await session.executeWrite(async (tx) => {
-      console.log('Setting code of the day')
-
-      const pad = (n) => (n < 10 ? `0${n}` : n)
-
-      const today = new Date()
-      const day = today.getDate()
-      const month = today.getMonth() + 1
-      const year = today.getFullYear()
-      const date = `${year}-${pad(month)}-${pad(day)}`
-
-      const code = codeOfTheDay.filter((item) => item.date === date).pop()
-
-      const res = await axios({
-        method: 'get',
-        url: 'https://random-word-api.herokuapp.com/word',
-      })
-
-      const dictionaryCode = res.data[0].toUpperCase()
-
-      console.log('code', code?.code ?? dictionaryCode)
-
-      return tx.run(setCodeOfTheDay, {
-        code: code?.code ?? dictionaryCode,
-      })
-    })
+    await Promise.all([
+      aggregateBacentaOnGovernorship(neoDriver),
+      aggregateGovernorshipOnCouncil(neoDriver),
+      aggregateCouncilOnStream(neoDriver),
+      aggregateStreamOnCampus(neoDriver),
+      aggregateCampusOnOversight(neoDriver),
+      aggregateOversightOnDenomination(neoDriver),
+    ])
   } catch (error) {
-    console.error('Error setting code of the day', error)
+    console.error('Error aggregating graphs', error)
   } finally {
     await session.close()
   }
@@ -112,4 +72,4 @@ const handler = async () => {
   }
 }
 
-module.exports.handler = schedule('30 00 * * *', handler)
+module.exports.handler = schedule('0 * * * *', handler)
