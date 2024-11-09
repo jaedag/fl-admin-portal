@@ -170,24 +170,10 @@ interface ChurchesForAggregateion {
     [key: string]: string | number | boolean | string[]
   }
 }
-interface HigherChurchesForAgggregation extends ChurchesForAggregateion {
-  cypher: string
-}
-
 interface SontaHigherChurchesForAgggregation extends ChurchesForAggregateion {
   rehearsalCypher: string
   ministryMeetingCypher: string
   ministryStagePerformanceCypher: string
-}
-
-export type HigherChurches = {
-  bacenta?: HigherChurchesForAgggregation
-  governorship?: HigherChurchesForAgggregation
-  council?: HigherChurchesForAgggregation
-  stream?: HigherChurchesForAgggregation
-  campus?: HigherChurchesForAgggregation
-  oversight?: HigherChurchesForAgggregation
-  denomination?: HigherChurchesForAgggregation
 }
 
 export type SontaHigherChurches = {

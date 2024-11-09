@@ -17,12 +17,9 @@ import {
   recordCancelledService,
   recordService,
   getHigherChurches,
-  aggregateServiceDataForHub,
   recordSpecialService,
 } from './service-cypher'
 import { recordCancelledService as cancelRehearsal } from './rehearsal-cypher'
-import { getServiceHigherChurches } from './service-utils'
-import { HigherChurches } from '../utils/types'
 
 const errorMessage = require('../texts.json').error
 
@@ -128,9 +125,6 @@ const serviceMutation = {
 
       const serviceCheck = rearrangeCypherObject(serviceCheckRes[0])
       const currencyCheck = rearrangeCypherObject(serviceCheckRes[1])
-      const higherChurches = getServiceHigherChurches(
-        serviceCheckRes[2]?.records
-      ) as HigherChurches
 
       if (
         serviceCheck.alreadyFilled &&
@@ -142,24 +136,6 @@ const serviceMutation = {
       }
       if (serviceCheck.labels?.includes('Vacation')) {
         throw new Error(errorMessage.vacation_cannot_fill_service)
-      }
-
-      let aggregateCypher = ''
-
-      if (higherChurches?.bacenta) {
-        aggregateCypher = higherChurches.bacenta?.cypher
-      } else if (higherChurches?.governorship) {
-        aggregateCypher = higherChurches.governorship.cypher
-      } else if (higherChurches?.council) {
-        aggregateCypher = higherChurches.council.cypher
-      } else if (higherChurches?.stream) {
-        aggregateCypher = higherChurches.stream.cypher
-      } else if (higherChurches?.campus) {
-        aggregateCypher = higherChurches.campus.cypher
-      } else if (higherChurches?.oversight) {
-        aggregateCypher = higherChurches.oversight.cypher
-      } else if (higherChurches?.denomination) {
-        aggregateCypher = higherChurches.denomination.cypher
       }
 
       const cypherResponse = await session
@@ -181,28 +157,6 @@ const serviceMutation = {
           conversionRateToDollar: currencyCheck.conversionRateToDollar,
           serviceRecordId,
         })
-      )
-
-      const aggregatePromises = [
-        sessionTwo.executeWrite((tx) =>
-          tx.run(aggregateCypher, {
-            churchId: args.churchId,
-          })
-        ),
-      ]
-
-      if (serviceCheck.labels?.includes('HubFellowship')) {
-        aggregatePromises.push(
-          sessionThree.executeWrite((tx) =>
-            tx.run(aggregateServiceDataForHub, {
-              churchId: args.churchId,
-            })
-          )
-        )
-      }
-
-      await Promise.all(aggregatePromises).catch((error: any) =>
-        throwToSentry('Error Aggregating Service', error)
       )
 
       const serviceDetails = rearrangeCypherObject(cypherResponse)
@@ -245,30 +199,9 @@ const serviceMutation = {
       const serviceCheckRes = await Promise.all(promises)
 
       const currencyCheck = rearrangeCypherObject(serviceCheckRes[0])
-      const higherChurches = getServiceHigherChurches(
-        serviceCheckRes[1]?.records
-      ) as HigherChurches
 
       if (currencyCheck.labels?.includes('Vacation')) {
         throw new Error(errorMessage.vacation_cannot_fill_service)
-      }
-
-      let aggregateCypher = ''
-
-      if (higherChurches?.bacenta) {
-        aggregateCypher = higherChurches.bacenta?.cypher
-      } else if (higherChurches?.governorship) {
-        aggregateCypher = higherChurches.governorship.cypher
-      } else if (higherChurches?.council) {
-        aggregateCypher = higherChurches.council.cypher
-      } else if (higherChurches?.stream) {
-        aggregateCypher = higherChurches.stream.cypher
-      } else if (higherChurches?.campus) {
-        aggregateCypher = higherChurches.campus.cypher
-      } else if (higherChurches?.oversight) {
-        aggregateCypher = higherChurches.oversight.cypher
-      } else if (higherChurches?.denomination) {
-        aggregateCypher = higherChurches.denomination.cypher
       }
 
       const cypherResponse = await session
@@ -290,18 +223,6 @@ const serviceMutation = {
           conversionRateToDollar: currencyCheck.conversionRateToDollar,
           serviceRecordId,
         })
-      )
-
-      const aggregatePromises = [
-        sessionTwo.executeWrite((tx) =>
-          tx.run(aggregateCypher, {
-            churchId: args.churchId,
-          })
-        ),
-      ]
-
-      await Promise.all(aggregatePromises).catch((error: any) =>
-        throwToSentry('Error Aggregating Service', error)
       )
 
       const serviceDetails = rearrangeCypherObject(cypherResponse)
