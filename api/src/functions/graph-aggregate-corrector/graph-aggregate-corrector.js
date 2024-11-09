@@ -13,8 +13,8 @@ const {
   aggregateBussingOnCampus,
   aggregateBussingOnOversight,
   aggregateBussingOnDenomination,
+  aggregateBussingOnGovernorship,
 } = require('./query-exec/aggregateAllChurches.js')
-const { aggregateBussingOnGovernorshipQuery } = require('./bacenta-cypher.js')
 
 const SECRETS = loadSecrets()
 
@@ -29,7 +29,7 @@ const executeQuery = async (neoDriver) => {
       aggregateStreamOnCampus(neoDriver),
       aggregateCampusOnOversight(neoDriver),
       aggregateOversightOnDenomination(neoDriver),
-      aggregateBussingOnGovernorshipQuery(neoDriver),
+      aggregateBussingOnGovernorship(neoDriver),
       aggregateBussingOnCouncil(neoDriver),
       aggregateBussingOnStream(neoDriver),
       aggregateBussingOnCampus(neoDriver),
@@ -85,4 +85,4 @@ const handler = async () => {
   }
 }
 
-module.exports.handler = schedule('0 * * * *', handler)
+module.exports.handler = schedule('* * * * *', handler)
