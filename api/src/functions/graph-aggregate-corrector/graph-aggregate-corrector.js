@@ -24,7 +24,7 @@ const executeQuery = async (neoDriver) => {
       aggregateCampusOnOversight(neoDriver),
       aggregateOversightOnDenomination(neoDriver),
     ])
-    console.log('Aggregation complete')
+    console.log('All Aggregations Complete!')
   } catch (error) {
     console.error('Error aggregating graphs', error)
   } finally {

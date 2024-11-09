@@ -11,6 +11,7 @@ export const aggregateBacentaOnGovernorship = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
+    console.log('Aggregating Bacenta on Governorship')
     const result = await session.executeWrite(async (tx) =>
       tx.run(aggregateBacentaOnGovernorshipQuery)
     )
@@ -35,6 +36,7 @@ export const aggregateGovernorshipOnCouncil = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
+    console.log('Aggregating Governorship on Council')
     const result = await session.executeWrite(async (tx) =>
       tx.run(aggregateGovernorshipOnCouncilQuery)
     )
@@ -59,6 +61,7 @@ export const aggregateCouncilOnStream = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
+    console.log('Aggregating Council on Stream')
     const result = await session.executeWrite(async (tx) =>
       tx.run(aggregateCouncilOnStreamQuery)
     )
@@ -81,6 +84,7 @@ export const aggregateStreamOnCampus = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
+    console.log('Aggregating Stream on Campus')
     const result = await session.executeWrite(async (tx) =>
       tx.run(aggregateStreamOnCampusQuery)
     )
@@ -103,6 +107,7 @@ export const aggregateCampusOnOversight = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
+    console.log('Aggregating Campus on Oversight')
     const result = await session.executeWrite(async (tx) =>
       tx.run(aggregateCampusOnOversightQuery)
     )
@@ -127,6 +132,7 @@ export const aggregateOversightOnDenomination = async (neoDriver) => {
   const session = neoDriver.session()
 
   try {
+    console.log('Aggregating Oversight on Denomination')
     const result = await session.executeWrite(async (tx) =>
       tx.run(aggregateOversightOnDenominationQuery)
     )
