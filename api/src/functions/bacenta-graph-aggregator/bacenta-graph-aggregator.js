@@ -2,12 +2,6 @@ const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
 const { loadSecrets } = require('./secrets.js')
 const {
-  aggregateBacentaOnGovernorship,
-  aggregateGovernorshipOnCouncil,
-  aggregateCouncilOnStream,
-  aggregateStreamOnCampus,
-  aggregateCampusOnOversight,
-  aggregateOversightOnDenomination,
   aggregateBussingOnCouncil,
   aggregateBussingOnStream,
   aggregateBussingOnCampus,
@@ -23,12 +17,6 @@ const executeQuery = async (neoDriver) => {
 
   try {
     await Promise.all([
-      aggregateBacentaOnGovernorship(neoDriver),
-      aggregateGovernorshipOnCouncil(neoDriver),
-      aggregateCouncilOnStream(neoDriver),
-      aggregateStreamOnCampus(neoDriver),
-      aggregateCampusOnOversight(neoDriver),
-      aggregateOversightOnDenomination(neoDriver),
       aggregateBussingOnGovernorship(neoDriver),
       aggregateBussingOnCouncil(neoDriver),
       aggregateBussingOnStream(neoDriver),
