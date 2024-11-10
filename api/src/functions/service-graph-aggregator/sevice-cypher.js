@@ -105,7 +105,7 @@ export const aggregateCampusOnOversightQuery = `
 
     MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
         SET aggregate.attendance = totalAttendance,
-        aggregate.income = totalIncome,
+        aggregate.income = totalDollarIncome,
         aggregate.dollarIncome = totalDollarIncome,
         aggregate.componentServiceIds = componentServiceIds,
         aggregate.numberOfServices = numberOfServices
@@ -128,7 +128,7 @@ export const aggregateOversightOnDenominationQuery = `
 
     MERGE (log)-[:HAS_SERVICE_AGGREGATE]->(aggregate)
         SET aggregate.attendance = totalAttendance,
-        aggregate.income = totalIncome,
+        aggregate.income = totalDollarIncome,
         aggregate.dollarIncome = totalDollarIncome,
         aggregate.componentServiceIds = componentServiceIds,
         aggregate.numberOfServices = numberOfServices

@@ -8,4 +8,11 @@ MATCH (record:AggregateServiceRecord) WHERE record.week = date().week AND record
 SET record.attendance = 0,
 record.income = 0,
 record.dollarIncome = 0 
-RETURN record
+RETURN record;
+
+MATCH (campus:Campus)<-[:HAS]-(oversight:Oversight)
+    MATCH (oversight)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..7]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
+
+    WITH DISTINCT oversight, record
+    RETURN oversight,COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
