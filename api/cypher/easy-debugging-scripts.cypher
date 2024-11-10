@@ -16,3 +16,7 @@ MATCH (campus:Campus)<-[:HAS]-(oversight:Oversight)
 
     WITH DISTINCT oversight, record
     RETURN oversight,COUNT(DISTINCT record) AS numberOfServices, SUM(record.attendance) AS totalAttendance, SUM(record.income) AS totalIncome, SUM(record.dollarIncome) AS totalDollarIncome
+
+MATCH (council:Council)<-[:LEADS]-(amartey:Member {lastName: "Amartey"})
+SET council.bussingSocietyBalance = 0
+RETURN council.name, amartey.lastName, council.bussingSocietyBalance

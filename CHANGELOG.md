@@ -1,3 +1,21 @@
+#### 7.18.61 (2024-11-10)
+
+##### New Features
+
+*  enhance service aggregation queries to include total attendance and income calculations ([6e3e61ed](https://github.com/firstlovecenter/fl-admin-portal/commit/6e3e61ed2a498447ceb7b71ccce0d8df820dfaca))
+*  remove unused bacenta aggregation functions from graph aggregator ([c3932d50](https://github.com/firstlovecenter/fl-admin-portal/commit/c3932d50f4d2efa62d330b1639052b3e9bd23613))
+*  add service graph aggregator and refactor graph aggregation functions ([4ca19d18](https://github.com/firstlovecenter/fl-admin-portal/commit/4ca19d189fdc8190133a08f6a262c936d2877e71))
+*  update schedule frequency for graph aggregation handler to run hourly ([783b3ed4](https://github.com/firstlovecenter/fl-admin-portal/commit/783b3ed4ffb91ae5991a09e73abeeadb18d27a2d))
+*  update busing aggregation queries to set month property and refactor function calls ([60ffe648](https://github.com/firstlovecenter/fl-admin-portal/commit/60ffe6487ebc0d5ab20e739e82ce0dddbed0abc2))
+*  add busing aggregation queries and reset attendance records ([7654bcd0](https://github.com/firstlovecenter/fl-admin-portal/commit/7654bcd001e01edbdf694a2a8c253199963eb2d8))
+*  remove service aggregation in filling service resolver ([2e4f0311](https://github.com/firstlovecenter/fl-admin-portal/commit/2e4f0311df9e565c9eb592d5922fdf1307738c4f))
+*  update schedule frequency for graph aggregation handler ([e3e3cdcd](https://github.com/firstlovecenter/fl-admin-portal/commit/e3e3cdcdde07cdf99929c6be28d37069f4f342c2))
+*  enhance logging for graph aggregation processes ([627614ea](https://github.com/firstlovecenter/fl-admin-portal/commit/627614eacaceeaf55fdc3c47b4c94ce4ae0b8e19))
+*  add path for graph-aggregate-corrector secrets in encrypt-secrets.js ([aeb38d0a](https://github.com/firstlovecenter/fl-admin-portal/commit/aeb38d0a3e20213f64925f4ec6c9431dba055d9c))
+*  update graph aggregation logic and adjust schedule frequency ([8fb0be94](https://github.com/firstlovecenter/fl-admin-portal/commit/8fb0be94f20be653dcd1bcc3873208f0107279e8))
+*  add console log for aggregation completion in graph-aggregate-corrector ([472b162b](https://github.com/firstlovecenter/fl-admin-portal/commit/472b162b7ce2661b12222a3e07d2df8278a86663))
+*  implement bg function to aggregate church graphs ([42693dad](https://github.com/firstlovecenter/fl-admin-portal/commit/42693dad43ed319c5b2cc2cc9c80a3bfe37ffd02))
+
 #### 7.18.60 (2024-11-09)
 
 #### 7.18.59 (2024-11-09)
