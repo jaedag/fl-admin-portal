@@ -1,6 +1,5 @@
 export const aggregateBussingOnGovernorshipQuery = `
-   MATCH (bacenta:Bacenta)<-[:HAS]-(governorship:Governorship)
-   MATCH (governorship)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MATCH (governorship:Governorship)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
     SET aggregate.month = date().month
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
@@ -28,8 +27,7 @@ export const aggregateBussingOnGovernorshipQuery = `
 `
 
 export const aggregateBussingOnCouncilQuery = `
-    MATCH (governorship:Governorship)<-[:HAS]-(council:Council)
-   MATCH (council)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MATCH (council:Council)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
     SET aggregate.month = date().month
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
@@ -56,8 +54,7 @@ export const aggregateBussingOnCouncilQuery = `
 `
 
 export const aggregateBussingOnStreamQuery = `
-    MATCH (council:Council)<-[:HAS]-(stream:Stream)
-   MATCH (stream)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MATCH (stream:Stream)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
     SET aggregate.month = date().month
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
@@ -84,8 +81,7 @@ export const aggregateBussingOnStreamQuery = `
 `
 
 export const aggregateBussingOnCampusQuery = `
-   MATCH (stream:Stream)<-[:HAS]-(campus:Campus)
-   MATCH (campus)-[:CURRENT_HISTORY]->(log:ServiceLog)
+   MATCH (campus:Campus)-[:CURRENT_HISTORY]->(log:ServiceLog)
    MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
     SET aggregate.month = date().month
    MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
@@ -112,8 +108,7 @@ export const aggregateBussingOnCampusQuery = `
 `
 
 export const aggregateBussingOnOversightQuery = `
-    MATCH (campus:Campus)<-[:HAS]-(oversight:Oversight)
-    MATCH (oversight)-[:CURRENT_HISTORY]->(log:ServiceLog)
+    MATCH (oversight:Oversight)-[:CURRENT_HISTORY]->(log:ServiceLog)
     MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
         SET aggregate.month = date().month
     MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)
@@ -140,8 +135,7 @@ export const aggregateBussingOnOversightQuery = `
     `
 
 export const aggregateBussingOnDenominationQuery = `
-    MATCH (oversight:Oversight)<-[:HAS]-(denomination:Denomination)
-    MATCH (denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
+    MATCH (denomination:Denomination)-[:CURRENT_HISTORY]->(log:ServiceLog)
     MERGE (aggregate:AggregateBussingRecord {id: date().week + '-' + date().year + '-' + log.id, week: date().week, year: date().year})
         SET aggregate.month = date().month
     MERGE (log)-[:HAS_BUSSING_AGGREGATE]->(aggregate)

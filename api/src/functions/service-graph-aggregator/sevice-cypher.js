@@ -1,6 +1,5 @@
 export const aggregateBacentaOnGovernorshipQuery = `
-    MATCH (bacenta:Bacenta)<-[:HAS]-(governorship:Governorship)
-   MATCH (governorship)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..3]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+   MATCH (governorship:Governorship)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..3]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
    WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
 
    WITH DISTINCT governorship, record
@@ -22,8 +21,7 @@ export const aggregateBacentaOnGovernorshipQuery = `
 `
 
 export const aggregateGovernorshipOnCouncilQuery = `
-    MATCH (governorship:Governorship)<-[:HAS]-(council:Council)
-    MATCH (council)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..4]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+    MATCH (council:Council)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..4]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
     WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
 
     WITH DISTINCT council, record
@@ -45,8 +43,7 @@ export const aggregateGovernorshipOnCouncilQuery = `
 `
 
 export const aggregateCouncilOnStreamQuery = `
-    MATCH (council:Council)<-[:HAS]-(stream:Stream)
-    MATCH (stream)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+    MATCH (stream:Stream)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..5]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
     WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
 
     WITH DISTINCT stream, record
@@ -68,8 +65,7 @@ export const aggregateCouncilOnStreamQuery = `
 `
 
 export const aggregateStreamOnCampusQuery = `
-    MATCH (stream:Stream)<-[:HAS]-(campus:Campus)
-    MATCH (campus)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..6]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+    MATCH (campus:Campus)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..6]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
     WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
 
     WITH DISTINCT campus, record
@@ -91,8 +87,7 @@ export const aggregateStreamOnCampusQuery = `
 `
 
 export const aggregateCampusOnOversightQuery = `
-    MATCH (campus:Campus)<-[:HAS]-(oversight:Oversight)
-    MATCH (oversight)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..7]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+    MATCH (oversight:Oversight)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..7]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
     WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
 
     WITH DISTINCT oversight, record
@@ -114,8 +109,7 @@ export const aggregateCampusOnOversightQuery = `
 `
 
 export const aggregateOversightOnDenominationQuery = `
-    MATCH (oversight:Oversight)<-[:HAS]-(denomination:Denomination)
-    MATCH (denomination)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..8]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
+    MATCH (denomination:Denomination)-[:CURRENT_HISTORY|HAS_SERVICE|HAS*2..8]->(record:ServiceRecord)-[:SERVICE_HELD_ON]->(date:TimeGraph) 
     WHERE date.date.week = date().week AND date.date.year = date().year AND NOT record:NoService
 
     WITH DISTINCT denomination, record
