@@ -1,6 +1,8 @@
 const neo4j = require('neo4j-driver')
 const { schedule } = require('@netlify/functions')
 const { google } = require('googleapis')
+const { default: axios } = require('axios')
+const { getWeekNumber } = require('@jaedag/admin-portal-types')
 const { GOOGLE_APPLICATION_CREDENTIALS, SECRETS } = require('./gsecrets.js')
 
 const fetchData = `
@@ -127,6 +129,40 @@ const handler = async () => {
   const sheetName = 'Accra Services'
 
   await writeToGsheet(data, sheetName).catch((error) => {
+    throw new Error(
+      `Error writing to google sheet\n${error.message}\n${error.stack}`
+    )
+  })
+
+  await axios({
+    method: 'post',
+    baseURL: 'https://flc-microservices.netlify.app/.netlify/functions/notify',
+    url: '/send-sms',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-secret-key': SECRETS.FLC_NOTIFY_KEY,
+    },
+    data: {
+      recipient: [
+        '233594760323',
+        '233592219407',
+        '233541805641',
+        '233596075970',
+      ],
+      sender: 'FLC Admin',
+      message: `WEEK ${
+        getWeekNumber() - 1
+      } UPDATE\n\nServices Not Banked Sheets updated successfully on date ${
+        new Date()
+          .toLocaleString('en-GB', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })
+          .split('T')[0]
+      }`,
+    },
+  }).catch((error) => {
     throw new Error(
       `Error writing to google sheet\n${error.message}\n${error.stack}`
     )
