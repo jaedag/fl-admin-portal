@@ -5,7 +5,25 @@ import {
   aggregateBussingOnGovernorshipQuery,
   aggregateBussingOnOversightQuery,
   aggregateBussingOnStreamQuery,
+  zeroAllNullBussingRecordsCypher,
 } from '../bacenta-cypher'
+
+export const zeroAllNullBussingRecords = async (neoDriver) => {
+  const session = neoDriver.session()
+
+  try {
+    console.log('Zeroing all null bussing records')
+    await session.executeWrite(async (tx) =>
+      tx.run(zeroAllNullBussingRecordsCypher)
+    )
+
+    console.log('Zeroed all null bussing records')
+  } catch (error) {
+    console.error('Error zeroing all null bussing records', error)
+  } finally {
+    await session.close()
+  }
+}
 
 export const aggregateBussingOnGovernorship = async (neoDriver) => {
   const session = neoDriver.session()

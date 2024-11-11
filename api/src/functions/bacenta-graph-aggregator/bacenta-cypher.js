@@ -159,3 +159,18 @@ export const aggregateBussingOnDenominationQuery = `
     
         RETURN COUNT(denomination) as denominationCount
         `
+
+export const zeroAllNullBussingRecordsCypher = `
+MATCH (stream:Stream)
+   MATCH (stream)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
+   WHERE aggregate.numberOfSprinters IS NULL AND aggregate.numberOfUrvans IS NULL AND aggregate.numberOfCars IS NULL
+
+   SET aggregate.leaderDeclaration = 0,
+    aggregate.attendance = 0,
+    aggregate.bussingTopUp = 0,
+    aggregate.componentBussingIds = [],
+    aggregate.numberOfSprinters = 0,
+    aggregate.numberOfUrvans = 0,
+    aggregate.numberOfCars = 0
+   RETURN COUNT(aggregate) as aggregateCount
+   `

@@ -8,6 +8,7 @@ const {
   aggregateBussingOnOversight,
   aggregateBussingOnDenomination,
   aggregateBussingOnGovernorship,
+  zeroAllNullBussingRecords,
 } = require('./query-exec/aggregateAllChurches.js')
 
 const SECRETS = loadSecrets()
@@ -25,6 +26,9 @@ const executeQuery = async (neoDriver) => {
       aggregateBussingOnDenomination(neoDriver),
     ])
     console.log('All Aggregations Complete!')
+
+    await zeroAllNullBussingRecords(neoDriver)
+    console.log('Zeroed all null bussing records')
   } catch (error) {
     console.error('Error aggregating graphs', error)
   } finally {
