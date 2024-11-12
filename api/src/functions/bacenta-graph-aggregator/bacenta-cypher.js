@@ -161,8 +161,7 @@ export const aggregateBussingOnDenominationQuery = `
         `
 
 export const zeroAllNullBussingRecordsCypher = `
-MATCH (stream:Stream)
-   MATCH (stream)-[:CURRENT_HISTORY]->(log:ServiceLog)-[:HAS_BUSSING_AGGREGATE]->(aggregate:AggregateBussingRecord)
+    MATCH (aggregate:AggregateBussingRecord)
    WHERE aggregate.numberOfSprinters IS NULL AND aggregate.numberOfUrvans IS NULL AND aggregate.numberOfCars IS NULL
 
    SET aggregate.leaderDeclaration = 0,
