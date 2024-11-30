@@ -19,7 +19,7 @@ const anagkazo = {
 
 
     WITH governorship, record
-    MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(:Bacenta)<-[:HAS]-(governorship)
+    MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(church)<-[:HAS*0..1]-(governorship)
     SET record.tellerConfirmationTime = datetime()
 
     WITH governorship, record
@@ -98,12 +98,9 @@ const anagkazo = {
         AND record.bankingSlip IS NULL
         AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
         AND record.tellerConfirmationTime IS NULL
-    MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
+    MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(this)
 
-    WITH DISTINCT bacentas, this
-    MATCH (bacentas)<-[:HAS]-(this)
-
-    RETURN COUNT(DISTINCT bacentas) as bankingDefaulters
+    RETURN COUNT(DISTINCT this) as bankingDefaulters
   `,
 }
 
