@@ -20,7 +20,7 @@ extend type Mutation {
 }
 
 extend type Stream {
-  constitiuencyBankingDefaultersThisWeek: [Governorship!]!
+  governorshipBankingDefaultersThisWeek: [Governorship!]!
     @cypher(
       statement: """
       MATCH (this)
@@ -39,10 +39,10 @@ extend type Stream {
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(governorships:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN DISTINCT governorships
       """
@@ -66,10 +66,10 @@ extend type Stream {
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(bacentas) WHERE bacentas:Bacenta OR bacentas:ClosedBacenta
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
-       WITH DISTINCT bacentas, this
-       MATCH (bacentas)<-[:HAS]-(governorships:Governorship)<-[:HAS]-(:Council)<-[:HAS]-(this)
+       WITH DISTINCT governorships, this
+       MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(this)
 
       RETURN COUNT(DISTINCT governorships)
       """

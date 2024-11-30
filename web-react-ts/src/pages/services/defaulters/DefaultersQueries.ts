@@ -543,11 +543,11 @@ export const STREAM_BANKING_DEFAULTERS_LIST = gql`
 `
 
 export const GOVERNORSHIP_BANKING_DEFUALTERS_THIS_WEEK = gql`
-  query constitiuencyBankingDefaultersThisWeek($id: ID!) {
+  query governorshipBankingDefaultersThisWeek($id: ID!) {
     streams(where: { id: $id }) {
       id
       name
-      constitiuencyBankingDefaultersThisWeek {
+      governorshipBankingDefaultersThisWeek {
         id
         name
         leader {

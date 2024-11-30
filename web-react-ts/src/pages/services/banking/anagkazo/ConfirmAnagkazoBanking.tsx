@@ -60,7 +60,7 @@ const ConfirmAnagkazoBanking = () => {
     governorshipServiceData?.governorships[0]?.aggregateServiceRecordForWeek
 
   const bankingDefaultersList =
-    data?.streams[0]?.constitiuencyBankingDefaultersThisWeek
+    data?.streams[0]?.governorshipBankingDefaultersThisWeek
 
   const onSubmit = (
     values: FormOptions,
