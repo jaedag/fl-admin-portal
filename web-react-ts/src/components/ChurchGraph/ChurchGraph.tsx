@@ -249,6 +249,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                 <LabelList
                   dataKey={`${stat1}`}
                   position="top"
+                  // @ts-expect-error - dataKey is a string
                   fill="#FFF"
                   fontSize="12"
                 />
@@ -277,6 +278,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                   <LabelList
                     dataKey={`${stat2}`}
                     position="top"
+                    // @ts-expect-error - dataKey is a string
                     fill="#FFF"
                     fontSize="12"
                   />
@@ -286,6 +288,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
               <XAxis
                 dataKey="week"
                 tickLine={false}
+                // @ts-expect-error - dataKey is a string
                 fontSize="13"
                 tickFormatter={(week) => {
                   if (!week) {
