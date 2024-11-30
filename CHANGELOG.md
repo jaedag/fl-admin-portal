@@ -1,3 +1,15 @@
+#### 7.18.62 (2024-11-30)
+
+##### New Features
+
+*  rename constituency banking defaulters to governorship banking defaulters across the app ([7cb9e3a6](https://github.com/firstlovecenter/fl-admin-portal/commit/7cb9e3a6441f9a1007b463d3a5ec83671c25c08e))
+*  rename constituency banking defaulters to governorship banking defaulters across the application ([853a8bb5](https://github.com/firstlovecenter/fl-admin-portal/commit/853a8bb5f4e858e43c89df06fa70c76e0f0c96a5))
+*  optimize Cypher queries by removing redundant MATCH clauses and improving performance ([685542c0](https://github.com/firstlovecenter/fl-admin-portal/commit/685542c0cf2e971c6d99a94e377eba45a4d1f513))
+*  add functionality to zero all null bussing records in the database ([4132371b](https://github.com/firstlovecenter/fl-admin-portal/commit/4132371b5eec2a7a8c0f78f2b55de48a6df7d0f9))
+*  simplify Cypher queries by removing unnecessary MATCH clauses ([6b5dc5e9](https://github.com/firstlovecenter/fl-admin-portal/commit/6b5dc5e9746f17776b8a8a03617eb2289ce464a0))
+*  update schedule time for gsheets services not banked handler ([8ea18fe1](https://github.com/firstlovecenter/fl-admin-portal/commit/8ea18fe193e7e86041ad55b3d7a5daca47f76e7e))
+*  add SMS notification for services not banked updates and include new recipient ([f86bcf6f](https://github.com/firstlovecenter/fl-admin-portal/commit/f86bcf6f5e8cecc0fa37316cfd3b7635c7c6a7f7))
+
 #### 7.18.61 (2024-11-10)
 
 ##### New Features
