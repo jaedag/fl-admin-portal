@@ -246,13 +246,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                   navigate(`/${props.church}/${action.route}`)
                 }}
               >
-                <LabelList
-                  dataKey={`${stat1}`}
-                  position="top"
-                  // @ts-expect-error - dataKey is a string
-                  fill="#FFF"
-                  fontSize="12"
-                />
+                <LabelList dataKey={`${stat1}`} position="top" />
               </Bar>
               {stat2 && (
                 <Bar
@@ -262,7 +256,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                   yAxisId="right"
                   fill="url(#colorSecondary)"
                   onClick={(data) => {
-                    if (data.category.includes('Aggregate')) {
+                    if (data.category && data.category.includes('Aggregate')) {
                       return
                     }
 
@@ -275,21 +269,13 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                     }
                   }}
                 >
-                  <LabelList
-                    dataKey={`${stat2}`}
-                    position="top"
-                    // @ts-expect-error - dataKey is a string
-                    fill="#FFF"
-                    fontSize="12"
-                  />
+                  <LabelList dataKey={`${stat2}`} position="top" />
                 </Bar>
               )}
 
               <XAxis
                 dataKey="week"
                 tickLine={false}
-                // @ts-expect-error - dataKey is a string
-                fontSize="13"
                 tickFormatter={(week) => {
                   if (!week) {
                     return 'No Data Found'
