@@ -218,7 +218,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                 barSize={30}
                 yAxisId="left"
                 fill="url(#colorPrimary)"
-                onClick={(data) => {
+                onClick={(data: any) => {
                   const graphTypeActions: {
                     [key in string]: { typename: string; route: string }
                   } = {
@@ -236,7 +236,7 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                     },
                   }
 
-                  if (data.category.includes('Aggregate') || !data.id) {
+                  if (data.category?.includes('Aggregate') || !data.id) {
                     return
                   }
 
@@ -255,8 +255,8 @@ const ChurchGraph = (props: ChurchGraphProps) => {
                   barSize={35}
                   yAxisId="right"
                   fill="url(#colorSecondary)"
-                  onClick={(data) => {
-                    if (data.category && data.category.includes('Aggregate')) {
+                  onClick={(data: any) => {
+                    if (data.category.includes('Aggregate')) {
                       return
                     }
 
