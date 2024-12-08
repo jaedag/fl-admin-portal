@@ -85,7 +85,7 @@ extend type Governorship {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
-      MATCH (agg) WHERE agg.week = date().week AND agg.year = date().year
+      MATCH (agg) WHERE agg.week = 49 AND agg.year = date().year
 
       WITH agg, this
       WITH date() as today, this, agg
@@ -96,7 +96,7 @@ extend type Governorship {
       MATCH (date:TimeGraph)
       USING INDEX date:TimeGraph(date)
       WHERE date.date IN dates
-      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
+      MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY|HAS*1..2]-(this)
 
       WITH DISTINCT record, agg
       WITH collect(record.foreignCurrency) as list, SUM(record.income) AS income, SUM(record.attendance) AS attendance, agg
