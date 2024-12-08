@@ -85,7 +85,7 @@ extend type Governorship {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
-      MATCH (agg) WHERE agg.week = 49 AND agg.year = date().year
+      MATCH (agg) WHERE agg.week = $week AND agg.year = date().year
 
       WITH agg, this
       WITH date() as today, this, agg
