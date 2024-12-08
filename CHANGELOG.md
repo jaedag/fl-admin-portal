@@ -1,3 +1,18 @@
+#### 7.18.63 (2024-12-08)
+
+##### Chores
+
+*  update version in meta.json and add optional chaining for ([b4caaa35](https://github.com/firstlovecenter/fl-admin-portal/commit/b4caaa35f520f8dac1c799145cb4fad0e24f28ac))
+
+##### New Features
+
+*  enhance GraphQL queries and improve type handling in ConfirmAnagkazoBanking component ([39ab7450](https://github.com/firstlovecenter/fl-admin-portal/commit/39ab745049831acb330d7ec8e2c56158b194ab3b))
+*  update Cypher queries to use governorship context and improve record handling ([e59d0e79](https://github.com/firstlovecenter/fl-admin-portal/commit/e59d0e79f4519a2b647e779bc2bb658f30af0674))
+
+##### Refactors
+
+*  simplify LabelList usage and add null check for category in ChurchGraph component ([38de3ba0](https://github.com/firstlovecenter/fl-admin-portal/commit/38de3ba01c54ff002aaaca4178590661d51fb1df))
+
 #### 7.18.62 (2024-11-30)
 
 ##### New Features
