@@ -39,7 +39,7 @@ extend type Stream {
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY|HAS*1..2]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
        WITH DISTINCT governorships, this
        MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(this)
@@ -66,7 +66,7 @@ extend type Stream {
           AND record.bankingSlip IS NULL
           AND (record.transactionStatus IS NULL OR record.transactionStatus <> 'success')
           AND record.tellerConfirmationTime IS NULL
-       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
+       MATCH (record)<-[:HAS_SERVICE]-(:ServiceLog)<-[:HAS_HISTORY|HAS*1..2]-(governorships) WHERE governorships:Governorship OR governorships:ClosedGovernorship
 
        WITH DISTINCT governorships, this
        MATCH (governorships)<-[:HAS]-(:Council)<-[:HAS]-(this)
@@ -85,7 +85,7 @@ extend type Governorship {
     @cypher(
       statement: """
       MATCH (this)-[:HAS_HISTORY]->(:ServiceLog)-[:HAS_SERVICE_AGGREGATE]->(agg:AggregateServiceRecord)
-      MATCH (agg) WHERE agg.week = $week AND agg.year = date().year
+      MATCH (agg) WHERE agg.week = date().week AND agg.year = date().year
 
       WITH agg, this
       WITH date() as today, this, agg
@@ -98,12 +98,13 @@ extend type Governorship {
       WHERE date.date IN dates
       MATCH (date)<-[:SERVICE_HELD_ON]-(record:ServiceRecord)
 
-      WITH collect(record.foreignCurrency) as list, agg
+      WITH DISTINCT record, agg
+      WITH collect(record.foreignCurrency) as list, SUM(record.income) AS income, SUM(record.attendance) AS attendance, agg
 
       RETURN {
         id: agg.id,
-        attendance: agg.attendance,
-        income: agg.income,
+        attendance: attendance,
+        income: income,
         week: agg.week,
         year: agg.year,
         foreignCurrency: list

@@ -18,14 +18,14 @@ import NoDataComponent from 'pages/arrivals/CompNoData'
 import Input from 'components/formik/Input'
 import './TellerSelect.css'
 import { getWeekNumber } from '@jaedag/admin-portal-types'
+import { Church } from 'global-types'
 
 type FormOptions = {
   defaulterSearch: string
 }
 
-type Defaulter = {
+interface Defaulter extends Church {
   id: string
-  leader: { pictureUrl: string; fullName: string }
   name: string
 }
 
@@ -37,7 +37,7 @@ const ConfirmAnagkazoBanking = () => {
   const [isSubmitting, setSubmitting] = useState(false)
   const [defaulterIndex, setDefaulterIndex] = useState(0)
   const [selected, setSelected] = useState<Defaulter>()
-  const [defaultersData, setDefaultersData] = useState([])
+  const [defaultersData, setDefaultersData] = useState<Church[]>([])
   const { togglePopup, isOpen } = usePopup()
   const navigate = useNavigate()
 
@@ -59,8 +59,10 @@ const ConfirmAnagkazoBanking = () => {
   const service =
     governorshipServiceData?.governorships[0]?.aggregateServiceRecordForWeek
 
-  const bankingDefaultersList =
-    data?.streams[0]?.governorshipBankingDefaultersThisWeek
+  const governorshipServices =
+    data?.streams[0]?.governorshipBankingDefaultersThisWeek ?? []
+
+  const bankingDefaultersList: Church[] = [...governorshipServices]
 
   const onSubmit = (
     values: FormOptions,
@@ -80,7 +82,7 @@ const ConfirmAnagkazoBanking = () => {
 
   useEffect(() => {
     setDefaultersData(bankingDefaultersList)
-  }, [bankingDefaultersList])
+  }, [governorshipServices])
 
   const initialValues: FormOptions = {
     defaulterSearch: '',
@@ -124,7 +126,7 @@ const ConfirmAnagkazoBanking = () => {
                     ) : (
                       <>
                         <h3 className={` menu-subheading text-center`}>
-                          {selected?.name} Governorship
+                          {selected?.name} {selected?.__typename}
                         </h3>
                         <h6 className="text-center">Confirm Offering?</h6>
                         <Table striped bordered hover variant="dark">
@@ -203,7 +205,7 @@ const ConfirmAnagkazoBanking = () => {
                       </div>
 
                       <div className="flex-grow-1 ms-3">
-                        <h6 className="fw-bold">{`${defaulter?.name} Governorship`}</h6>
+                        <h6 className="fw-bold">{`${defaulter?.name} ${defaulter.__typename}`}</h6>
                         <p className={`text-secondary mb-0 `}>
                           <span>{defaulter?.leader?.fullName}</span>
                         </p>
