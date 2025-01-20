@@ -148,6 +148,7 @@ const handler = async () => {
         '233592219407',
         '233541805641',
         '233596075970',
+        '233248659695', // Hillary
       ],
       sender: 'FLC Admin',
       message: `WEEK ${

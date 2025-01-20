@@ -51,6 +51,7 @@ const handler = async () => {
           '233594760323', // Me John-Dag
           '233541805641', // Becks
           '233596075970', // B Daniel
+          '233248659695', // Hillary
         ],
         sender: 'FLC Admin',
         message: `WEEK ${
